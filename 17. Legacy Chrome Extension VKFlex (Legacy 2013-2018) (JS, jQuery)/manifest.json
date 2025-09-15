@@ -1,0 +1,81 @@
+{
+    "manifest_version": 2,
+    "name": "VK Flex",
+    "version": "1.9.40",
+    "default_locale": "ru",
+    "description": "__MSG_description__",
+    "icons": {
+        "16":  "assets/images/icons/icon16.png",
+        "32":  "assets/images/icons/icon32.png",
+        "48":  "assets/images/icons/icon48.png",
+        "128": "assets/images/icons/icon128.png"
+    },
+    "browser_action": {
+        "default_icon": {
+            "19": "assets/images/icons/icon19.png",
+            "38": "assets/images/icons/icon38.png"
+        },
+        "default_title": "VK Flex",
+        "default_popup": "assets/html/menu.html"
+    },
+    "author": "__MSG_author__",
+    "background": {
+        "page": "assets/html/demon.html"
+    },
+    "content_scripts": [
+        {
+            "js": [
+                "assets/js/vk.js"
+            ],
+            "css": [
+                "assets/css/vk.css"
+            ],
+            "matches": [
+                "*://*.vk.com/*",
+                "*://*.vk.ru/*",
+                "*://*.vkvideo.ru/*"
+            ],
+            "run_at": "document_end"
+        }
+    ],
+    "content_security_policy": "default-src 'self'; connect-src *; img-src *; media-src *; style-src 'unsafe-inline';",
+    "minimum_chrome_version": "30",
+    "offline_enabled": false,
+    "omnibox": {
+        "keyword": "vkf"
+    },
+    "options_page": "assets/html/settings.html",
+    "permissions": [
+        "<all_urls>",
+        "*://*.vkontakte.ru/*",
+        "*://*.vk.com/*",
+        "*://*.vk.ru/*",
+        "*://*.vk.me/*",
+        "*://*.userapi.com/*",
+        "*://*.vk-cdn.net/*",
+        "*://*.vkadre.ru/*",
+        "*://*.vkuservideo.net/*",
+        "*://*.mycdn.me/*",
+        "*://*.vkvideo.ru/*",
+        "unlimited_storage",
+        "notifications",
+        "tabs",
+        "contextMenus",
+        "webNavigation",
+        "webRequest",
+        "webRequestBlocking",
+        "storage"
+    ],
+    "short_name": "VK Flex",
+    "update_url": "https://clients2.google.com/service/update2/crx",
+    "web_accessible_resources": [ 
+        "assets/*" 
+    ],
+    "externally_connectable": {
+        "matches": [
+            "*://*.vk.com/*",
+            "*://*.vk.ru/*",
+            "*://*.vkvideo.ru/*"
+        ]
+    }
+}

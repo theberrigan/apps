@@ -1,0 +1,12 @@
+<popup-custom class="dashboard__debt-lock-popup">
+    <popup-content>
+        <span [innerHTML]="'debt_lock.welcome_message' | translate"></span>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button (click)="emmitConfirm()"
+                class="button button_regular button_blue"
+                type="button">
+            <span class="button__caption">{{ 'debt_lock.pay_debt_button' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>

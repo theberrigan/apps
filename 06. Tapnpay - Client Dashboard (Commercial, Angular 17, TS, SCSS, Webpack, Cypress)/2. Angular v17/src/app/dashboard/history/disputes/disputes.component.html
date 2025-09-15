@@ -1,0 +1,94 @@
+<ng-container [ngSwitch]="listState">
+    <div class="history__loading" *ngSwitchCase="'loading'">
+        <loader></loader>
+    </div>
+    <div class="history__message" *ngSwitchCase="'empty'">
+        <img src="assets/images/history-disputes.png" alt="No Disputes" style="max-width: 120px; display: block; margin: 0 auto 16px auto;" />
+        {{ 'history.no_disputes' | translate }}
+    </div>
+    <div class="history__message history__message_error" *ngSwitchCase="'error'">
+        {{ 'history.disputes_error' | translate }}
+    </div>
+    <div *ngSwitchCase="'list'"
+         [class.history__list-box_has-overlay]="isLoadingPage"
+         [ngSwitch]="viewportBreakpoint"
+         class="history__list-box">
+        <!--desktop-->
+        <ng-container *ngSwitchCase="'desktop'">
+            <div class="table table_middle table_striped table_white table_nowrap history__table">
+                <div class="table__header">
+                    <div class="table__row">
+                        <div class="table__cell">
+                            {{ 'history.dispute_lpn' | translate }}
+                        </div>
+                        <div class="table__cell">
+                            {{ 'history.dispute_location' | translate }}
+                        </div>
+                        <div class="table__cell">
+                            {{ 'history.dispute_amount' | translate }}
+                        </div>
+                        <div class="table__cell">
+                            {{ 'history.dispute_reason' | translate }}
+                        </div>
+                        <div class="table__cell">
+                            {{ 'history.dispute_date' | translate }}
+                        </div>
+                    </div>
+                </div>
+                <div class="table__body">
+                    <div class="table__row" *ngFor="let item of disputeItems">
+                        <div class="table__cell">
+                            {{ item.lps }} {{ item.lpn }}
+                        </div>
+                        <div class="table__cell" >
+                            {{ item.location ? item.location : '—' }}
+                        </div>
+                        <div class="table__cell">
+                            {{ item.invoice_amount | currencyFormat : item.currency }}
+                        </div>
+                        <div class="table__cell">
+                            {{ disputeReasonMap[item.status] | translate }}
+                        </div>
+                        <div class="table__cell">
+                            {{ item.transaction_date | date : "MMM d, y, h:mm a" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <!--mobile-->
+        <ng-container *ngSwitchDefault>
+            <h1 class="page-header">{{ 'history.disputes_tab_header' | translate }}</h1>
+            <div class="history__list">
+                <ng-container *ngFor="let item of disputeItems">
+                    <div class="history__list-item">
+                        <div class="history__list-item-primary">
+                            <div class="history__list-item-primary-item">
+                                {{ item.lps }} {{ item.lpn }}
+                            </div>
+                            <div
+                                class="history__list-item-primary-item history__list-item-primary-item_light">
+                                {{ item.location ? item.location : '—' }}
+                            </div>
+                            <div
+                                class="history__list-item-primary-item history__list-item-primary-item_light">
+                                {{ item.transaction_date | date : "MMM d, y, h:mm a" }}
+                            </div>
+                            <div
+                                class="history__list-item-primary-item history__list-item-primary-item_red">
+                                {{ disputeReasonMap[item.status] | translate }}
+                            </div>
+                        </div>
+                        <div class="history__list-item-secondary">
+                            <div
+                                class="history__list-item-secondary-item history__list-item-secondary-item_currency">
+                                {{ item.invoice_amount | currencyFormat : item.currency }}
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+    </div>
+</ng-container>

@@ -1,0 +1,747 @@
+VOXELS = [
+    {
+        "path": "voxels/209_BATON.kvx",
+        "tile": 209
+    },
+    {
+        "path": "voxels/210_LOVERBOY.kvx",
+        "tile": 210
+    },
+    {
+        "path": "voxels/211_XXL.kvx",
+        "tile": 211
+    },
+    {
+        "path": "voxels/212_MED1.kvx",
+        "tile": 212
+    },
+    {
+        "path": "voxels/213_MED2.kvx",
+        "tile": 213
+    },
+    {
+        "path": "voxels/214_MED3.kvx",
+        "tile": 214
+    },
+    {
+        "path": "voxels/215_ARMOR1.kvx",
+        "tile": 215
+    },
+    {
+        "path": "voxels/216_ARMOR2.kvx",
+        "tile": 216
+    },
+    {
+        "path": "voxels/217_CARD.kvx",
+        "tile": 217
+    },
+    {
+        "path": "voxels/218_MGAMMO.kvx",
+        "tile": 218
+    },
+    {
+        "path": "voxels/219_QUIVER.kvx",
+        "tile": 219
+    },
+    {
+        "path": "voxels/220_CROSSBOW.kvx",
+        "tile": 220
+    },
+    {
+        "path": "voxels/221_MINIGUN.kvx",
+        "tile": 221
+    },
+    {
+        "path": "voxels/222_LAM.kvx",
+        "tile0": 6953,
+        "tile1": 6956
+    },
+    {
+        "path": "voxels/223_ARMOR3.kvx",
+        "tile": 223
+    },
+    {
+        "path": "voxels/224_SHOTGUN.kvx",
+        "tile": 224
+    },
+    {
+        "path": "voxels/225_SHOTAMMO.kvx",
+        "tile": 225
+    },
+    {
+        "path": "voxels/226_GRENADES.kvx",
+        "tile": 226
+    },
+    {
+        "path": "voxels/227_SMGMAG.kvx",
+        "tile": 227
+    },
+    {
+        "path": "voxels/228_ARMORPIECE.kvx",
+        "tile": 228
+    },
+    {
+        "path": "voxels/229_SPEEDLOADER.kvx",
+        "tile": 229
+    },
+    {
+        "path": "voxels/230_SMG.kvx",
+        "tile": 230
+    },
+    {
+        "path": "voxels/231_MGL.kvx",
+        "tile": 231
+    },
+    {
+        "path": "voxels/232_BOMB.kvx",
+        "tile0": 6800,
+        "tile1": 6814
+    },
+    {
+        "path": "voxels/233_SYRINGE.kvx",
+        "tile": 233
+    },
+    {
+        "path": "voxels/240_HAZMAT.kvx",
+        "tile": 240
+    },
+    {
+        "path": "voxels/241_BOMBRUSH.kvx",
+        "tile": 241
+    },
+    {
+        "path": "voxels/242_RADAR.kvx",
+        "tile": 242
+    },
+    {
+        "path": "voxels/243_BOOTS.kvx",
+        "tile": 243
+    },
+    {
+        "path": "voxels/244_DAMAGE.kvx",
+        "tile": 244
+    },
+    {
+        "path": "voxels/10953_SODACUP.kvx",
+        "tile": 10953
+    },
+    {
+        "path": "voxels/10954_COFFEE.kvx",
+        "tile": 10954
+    },
+    {
+        "path": "voxels/10956_HOTDOG.kvx",
+        "tile": 10956
+    },
+    {
+        "path": "voxels/10957_FRIES.kvx",
+        "tile": 10957
+    },
+    {
+        "path": "voxels/10958_BURGER.kvx",
+        "tile": 10958
+    },
+    {
+        "path": "voxels/10962_NOODLES.kvx",
+        "tile": 10962
+    },
+    {
+        "path": "voxels/10965_MONSTER.kvx",
+        "tile": 10965
+    },
+    {
+        "path": "voxels/10977_MEAT.kvx",
+        "tile": 10977
+    },
+    {
+        "path": "voxels/10978_SAUSAGE.kvx",
+        "tile": 10978
+    },
+    {
+        "path": "voxels/10979_TACO.kvx",
+        "tile": 10979
+    },
+    {
+        "path": "voxels/6553_COCK.kvx",
+        "tile": 6553
+    },
+    {
+        "path": "voxels/9069_COCK_SIDE.kvx",
+        "tile0": 9069,
+        "tile1": 9080
+    },
+    {
+        "path": "voxels/9002_SODA.kvx",
+        "tile": 9002
+    },
+    {
+        "path": "voxels/9003_SODA_SIDE.kvx",
+        "tile0": 9003,
+        "tile1": 9014
+    },
+    {
+        "path": "voxels/9015_SODA_ROLL_A.kvx",
+        "tile0": 9015,
+        "tile1": 9026
+    },
+    {
+        "path": "voxels/9027_SODA_ROLL_B.kvx",
+        "tile0": 9027,
+        "tile1": 9038
+    },
+    {
+        "path": "voxels/6620_GASCAN.kvx",
+        "tile0": 6620,
+        "tile1": 6624
+    },
+    {
+        "path": "voxels/8780_GASTANK.kvx",
+        "tile": 8780
+    },
+    {
+        "path": "voxels/6540_FIREEXT.kvx",
+        "tile": 6540
+    },
+    {
+        "path": "voxels/6541_FIREEXT_BRK.kvx",
+        "tile": 6541
+    },
+    {
+        "path": "voxels/7819_BARREL.kvx",
+        "tile": 7819
+    },
+    {
+        "path": "voxels/7820_BARREL_BRK_A.kvx",
+        "tile": 7820
+    },
+    {
+        "path": "voxels/7821_BARREL_BRK_B.kvx",
+        "tile": 7821
+    },
+    {
+        "path": "voxels/7824_BARREL2.kvx",
+        "tile": 7824
+    },
+    {
+        "path": "voxels/7825_BARREL2_BRK_A.kvx",
+        "tile": 7825
+    },
+    {
+        "path": "voxels/7826_BARREL2_BRK_B.kvx",
+        "tile": 7826
+    },
+    {
+        "path": "voxels/7885_BARREL_GIB.kvx",
+        "tile": 7885
+    },
+    {
+        "path": "voxels/7829_CANISTER.kvx",
+        "tile": 7829
+    },
+    {
+        "path": "voxels/7830_CANISTER_BRK_A.kvx",
+        "tile": 7830
+    },
+    {
+        "path": "voxels/7831_CANISTER_BRK_B.kvx",
+        "tile": 7831
+    },
+    {
+        "path": "voxels/9983_WATERBRL.kvx",
+        "tile": 9983
+    },
+    {
+        "path": "voxels/6569_TRASHCAN.kvx",
+        "tile": 6569
+    },
+    {
+        "path": "voxels/6546_TRASHCAN_BRK_A.kvx",
+        "tile": 6546
+    },
+    {
+        "path": "voxels/6547_TRASHCAN_BRK_B.kvx",
+        "tile": 6547
+    },
+    {
+        "path": "voxels/9213_LID.kvx",
+        "tile": 9213
+    },
+    {
+        "path": "voxels/9222_TRASHCAN_GIB.kvx",
+        "tile": 9222
+    },
+    {
+        "path": "voxels/621_DOMECAM.kvx",
+        "tile0": 621,
+        "tile1": 628
+    },
+    {
+        "path": "voxels/629_CAMERA.kvx",
+        "tile0": 629,
+        "tile1": 637
+    },
+    {
+        "path": "voxels/6503_OUTLET.kvx",
+        "tile": 6503
+    },
+    {
+        "path": "voxels/7791_CHAIR1.kvx",
+        "tile0": 7791,
+        "tile1": 7797
+    },
+    {
+        "path": "voxels/7798_CHAIR1_BRK.kvx",
+        "tile0": 7798,
+        "tile1": 7804
+    },
+    {
+        "path": "voxels/9223_CHAIR1_LEG.kvx",
+        "tile0": 9223,
+        "tile1": 9229
+    },
+    {
+        "path": "voxels/7805_CHAIR2.kvx",
+        "tile0": 7805,
+        "tile1": 7811
+    },
+    {
+        "path": "voxels/7812_CHAIR2_BRK.kvx",
+        "tile0": 7812,
+        "tile1": 7818
+    },
+    {
+        "path": "voxels/9230_CHAIR2_LEG.kvx",
+        "tile0": 9230,
+        "tile1": 9236
+    },
+    {
+        "path": "voxels/7260_TURRET.kvx",
+        "tile0": 7260,
+        "tile1": 7266
+    },
+    {
+        "path": "voxels/7267_TURRET_A.kvx",
+        "tile0": 7267,
+        "tile1": 7273
+    },
+    {
+        "path": "voxels/7274_TURRET_B.kvx",
+        "tile0": 7274,
+        "tile1": 7280
+    },
+    {
+        "path": "voxels/7259_TURRETSTAND.kvx",
+        "tile": 7259
+    },
+    {
+        "path": "voxels/11358_TURRET.kvx",
+        "tile": 11358
+    },
+    {
+        "path": "voxels/6957_LAM_WALL.kvx",
+        "tile0": 6957,
+        "tile1": 6965
+    },
+    {
+        "path": "voxels/7245_LAM_WALL_FB.kvx",
+        "tile0": 7245,
+        "tile1": 7253
+    },
+    {
+        "path": "voxels/7254_LAM_FB.kvx",
+        "tile0": 7254,
+        "tile1": 7257
+    },
+    {
+        "path": "voxels/5869_DART1.kvx",
+        "tile0": 5869,
+        "tile1": 5877
+    },
+    {
+        "path": "voxels/10976_DART2.kvx",
+        "tile": 10976
+    },
+    {
+        "path": "voxels/10975_DARTBOARD.kvx",
+        "tile": 10975
+    },
+    {
+        "path": "voxels/10948_STOOL1.kvx",
+        "tile": 10948
+    },
+    {
+        "path": "voxels/10949_STOOL2.kvx",
+        "tile": 10949
+    },
+    {
+        "path": "voxels/7553_HYDRANT.kvx",
+        "tile0": 7553,
+        "tile1": 7557
+    },
+    {
+        "path": "voxels/7558_HYDRANT_BRK.kvx",
+        "tile": 7558
+    },
+    {
+        "path": "voxels/8741_LAMP_OFF.kvx",
+        "tile0": 8741,
+        "tile1": 8747
+    },
+    {
+        "path": "voxels/8748_LAMP_ON.kvx",
+        "tile0": 8748,
+        "tile1": 8754
+    },
+    {
+        "path": "voxels/8755_FLOORLAMP_OFF.kvx",
+        "tile": 8755
+    },
+    {
+        "path": "voxels/8756_FLOORLAMP_ON.kvx",
+        "tile": 8756
+    },
+    {
+        "path": "voxels/10110_IV.kvx",
+        "tile": 10110
+    },
+    {
+        "path": "voxels/3576_LEVER2_BRK.kvx",
+        "tile": 3576
+    },
+    {
+        "path": "voxels/3577_ISOLATOR_BRK.kvx",
+        "tile": 3577
+    },
+    {
+        "path": "voxels/3578_LEVER_BRK.kvx",
+        "tile": 3578
+    },
+    {
+        "path": "voxels/3579_ROTSWITCH_BRK.kvx",
+        "tile": 3579
+    },
+    {
+        "path": "voxels/3580_DIPSWITCH1_BRK.kvx",
+        "tile": 3580
+    },
+    {
+        "path": "voxels/3581_BUTTON1_BRK.kvx",
+        "tile": 3581
+    },
+    {
+        "path": "voxels/3582_BREAKER2_BRK.kvx",
+        "tile": 3582
+    },
+    {
+        "path": "voxels/3583_EVELATOR_BRK.kvx",
+        "tile": 3583
+    },
+    {
+        "path": "voxels/3584_LIGHTSWITCH_BRK.kvx",
+        "tile": 3584
+    },
+    {
+        "path": "voxels/3585_LIGHTSWITCH_A.kvx",
+        "tile": 3585
+    },
+    {
+        "path": "voxels/3586_LIGHTSWITCH_B.kvx",
+        "tile": 3586
+    },
+    {
+        "path": "voxels/3587_LIGHTSWITCH_C.kvx",
+        "tile": 3587
+    },
+    {
+        "path": "voxels/3588_ELEVATOR_A.kvx",
+        "tile": 3588
+    },
+    {
+        "path": "voxels/3589_ELEVATOR_B.kvx",
+        "tile": 3589
+    },
+    {
+        "path": "voxels/3590_ELEVATOR_C.kvx",
+        "tile": 3590
+    },
+    {
+        "path": "voxels/3591_ELEVATOR_D.kvx",
+        "tile": 3591
+    },
+    {
+        "path": "voxels/3592_ELEVATOR_E.kvx",
+        "tile": 3592
+    },
+    {
+        "path": "voxels/3593_ELEVATOR_F.kvx",
+        "tile": 3593
+    },
+    {
+        "path": "voxels/3594_DIPSWITCH1_A.kvx",
+        "tile": 3594
+    },
+    {
+        "path": "voxels/3595_DIPSWITCH1_B.kvx",
+        "tile": 3595
+    },
+    {
+        "path": "voxels/3596_DIPSWITCH1_C.kvx",
+        "tile": 3596
+    },
+    {
+        "path": "voxels/3597_ROTSWITCH_A.kvx",
+        "tile": 3597
+    },
+    {
+        "path": "voxels/3598_ROTSWITCH_B.kvx",
+        "tile": 3598
+    },
+    {
+        "path": "voxels/3599_ROTSWITCH_C.kvx",
+        "tile": 3599
+    },
+    {
+        "path": "voxels/3600_LEVER_A.kvx",
+        "tile": 3600
+    },
+    {
+        "path": "voxels/3601_LEVER_B.kvx",
+        "tile": 3601
+    },
+    {
+        "path": "voxels/3602_LEVER_C.kvx",
+        "tile": 3602
+    },
+    {
+        "path": "voxels/3603_LEVER_D.kvx",
+        "tile": 3603
+    },
+    {
+        "path": "voxels/3604_LEVER_E.kvx",
+        "tile": 3604
+    },
+    {
+        "path": "voxels/3605_ISOLATOR_A.kvx",
+        "tile": 3605
+    },
+    {
+        "path": "voxels/3606_ISOLATOR_B.kvx",
+        "tile": 3606
+    },
+    {
+        "path": "voxels/3607_ISOLATOR_C.kvx",
+        "tile": 3607
+    },
+    {
+        "path": "voxels/3608_BREAKER_A.kvx",
+        "tile": 3608
+    },
+    {
+        "path": "voxels/3609_BREAKER_B.kvx",
+        "tile": 3609
+    },
+    {
+        "path": "voxels/3610_BREAKER_C.kvx",
+        "tile": 3610
+    },
+    {
+        "path": "voxels/3611_BREAKER_D.kvx",
+        "tile": 3611
+    },
+    {
+        "path": "voxels/3612_BREAKER_E.kvx",
+        "tile": 3612
+    },
+    {
+        "path": "voxels/3613_BREAKER_F.kvx",
+        "tile": 3613
+    },
+    {
+        "path": "voxels/3614_BREAKER_G.kvx",
+        "tile": 3614
+    },
+    {
+        "path": "voxels/3615_DIPSWITCH2_A.kvx",
+        "tile": 3615
+    },
+    {
+        "path": "voxels/3616_DIPSWITCH2_B.kvx",
+        "tile": 3616
+    },
+    {
+        "path": "voxels/3617_DIPSWITCH2_C.kvx",
+        "tile": 3617
+    },
+    {
+        "path": "voxels/3618_BUTTON1_A.kvx",
+        "tile": 3618
+    },
+    {
+        "path": "voxels/3619_BUTTON1_B.kvx",
+        "tile": 3619
+    },
+    {
+        "path": "voxels/3620_BUTTON1_C.kvx",
+        "tile": 3620
+    },
+    {
+        "path": "voxels/3621_ROTSWITCH2_A.kvx",
+        "tile": 3621
+    },
+    {
+        "path": "voxels/3622_ROTSWITCH2_B.kvx",
+        "tile": 3622
+    },
+    {
+        "path": "voxels/3623_ROTSWITCH2_C.kvx",
+        "tile": 3623
+    },
+    {
+        "path": "voxels/3624_LEVER2_A.kvx",
+        "tile": 3624
+    },
+    {
+        "path": "voxels/3625_LEVER2_B.kvx",
+        "tile": 3625
+    },
+    {
+        "path": "voxels/3626_LEVER2_C.kvx",
+        "tile": 3626
+    },
+    {
+        "path": "voxels/3627_LEVER2_D.kvx",
+        "tile": 3627
+    },
+    {
+        "path": "voxels/3628_LEVER2_E.kvx",
+        "tile": 3628
+    },
+    {
+        "path": "voxels/3629_BREAKER2_A.kvx",
+        "tile": 3629
+    },
+    {
+        "path": "voxels/3630_BREAKER2_B.kvx",
+        "tile": 3630
+    },
+    {
+        "path": "voxels/3631_BREAKER2_C.kvx",
+        "tile": 3631
+    },
+    {
+        "path": "voxels/3632_BREAKER2_D.kvx",
+        "tile": 3632
+    },
+    {
+        "path": "voxels/3633_BREAKER2_E.kvx",
+        "tile": 3633
+    },
+    {
+        "path": "voxels/3634_BREAKER2_F.kvx",
+        "tile": 3634
+    },
+    {
+        "path": "voxels/3635_BREAKER2_G.kvx",
+        "tile": 3635
+    },
+    {
+        "path": "voxels/3636_LEVER3_A.kvx",
+        "tile": 3636
+    },
+    {
+        "path": "voxels/3637_LEVER3_B.kvx",
+        "tile": 3637
+    },
+    {
+        "path": "voxels/3638_LEVER3_C.kvx",
+        "tile": 3638
+    },
+    {
+        "path": "voxels/3639_LEVER3_D.kvx",
+        "tile": 3639
+    },
+    {
+        "path": "voxels/3640_LEVER3_E.kvx",
+        "tile": 3640
+    },
+    {
+        "path": "voxels/3641_LEVER3_F.kvx",
+        "tile": 3641
+    },
+    {
+        "path": "voxels/3642_LEVER3_G.kvx",
+        "tile": 3642
+    },
+    {
+        "path": "voxels/3643_VALVE1_A.kvx",
+        "tile": 3643
+    },
+    {
+        "path": "voxels/3644_VALVE1_B.kvx",
+        "tile": 3644
+    },
+    {
+        "path": "voxels/3645_VALVE1_C.kvx",
+        "tile": 3645
+    },
+    {
+        "path": "voxels/3646_VALVE1_D.kvx",
+        "tile": 3646
+    },
+    {
+        "path": "voxels/3647_VALVE1_E.kvx",
+        "tile": 3647
+    },
+    {
+        "path": "voxels/3648_VALVE1_F.kvx",
+        "tile": 3648
+    },
+    {
+        "path": "voxels/3649_VALVE1_G.kvx",
+        "tile": 3649
+    },
+    {
+        "path": "voxels/3650_VALVE1_H.kvx",
+        "tile": 3650
+    },
+    {
+        "path": "voxels/3651_VALVE2_A.kvx",
+        "tile": 3651
+    },
+    {
+        "path": "voxels/3652_VALVE2_B.kvx",
+        "tile": 3652
+    },
+    {
+        "path": "voxels/3653_VALVE2_C.kvx",
+        "tile": 3653
+    },
+    {
+        "path": "voxels/3654_VALVE2_D.kvx",
+        "tile": 3654
+    },
+    {
+        "path": "voxels/3655_VALVE2_E.kvx",
+        "tile": 3655
+    },
+    {
+        "path": "voxels/3656_VALVE2_F.kvx",
+        "tile": 3656
+    },
+    {
+        "path": "voxels/3657_VALVE2_G.kvx",
+        "tile": 3657
+    },
+    {
+        "path": "voxels/3658_VALVE2_H.kvx",
+        "tile": 3658
+    },
+    {
+        "path": "voxels/3659_SOCKET1.kvx",
+        "tile": 3659
+    },
+    {
+        "path": "voxels/3660_SOCKET2.kvx",
+        "tile": 3660
+    }
+]

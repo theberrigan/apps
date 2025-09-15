@@ -1,0 +1,99 @@
+@import '../../../../assets/css/definitions.scss';
+
+.settings {
+    $item-border-width: 1px;
+    $item-size: 160px;
+    $item-margin: 8px;
+    $items-per-row: 4;
+    $icon-size: 70px;
+    $icon-proportion-y: 0.625;
+    $caption-proportion-y: 1 - $icon-proportion-y;
+    $item-occupied-height: round(($item-size - $item-border-width) * $icon-proportion-y);
+    $caption-occupied-height: round(($item-size - $item-border-width) * $caption-proportion-y);
+
+    display: block;
+
+    &__list {
+        display: flex;
+        flex-flow: row wrap;
+        width: 100%;
+        max-width: ($item-margin + $item-size + $item-margin) * $items-per-row;
+        margin: (-1 * $item-margin) auto 0;
+
+        &-item {
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: center;
+            width: $item-size;
+            height: $item-size;
+            margin: $item-margin;
+            border-radius: 4px;
+            border: $item-border-width solid #DDE3EB;
+            background-color: #fff;
+
+            &,
+            &:hover,
+            &:link,
+            &:active,
+            &:focus,
+            &:visited {
+                text-decoration: none;
+                color: inherit;
+            }
+
+            &:hover {
+                box-shadow: 0 10px 20px rgba(16, 29, 47, 0.1);
+                transition: box-shadow 0.1s ease-out;
+            }
+
+            &-icon {
+                display: block;
+                width: $icon-size;
+                height: $icon-size;
+                margin-top: ($item-occupied-height - $icon-size);
+                // background-color: rgba(#000, 0.1);
+            }
+
+            &-caption {
+                display: flex;
+                flex-flow: column wrap;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                height: $caption-occupied-height;
+                font-size: 14px;
+                line-height: 18px;
+                font-weight: $font-weight-medium;
+                padding: 0 10px;
+            }
+        }
+    }
+
+    html.viewport_mobile & {
+        &__list {
+
+            &-item {
+                flex-flow: row nowrap;
+                width: 100%;
+                height: auto;
+                padding: 16px 18px;
+                margin: $item-margin 0 0;
+
+                &-icon {
+                    display: none;
+                }
+
+                &-caption {
+                    flex-flow: row nowrap;
+                    align-items: center;
+                    justify-content: flex-start;
+                    text-align: left;
+                    height: auto;
+                    font-size: 16px;
+                    line-height: 20px;
+                    padding: 0;
+                }
+            }
+        }
+    }
+}

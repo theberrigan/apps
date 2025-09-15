@@ -1,0 +1,45 @@
+.stex-block {
+    font-family: "Motiva Sans", Arial, Helvetica, sans-serif;
+}
+
+a.stex-block__link {
+    font-size: 16px;
+    color: #67c1f5;
+}
+
+a.stex-block__link:hover {
+    color: #ffffff;
+}
+
+.stex-block__link-sep {
+    padding: 0 8px;
+}
+
+.stex-block__table {
+    margin-top: 6px;
+}
+
+.stex-block__table tr th,
+.stex-block__table tr td {
+    /*padding-top: 2px;*/
+}
+
+.stex-block__table tr th {
+    padding-right: 6px;
+}
+
+.stex-block__table th,
+.stex-block__table td {
+    font-size: 12px;
+    text-align: left;
+}
+
+.stex-block__table th {
+    font-weight: normal;
+    color: #8f98a0;
+}
+
+.stex-block__table td {
+    font-weight: bold;
+    color: #67c1f5;
+}

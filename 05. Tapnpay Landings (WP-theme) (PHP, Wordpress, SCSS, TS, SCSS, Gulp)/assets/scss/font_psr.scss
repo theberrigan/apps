@@ -1,0 +1,62 @@
+@import './font_psr_definitions';
+
+
+@font-face {
+    font-family: 'PSR';
+    src: url('../fonts/PSR/PPPangramSansRounded-Thin.woff2') format('woff2'),
+    url('../fonts/PSR/PPPangramSansRounded-Thin.woff') format('woff'),
+    url('../fonts/PSR/PPPangramSansRounded-Thin.ttf') format('truetype');
+    font-weight: $font-weight-thin;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PSR';
+    src: url('../fonts/PSR/PPPangramSansRounded-Light.woff2') format('woff2'),
+    url('../fonts/PSR/PPPangramSansRounded-Light.woff') format('woff'),
+    url('../fonts/PSR/PPPangramSansRounded-Light.ttf') format('truetype');
+    font-weight: $font-weight-light;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PSR';
+    src: url('../fonts/PSR/PPPangramSansRounded-Medium.woff2') format('woff2'),
+    url('../fonts/PSR/PPPangramSansRounded-Medium.woff') format('woff'),
+    url('../fonts/PSR/PPPangramSansRounded-Medium.ttf') format('truetype');
+    font-weight: $font-weight-medium;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PSR';
+    src: url('../fonts/PSR/PPPangramSansRounded-Semibold.woff2') format('woff2'),
+    url('../fonts/PSR/PPPangramSansRounded-Semibold.woff') format('woff'),
+    url('../fonts/PSR/PPPangramSansRounded-Semibold.ttf') format('truetype');
+    font-weight: $font-weight-semibold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PSR';
+    src: url('../fonts/PSR/PPPangramSansRounded-Bold.woff2') format('woff2'),
+    url('../fonts/PSR/PPPangramSansRounded-Bold.woff') format('woff'),
+    url('../fonts/PSR/PPPangramSansRounded-Bold.ttf') format('truetype');
+    font-weight: $font-weight-bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'PSR';
+    src: url('../fonts/PSR/PPPangramSansRounded-ExtraboldItalic.woff2') format('woff2'),
+    url('../fonts/PSR/PPPangramSansRounded-ExtraboldItalic.woff') format('woff'),
+    url('../fonts/PSR/PPPangramSansRounded-ExtraboldItalic.ttf') format('truetype');
+    font-weight: $font-weight-extrabold;
+    font-style: italic;
+    font-display: swap;
+}

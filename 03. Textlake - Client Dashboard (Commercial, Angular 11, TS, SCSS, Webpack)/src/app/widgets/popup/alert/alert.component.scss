@@ -1,0 +1,48 @@
+@import '../../../../assets/css/definitions';
+
+.alert {
+    display: block;
+
+    .popup__box {
+        max-width: 400px;
+    }
+
+    &__message {
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+    &__checkbox {
+        float: left;
+        padding: 5px 10px 5px 0;
+
+        .checkbox {
+            font-size: 14px;
+            font-weight: $font-weight-medium;
+            color: #8c9196;
+            padding-left: 32px;
+        }
+    }
+}
+
+html.viewport_mobile {
+    .alert {
+        .popup__controls-buttons {
+            float: none;
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+
+            .button {
+                float: none;
+                flex-basis: 100%;
+            }
+        }
+
+        &__checkbox {
+            .checkbox {
+                margin-bottom: 20px;
+            }
+        }
+    }
+}

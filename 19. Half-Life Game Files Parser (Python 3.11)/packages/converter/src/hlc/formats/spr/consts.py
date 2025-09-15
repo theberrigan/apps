@@ -1,0 +1,13 @@
+SPRITE_EXT         = '.spr'
+SPRITE_SIGNATURE   = b'IDSP'
+SPRITE_VERSION     = 2
+SPRITE_HEADER_SIZE = 40
+
+
+
+__all__ = [
+    'SPRITE_EXT',
+    'SPRITE_SIGNATURE',
+    'SPRITE_VERSION',
+    'SPRITE_HEADER_SIZE',
+]

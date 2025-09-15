@@ -1,0 +1,324 @@
+{
+    "not_found": {
+        "page_title": "Page not Found",
+        "page_header": "Page not Found",
+        "message": "Page cannot be found."
+    },
+    "auth": {
+        "page_title": "Login",
+        "welcome": "Tapnpay Support Console Authorization",
+        "redirecting": "Redirecting...",
+        "error_common": "An error occurred during authorization",
+        "auth_button": "Authorize"
+    },
+    "dashboard": {
+        "page_title": "Dashboard",
+        "edit_profile": "Edit Profile",
+        "logout": "Logout"
+    },
+    "search": {
+        "placeholder": "Enter phone, LPN or PBM [Ctrl+G]",
+        "no_accounts": "No accounts found"
+    },
+    "nav": {
+        "accounts": "Accounts",
+        "disputes": "Disputes",
+        "faq": "FAQ",
+        "coverage": "Coverage",
+        "toll_authorities": "TAs",
+        "contracts": "Contracts",
+        "chat": "Chat"
+    },
+    "accounts": {
+        "page_title": "Accounts",
+        "empty": "Use the search above to find an account",
+        "common_error": "An error occurred while loading data",
+        "tab_ctx_menu": {
+            "close": "Close",
+            "close_others": "Close other tabs",
+            "close_all": "Close all tabs"
+        },
+        "tabs": {
+            "summary": "Summary",
+            "invoices": "Outstanding Invoices",
+            "transactions": "Transactions",
+            "disputes": "Disputes",
+            "sms_log": "SMS Log",
+            "actions": "Actions"
+        },
+        "status": {
+            "active": "Active",
+            "inactive": "Inactive",
+            "closed_by_owner": "Closed by Owner",
+            "soft_lock": "Soft Lock",
+            "hard_lock": "Hard Lock",
+            "fraud": "Fraud",
+            "permanently_closed": "Permanently Closed",
+            "payment_lock": "Payment Lock"
+        },
+        "summary": {
+            "account_status_header": "Account Status",
+            "phone_number": "Phone #",
+            "phone_number_unk": "Unknown",
+            "account_status": "Account Status",
+            "active_lpns": "Active LPNs",
+            "inactive_lpns": "Inactive LPNs",
+            "language": "Language",
+            "language_unk": "Unknown",
+            "toll": "Toll Authority",
+            "toll_unk": "Unknown",
+            "terms_accepted_date": "Terms Accepted Date",
+            "terms_not_accepted": "Not accepted",
+            "payment_method": "Current Payment Method",
+            "payment_method_not_set": "Not set",
+            "account_lock_date": "Account Lock Date",
+            "account_not_locked": "Not locked",
+            "account_lock_until": "Locked Until Date",
+            "account_not_locked2": "Not locked",
+            "account_statistics_header": "Account Statistics",
+            "account_longevity": "Account Longevity",
+            "avg_invoice_amount": "Average Invoice Amount",
+            "disputes_number": "Number of Disputes",
+            "total_invoices_paid": "Total Invoices Paid",
+            "last_paid_invoice_date": "Last Paid Invoice Date",
+            "last_paid_invoice_date_never": "Never",
+            "outstanding_disputes_count": "Outstanding Disputes",
+            "outstanding_disputes_amount": "Outstanding Disputes Amount"
+        },
+        "invoices": {
+            "details_popup_title": "Outstanding Invoice Details",
+            "no_invoices": "No outstanding invoices",
+            "invoice_number": "Invoice #",
+            "final_due_date": "Final TA Due Date",
+            "invoice_amount": "Amount",
+            "original_due_date": "Original Due Date",
+            "prev_extensions": "Prev. Extensions",
+            "extend_due_date": "Extend Due Date",
+            "extend_hours": "hours",
+            "extend_success": "Due date extended",
+            "extend_error": "Failed to extend due date",
+            "details": {
+                "license_plate": "License Plate",
+                "location": "Location",
+                "amount": "Amount",
+                "date": "Date",
+                "close": "Close"
+            }
+        },
+        "transactions": {
+            "invoice_count": "{ invoiceCount } { invoiceCount, plural, =0{invoices} one{invoice} other{invoices} }",
+            "details_popup_title": "Transaction Details",
+            "no_transactions": "No transactions found",
+            "error": "An error occurred while loading transactions",
+            "invoices": "Invoices",
+            "date": "Transaction Date",
+            "invoice_amount": "Invoice Amount",
+            "payment_method": "Payment Method",
+            "payment_status": "Payment Status",
+            "show_filter": {
+                "all": "Show All",
+                "success": "Success",
+                "failures": "Failures"
+            }
+        },
+        "disputes": {
+            "details_popup_title": "Invoice Details",
+            "no_disputes": "No disputes found",
+            "error": "An error occurred while loading disputes",
+            "invoice_name": "Invoice",
+            "toll_date": "Toll Date",
+            "invoice_amount": "Invoice Amount",
+            "dispute_date": "Dispute Date",
+            "dispute_reason": "Dispute Reason"
+        },
+        "sms_log": {
+            "date_from": "From Date",
+            "date_to": "To Date",
+            "apply": "Apply",
+            "reset": "Reset",
+            "no_items": "No items found",
+            "error": "An error occurred while loading SMS log",
+            "datetime_sent": "Date/Time Sent",
+            "sender": "Sender",
+            "recipient": "Recipient",
+            "message_text": "Message Text",
+            "load_more": "Load more",
+            "copy": "Copy to Clipboard",
+            "copied": "Date & SMS text copied"
+        },
+        "actions": {
+            "no_actions": "No actions available",
+            "reinstate_account": "Reinstate Account",
+            "reinstate_desc": "Reinstate account <strong>{ phone }</strong> locked on <strong>{ lockDate }</strong>",
+            "reinstate_confirm": "Do you want to reinstate account?",
+            "reinstate_message": "Specify the reason for the account reinstate",
+            "reinstate_cancel": "Cancel",
+            "reinstate_ok": "Reinstate",
+            "reinstate_success": "Account reinstated",
+            "reinstate_failed": "Failed to reinstate account",
+            "send_sms": "Send SMS",
+            "send_sms_desc": "Send SMS to <strong>{ phone }</strong>",
+            "send_sms_label": "Text of SMS",
+            "send_sms_cancel": "Cancel",
+            "send_sms_ok": "Send",
+            "send_sms_success": "SMS sent",
+            "send_sms_failed": "Failed to send SMS",
+            "confirm_identity": "Confirm Identity",
+            "confirm_identity_desc": "Confirm user identity with SMS PIN",
+            "confirm_identity_desc_with_pin": "Confirm user identity with SMS PIN.<br>Last PIN: <strong>{ pin }</strong>",
+            "confirm_identity_confirm": "Do you want to send SMS PIN to <strong>{ phone }</strong>?",
+            "confirm_identity_cancel": "Cancel",
+            "confirm_identity_ok": "Send PIN",
+            "confirm_identity_success": "SMS sent",
+            "confirm_identity_failed": "Failed to send SMS",
+            "close_account": "Close Account",
+            "close_account_desc": "Close client account",
+            "close_account_confirm": "Do you want to close account?",
+            "close_account_cancel": "Cancel",
+            "close_account_ok": "Close Account",
+            "close_account_success": "Account closed",
+            "close_account_failed": "Failed to close account",
+            "block_account": "Block Account",
+            "block_desc": "Block account for suspicious activity",
+            "block_account_confirm": "Do you want to block account for suspicious activity?",
+            "block_account_cancel": "Cancel",
+            "block_account_ok": "Block Account",
+            "block_account_success": "Account blocked",
+            "block_account_failed": "Failed to block account"
+        }
+    },
+    "contracts": {
+        "carrier": {
+            "list": {
+                "page_title": "Carrier Contracts",
+                "page_header": "Carrier Contracts",
+                "no_contracts": "No carrier contracts yet",
+                "common_error": "An error occurred while loading carrier contracts",
+                "create_button": "Create",
+                "status_enabled": "Enabled",
+                "status_disabled": "Disabled"
+            },
+            "editor": {
+                "page_title": "Carrier Contract",
+                "page_header": "Carrier Contract",
+                "common_error": "An error occurred while loading carrier contract",
+                "save_button": "Save",
+                "save_success": "Saved",
+                "save_failed": "Failed to save contract",
+                "upload_failed": "Failed to upload signed contract"
+            }
+        },
+        "ta": {
+            "list": {
+                "page_title": "Toll Authority Contracts",
+                "page_header": "Toll Authority Contracts",
+                "no_contracts": "No toll authority contracts yet",
+                "common_error": "An error occurred while loading toll authority contracts",
+                "create_button": "Create",
+                "status_enabled": "Enabled",
+                "status_disabled": "Disabled"
+            },
+            "editor": {
+                "page_title": "Toll Authority Contract",
+                "page_header": "Toll Authority Contract",
+                "common_error": "An error occurred while loading toll authority contract",
+                "save_button": "Save",
+                "save_success": "Saved",
+                "save_failed": "Failed to save contract",
+                "upload_failed": "Failed to upload signed contract",
+                "create_customer_button": "Create",
+                "create_customer_label": "Toll Authority Name",
+                "create_customer_cancel": "Cancel",
+                "create_customer_ok": "Ok",
+                "create_customer_success": "Toll authority created",
+                "create_customer_error": "Failed to create a toll authority"
+            }
+        },
+        "pg": {
+            "list": {
+                "page_title": "Payment Gateway Contracts",
+                "page_header": "Payment Gateway Contracts",
+                "no_contracts": "No payment gateway contracts yet",
+                "common_error": "An error occurred while loading payment gateway contracts",
+                "create_button": "Create",
+                "status_enabled": "Enabled",
+                "status_disabled": "Disabled"
+            },
+            "editor": {
+                "page_title": "Payment Gateway Contract",
+                "page_header": "Payment Gateway Contract",
+                "common_error": "An error occurred while loading payment gateway contract",
+                "save_button": "Save",
+                "save_success": "Saved",
+                "save_failed": "Failed to save contract",
+                "upload_failed": "Failed to upload signed contract"
+            }
+        }
+    },
+    "disputes": {
+        "page_title": "Disputes",
+        "page_header": "Import Disputes",
+        "upload_success": "File has been imported successfully",
+        "deco_dropzone_text": "Click to select CSV file <span>—&nbsp;or&nbsp;—</span> Just drop file here",
+        "dropzone_text": "Drop File Here"
+    },
+    "faq": {
+        "page_title": "FAQ",
+        "page_header": "Import FAQ",
+        "upload_success": "File has been imported successfully",
+        "upload_error": "Failed to import file",
+        "view_faq": "View FAQ",
+        "deco_dropzone_text": "Click to select XML file <span>—&nbsp;or&nbsp;—</span> Just drop file here",
+        "dropzone_text": "Drop File Here"
+    },
+    "coverage": {
+        "page_title": "Coverage",
+        "save_success": "Saved successfully",
+        "save_error": "Saved successfully"
+    },
+    "ta": {
+        "list": {
+            "page_title": "Toll Authorities",
+            "page_header": "Toll Authorities",
+            "common_error": "An error occurred while loading toll authorities",
+            "no_TAs": "No toll authorities",
+            "create_pseudo_link": "Create one",
+            "create_button": "Create",
+            "create_label": "Toll Authority Name",
+            "create_cancel": "Cancel",
+            "create_ok": "Ok",
+            "create_error": "Failed to create a toll authority",
+            "th_name": "Name",
+            "th_phone": "Phone",
+            "th_status": "Status",
+            "status_enabled": "Enabled",
+            "status_disabled": "Disabled"
+        },
+        "editor": {
+            "page_title": "Edit Toll Authority",
+            "page_header": "Toll Authority #{ id }",
+            "no_data": "No data to edit",
+            "common_error": "An error occurred while loading TA's properties",
+            "save_button": "Save",
+            "save_success": "Saved",
+            "save_error": "Failed to save",
+            "confirm_discard": "Do you want to leave this page and discard unsaved changes?",
+            "flow_diagram": "Flow Diagram"
+        }
+    },
+    "duration": {
+        "years": "{ value } { value, plural, =0{years} one{year} other{years} }",
+        "months": "{ value } { value, plural, =0{months} one{month} other{months} }",
+        "days": "{ value } { value, plural, =0{days} one{day} other{days} }",
+        "hours": "{ value } { value, plural, =0{hours} one{hour} other{hours} }",
+        "minutes": "{ value } { value, plural, =0{minutes} one{minute} other{minutes} }"
+    },
+    "datetime": {
+        "today__text": "Today",
+        "back__button": "Back",
+        "hours__text": "Hours",
+        "minutes__text": "Minutes",
+        "cancel__button": "Cancel",
+        "ok__button": "Ok"
+    }
+}

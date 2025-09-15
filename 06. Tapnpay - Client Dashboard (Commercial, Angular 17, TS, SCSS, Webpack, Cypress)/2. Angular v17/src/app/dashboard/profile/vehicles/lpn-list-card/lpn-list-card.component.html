@@ -1,0 +1,105 @@
+<ng-container *ngIf="!(licensePlate | isLicensePlateRental)">
+    <div class="vehicles__list-item vehicles__list-item vehicles__list-item-base">
+        <div class="vehicles__list-item-primary">
+            <div class="vehicles__list-item-primary-item">
+                <button (click)="onHistoryClick(licensePlate)"
+                        class="lpn-name button--link"
+                        type="button">
+                    {{ licensePlate.lps }} {{ licensePlate.lpn }}
+                </button>
+            </div>
+            <div class="vehicles__list-item-primary-item vehicles__list-item-primary-item_light">
+            <span class="lpn-card-value-label">
+                {{ 'vehicles.date_th' | translate }}</span>
+                <span class="lpn-card-value">
+                    {{ licensePlate.registered | datetime : 'display.datetime' }}
+                </span>
+            </div>
+        </div>
+        <div class="vehicles__list-item-secondary" *ngIf="!licensePlate.end_date">
+            <button (click)="onUnregisterClick(licensePlate)"
+                    class="button button_regular button_light-red"
+                    type="button">
+            <span class="button__caption">
+                {{ 'vehicles.unreg_button' | translate }}
+            </span>
+            </button>
+        </div>
+
+        <div *ngIf="licensePlate.end_date">
+            <div class="vehicles__list-item-primary">
+                <div class="inactive-label">
+                    {{ 'vehicles.statuses.inactive' | translate | uppercase }}
+                </div>
+                <div class="vehicles__list-item-primary-item vehicles__list-item-primary-item_light">
+                    <span class="lpn-card-value-label">
+                    {{ 'vehicles.date_unreg_th' | translate }}
+                </span>
+                    <span class="lpn-card-value">
+                    {{ licensePlate.end_date | datetime : 'display.datetime' }}
+                </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="licensePlate | isLicensePlateRental">
+
+    <div class="vehicles__list-item vehicles__list-item-rental">
+
+        <div class="vehicles__list-item-primary">
+
+            <div class="vehicles__list-item-primary-item">
+            <span class="lpn-name">
+                {{ licensePlate.lps }} {{ licensePlate.lpn }}
+            </span>
+            </div>
+
+            <div class="d-flex mb-16 w-100 justify-between">
+
+                <div class="vehicles__list-item-primary-item vehicles__list-item-primary-item_light">
+                <span class="lpn-card-value-label">
+                    {{ 'vehicles.date_th' | translate }}
+                </span>
+                    <span class="lpn-card-value">
+                    {{ licensePlate.registered | datetime : 'display.datetime' }}
+                </span>
+                </div>
+
+                <div class="vehicles__list-item-primary-item vehicles__list-item-primary-item_light">
+                <span class="lpn-card-value-label">
+                    {{ 'vehicles.rental_period_return_date_label' | translate }}
+                </span>
+                    <span class="lpn-card-value">
+                    {{ licensePlate.end_date | datetime : 'display.datetime' }}
+                </span>
+                </div>
+
+            </div>
+        </div>
+
+        <ng-container *ngIf="!(licensePlate | isLicensePlateExpired)">
+            <div class="vehicles__list__lpn-actions">
+                <div class="vehicles__list-item-secondary">
+                    <button type="button" class="button button_regular button_light-red"
+                            (click)="onUnregisterClick(licensePlate)"
+                            [isDisabled]="licensePlate | isLicensePlateExpired">
+                        <span class="button__caption">{{ 'vehicles.unreg_button' | translate }}</span>
+                    </button>
+                </div>
+                <div class="vehicles__list-item-secondary">
+                    <button (click)="onExtendLPNRentalPeriod(licensePlate)"
+                            [isDisabled]="licensePlate | isLicensePlateExpired"
+                            class="button button_regular button_blue"
+                            type="button">
+                        <span class="button__caption">
+                            {{ 'vehicles.extend_period_btn_text' | translate }}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </ng-container>
+
+    </div>
+</ng-container>

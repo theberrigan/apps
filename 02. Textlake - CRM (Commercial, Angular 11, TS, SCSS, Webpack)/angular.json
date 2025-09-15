@@ -1,0 +1,146 @@
+{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "newProjectRoot": "projects",
+    "defaultProject": "textlake-crm",
+    "projects": {
+        "textlake-crm": {
+            "projectType": "application",
+            "schematics": {},
+            "root": "",
+            "sourceRoot": "src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-builders/custom-webpack:browser",
+                    "options": {
+                        "main": "src/main.ts",
+                        "polyfills": "src/polyfills.ts",
+                        "tsConfig": "tsconfig.app.json",
+                        "index": "src/index.html",
+                        "aot": true,
+                        "progress": true,
+                        "styles": [
+                            "src/assets/css/styles.scss"
+                        ],
+                        "scripts": [],
+                        "extractCss": true,
+                        "baseHref": "/",
+                        "buildOptimizer": true,
+                        "outputHashing": "all",
+                        "optimization": false,
+                        "sourceMap": true,
+                        "customWebpackConfig": {
+                            "path": "./config/webpack/webpack.config.js",
+                            "mergeStrategies": {
+                                "module.rules": "replace",
+                                "plugins": "replace",
+                                "devServer": "replace"
+                            }
+                        }
+                    },
+                    "configurations": {
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "config/app/dev.js",
+                                    "with": "config/app/prod.js"
+                                }
+                            ],
+                            "outputPath": "dist/prod",
+                            "optimization": true,
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "subresourceIntegrity": true,
+                            "deleteOutputPath": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "350kb",
+                                    "maximumError": "500kb"
+                                }
+                            ]
+                        },
+                        "stage": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "config/app/dev.js",
+                                    "with": "config/app/stage.js"
+                                }
+                            ],
+                            "outputPath": "dist/stage",
+                            "optimization": true,
+                            "sourceMap": true,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "subresourceIntegrity": true,
+                            "deleteOutputPath": true
+                        },
+                        "development": {
+                            "outputPath": "dist/dev",
+                            "buildOptimizer": false,
+                            "optimization": false,
+                            "sourceMap": true,
+                            "namedChunks": true,
+                            "extractLicenses": false,
+                            "vendorChunk": true,
+                            "subresourceIntegrity": false
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-builders/custom-webpack:dev-server",
+                    "options": {
+                        "browserTarget": "textlake-crm:build",
+                        "host": "localhost",
+                        "port": 9551
+                    },
+                    "configurations": {
+                        "development": {
+                            "browserTarget": "textlake-crm:build:development"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "textlake-crm:build"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "tsconfig.app.json",
+                            "tsconfig.spec.json",
+                            "e2e/tsconfig.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                },
+                "e2e": {
+                    "builder": "@angular-devkit/build-angular:protractor",
+                    "options": {
+                        "protractorConfig": "e2e/protractor.conf.js",
+                        "devServerTarget": "textlake-crm:serve"
+                    },
+                    "configurations": {
+                        "production": {
+                            "devServerTarget": "textlake-crm:serve:production"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

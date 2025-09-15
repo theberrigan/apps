@@ -1,0 +1,9 @@
+<div class="translators-color-picker__display" [style.backgroundColor]="'#' + (color || 'fff')" (click)="onDisplayClick($event)"></div>
+<div class="translators-color-picker__popup" (click)="onPopupClick($event)" *ngIf="isActive">
+    <div class="translators-color-picker__popup-color"
+         *ngFor="let colorCode of colorCodes"
+         [style.backgroundColor]="'#' + colorCode"
+         [class.translators-color-picker__popup-color_active]="color === colorCode"
+         (click)="onColorSelect(colorCode, $event)"
+    ></div>
+</div>

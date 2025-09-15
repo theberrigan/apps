@@ -1,0 +1,48 @@
+// ТИПЫ СЕКЦИЙ
+// -----------------------
+
+! GTA doesn't use morphing (morph) (???)
+! GTA doesn't use RenderWare's collision system
+
+
+Экземпляры
+
+-----------------------------------------------------
+
+Rockstar:
+- Pipeline Set        0x0253F2F3
+  https://gtamods.com/wiki/Pipeline_Set_(RW_Section)
+  The section only consists of an 4-byte integer which can have one of three different values.
+  This value will determine which of the engine's rendering pipeline to use for an atomic.
+  - 0x53F20098 – Render pipeline used for buildings with reflective materials.
+  - 0x53F2009A – Render pipeline used for vehicles.
+  - 0x53F2009C – Render pipeline used for night vertex colors.
+  For example if the data is 0x53F2009A a specular material can be added to a non-vehicle object.
+  Primarily this is used for vehicle upgrade parts and some cutscene objects.
+  Vehicles are using this rendering pipeline by default and do not need a pipeline set.
+  It is not possible to add specular or reflective materials to a player, pedestrian or other 'skinned' models.
+- Specular Material   0x0253F2F6
+  https://gtamods.com/wiki/Specular_Material_(RW_Section)
+  Clump > Geometry List > Geometry > Material List > Material > Extension > Specular Material.
+  In GTA San Andreas it is used to store material information for specular lighting.
+  To use a specular material, the rendering pipeline that is responsible for rendering the object must support specular materials.
+  This is true by default for vehicles, but not for buildings.
+  To hook specularity into the rendering pipeline, the pipeline extion for the geometries atomic needs to be changed.
+  +--------------------------------------------------+
+  | 4b - FLOAT    - Specular Level (0.0-1.0)         |
+  |24b - CHAR[24] - Specular Texture Name, see below |
+  +--------------------------------------------------+
+  On the PC and Xbox versions of the game a specular texture is not used.
+  On the PS2 however, it is used as a second reflection map.
+  The string is null terminated, and aligned to 4 byte boundaries with extra zeros appended.
+- 2d Effect           0x0253F2F8
+  https://gtamods.com/wiki/2d_Effect_(RW_Section)
+  Clump > Geometry List > Geometry > Extension > 2d Effect
+  There can be multiple effects per section, their types are defined by an ID.
+  A 2d Effect section starts with a 4 byte DWORD which is the number of 2d Effect entries that follow.
+  ...
+- Extra Vertex Colour 0x0253F2F9
+- Collision Model     0x0253F2FA
+- Reflection Material 0x0253F2FC
+- Breakable           0x0253F2FD
+- Frame               0x0253F2FE

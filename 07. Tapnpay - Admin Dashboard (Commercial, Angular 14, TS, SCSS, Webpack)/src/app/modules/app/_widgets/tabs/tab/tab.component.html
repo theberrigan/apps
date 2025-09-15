@@ -1,0 +1,10 @@
+<div class="tab__content">
+    <div class="tab__title">
+        <ng-content></ng-content>
+    </div>
+    <button type="button" class="tab__close-button" *ngIf="canClose" (click)="onCloseClick($event)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+            <polygon points="9.42 8 12.54 11.12 11.12 12.54 8 9.42 4.88 12.54 3.46 11.12 6.58 8 3.46 4.88 4.88 3.46 8 6.58 11.12 3.46 12.54 4.88 9.42 8" fill="currentColor"/>
+        </svg>
+    </button>
+</div>

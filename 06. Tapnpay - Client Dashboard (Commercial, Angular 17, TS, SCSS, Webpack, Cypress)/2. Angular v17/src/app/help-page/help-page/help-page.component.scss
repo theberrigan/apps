@@ -1,0 +1,162 @@
+@import '../../../assets/css/definitions';
+
+$panel-height: 56px;
+$footer-height: 56px;
+
+.help-page {
+    display: block;
+    background: #F7FCFA;
+
+    &__panel {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: $panel-height;
+        background-color: #fff;
+        box-shadow: 0 1px 0 0 #dde3eb;
+        z-index: $z-index-panel;
+        color: #6f7174;
+        user-select: none;
+
+        &-inner {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            width: 100%;
+            max-width: $content-max-width;
+            height: 100%;
+            margin: 0 auto;
+        }
+
+        &-logo {
+            margin-top: 0;
+            margin-right: 50px;
+            width: 160px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            
+            &-img {
+                max-width: 140px;
+                max-height: 40px;
+                width: auto;
+                height: auto;
+                display: block;
+            }
+        }
+    }
+
+    &__nav {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        height: 100%;
+        margin-right: auto;
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: $font-weight-medium;
+
+        &-link {
+            & + & {
+                margin-left: 20px;
+            }
+
+            &_has-dot {
+                position: relative;
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    border-radius: 50%;
+                    height: 5px;
+                    width: 5px;
+                    background-color: #ff0000;
+                    top: 2px;
+                    right: -6px;
+                }
+            }
+        }
+    }
+
+    &__login-link {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-size: 14px;
+        line-height: 22px;
+        font-weight: $font-weight-semi-bold;
+        color: $color-text-primary;
+        background-color: #fff;
+        margin-left: 10px;
+        user-select: none;
+
+        &,
+        &:hover,
+        &:active,
+        &:focus {
+            text-decoration: none;
+        }
+
+        &:hover {
+            background-color: #ecf2f7;
+        }
+
+        &,
+        &:hover {
+            transition: background-color 0.1s ease;
+        }
+
+        &-text {
+            display: block;
+            margin-left: 6px;
+        }
+    }
+
+    &__footer {
+        display: block;
+        width: 100%;
+        height: $footer-height;
+        background-color: #fff;
+        box-shadow: 0 -1px 0 0 #dde3eb;
+
+        &-inner {
+            width: 100%;
+            max-width: $content-max-width;
+            height: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: $font-weight-medium;
+
+        }
+
+        &-copyright {
+
+        }
+    }
+
+    &__content {
+        width: 100%;
+        background: #F7FCFA;
+
+        html.viewport_mobile &,
+        html.viewport_tablet & {
+            min-height: 100vh;
+            padding-top: $app-bar-height;
+        }
+
+        html.viewport_desktop & {
+            min-height: calc(100vh - #{ $footer-height });
+            padding-top: $panel-height;
+            max-width: $content-max-width;
+            margin: 0 auto;
+        }
+    }
+}

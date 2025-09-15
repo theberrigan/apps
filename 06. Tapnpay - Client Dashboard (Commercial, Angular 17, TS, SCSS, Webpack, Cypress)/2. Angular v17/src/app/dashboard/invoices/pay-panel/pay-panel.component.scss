@@ -1,0 +1,128 @@
+@import "../../../../assets/css/responsive";
+
+.pay-panel {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    grid-template-rows: 1fr 1fr;
+
+    @include desktop {
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr;
+    }
+
+    &__label {
+        font-size: 16px;
+        line-height: 19px;
+        font-weight: 500;
+        color: #fff;
+
+        strong {
+            font-weight: bold;
+        }
+    }
+
+    &__amount {
+        padding-left: 5px;
+    }
+
+    &__label + &__control {
+        margin-left: 35px;
+    }
+
+    &__control + &__control {
+        margin-left: 12px;
+    }
+}
+
+:host-context(.invoice-detail__context-panel) {
+    .pay-panel {
+        @include desktop {
+            grid-template-columns: 1fr 1fr !important;
+        }
+
+    }
+
+    .pay-panel__sum-info {
+        @include mobile {
+            grid-row-end: 3;
+        }
+    }
+}
+
+
+.pay-panel__fee-info {
+    font-size: 11px;
+    line-height: 14px;
+    color: #FFFFFF;
+}
+
+:host ::ng-deep .button--main-pay {
+    padding: 10px 20px;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: bold;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @include mobile {
+        grid-row-start: 2;
+        grid-column-start: 2;
+    }
+
+    .button__spinner {
+        width: 22px;
+        height: 22px;
+        margin: -11px 0 0 -11px;
+    }
+}
+
+:host ::ng-deep .button--invoice-details {
+    display: flex;
+    align-items: center;
+
+    @include mobile {
+        font-size: 16px;
+        justify-content: start;
+    }
+
+    @include desktop {
+        margin-right: 16px;
+        justify-content: start;
+    }
+}
+
+.pay-panel__sum-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    @include mobile {
+        grid-row-start: 1;
+        grid-row-end: 2;
+        align-items: start;
+
+    }
+}
+
+.autopayment-checkbox {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__label {
+        color: #fff;
+    }
+}
+
+.pay-panel__main-button-box {
+    display: flex;
+    flex-direction: column;
+
+    @include mobile {
+        grid-column-start: 2;
+        grid-row-start: 1;
+        grid-row-end: 3;
+    }
+}

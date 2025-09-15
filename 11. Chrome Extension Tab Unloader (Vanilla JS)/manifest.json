@@ -1,0 +1,42 @@
+{
+    "manifest_version": 3, 
+    "name": "Tab Unloader", 
+    "short_name": "Tab Unloader", 
+    "description": "Позволяет выгрузить вкладки вручную", 
+    "version": "1.0.0", 
+    "author": "Berrigan", 
+    "minimum_chrome_version": "116", 
+    "offline_enabled": true, 
+    "icons": {
+        "16": "images/icons/icon_16.png",
+        "24": "images/icons/icon_24.png",
+        "32": "images/icons/icon_32.png",
+        "48": "images/icons/icon_48.png",
+        "64": "images/icons/icon_64.png",
+        "128": "images/icons/icon_128.png"
+    },
+    "background": {
+        "type": "module", 
+        "service_worker": "js/background.js"
+    },
+    "permissions": [
+        "tabs",
+        "contextMenus",
+        "commands"
+    ], 
+    "host_permissions": [
+        "*://*/*", 
+        "file:///*"
+    ],
+    "commands": {
+        "discard_tab": {
+            "description": "Выгрузить текущую вкладку",
+            "suggested_key": {
+                "windows": "Ctrl+Shift+U",
+                "mac": "Command+Shift+U",
+                "chromeos": "Ctrl+Shift+U",
+                "linux": "Ctrl+Shift+U"
+            }
+        }
+    }
+}

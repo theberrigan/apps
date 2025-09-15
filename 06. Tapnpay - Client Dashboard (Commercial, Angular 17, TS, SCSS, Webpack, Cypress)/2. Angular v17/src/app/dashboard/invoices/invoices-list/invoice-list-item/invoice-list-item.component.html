@@ -1,0 +1,32 @@
+<div class="table__row" (click)="onItemClick(invoice, $event)">
+    <div class="table__cell invoices-list__table-cell-checkbox"
+         (click)="onCheckboxCellClick(invoice, $event)">
+        <checkbox-static [isChecked]="invoice.isSelectedToPay"
+                         [isDisabled]="isSubmitting"></checkbox-static>
+    </div>
+    <div class="table__cell invoices-list__table-cell-invoice">
+        {{ invoice.name }}
+    </div>
+    <div class="table__cell invoices-list__table-cell-amount">
+        {{ invoice.amount | currencyFormat }}
+    </div>
+    <div class="table__cell invoices-list__table-cell-transactions">
+        {{ invoice.transactionCount }}
+    </div>
+    <div class="table__cell table__cell_wrap invoices-list__table-cell-date">
+        {{ invoice.createTs | datetime : 'display.date' }}
+        <div class="invoices-list__table-due-in"
+             *ngIf="invoice.showTimeLeft"
+             [class.invoices-list__table-due-in_low]="invoice.isLowTimeLeft">
+
+            <div *ngIf="!invoice.isPassedDue">
+                {{ 'invoices.invoices_list.due_in' | translate : {time: invoice.hoursLeft} }}
+            </div>
+
+            <div *ngIf="invoice.isPassedDue">
+                {{ 'invoices.invoices_list.past_due' | translate }}
+            </div>
+
+        </div>
+    </div>
+</div>

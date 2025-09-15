@@ -1,0 +1,22 @@
+<div class="ui-card overflow-x-auto">
+    <h2 class="list-title">{{'extend_coverage.activated_toll_authorities_block_title' | translate}}</h2>
+    <table class="coverage-matrix-table">
+        <thead>
+        <tr>
+            <th></th>
+            <th *ngFor="let lp of data">
+                <span>{{lp.lps}} {{lp.lpn}}</span>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let taName of tollAuthoritiesNames">
+            <td><span>{{taName | taNameToShow}}</span></td>
+            <td *ngFor="let lp of data">
+                <app-coverage-matrix-status-icon [status]="lp.coverage[taName]"></app-coverage-matrix-status-icon>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <app-matrix-statuses-icons-info></app-matrix-statuses-icons-info>
+</div>

@@ -1,0 +1,140 @@
+<fieldset [disabled]="isSaving || isDeleting">
+    <action-panel>
+        <div class="action-panel__primary">
+            <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ 'settings.rates.list.page_header' | translate }}</h1>
+            <button class="button button_regular button_green" (click)="onCreate()" [disabled]="listState === 'loading' || listState === 'error'">
+                <span class="button__caption">{{ 'settings.rates.list.add_rate' | translate }}</span>
+            </button>
+        </div>
+        <div class="action-panel__secondary">
+            <div class="action-panel__item">
+                <sort-select [(ngModel)]="state.sort" [options]="sortOptions" (ngModelChange)="onOrderChange()" [isDisabled]="listState === 'loading' || listState === 'error'"></sort-select>
+            </div>
+        </div>
+    </action-panel>
+
+    <ng-container [ngSwitch]="listState">
+        <div class="rates-editor__spinner" *ngSwitchCase="'loading'">
+            <spinner class="spinner spinner_blue spinner_small"></spinner>
+        </div>
+        <div class="rates-editor__message" *ngSwitchCase="'empty'">
+            {{ 'settings.rates.list.no_rates_found' | translate }}
+            <span class="pseudo-link" (click)="onCreate()">{{ 'settings.rates.list.no_rates_found_2' | translate }}</span>
+        </div>
+        <div class="rates-editor__message rates-editor__message_error" *ngSwitchCase="'error'">
+            {{ 'settings.rates.list.error' | translate }}
+        </div>
+        <ng-container *ngSwitchCase="'list'" [ngSwitch]="viewportBreakpoint">
+            <div class="items-table-wrap rates-editor__table-wrap" *ngSwitchCase="'desktop'">
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th>{{ 'settings.rates.list.name' | translate }}</th>
+                            <th>{{ 'settings.rates.list.global' | translate }}</th>
+                            <th>{{ 'settings.rates.list.enabled' | translate }}</th>
+                            <th>{{ 'settings.rates.list.description' | translate }}</th>
+                            <th class="table-cell-tight">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let rate of rates">
+                            <td>{{ rate.name }}</td>
+                            <td>{{ (rate.global ? 'settings.rates.list.yes' : 'settings.rates.list.no') | translate }}</td>
+                            <td>{{ (rate.enabled ? 'settings.rates.list.yes' : 'settings.rates.list.no') | translate }}</td>
+                            <td>{{ rate.description }}</td>
+                            <td class="table-cell-no-padding">
+                                <span class="rates-editor__table-buttons">
+                                    <button type="button" class="rates-editor__table-button rates-editor__table-button_edit" (click)="onEdit(rate)"></button>
+                                    <button type="button" class="rates-editor__table-button rates-editor__table-button_delete" (click)="onDelete(rate)"></button>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="rates-editor__list" *ngSwitchDefault>
+                <div class="rates-editor__list-item" *ngFor="let rate of rates">
+                    <div class="rates-editor__list-item-header">
+                        <div class="rates-editor__list-item-name">{{ rate.name }}</div>
+                        <div class="rates-editor__list-item-buttons">
+                            <button type="button" class="rates-editor__list-item-button rates-editor__list-item-button_edit" (click)="onEdit(rate)"></button>
+                            <button type="button" class="rates-editor__list-item-button rates-editor__list-item-button_delete" (click)="onDelete(rate)"></button>
+                        </div>
+                    </div>
+                    <div class="rates-editor__list-item-info">
+                        <table class="rates-editor__list-item-info-table">
+                            <tbody>
+                                <tr>
+                                    <th>{{ 'settings.rates.list.name' | translate }}:</th>
+                                    <td>{{ rate.name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'settings.rates.list.global' | translate }}:</th>
+                                    <td>{{ (rate.global ? 'settings.rates.list.yes' : 'settings.rates.list.no') | translate }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'settings.rates.list.enabled' | translate }}:</th>
+                                    <td>{{ (rate.enabled ? 'settings.rates.list.yes' : 'settings.rates.list.no') | translate }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'settings.rates.list.description' | translate }}:</th>
+                                    <td>{{ rate.description }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+
+    <popup-custom #editor [options]="{ closeBy: 'manual' }" class="rates-editor__editor" (onCloseRequest)="onHideEditor($event)" *ngIf="rateToEdit">
+        <popup-box>
+            <popup-header>{{ (editorMode === 'create' ? 'settings.rates.editor.page_header_create' : 'settings.rates.editor.page_header_edit') | translate }}</popup-header>
+            <popup-content>
+                <!-- Content -->
+                <div class="rates-editor__editor-content">
+                    <div class="rates-editor__controls">
+                        <div class="rates-editor__control">
+                            <label class="rates-editor__control-label">
+                                <span class="rates-editor__control-label-text">
+                                    {{ 'settings.rates.editor.name' | translate }}
+                                </span>
+                            </label>
+                            <input type="text" class="input input_regular rates-editor__control-input" [(ngModel)]="rateToEdit.name" (ngModelChange)="validate()" required>
+                        </div>
+                        <div class="rates-editor__control">
+                            <label class="rates-editor__control-label">
+                                <span class="rates-editor__control-label-text">
+                                    {{ 'settings.rates.editor.description' | translate }}
+                                </span>
+                            </label>
+                            <textarea class="textarea rates-editor__control-input" [(ngModel)]="rateToEdit.description" (ngModelChange)="validate()"></textarea>
+                        </div>
+                        <div class="rates-editor__control">
+                            <div class="rates-editor__control-input">
+                                <checkbox [(ngModel)]="rateToEdit.enabled">{{ 'settings.rates.editor.enabled' | translate }}</checkbox>
+                            </div>
+                        </div>
+                        <div class="rates-editor__control">
+                            <div class="rates-editor__control-input">
+                                <checkbox [(ngModel)]="rateToEdit.global">{{ 'settings.rates.editor.global' | translate }}</checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Content -->
+            </popup-content>
+            <popup-controls>
+                <div class="popup__controls-buttons">
+                    <button type="button" class="button button_regular button_white" (click)="onHideEditor()">
+                        <span class="button__caption">{{ 'settings.rates.editor.cancel' | translate }}</span>
+                    </button>
+                    <button type="button" class="button button_regular button_blue" (click)="onSave()" [isDisabled]="!isEditorFormValid" [isProgress]="isSaving">
+                        <span class="button__caption">{{ 'settings.rates.editor.save' | translate }}</span>
+                    </button>
+                </div>
+            </popup-controls>
+        </popup-box>
+    </popup-custom>
+</fieldset>

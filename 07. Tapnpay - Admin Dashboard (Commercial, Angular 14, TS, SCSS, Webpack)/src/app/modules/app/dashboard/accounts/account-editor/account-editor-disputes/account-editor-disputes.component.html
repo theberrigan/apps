@@ -1,0 +1,61 @@
+<ng-container [ngSwitch]="listState">
+    <div class="account-editor-disputes__loader" *ngSwitchCase="'loading'">
+        <loader></loader>
+    </div>
+    <div class="account-editor-disputes__message" *ngSwitchCase="'empty'">
+        {{ 'accounts.disputes.no_disputes' | translate }}
+    </div>
+    <div class="account-editor-disputes__message account-editor-disputes__message_error" *ngSwitchCase="'error'">
+        {{ 'accounts.disputes.error' | translate }}
+    </div>
+    <div class="account-editor-disputes__content" *ngSwitchCase="'list'">
+        <div class="table table_middle table_striped table_clickable table_nowrap account-editor-disputes__table">
+            <div class="table__header">
+                <div class="table__row">
+                    <div class="table__cell account-editor-disputes__table-cell-invoice">
+                        {{ 'accounts.disputes.invoice_name' | translate }}
+                    </div>
+                    <div class="table__cell">
+                        {{ 'accounts.disputes.toll_date' | translate }}
+                    </div>
+                    <div class="table__cell account-editor-disputes__table-cell-amount">
+                        {{ 'accounts.disputes.invoice_amount' | translate }}
+                    </div>
+                    <div class="table__cell">
+                        {{ 'accounts.disputes.dispute_date' | translate }}
+                    </div>
+                    <div class="table__cell">
+                        {{ 'accounts.disputes.dispute_reason' | translate }}
+                    </div>
+                </div>
+            </div>
+            <div class="table__body">
+                <div class="table__row" *ngFor="let dispute of disputes" (click)="onDisputeClick(dispute)">
+                    <div class="table__cell account-editor-disputes__table-cell-invoice">
+                        {{ dispute.invoice_name }}
+                    </div>
+                    <div class="table__cell">
+                        {{ dispute.toll_date | datetime : 'display.datetime' }}
+                    </div>
+                    <div class="table__cell account-editor-disputes__table-cell-amount">
+                        {{ dispute.invoice_amount | currency : 'USD' }}
+                    </div>
+                    <div class="table__cell">
+                        {{ dispute.dispute_date | datetime : 'display.datetime' }}
+                    </div>
+                    <div class="table__cell">
+                        {{ dispute.dispute_reason }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<account-editor-invoice-details
+    *ngIf="invoicesToInspect"
+    [popupTitle]="'accounts.disputes.details_popup_title'"
+    [accountId]="accountId"
+    [invoicesToLoad]="invoicesToInspect"
+    (onClose)="onCloseInvoicePopup()"
+></account-editor-invoice-details>

@@ -1,0 +1,5 @@
+<ng-container *ngFor="let popup of popups">
+    <confirm *ngIf="popup.type === 'confirm'" [options]="popup.options" (onClose)="onClose(popup)"></confirm>
+    <alert *ngIf="popup.type === 'alert'" [options]="popup.options" (onClose)="onClose(popup)"></alert>
+</ng-container>
+<ng-container *ngFor="let popupTpl of popupTemplates" [ngTemplateOutlet]="popupTpl"></ng-container>

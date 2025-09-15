@@ -1,0 +1,56 @@
+<div class="timepicker">
+    <input id="timeInput"
+           class="input input_regular input_no-border_tr input_no-border_br datepicker__input" [value]="displayValue"
+           readonly
+           (click)="toggleDropdown()"
+           maxlength="8">
+    <button class="button button_regular button_white timepicker__trigger"
+            [isDisabled]="false"
+            type="button"
+            (click)="toggleDropdown()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16" width="16" class="button__icon">
+            <path style="fill: currentColor;"
+                  d="M15 16H1a1 1 0 0 1-1-1V1a1 1 0 0 1 1-1h.938L2 3h4l.063-3H10v3h4V0h1a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1zM14 5H2v9h12V5zM6 9H4V7h2v2zm0 3H4v-2h2v2zm3-3H7V7h2v2zm0 3H7v-2h2v2zm3-3h-2V7h2v2zm0 3h-2v-2h2v2zM11 0h2v2h-2V0zM3 0h2v2H3V0z"></path>
+        </svg>
+    </button>
+    <ng-container *ngIf="isShowDropdown">
+        <div id="timeSelectPanel" class="time-select-panel" (click)="$event.preventDefault()">
+            <div class="time-selector">
+                <div class="time-unit">
+                    <div class="time-unit__arrow" (click)="adjustHour('minus', 1)">
+                        <div class="arrow-icon arrow-icon--down"></div>
+                    </div>
+                    <input type="text" [(ngModel)]="hourInputValue" class="time-unit__input" id="hourInput" readonly>
+                    <div class="time-unit__arrow" (click)="adjustHour('plus', 1)">
+                        <div class="arrow-icon arrow-icon--up"></div>
+                    </div>
+
+                </div>
+                <div class="time-selector__separator">:</div>
+                <div class="time-unit">
+                    <div class="time-unit__arrow" (click)="adjustMinute('minus' , 1)">
+                        <div class="arrow-icon arrow-icon--down"></div>
+                    </div>
+                    <input [(ngModel)]="minuteInputValue" type="text" class="time-unit__input" id="minuteInput"
+                           readonly>
+                    <div class="time-unit__arrow" (click)="adjustMinute('plus', 1)">
+                        <div class="arrow-icon arrow-icon--up"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="timepicker-period-select">
+                <div class="timepicker-period-select__option"
+                     [ngClass]="{'active': isActiveMeridiem('AM')}"
+                     (click)="setMeridiem('AM')">AM
+                </div>
+                <div class="timepicker-period-select__option"
+                     [ngClass]="{'active': isActiveMeridiem('PM')}"
+                     (click)="setMeridiem('PM')">PM
+                </div>
+            </div>
+            <button class="button button_regular button_light-blue w-100"
+                    (click)="setTimeValueFromSelector()">{{'timepicker.set_time' | translate}}
+            </button>
+        </div>
+    </ng-container>
+</div>

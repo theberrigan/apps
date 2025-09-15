@@ -1,0 +1,44 @@
+<div class="contact-us-inner__wrapper">
+    <fieldset class="contact-us-inner__form" *ngIf="form" [disabled]="isSubmitting">
+        <form (submit)="onSubmit()" [formGroup]="form">
+            <label class="contact-us-inner__label contact-us-inner__label_required">
+                <span class="contact-us-inner__label-text">{{ 'contact_us.form.first_name' | translate }}</span>
+                <input type="text" class="contact-us-inner__input" required formControlName="firstName">
+            </label>
+            <label class="contact-us-inner__label contact-us-inner__label_required">
+                <span class="contact-us-inner__label-text">{{ 'contact_us.form.last_name' | translate }}</span>
+                <input type="text" class="contact-us-inner__input" required formControlName="lastName">
+            </label>
+            <label class="contact-us-inner__label contact-us-inner__label_required">
+                <span class="contact-us-inner__label-text">{{ 'contact_us.form.email' | translate }}</span>
+                <input type="text" class="contact-us-inner__input" required formControlName="email">
+            </label>
+            <label class="contact-us-inner__label contact-us-inner__label_required">
+                <span class="contact-us-inner__label-text">{{ 'contact_us.form.phone' | translate }}</span>
+                <input type="text" class="contact-us-inner__input" required formControlName="phone">
+            </label>
+            <label class="contact-us-inner__label contact-us-inner__label_required" *ngIf="!isDashboard">
+                <span class="contact-us-inner__label-text">{{ 'contact_us.form.brand' | translate }}</span>
+                <select class="select select_regular contact-us-inner__select" required formControlName="brand">
+                    <option
+                        *ngFor="let option of brandOptions"
+                        [ngValue]="option.value"
+                        [innerHTML]="option.display"
+                    ></option>
+                </select>
+            </label>
+            <label class="contact-us-inner__label contact-us-inner__label_required">
+                <span class="contact-us-inner__label-text">{{ 'contact_us.form.comment' | translate }}</span>
+                <textarea class="contact-us-inner__textarea" required formControlName="comment"></textarea>
+            </label>
+            <div class="contact-us-inner__controls">
+                <button type="submit" class="button button_large button_blue"
+                    [isDisabled]="!isFormValid"
+                    [isProgress]="isSubmitting"
+                >
+                    <span class="button__caption">{{ 'contact_us.form.send' | translate }}</span>
+                </button>
+            </div>
+        </form>
+    </fieldset>
+</div>

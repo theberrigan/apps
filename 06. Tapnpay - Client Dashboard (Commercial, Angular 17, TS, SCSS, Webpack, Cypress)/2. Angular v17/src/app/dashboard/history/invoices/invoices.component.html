@@ -1,0 +1,41 @@
+<ng-container [ngSwitch]="listState">
+    <div class="history__loading" *ngSwitchCase="'loading'">
+        <loader></loader>
+    </div>
+    <div class="history__message" *ngSwitchCase="'empty'">
+        <img src="assets/images/history-invoice-and-transactions.png" alt="No Invoices" style="max-width: 120px; display: block; margin: 0 auto 16px auto;" />
+        {{ 'history.no_invoices' | translate }}
+    </div>
+    <div class="history__message history__message_error" *ngSwitchCase="'error'">
+        {{ 'history.invoices_error' | translate }}
+    </div>
+    <div class="history__list-box"
+         *ngSwitchCase="'list'"
+         [class.history__list-box_has-overlay]="isLoadingPage">
+        <h1 class="page-header page-header--mobile">{{ 'history.invoices_tab_header' | translate }}</h1>
+        <ng-container>
+            <div class="invoices-list-header invoices-list-header--desktop">
+                <div class="invoices-list-header__col--date">
+                    {{ 'history.invoice_date' | translate }}
+                </div>
+                <div class="invoices-list-header__invoice-col">
+                    <div class="invoices-list-header__col--name">
+                        {{ 'history.invoice_number' | translate }}
+                    </div>
+                    <div class="invoices-list-header__col--method">
+                        {{ 'history.invoice_payment_method' | translate }}
+                    </div>
+                    <div class="invoices-list-header__col--amount">
+                        {{ 'history.invoice_amount' | translate }}
+                    </div>
+                </div>
+            </div>
+            <ng-container *ngFor="let item of invoicesByDate">
+                <app-history-payment-item-card [dateInvoices]="item"></app-history-payment-item-card>
+            </ng-container>
+        </ng-container>
+        <ng-container>
+
+        </ng-container>
+    </div>
+</ng-container>

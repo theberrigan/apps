@@ -1,0 +1,20 @@
+<div class="history__tabs">
+    <button (click)="onSwitchTab('invoices')"
+            [class.history__tab_active]="activeTab === 'invoices'"
+            class="history__tab"
+            type="button">
+        {{ 'history.invoices_tab' | translate }}
+    </button>
+    <button (click)="onSwitchTab('transactions')"
+            [class.history__tab_active]="activeTab === 'transactions'"
+            class="history__tab"
+            type="button">
+        {{ 'history.transactions_tab' | translate }}
+    </button>
+    <button (click)="onSwitchTab('disputes')"
+            [class.history__tab_active]="activeTab === 'disputes'"
+            class="history__tab"
+            type="button">
+        {{ 'history.disputes_tab' | translate }}
+    </button>
+</div>

@@ -1,0 +1,32 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "baseUrl": "./",
+        "outDir": "./dist",
+        "sourceMap": true,
+        "declaration": false,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "downlevelIteration": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "importHelpers": true,
+        "target": "ES2022",
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "types": [
+            "jest",
+            "stripe-v3"
+        ],
+        "lib": [
+            "es2019",
+            "dom"
+        ],
+        "useDefineForClassFields": false
+    },
+    "angularCompilerOptions": {
+        "fullTemplateTypeCheck": true,
+        "strictInjectionParameters": true
+    }
+}

@@ -1,0 +1,82 @@
+<div class="faq-inner__wrapper">
+    <ng-container [ngSwitch]="listState">
+        <div class="faq-inner__loading" *ngSwitchCase="'loading'">
+            <loader></loader>
+        </div>
+        <div class="faq-inner__message" *ngSwitchCase="'empty'">
+            {{ 'faq.no_questions' | translate }}
+        </div>
+        <div class="faq-inner__message faq-inner__message_error" *ngSwitchCase="'error'">
+            {{ 'faq.loading_error' | translate }}
+        </div>
+        <ng-container *ngSwitchCase="'list'">
+            <div class="faq-inner__search">
+                <div class="faq-inner__search-input-wrap" [class.faq-inner__search-input-wrap_has-clear]="isClearVisible">
+                    <input type="text" class="input input_large faq-inner__search-input"
+                        [placeholder]="'faq.search_placeholder' | translate"
+                        #searchInputEl
+                        [(ngModel)]="searchValue"
+                        (ngModelChange)="onSearch()"
+                        (keydown)="onSearchKeyDown($event)"
+                    >
+                    <div class="faq-inner__search-input-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M15.89,14.48a6,6,0,1,0-1.41,1.41L19,20.36,20.36,19ZM11,15a4,4,0,1,1,4-4,3.92,3.92,0,0,1-.56,2A4,4,0,0,1,13,14.44,3.92,3.92,0,0,1,11,15Z"/>
+                        </svg>
+                    </div>
+                    <button type="button" class="faq-inner__search-input-clear" (click)="onClearSearchClick()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <polygon points="13.42 12 17.78 16.36 16.36 17.78 12 13.42 7.64 17.78 6.22 16.36 10.58 12 6.22 7.64 7.64 6.22 12 10.58 16.36 6.22 17.78 7.64 13.42 12" style="fill: currentColor;"></polygon>
+                        </svg>
+                    </button>
+                </div>
+                <div class="faq-inner__search-result" *ngIf="faqSearchItems" [ngSwitch]="!!faqSearchItems.length">
+                    <div class="faq-inner__search-message" *ngSwitchCase="false">
+                        {{ 'faq.empty_search' | translate }}
+                    </div>
+                    <ul class="faq-inner__list" *ngSwitchCase="true">
+                        <li class="faq-inner__list-item"
+                            *ngFor="let item of faqSearchItems; trackBy: faqFlatTrackBy"
+                            [class.faq-inner__list-item_active]="item.isExpanded"
+                        >
+                            <span class="faq-inner__list-item-header" (click)="toggleSearchItem(item)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" class="faq-inner__list-item-header-plus">
+                                    <path style="fill: currentColor;" d="M21,11v2H13v8H11V13H3V11h8V3h2v8Z"></path>
+                                </svg>
+                                <span class="faq-inner__list-item-header-text" [innerHTML]="item.question"></span>
+                            </span>
+                            <span class="faq-inner__list-item-answer" *ngIf="item.isExpanded" [@answerExpand]>
+                                <span class="faq-inner__list-item-answer-content" [innerHTML]="item.answer"></span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- End of search -->
+            <div class="faq-inner__categories">
+                <div class="faq-inner__category" *ngFor="let category of faq; trackBy: faqCategoryTrackBy">
+                    <div class="faq-inner__category-header">
+                        {{ category.name }}
+                    </div>
+                    <ul class="faq-inner__list">
+                        <li class="faq-inner__list-item"
+                            *ngFor="let item of category.items; trackBy: faqItemTrackBy"
+                            [class.faq-inner__list-item_active]="activeId === item.id"
+                            [attr.data-question-id]="item.id"
+                        >
+                            <span class="faq-inner__list-item-header" (click)="switchItem(item.id)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" class="faq-inner__list-item-header-plus">
+                                    <path style="fill: currentColor;" d="M21,11v2H13v8H11V13H3V11h8V3h2v8Z"></path>
+                                </svg>
+                                <span class="faq-inner__list-item-header-text" [innerHTML]="item.question"></span>
+                            </span>
+                            <span class="faq-inner__list-item-answer" *ngIf="activeId === item.id" [@answerExpand]>
+                                <span class="faq-inner__list-item-answer-content" [innerHTML]="item.answer"></span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+</div>

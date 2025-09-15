@@ -1,0 +1,31 @@
+.user-main-info {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+}
+
+.main-info-item {
+    display: flex;
+    margin-right: 28px;
+    align-items: center;
+    font-size: 13px;
+    line-height: 16px;
+    color: #4E4E4E;
+
+    &__icon {
+        margin-right: 6px;
+        display: flex;
+        align-items: center;
+    }
+
+    &__value {
+        margin-left: 4px;
+    }
+}
+
+.text-link {
+    color: #4E4E4E;
+    cursor: pointer;
+}

@@ -1,0 +1,472 @@
+@import '../../../../assets/css/definitions.scss';
+
+.translator-editor {
+    display: block;
+
+    &__spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 50px 0;
+    }
+
+    &__error {
+        font-size: 14px;
+        line-height: 16px;
+        font-weight: $font-weight-medium;
+        text-align: center;
+        padding: 75px 20px;
+        color: $color-empty-message-error;
+    }
+
+    &__section {
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 520px;
+
+        & + & {
+            margin-top: 34px;
+        }
+
+        &-header {
+            display: inline-flex;
+            border-bottom: 1px solid $color-primary-blue;
+            width: 100%;
+
+            &-caption {
+                padding: 4px 10px;
+                background-color: $color-primary-blue;
+                border-radius: 4px 4px 0 0;
+                color: #fff;
+                text-transform: uppercase;
+                font-size: 12px;
+                line-height: 16px;
+                white-space: nowrap;
+            }
+        }
+
+        &-content {
+
+        }
+
+        &-header + &-content {
+            margin-top: 20px;
+        }
+    }
+
+    &__control {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: flex-start;
+        justify-content: flex-end;
+        width: 100%;
+
+        & + & {
+            margin-top: 20px;
+        }
+
+        &-label {
+            width: 40%;
+            font-size: 14px;
+            line-height: 18px;
+            font-weight: $font-weight-medium;
+            padding-right: 20px;
+            min-height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            &-text {
+
+            }
+        }
+
+        &-input {
+            width: 60%;
+        }
+
+        .textarea {
+            min-height: 100px;
+        }
+    }
+
+    &__control + &__control-group,
+    &__control-group + &__control-group {
+        margin-top: 20px;
+    }
+
+    &__ssn {
+        position: relative;
+
+        &_not-visible {
+            padding-right: 40px;
+        }
+
+        &-input {
+            width: 100%;
+        }
+
+        &-show {
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 0;
+            width: 40px;
+            height: 100%;
+            border: 0;
+            cursor: pointer;
+            outline: none;
+            background: transparent url('../../../../assets/images/translator_ssn_show.svg') no-repeat center center;
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: default;
+            }
+        }
+
+        &-spinner {
+            position: absolute;
+            top: 0;
+            right: 3px;
+            width: 34px;
+            height: 34px;
+            background: url('../../../../assets/images/translator_ssn_loading.svg') no-repeat center center;
+            animation: spinning 0.5s linear infinite;
+            transform-origin: center center;
+        }
+    }
+
+    &__services {
+        &-list {
+            margin-top: 18px;
+        }
+
+        .items-table tbody tr td#{&}-actions {
+            padding: 0;
+        }
+
+        &-actions {
+            width: 1px;
+        }
+
+        &-buttons {
+            display: flex;
+            flex-flow: row nowrap;
+        }
+
+        &-button {
+            cursor: pointer;
+            height: 30px;
+            width: 36px;
+
+            &_edit {
+                background: transparent url('../../../../assets/images/translator_service_edit.svg') no-repeat 64% center;
+            }
+
+            &_delete {
+                background: transparent url('../../../../assets/images/translator_service_delete.svg') no-repeat 36% center;
+            }
+        }
+
+        // -------------------
+        $padding-x: 18px;
+
+        &-controls {
+            display: flex;
+            flex-flow: row nowrap;
+        }
+
+        &-control {
+            &_add {
+                margin-right: auto;
+            }
+
+            &_toggle-all {
+                height: 34px;
+                width: 46px;
+                cursor: pointer;
+                background-color: transparent;
+                padding: 16px 16px 4px;
+
+                &:before {
+                    content: '';
+                    display: block;
+                    width: 14px;
+                    height: 14px;
+                    transform-origin: 50% 50%;
+                    background: url('../../../../assets/images/double_arrow_down.svg') no-repeat center center;
+                }
+            }
+
+            &_toggle-all#{&}_has-opened:before {
+                transform: rotateZ(180deg);
+            }
+        }
+
+        &-list {
+            $border-radius: 4px;
+            $border-color: #DDE3EB;
+
+            font-size: 14px;
+            line-height: 18px;
+            margin-top: 15px;
+
+            &-item {
+                border: 1px solid #DDE3EB;
+                background-color: #fff;
+                margin-top: -1px;
+                position: relative;
+
+                &:first-child {
+                    border-top-left-radius: $border-radius;
+                    border-top-right-radius: $border-radius;
+                }
+
+                &:last-child {
+                    border-bottom-left-radius: $border-radius;
+                    border-bottom-right-radius: $border-radius;
+                }
+
+                &_primary {
+                    box-shadow: inset 5px 0 0 $color-primary-blue;
+                }
+
+                &-main {
+                    font-weight: $font-weight-medium;
+                    display: flex;
+                    flex-flow: row nowrap;
+                    align-items: stretch;
+                }
+
+                &-name {
+                    padding: 16px 0 16px $padding-x;
+                    margin-right: auto;
+                    font-size: 16px;
+                    line-height: 20px;
+                }
+
+                &_inactive &-name {
+                    text-decoration: line-through;
+                }
+
+                &-button {
+                    width: 40px;
+                    cursor: pointer;
+                    background-color: transparent;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    &:before {
+                        content: '';
+                        display: block;
+                    }
+
+                    &_edit {
+                        padding-left: 4px;
+
+                        &:before {
+                            width: 15px;
+                            height: 15px;
+                            background: url('../../../../assets/images/translator_service_edit.svg') no-repeat center center;
+                        }
+                    }
+
+                    &_delete {
+                        &:before {
+                            width: 15px;
+                            height: 15px;
+                            background: url('../../../../assets/images/translator_service_delete.svg') no-repeat center center;
+                        }
+                    }
+
+                    &_toggle {
+                        padding-right: 4px;
+
+                        &:before {
+                            width: 14px;
+                            height: 9px;
+                            transform-origin: 50% 50%;
+                            background: url('../../../../assets/images/arrow_down.svg') no-repeat center center;
+                        }
+                    }
+                }
+
+                &_opened &-button_toggle:before {
+                    transform: rotateZ(180deg);
+                }
+
+                &-details {
+                    width: 100%;
+                    display: none;
+
+                    tr + tr th,
+                    tr + tr td {
+                        padding-top: 8px;
+                    }
+
+                    tr:last-child th,
+                    tr:last-child td {
+                        padding-bottom: 16px;
+                    }
+
+                    th {
+                        font-weight: $font-weight-medium;
+                        white-space: nowrap;
+                        width: 1px;
+                        padding-right: 6px;
+                        padding-left: $padding-x;
+                    }
+
+                    td {
+                        padding-right: $padding-x;
+                    }
+                }
+
+                &_opened &-details {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    &__service-editor {
+        &-content {
+            padding: 15px 0;
+        }
+
+        &-sep {
+            margin: 20px 0;
+            height: 1px;
+            width: 100%;
+            background-color: #e6e6e6;
+        }
+
+        &-filter {
+            $arrow-width: 40px;
+            $button-width: 40px;
+
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+
+            &-arrow {
+                width: $arrow-width;
+                line-height: 20px;
+                font-size: 18px;
+                text-align: center;
+                vertical-align: middle;
+                padding-bottom: 4px;
+            }
+
+            &-clear {
+                cursor: pointer;
+                height: 34px;
+                width: $button-width;
+                background: transparent url('../../../../assets/images/translator_service_delete.svg') no-repeat center center;
+
+                &[disabled] {
+                    cursor: default;
+                    opacity: 0.5;
+                }
+            }
+
+            .select {
+                width: calc(50% - #{ floor(($arrow-width + $button-width) / 2) });
+            }
+        }
+
+        &-subject-area {
+            .select {
+                width: 100%;
+            }
+
+            &-items {
+                margin-top: 5px;
+                display: flex;
+                flex-flow: row wrap;
+            }
+
+            &-item {
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+                cursor: default;
+                border-radius: 3px;
+                background-color: #e3e8ef;
+                margin: 4px 4px 0 0;
+
+                &-text {
+                    font-size: 14px;
+                    line-height: 18px;
+                    white-space: nowrap;
+                    padding-left: 8px;
+                }
+
+                &-delete {
+                    cursor: pointer;
+                    height: 26px;
+                    width: 30px;
+                    background: transparent url('../../../../assets/images/translator_service_delete.svg') no-repeat 40% center;
+                }
+            }
+        }
+    }
+
+    html.viewport_tablet &,
+    html.viewport_mobile & {
+        & {
+            padding-top: 40px;
+        }
+
+        &__control {
+            flex-flow: column nowrap;
+
+            &-label {
+                width: 100%;
+                min-height: 0;
+                padding-right: 0;
+                margin-bottom: 6px;
+                text-transform: uppercase;
+                font-size: 12px;
+                opacity: 0.85;
+                align-items: flex-start;
+                justify-content: flex-start;
+            }
+
+            &-input {
+                width: 100%;
+            }
+        }
+
+        /*
+        &__services {
+            width: 100%;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+        */
+    }
+}
+
+.translator-editor__service-editor {
+    .popup__box {
+        max-width: 630px;
+    }
+
+    html.viewport_tablet &,
+    html.viewport_mobile & {
+        .popup__scroll-area {
+            padding: 0;
+        }
+
+        .popup__box {
+            width: 100%;
+            max-width: none;
+            min-height: 100%;
+            border-radius: 0;
+        }
+    }
+}

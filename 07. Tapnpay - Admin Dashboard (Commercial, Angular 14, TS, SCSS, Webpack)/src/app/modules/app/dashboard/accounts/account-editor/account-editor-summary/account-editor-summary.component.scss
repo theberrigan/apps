@@ -1,0 +1,25 @@
+@import '../../../../../../../assets/css/definitions';
+
+.account-editor-summary {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 100%;
+
+    &__primary {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: stretch;
+        justify-content: space-between;
+        width: 100%;
+
+        & > .vertical-table {
+            flex: 1;
+        }
+
+        & > .vertical-table + .vertical-table {
+            margin-left: 20px;
+        }
+    }
+}

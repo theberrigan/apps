@@ -1,0 +1,44 @@
+- ESM - master file, contains world data
+- ESP - plugin file, overrides data of master files (ESM)
+- BSA - archive with other assets
+- ESMs and ESPs are collections of records
+- ESMs and ESPs are usually dependent on other ESMs and ESPs.
+  The only exclusion is the root ESM file (FalloutNV.esm)
+- ESMs of a given mod is just a list of "parent" ESMs it depends on.
+
+- ESPs always load after ESMs they depend on
+- ESMs with newer modified date load after older ESMs
+- ESPs with newer modified date load after older ESPs
+
+FalloutNV.esm (root master, doesn't have deps)
+├── FalloutNV_override_1.esp (plugin 1 with overrides for FalloutNV.esm) ← Sorted by modify date
+├── FalloutNV_override_2.esp (plugin 2 with overrides for FalloutNV.esm) ↙
+└── Mod_1.esm (master dependent on FalloutNV.esm)
+    ├── Mod_1_override_1.esp (plugin 1 with overrides for Mod_1.esm) ← Sorted by modify date
+    └── Mod_1_override_2.esp (plugin 2 with overrides for Mod_1.esm) ↙
+└── Mod_2.esm (master dependent on FalloutNV.esm)
+    ├── Mod_2_override_1.esp (plugin 1 with overrides for Mod_2.esm) ← Sorted by modify date
+    └── Mod_2_override_2.esp (plugin 2 with overrides for Mod_2.esm) ↙
+
+https://www.nexusmods.com/newvegas/mods/51664?tab=description
+https://www.nexusmods.com/newvegas/mods/67070?tab=description9
+https://modgames.net/publ/obuchajushhie_stati/obshhaja/1/12-1-0-2582
+https://geck.bethsoft.com/index.php?title=Category:Data_Files
+https://steamcommunity.com/sharedfiles/filedetails/?id=2458617249
+
+1. Merge <name>_lang.esp with <name>.esm to get new <name>.esm and remove <name>_lang.esp
+2.
+
+C:\Projects\GameTools\deps
+C:\Projects\GameTools\PythonLib\src
+C:\Projects\HLW\src\common
+C:\Projects\DiskBackuper\backup.py
+
+getExt
+dropExt
+replaceExt
+addSuffix
+
+printTable
+
+writeBinary

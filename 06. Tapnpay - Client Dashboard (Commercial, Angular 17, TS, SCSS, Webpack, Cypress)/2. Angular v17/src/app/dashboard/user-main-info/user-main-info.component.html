@@ -1,0 +1,74 @@
+<div class="user-main-info" *ngIf="isLoaded$ | async">
+    <ng-container *ngIf="dataState.subscriptionInfo.isShow">
+        <div class="main-info-item">
+            <div class="main-info-item__icon">
+            </div>
+            <div class="main-info-item__title">
+                <a class="text-link" [routerLink]="['/dashboard/profile/subscription']">
+                    {{ 'header_main_info.membership.expires' | translate: {expirationDate: (dataState.subscriptionInfo.expirationDate | date: 'mediumDate')} }}
+                </a>
+            </div>
+            <div class="main-info-item__value">
+                <ng-container *ngIf="dataState.subscriptionInfo.isHasRenewal">
+                    <a [routerLink]="['/dashboard/invoices']">
+                        {{ 'header_main_info.membership.link_text' | translate }}
+                    </a>
+                </ng-container>
+            </div>
+        </div>
+    </ng-container>
+    <a class="main-info-item" [routerLink]="['/dashboard/invoices']">
+        <div class="main-info-item__icon">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 width="14"
+                 height="16"
+                 viewBox="0 0 28 28"
+                 class="dashboard-sidebar-nav-link-icon">
+                <path
+                    d="M20,28H8a5,5,0,0,1-5-5V5A5,5,0,0,1,8,0H20a5,5,0,0,1,5,5V23A5,5,0,0,1,20,28ZM8,2A3,3,0,0,0,5,5V23a3,3,0,0,0,3,3H20a3,3,0,0,0,3-3V5a3,3,0,0,0-3-3Zm7,7H13a1,1,0,0,1,0-2h2a1,1,0,0,1,1,1h2a3,3,0,0,0-3-3V4H13V5a3,3,0,0,0,0,6h2a1,1,0,0,1,0,2H13a1,1,0,0,1-1-1H10a3,3,0,0,0,3,3v1h2V15a3,3,0,0,0,0-6Zm4,9H9v2H19Zm-3,4H9v2h7Z"
+                    style="fill: currentColor;"></path>
+            </svg>
+        </div>
+        <div class="main-info-item__title">
+            {{ 'header_main_info.invoices.title' | translate }}
+        </div>
+        <div class="main-info-item__value">
+            ({{ dataState.invoices.all }})
+        </div>
+    </a>
+    <a class="main-info-item" [routerLink]="['/dashboard/profile/vehicles']">
+        <div class="main-info-item__icon">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 width="20"
+                 height="20"
+                 viewBox="0 0 20 20">
+                <g id="nav__item" transform="translate(0.023 0.023)">
+                    <rect id="Rectangle_393"
+                          data-name="Rectangle 393"
+                          width="20"
+                          height="20"
+                          transform="translate(-0.023 -0.023)"
+                          fill="none"/>
+                    <g id="Fleets_Icon"
+                       data-name="Fleets Icon"
+                       transform="translate(3.078 3.845)">
+                        <g id="g5983">
+                            <path id="rect5058"
+                                  d="M5.052,2.01l-.139.373L3.327,6.593H3.152A1.161,1.161,0,0,0,2,7.742v4.6a1.163,1.163,0,0,0,1.15,1.152v1.15H4.3v-1.15h9.193v1.15h1.15v-1.15h0a1.161,1.161,0,0,0,1.15-1.152v-4.6a1.159,1.159,0,0,0-1.15-1.15h-.177L12.747,2.01Zm.8,1.15h6.1l1.293,3.433H4.555ZM3.15,7.742h11.5v4.6H3.15Zm2.3,1.147A1.15,1.15,0,1,0,6.6,10.04,1.15,1.15,0,0,0,5.449,8.89Zm6.9,0a1.15,1.15,0,1,0,1.15,1.15A1.15,1.15,0,0,0,12.347,8.89Z"
+                                  transform="translate(-2 -2.01)"
+                                  fill="#4e4e4e"
+                                  stroke="#4e4e4e"
+                                  stroke-width="0.5"/>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+        </div>
+        <div class="main-info-item__title">
+            {{ 'header_main_info.vehicles.title' | translate }}
+        </div>
+        <div class="main-info-item__value">
+            ({{ dataState.vehicles.all }})
+        </div>
+    </a>
+</div>

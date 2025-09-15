@@ -1,0 +1,6 @@
+.app_has_adult_content img.game_capsule,
+.ugc.has_adult_content img,
+.ugc.has_adult_content div.imgWallItem,
+img[src*='header.jpg'] {
+    filter: none !important;
+}

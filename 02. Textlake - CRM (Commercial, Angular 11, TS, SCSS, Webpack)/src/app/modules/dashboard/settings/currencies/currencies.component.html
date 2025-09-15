@@ -1,0 +1,143 @@
+<fieldset [disabled]="isSaving || isLoadingHistory">
+    <action-panel>
+        <div class="action-panel__primary">
+            <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ 'settings.currencies.currencies__header' | translate }}</h1>
+        </div>
+        <div class="action-panel__secondary">
+            <div class="action-panel__item">
+                <button type="button" class="button button_regular button_blue" *ngIf="canEdit" [isProgress]="isSaving" (click)="onSave()">
+                    <span class="button__caption">{{ 'settings.currencies.save__button' | translate }}</span>
+                </button>
+            </div>
+        </div>
+    </action-panel>
+
+    <ng-container [ngSwitch]="state">
+        <div class="currencies-editor__spinner" *ngSwitchCase="'loading'">
+            <spinner class="spinner spinner_blue spinner_small"></spinner>
+        </div>
+        <div class="currencies-editor__message" *ngSwitchCase="'empty'">
+            {{ 'settings.currencies.no_currencies' | translate }}
+        </div>
+        <div class="currencies-editor__message currencies-editor__message_error" *ngSwitchCase="'error'">
+            {{ 'settings.currencies.init_error' | translate }}
+        </div>
+        <ng-container *ngSwitchCase="'list'" [ngSwitch]="viewportBreakpoint">
+            <div class="currencies-editor__table-wrap" *ngSwitchCase="'desktop'">
+                <table class="currencies-editor__table">
+                    <tbody>
+                        <tr *ngFor="let currency of currencies">
+                            <td class="currencies-editor__table-currency">
+                                {{ currency.name }}
+                            </td>
+                            <ng-container [ngSwitch]="currency.isPrimary">
+                                <td class="currencies-editor__table-primary" *ngSwitchCase="true">
+                                    {{ 'settings.currencies.primary_currency__text' | translate }}
+                                </td>
+                                <td class="currencies-editor__table-details" *ngSwitchCase="false">
+                                    <span class="currencies-editor__table-details-wrap">
+                                        <checkbox class="currencies-editor__table-details-checkbox" [disabled]="!canEdit" [(ngModel)]="currency.isActive" (ngModelChange)="onChange()">{{ 'settings.currencies.enabled__checkbox' | translate }}</checkbox>
+                                        <span>1&nbsp;<span>{{ currencies[0].key }}</span>&nbsp;{{ 'settings.currencies.costs__text' | translate }}</span>
+                                        <input type="text" class="input input_regular currencies-editor__table-details-input"
+                                               number-mask
+                                               [disabled]="!canEdit || !currency.isActive"
+                                               [(numberModel)]="currency.rate"
+                                               [numberModelOptions]="{
+                                                    updateOn: 'blur',
+                                                    defaultValue: 0,
+                                                    type: 'number',
+                                                    viewFraction: 10000,
+                                                    delimiter: ',',
+                                                    sign: '+',
+                                                    allowZero: true
+                                               }"
+                                               (numberModelChange)="onChange()"
+                                        >
+                                        <span>{{ currency.key }}</span>
+                                        <span class="currencies-editor__table-details-buttons">
+                                            <button class="button button_regular button_white" (click)="viewHistory(currency)">{{ 'settings.currencies.view_history__button' | translate }}</button>
+                                            <button class="button button_regular button_blue" (click)="makePrimary(currency)" [disabled]="!canEdit">{{ 'settings.currencies.make_primary__button' | translate }}</button>
+                                        </span>
+                                    </span>
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="currencies-editor__list" *ngSwitchDefault>
+                <div class="currencies-editor__list-item" *ngFor="let currency of currencies">
+                    <checkbox [disabled]="!canEdit" [(ngModel)]="currency.isActive" (ngModelChange)="onChange()">
+                        <span class="currencies-editor__list-item-checkbox-caption">{{ currency.name }}</span>
+                    </checkbox>
+                    <ng-container [ngSwitch]="currency.isPrimary">
+                        <div class="currencies-editor__list-item-primary" *ngSwitchCase="true">
+                            {{ 'settings.currencies.primary_currency__text' | translate }}
+                        </div>
+                        <ng-container *ngSwitchCase="false">
+                            <div class="currencies-editor__list-item-cost">
+                                <span>1&nbsp;<span>{{ currencies[0].key }}</span>&nbsp;{{ 'settings.currencies.costs__text' | translate }}</span>
+                                <input type="text" class="input input_regular currencies-editor__list-item-input"
+                                    number-mask
+                                    [disabled]="!canEdit || !currency.isActive"
+                                    [(numberModel)]="currency.rate"
+                                    [numberModelOptions]="{
+                                         updateOn: 'blur',
+                                         defaultValue: 0,
+                                         type: 'number',
+                                         viewFraction: 10000,
+                                         delimiter: ',',
+                                         sign: '+',
+                                         allowZero: true
+                                    }"
+                                    (numberModelChange)="onChange()"
+                                >
+                                <span>{{ currency.key }}</span>
+                            </div>
+                            <div class="currencies-editor__list-item-buttons">
+                                <button class="button button_regular button_white" (click)="viewHistory(currency)">{{ 'settings.currencies.view_history__button' | translate }}</button>
+                                <button class="button button_regular button_blue" (click)="makePrimary(currency)" [disabled]="!canEdit">{{ 'settings.currencies.make_primary__button' | translate }}</button>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+
+    <popup-custom #historyPopup class="currencies-editor__history" (onDeactivate)="onHistoryPopupDeactivated()">
+        <popup-box>
+            <popup-header>
+                <span *ngIf="history" [innerHTML]="'settings.currencies.history__header' | translate : { fromKey: history.fromKey, toKey: history.toKey }"></span>
+            </popup-header>
+            <popup-content>
+                <!-- Content -->
+                <table class="currencies-editor__history-table" *ngIf="history">
+                    <thead>
+                        <tr>
+                            <th>{{ 'settings.currencies.time__table_th' | translate }}</th>
+                            <th>{{ 'settings.currencies.rate__table_th' | translate }}</th>
+                            <th>{{ 'settings.currencies.updated_by__table_th' | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let entry of history.rates">
+                            <td>{{ entry.created | datetime : datetimeDisplayFormat }}</td>
+                            <td>{{ (entry.rate / 10000) | number : '0.4-4' }}</td>
+                            <td>{{ entry.user }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- /Content -->
+            </popup-content>
+            <popup-controls>
+                <div class="popup__controls-buttons">
+                    <button type="button" class="button button_regular button_white" (click)="historyPopup.deactivate()">
+                        <span class="button__caption">{{ 'settings.currencies.cancel_history__button' | translate }}</span>
+                    </button>
+                </div>
+            </popup-controls>
+        </popup-box>
+    </popup-custom>
+</fieldset>

@@ -1,0 +1,64 @@
+// Spinning
+// ----------------------
+
+@-webkit-keyframes spinning {
+    from { transform: rotate(0deg);   }
+    to   { transform: rotate(360deg); }
+}
+
+@-moz-keyframes spinning {
+    from { transform: rotate(0deg);   }
+    to   { transform: rotate(360deg); }
+}
+
+@keyframes spinning {
+    from { transform: rotate(0deg);   }
+    to   { transform: rotate(360deg); }
+}
+
+
+// Pulse
+// ----------------------
+
+@-webkit-keyframes pulsing {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(4); }
+}
+
+@-moz-keyframes pulsing {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(4); }
+}
+
+@keyframes pulsing {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(4); }
+}
+
+
+// Clock dots
+// ----------------------
+
+@-webkit-keyframes clockDots {
+    0%   { opacity: 1; }
+    30%  { opacity: 1; }
+    50%  { opacity: 0; }
+    80%  { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@-moz-keyframes clockDots {
+    0%   { opacity: 1; }
+    30%  { opacity: 1; }
+    50%  { opacity: 0; }
+    80%  { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes clockDots {
+    0%   { opacity: 1; }
+    30%  { opacity: 1; }
+    50%  { opacity: 0; }
+    80%  { opacity: 0; }
+    100% { opacity: 1; }
+}

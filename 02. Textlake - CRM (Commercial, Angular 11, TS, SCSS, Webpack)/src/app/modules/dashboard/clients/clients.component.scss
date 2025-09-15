@@ -1,0 +1,188 @@
+@import '../../../../assets/css/definitions.scss';
+
+.clients {
+    display: block;
+
+    &__spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 50px 0;
+    }
+
+    &__message {
+        font-size: 14px;
+        line-height: 16px;
+        font-weight: $font-weight-medium;
+        text-align: center;
+        padding: 75px 20px;
+        color: $color-empty-message;
+
+        &_error {
+            color: $color-empty-message-error;
+        }
+    }
+
+    &__list-wrap {
+        width: 100%;
+        margin: 0 auto;
+
+        &_grid {
+            max-width: 380px;
+        }
+
+        &_grid-detailed {
+            max-width: 768px;
+        }
+    }
+
+    &__list {
+        $icon-size: 16px;
+        $icon-margin: 8px;
+        $border-width: 1px;
+
+        display: flex;
+        flex-flow: column nowrap;
+        position: relative;
+
+        &-item {
+            display: flex;
+            flex-flow: row nowrap;
+            width: 100%;
+            font-size: 14px;
+            line-height: 18px;
+            font-weight: normal;
+            position: relative;
+            z-index: 0;
+            border-radius: 4px;
+            box-shadow: inset 0 0 0 $border-width #DDE3EB;
+            background-color: #fff;
+            overflow: hidden;
+            transition: box-shadow 0.1s ease-out;
+
+            &:hover {
+                z-index: 1;
+                box-shadow: inset 0 0 0 $border-width #DDE3EB, 0 10px 20px rgba(16, 29, 47, 0.1);
+            }
+
+            & + & {
+                margin-top: (-1 * $border-width);
+            }
+
+            &:first-child:not(:last-child) {
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+            &:first-child:not(:last-child) &-col_solid {
+                box-shadow: inset 0 (-1 * $border-width) 0 rgba(#000, 0.1);
+            }
+
+            & + &:not(:last-child) {
+                border-radius: 0;
+            }
+
+            & + &:not(:last-child) &-col_solid {
+                box-shadow: inset 0 $border-width 0 rgba(#000, 0.1), inset 0 (-1 * $border-width) 0 rgba(#000, 0.1);
+            }
+
+            & + &:last-child {
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+            }
+
+            & + &:last-child &-col_solid {
+                box-shadow: inset 0 $border-width 0 rgba(#000, 0.1);
+            }
+
+            &-info {
+                padding: 16px 18px;
+                width: 100%;
+                max-width: calc(100% - 50px);
+            }
+
+            &-buttons {
+                width: 50px;
+                padding: 0;
+                box-shadow: -1px 0 0 0 #dde3eb;
+            }
+
+            &-button {
+                color: inherit;
+                display: flex;
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+                background-color: transparent;
+                justify-content: center;
+                align-items: center;
+            }
+
+            &-name {
+                font-size: 16px;
+                line-height: 18px;
+                font-weight: $font-weight-medium;
+                word-break: break-word;
+
+                &_deleted {
+                    text-decoration: line-through;
+                }
+            }
+
+            &-legal {
+                margin-top: 4px;
+                word-break: break-word;
+            }
+
+            &-details {
+                display: flex;
+                flex-flow: row nowrap;
+                width: 100%;
+                margin-top: 8px;
+            }
+
+            &-col {
+                width: 50%;
+            }
+
+            &-line {
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+
+                & + & {
+                    margin-top: 3px;
+                }
+            }
+
+            &-icon {
+                width: $icon-size;
+                height: $icon-size;
+                margin-right: $icon-margin;
+            }
+
+            &-label {
+                margin-right: 6px;
+                font-weight: bold;
+                white-space: nowrap;
+            }
+
+            &-text {
+                width: calc(100% - #{ $icon-size + $icon-margin });
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-weight: normal;
+            }
+        }
+
+        & + .pagination {
+            margin-top: 30px;
+        }
+    }
+}
+
+.items-table.items-table_clickable tbody tr.clients_deleted td {
+    background-color: #f5f5f5;
+    color: #717171;
+}

@@ -1,0 +1,122 @@
+<popup-custom>
+    <popup-content>
+        <div *ngIf="isSubscriptionUpdateType(SubscriptionUpdateTypeEnum.NEW)">
+            <h2>{{ 'subscription_payment_preview.intro_new_header' | translate }}</h2>
+            <div class="intro"
+                 [innerHTML]="'subscription_payment_preview.intro_new' | translate : {maxLP: selectedSubscription.max_license_plates}"></div>
+
+            <div class="subscription-payment-preview__table-wrap">
+                <div
+                    class="table table_middle table_striped table_white table_nowrap subscription-payment-preview__table">
+                    <div class="table__body">
+                        <div class="table__row">
+                            <div class="table__cell">
+                                {{ 'subscription_payment_preview.package_key' | translate }}
+                            </div>
+                            <div class="table__cell"
+                                 [innerHTML]="'subscription_payment_preview.package_value' | translate"></div>
+                        </div>
+                        <div class="table__row">
+                            <div class="table__cell">
+                                {{ 'subscription_payment_preview.coverage_key' | translate }}
+                            </div>
+                            <div class="table__cell"
+                                 [innerHTML]="'subscription_payment_preview.coverage_value' | translate : {maxLP : selectedSubscription.max_license_plates}"></div>
+                        </div>
+                        <div class="table__row">
+                            <div class="table__cell">
+                                {{ 'subscription_payment_preview.payment_key' | translate }}
+                            </div>
+                            <div
+                                class="table__cell">{{ 'payment_methods.' + getPaymentMethodTranslationKey() | translate }}
+                            </div>
+                        </div>
+                        <div class="table__row">
+                            <div class="table__cell">
+                                {{ 'subscription_payment_preview.price_key' | translate }}
+                            </div>
+                            <div class="table__cell"
+                                 [innerHTML]="'subscription_payment_preview.price_value' | translate : {amount :  (priceDifference | currencyFormat)}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div *ngIf="isSubscriptionUpdateType(SubscriptionUpdateTypeEnum.UPGRADE)">
+            <div class="intro" [innerHTML]="'subscription_payment_preview.intro_upgrade' | translate : {
+                additionalLP: additionalVehicles,
+                futureInvoiceAmount : futureInvoiceAmount | currencyFormat,
+                futureInvoiceDate : futureInvoiceDate | date : 'shortDate'
+            }"></div>
+        </div>
+        <div *ngIf="isSubscriptionUpdateType(SubscriptionUpdateTypeEnum.DOWNGRADE)">
+            <div class="intro" [innerHTML]="'subscription_payment_preview.intro_downgrade' | translate : {
+                currentVehicles: currentVehicles,
+                currentActiveUntil: currentActiveUntil | date : 'shortDate',
+                futureMaxLp: futureMaxLp,
+                futureInvoiceAmount : futureInvoiceAmount | currencyFormat,
+                futureInvoiceDate : futureInvoiceDate | date : 'shortDate'
+            }"></div>
+        </div>
+        <div *ngIf="isSubscriptionUpdateType(SubscriptionUpdateTypeEnum.DOWNGRADE_WITH_PAYMENT)">
+            <div class="intro" [innerHTML]="'subscription_payment_preview.downgrade_with_renewal_invoice' | translate : {
+                reducedLP: Math.abs(additionalVehicles),
+                futureInvoiceAmount : futureInvoiceAmount | currencyFormat,
+                futureInvoiceDate : futureInvoiceDate | date : 'shortDate'
+            }"></div>
+        </div>
+        <div *ngIf="isSubscriptionUpdateType(SubscriptionUpdateTypeEnum.NO_CHANGE_WITH_PAYMENT)">
+            <div class="intro" [innerHTML]="'subscription_payment_preview.no_changes_with_renewal_invoice' | translate : {
+                currentMaxLp: currentVehicles,
+                currentActiveUntil: currentActiveUntil | date : 'shortDate',
+                futureInvoiceAmount : futureInvoiceAmount | currencyFormat,
+                futureInvoiceDate : futureInvoiceDate | date : 'shortDate'
+            }"></div>
+        </div>
+        <div *ngIf="isSubscriptionUpdateType(SubscriptionUpdateTypeEnum.NO_CHANGE)">
+            <div class="intro"
+                 [innerHTML]="'subscription_payment_preview.intro_same' | translate : {maxLP: selectedSubscription.max_license_plates}"></div>
+        </div>
+
+    </popup-content>
+    <popup-controls>
+        <div class="buttons-panel buttons-panel--flex">
+            <button class="button button_regular" (click)="onBackClick()">
+                {{ 'subscription_payment_preview.back' | translate }}
+            </button>
+
+            <button *ngIf="isSubscriptionUpdateType(SubscriptionUpdateTypeEnum.NEW)"
+                    class="button button_regular" (click)="onPaymentChangeClick()">
+                {{ 'subscription_payment_preview.payment_update' | translate }}
+            </button>
+
+            <button class="button button_regular button_figma-green" (click)="submitUpdateSubscriptionPayment()" [disabled]="isPaymentProcessing">
+                <ng-container [ngSwitch]="subscriptionConfirmationType">
+                    <div *ngSwitchCase="SubscriptionUpdateTypeEnum.NEW">
+                        <img height="1" width="1" style="border-style:none;" alt=""
+                             src="https://insight.adsrvr.org/track/pxl/?adv=dywlzhl&ct=0:0co2ta8&fmt=3"/>
+                        {{ 'subscription_payment_preview.pay_button' | translate : {amount: (priceDifference | currencyFormat)} }}
+                    </div>
+                    <div *ngSwitchCase="SubscriptionUpdateTypeEnum.UPGRADE">
+                        {{ 'subscription_payment_preview.pay_button' | translate : {amount: (priceDifference | currencyFormat)} }}
+                    </div>
+                    <div *ngSwitchCase="SubscriptionUpdateTypeEnum.DOWNGRADE_WITH_PAYMENT">
+                        {{ 'subscription_payment_preview.pay_button' | translate : {amount: (priceDifference | currencyFormat)} }}
+                    </div>
+                    <div *ngSwitchCase="SubscriptionUpdateTypeEnum.NO_CHANGE_WITH_PAYMENT">
+                        {{ 'subscription_payment_preview.pay_button' | translate : {amount: (priceDifference | currencyFormat)} }}
+                    </div>
+                    <div *ngSwitchCase="SubscriptionUpdateTypeEnum.DOWNGRADE">
+                        {{ 'subscription_payment_preview.downgrade_button' | translate }}
+                    </div>
+                    <div *ngSwitchCase="SubscriptionUpdateTypeEnum.NO_CHANGE">
+                        {{ 'subscription_payment_preview.ok_button' | translate }}
+                    </div>
+                </ng-container>
+            </button>
+        </div>
+    </popup-controls>
+
+</popup-custom>
+

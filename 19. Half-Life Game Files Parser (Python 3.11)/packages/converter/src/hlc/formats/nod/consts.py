@@ -1,0 +1,15 @@
+GRAPH_EXT             = '.nod'
+GRAPH_VERSION         = 16
+GRAPH_RANGE_COUNT     = 256
+GRAPH_CACHE_SIZE      = 128
+GRAPH_MAX_NODE_HULLS  = 4
+
+
+
+__all__ = [
+    'GRAPH_EXT',
+    'GRAPH_VERSION',
+    'GRAPH_RANGE_COUNT',
+    'GRAPH_CACHE_SIZE',
+    'GRAPH_MAX_NODE_HULLS',
+]

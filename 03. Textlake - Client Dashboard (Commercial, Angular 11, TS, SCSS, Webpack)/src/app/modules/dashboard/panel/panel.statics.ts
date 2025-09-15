@@ -1,0 +1,2 @@
+export const NOTIFICATIONS_TO_LOAD = 15;
+export const NOTIFICATIONS_VISIBLE_MAX = 25;

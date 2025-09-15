@@ -1,0 +1,13 @@
+<popup-custom *ngIf="isPopupVisible">
+    <popup-content>
+        <ng-content></ng-content>
+    </popup-content>
+    <popup-controls isStretched="true">
+        <button type="button" class="button button_regular button_light-blue" (click)="onSubmit(false)">
+            <span class="button__caption">{{ buttons.cancel | translate }}</span>
+        </button>
+        <button type="button" class="button button_regular button_blue" (click)="onSubmit(true)">
+            <span class="button__caption">{{ buttons.ok | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>

@@ -1,0 +1,23 @@
+<popup [options]="{ isActive : true, closeBy: 'manual' }" (onCloseRequest)="onConfirm($event, false)">
+    <popup-box>
+        <popup-header>
+            <span [innerHTML]="translateTitle ? (title | translate : titleData) : title"></span>
+        </popup-header>
+        <popup-content>
+            <span class="confirm__message" [innerHTML]="translateMessage ? (message | translate : messageData) : message"></span>
+        </popup-content>
+        <popup-controls>
+            <div class="confirm__checkbox" *ngIf="showRemember">
+                <checkbox [(ngModel)]="remember">{{ 'popups.remember' | translate }}</checkbox>
+            </div>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_regular button_white" (click)="onConfirm(false, false)">
+                    <span class="button__caption" [innerHTML]="translateCancelButtonCaption ? (cancelButtonCaption | translate : cancelButtonCaptionData) : cancelButtonCaption"></span>
+                </button>
+                <button type="button" class="button button_regular button_blue" (click)="onConfirm(false, true)">
+                    <span class="button__caption" [innerHTML]="translateOkButtonCaption ? (okButtonCaption | translate : okButtonCaptionData) : okButtonCaption"></span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup>

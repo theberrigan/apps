@@ -1,0 +1,15 @@
+{
+  "dist": "./dist/stage/",
+  "region": "us-east-1",
+  "bucket": "tesm-berrigan-test",
+  "gzip": false,
+  "cache": null,
+  "immutable": false,
+  "etag": null,
+  "signatureVersion": null,
+  "filePrefix": null,
+  "profile": null,
+  "private": false,
+  "ext": null,
+  "deleteRemoved": false
+}

@@ -1,0 +1,30 @@
+@import '../../../../../../assets/css/definitions';
+
+.account-editor {
+    display: block;
+    width: 100%;
+
+    &__tab-content {
+        width: 100%;
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 25px 50px 100px;
+    }
+
+    &__loader {
+        margin-top: 15vh;
+    }
+
+    &__message {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 600;
+        color: $color-sys-message-on-blue-bg;
+        text-align: center;
+        margin-top: 15vh;
+
+        &_error {
+            color: $color-sys-message-error-on-blue-bg;
+        }
+    }
+}

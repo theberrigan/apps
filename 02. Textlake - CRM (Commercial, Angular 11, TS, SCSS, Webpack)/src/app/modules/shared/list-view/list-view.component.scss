@@ -1,0 +1,44 @@
+@import '../../../../assets/css/definitions';
+@import '../../../../assets/css/mixins';
+
+.list-view {
+    display: inline-flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+    position: relative;
+    width: 100%;
+
+    .button {
+        $padding: 10px;
+
+        padding-left: $padding;
+        padding-right: $padding;
+        flex-grow: 1;
+    }
+
+    .button {
+        z-index: 1;
+    }
+
+    .button.button_blue {
+        z-index: 2;
+    }
+
+    .button:first-child:not(:last-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .button + .button {
+        margin-left: -1px;
+    }
+
+    .button + .button:not(:last-child) {
+        border-radius: 0;
+    }
+
+    .button + .button:last-child {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+}

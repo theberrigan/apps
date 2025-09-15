@@ -1,0 +1,168 @@
+<fieldset [disabled]="isSaving || isTesting || isDeleting">
+    <action-panel>
+        <div class="action-panel__primary">
+            <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ 'settings.mailboxes.mailboxes__header' | translate }}</h1>
+            <button type="button" class="button button_regular button_green" (click)="onCreate()">
+                <span class="button__caption">{{ 'settings.mailboxes.mailbox_create__button' | translate }}</span>
+            </button>
+        </div>
+    </action-panel>
+
+    <ng-container [ngSwitch]="state">
+        <div class="mailbox-editor__spinner" *ngSwitchCase="'loading'">
+            <spinner class="spinner spinner_blue spinner_small"></spinner>
+        </div>
+        <div class="mailbox-editor__message" *ngSwitchCase="'empty'">
+            {{ 'settings.mailboxes.no_mailboxes' | translate }}
+            <span class="pseudo-link" (click)="onCreate()">{{ 'settings.mailboxes.no_mailboxes_2' | translate }}</span>
+        </div>
+        <div class="mailbox-editor__message mailbox-editor__message_error" *ngSwitchCase="'error'">
+            {{ 'settings.mailboxes.error' | translate }}
+        </div>
+        <ng-container *ngSwitchCase="'list'" [ngSwitch]="viewportBreakpoint">
+            <div class="items-table-wrap mailbox-editor__table-wrap" *ngSwitchCase="'desktop'">
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th>{{ 'settings.mailboxes.username__table_th' | translate }}</th>
+                            <th>{{ 'settings.mailboxes.host__table_th' | translate }}</th>
+                            <th>{{ 'settings.mailboxes.port__table_th' | translate }}</th>
+                            <th>{{ 'settings.mailboxes.protocol__table_th' | translate }}</th>
+                            <th>{{ 'settings.mailboxes.secure__table_th' | translate }}</th>
+                            <th class="table-cell-tight">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let mailbox of mailboxes">
+                            <td>{{ mailbox.email }}</td>
+                            <td>{{ mailbox.host }}</td>
+                            <td>{{ mailbox.port }}</td>
+                            <td>{{ mailbox.protocol ? protocolsMap[mailbox.protocol] : '' }}</td>
+                            <td>{{ (mailbox.securedConnection ? 'settings.mailboxes.ssl_tls__yes' : 'settings.mailboxes.ssl_tls__no') | translate }}</td>
+                            <td class="table-cell-no-padding">
+                                <span class="mailbox-editor__table-buttons">
+                                    <button type="button" class="mailbox-editor__table-button mailbox-editor__table-button_edit" (click)="onEdit(mailbox)"></button>
+                                    <button type="button" class="mailbox-editor__table-button mailbox-editor__table-button_delete" (click)="onDelete(mailbox)"></button>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mailbox-editor__list" *ngSwitchDefault>
+                <div class="mailbox-editor__list-item" *ngFor="let mailbox of mailboxes">
+                    <div class="mailbox-editor__list-item-header">
+                        <div class="mailbox-editor__list-item-email">{{ mailbox.email }}</div>
+                        <div class="mailbox-editor__list-item-buttons">
+                            <button type="button" class="mailbox-editor__list-item-button mailbox-editor__list-item-button_edit" (click)="onEdit(mailbox)"></button>
+                            <button type="button" class="mailbox-editor__list-item-button mailbox-editor__list-item-button_delete" (click)="onDelete(mailbox)"></button>
+                        </div>
+                    </div>
+                    <div class="mailbox-editor__list-item-info">
+                        <table class="mailbox-editor__list-item-info-table">
+                            <tbody>
+                                <tr>
+                                    <th>{{ 'settings.mailboxes.host__table_th' | translate }}:</th>
+                                    <td>{{ mailbox.host }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'settings.mailboxes.port__table_th' | translate }}:</th>
+                                    <td>{{ mailbox.port }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'settings.mailboxes.protocol__table_th' | translate }}:</th>
+                                    <td>{{ mailbox.protocol ? protocolsMap[mailbox.protocol] : '' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'settings.mailboxes.secure__table_th' | translate }}:</th>
+                                    <td>{{ (mailbox.securedConnection ? 'settings.mailboxes.ssl_tls__yes' : 'settings.mailboxes.ssl_tls__no') | translate }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="mailbox-editor__mailboxes-note">
+                <span [innerHTML]="'settings.mailboxes.imap_note_1' | translate"></span><!--
+             -->&nbsp;<a target="_blank" rel="nofollow noopener" href="https://textlake.com/tutorial/add-mailbox#enable-imap" [innerHTML]="'settings.mailboxes.imap_note_2' | translate"></a><!--
+             -->&nbsp;<span [innerHTML]="'settings.mailboxes.imap_note_3' | translate"></span>
+            </div>
+        </ng-container>
+    </ng-container>
+
+    <popup-custom #editor [options]="{ closeBy: 'manual' }" class="mailbox-editor__editor" (onCloseRequest)="onHideEditor($event)" *ngIf="mailboxToEdit">
+        <popup-box>
+            <popup-header>{{ (editorMode === 'create' ? 'settings.mailboxes.mailbox_create__header' : 'settings.mailboxes.mailbox_edit__header') | translate }}</popup-header>
+            <popup-content>
+                <!-- Content -->
+                <div class="mailbox-editor__editor-content">
+                    <div class="mailbox-editor__controls">
+                        <div class="mailbox-editor__control">
+                            <label class="mailbox-editor__control-label">
+                                <span class="mailbox-editor__control-label-text">
+                                    {{ 'settings.mailboxes.editor_email__label' | translate }}
+                                </span>
+                            </label>
+                            <input type="text" class="input input_regular mailbox-editor__control-input" [class.input_invalid]="!isEmailValid" [(ngModel)]="mailboxToEdit.email" (ngModelChange)="validate()" required>
+                        </div>
+                        <div class="mailbox-editor__control">
+                            <label class="mailbox-editor__control-label">
+                                <span class="mailbox-editor__control-label-text">
+                                    {{ 'settings.mailboxes.editor_password__label' | translate }}
+                                </span>
+                            </label>
+                            <input type="password" class="input input_regular mailbox-editor__control-input" [(ngModel)]="mailboxToEdit.password" (ngModelChange)="validate()" required>
+                        </div>
+                        <div class="mailbox-editor__control">
+                            <label class="mailbox-editor__control-label">
+                                <span class="mailbox-editor__control-label-text">
+                                    {{ 'settings.mailboxes.editor_host__label' | translate }}
+                                </span>
+                            </label>
+                            <input type="text" class="input input_regular mailbox-editor__control-input" [(ngModel)]="mailboxToEdit.host" (ngModelChange)="validate()" required>
+                        </div>
+                        <div class="mailbox-editor__control">
+                            <label class="mailbox-editor__control-label">
+                                <span class="mailbox-editor__control-label-text">
+                                    {{ 'settings.mailboxes.editor_port__label' | translate }}
+                                </span>
+                            </label>
+                            <input type="text" class="input input_regular mailbox-editor__control-input" [(ngModel)]="mailboxToEdit.port" (ngModelChange)="validate()" required>
+                        </div>
+                        <div class="mailbox-editor__control">
+                            <label class="mailbox-editor__control-label">
+                                <span class="mailbox-editor__control-label-text">
+                                    {{ 'settings.mailboxes.editor_protocol__label' | translate }}
+                                </span>
+                            </label>
+                            <select class="select select_regular mailbox-editor__control-input" [(ngModel)]="mailboxToEdit.protocol" [disabled]="isProtocolReadOnly" (ngModelChange)="validate()" required>
+                                <option *ngFor="let protocolOption of protocolOptions" [ngValue]="protocolOption.value" [innerHTML]="protocolOption.display"></option>
+                            </select>
+                        </div>
+                        <div class="mailbox-editor__control">
+                            <div class="mailbox-editor__control-input">
+                                <checkbox [(ngModel)]="mailboxToEdit.securedConnection">
+                                    {{ 'settings.mailboxes.editor_secure__label' | translate }} ({{ 'settings.mailboxes.editor_secure_ssl__select_option' | translate }})
+                                </checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Content -->
+            </popup-content>
+            <popup-controls>
+                <div class="popup__controls-buttons">
+                    <button type="button" class="button button_regular button_white" (click)="onHideEditor()">
+                        <span class="button__caption">{{ 'settings.mailboxes.cancel_button' | translate }}</span>
+                    </button>
+                    <button type="button" class="button button_regular button_blue" (click)="onTest()" [isDisabled]="!isEditorFormValid" [isProgress]="isTesting">
+                        <span class="button__caption">{{ 'settings.mailboxes.test__button' | translate }}</span>
+                    </button>
+                    <button type="button" class="button button_regular button_blue" (click)="onSave()" [isDisabled]="!isEditorFormValid" [isProgress]="isSaving">
+                        <span class="button__caption">{{ 'settings.mailboxes.save__button' | translate }}</span>
+                    </button>
+                </div>
+            </popup-controls>
+        </popup-box>
+    </popup-custom>
+</fieldset>

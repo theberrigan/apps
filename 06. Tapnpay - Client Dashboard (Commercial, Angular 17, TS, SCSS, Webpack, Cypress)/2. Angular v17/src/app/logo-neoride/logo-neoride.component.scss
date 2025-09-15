@@ -1,0 +1,16 @@
+#neoride-logo-svg {
+  height: 70px;
+  width: auto;
+}
+
+@media screen and (max-width: 768px) {
+  #neoride-logo-svg {
+    height: 28px;
+    width: auto;
+  }
+  .panel__inner {
+    justify-content: start !important;
+  }
+}
+
+

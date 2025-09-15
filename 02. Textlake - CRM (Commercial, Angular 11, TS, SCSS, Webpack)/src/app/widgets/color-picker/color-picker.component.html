@@ -1,0 +1,19 @@
+<div class="color-picker__display"
+    (mousedown)="onDisplayMouseDown()"
+    (mouseup)="onDisplayMouseUp()"
+    [ngStyle]="{
+        backgroundColor: value.bg,
+        color: value.text
+    }">
+    <div class="color-picker__display-text">
+        <ng-content></ng-content>
+    </div>
+</div>
+<div class="color-picker__popup"
+    *ngIf="popupState >= popupStateEnum.Init"
+    [class.color-picker__popup_active]="popupState === popupStateEnum.Visible"
+    (mousedown)="onPopupMouseDown()"
+    (mouseup)="onPopupMouseUp()"
+>
+    <canvas #canvas [height]="canvasHeight" [width]="canvasWidth" (mousedown)="onCanvasMouseDown($event)"></canvas>
+</div>

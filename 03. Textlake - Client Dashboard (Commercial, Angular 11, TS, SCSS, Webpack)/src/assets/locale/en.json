@@ -1,0 +1,386 @@
+{
+    "payments": {
+        "header": "Invoice",
+        "offer": "Offer",
+        "quote_id": "Payment",
+        "issue_date": "Issue date",
+        "pay": "Pay",
+        "out_of": "out of",
+        "services_ordered": "Services Ordered",
+        "net": "Net",
+        "tax": "Tax",
+        "gross": "Gross",
+        "acknowledgement": "Thank you for your interest in our services",
+        "invalid_quote": "The request cannot be completed: the provided ID is invalid, the quote has expired, the payment has been received.",
+        "help_message": "If you have any questions or concerns, please contact <span class=\"nowrap\"><strong>{{ company }}</strong></span>",
+        "email": "Email",
+        "phone": "Phone",
+        "fax": "Fax",
+        "provider_sofort": "Sofort",
+        "provider_paypal": "PayPal",
+        "provider_stripe": "CARD",
+        "total_due": "Total Due",
+        "partial_amount": "Pay",
+        "pay_with": "Pay With",
+        "pay_with_card": "Pay with Card",
+        "paid": "Paid",
+        "unavailable": "No payment options are enabled by the service provider.",
+        "result":
+        {
+            "success__message": "Thank you! Your payment has been successful.",
+            "failed__message": "The transaction has been aborted. Please try another payment method or contact a company representative.",
+            "timeout__message": "Sorry, your operation has timed out. Please try again."
+        }
+    },
+    "payments_panel": {
+        "sign_in": "Sign In"
+    },
+    "terms": {
+        "title": "Textlake Terms & Conditions",
+        "checkbox__label": "By accepting these terms of service or otherwise using the service (as defined below), you agree to the terms and conditions in these terms of service.If you are entering into these terms of service as an individual, the terms \"you\" refers to you. If you entering into this agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions, in which case the terms \"you\" shall refer to such entity. If you do not have such authority, or if you do not agree with these terms and conditions, you must not accept these terms of service and may not use the service.",
+        "accept__button": "Accept",
+        "close__button": "Close"
+    },
+    "lang": {
+        "langs": {
+            "en": "English",
+            "es": "Spanish",
+            "ru": "Russian",
+            "pl": "Polish",
+            "uk": "Ukrainian"
+        }
+    },
+    "langs": {
+        "eng": "English",
+        "rus": "Русский",
+        "pol": "Polskie",
+        "esp": "Español",
+        "uah": "Українська"
+
+    },
+    "datetime_service": {
+        "january__message": "January",
+        "february__message": "February",
+        "march__message": "March",
+        "april__message": "April",
+        "may__message": "May",
+        "june__message": "June",
+        "july__message": "July",
+        "august__message": "August",
+        "september__message": "September",
+        "october__message": "October",
+        "november__message": "November",
+        "december__message": "December",
+        "jan__message": "Jan",
+        "feb__message": "Feb",
+        "mar__message": "Mar",
+        "apr__message": "Apr",
+        "may2__message": "May",
+        "jun__message": "Jun",
+        "jul__message": "Jul",
+        "aug__message": "Aug",
+        "sep__message": "Sep",
+        "oct__message": "Oct",
+        "nov__message": "Nov",
+        "dec__message": "Dec",
+        "sunday__message": "Sunday",
+        "monday__message": "Monday",
+        "tuesday__message": "Tuesday",
+        "wednesday__message": "Wednesday",
+        "thursday__message": "Thursday",
+        "friday__message": "Friday",
+        "saturday__message": "Saturday",
+        "sun__message": "Sun",
+        "mon__message": "Mon",
+        "tue__message": "Tue",
+        "wed__message": "Wed",
+        "thu__message": "Thu",
+        "fri__message": "Fri",
+        "sat__message": "Sat",
+        "am__message": "AM",
+        "pm__message": "PM",
+        "today__text": "Today",
+        "go_back__button": "Go Back",
+        "hours__slider_label": "Hours",
+        "minutes__slider_label": "Minutes"
+    },
+    "auth": {
+        "sign_in__tab": "Sign In",
+        "sign_up__tab": "Create account",
+        "terms__link": "Terms and Conditions",
+        "sign_in": {
+            "page_title": "Sign in",
+            "email__label": "Email",
+            "password__label": "Password",
+            "forgot_password__link": "Forgot password",
+            "remember_me__checkbox": "Remember me",
+            "sign_in__button": "Sign In"
+        },
+        "sign_up": {
+            "page_title": "Create account",
+            "email__label": "Email",
+            "password__label": "Password",
+            "sign_up__button": "Sign Up"
+        },
+        "forgot_password": {
+            "page_title": "Forgot password",
+            "email__label": "Email",
+            "continue__button": "Continue",
+            "enter_email__message": "Please enter email and we will send verification code to you."
+        },
+        "reset_password": {
+            "page_title": "Reset password",
+            "email__label": "Email",
+            "code__label": "Verification code",
+            "new_password__label": "New password",
+            "continue__button": "Continue",
+            "code_sent_to__message": "Verification code sent to <strong>{{ destination }}</strong>.",
+            "reset_ok": "Password has been reset."
+        },
+        "new_password": {
+            "page_title": "Set new password",
+            "new_password__label": "New password",
+            "continue__button": "Continue",
+            "set_new_password__message": "Your current password is unsafe. Please enter new password."
+        },
+        "social_auth": {
+            "page_title": "Redirecting...",
+            "redirecting": "Redirecting..."
+        },
+        "password_requirements": {
+            "min_length": "At least {{ minLength }} characters length",
+            "special_characters": "Special characters",
+            "uppercase_letters": "Uppercase letters",
+            "lowercase_letters": "Lowercase letters",
+            "digits": "Digits"
+        },
+        "errors": {
+            "UnknownError": "Unknown error occurred.",
+            "NetworkError": "Internet connection problem.",
+            "UserNotFoundException": "User with this email not found.",
+            "PasswordResetRequiredException": "Please use \"Forgot password\" to reset your password.",
+            "CodeMismatchException": "Incorrect verification code.",
+            "ExpiredCodeException": "Verification code is expired.",
+            "NotAuthorizedException": "This email/password combination isn't found.",
+            "InvalidPasswordException": "Password doesn't correspond to requirements.",
+            "UsernameExistsException": "User with provided email already exists.",
+            "InvalidParameterException": "Provided email or password is incorrect."
+        }
+    },
+    "panel": {
+        "quick_actions": {
+            "create_offer__link": "Create offer",
+            "add_translator__link": "Add translator",
+            "add_client__link": "Add client",
+            "create_invite__link": "Create invite"
+        },
+        "notifications": {
+            "notifications__header": "Notifications",
+            "notifications_error__message": "An error occurred while loading notifications",
+            "notifications_empty__message": "No notifications yet"
+        },
+        "user_menu": {
+            "verify__button": "Verify email",
+            "settings__button": "Settings",
+            "logout__button": "Logout",
+            "alt_accounts__sep": "Alternative accounts"
+        }
+    },
+    "nav": {
+        "orders__link": "Orders",
+        "billing__link": "Billing"
+    },
+    "popups": {
+        "remember": "Remember",
+        "confirm": {
+            "title": "Confirm your action",
+            "ok__button": "Ok",
+            "cancel__button": "Cancel"
+        },
+        "alert": {
+            "title": "Notification",
+            "ok__button": "Ok"
+        }
+    },
+    "not_found": {
+        "page_title": "Page not found",
+        "message": "Page not found"
+    },
+    "pagination": {
+        "load_more__button": "Load more",
+        "page": "Page"
+    },
+    "datetime": {
+        "today__text": "Today",
+        "back__button": "Back",
+        "hours__text": "Hours",
+        "minutes__text": "Minutes",
+        "cancel__button": "Cancel",
+        "ok__button": "Ok"
+    },
+    "verification": {
+        "cant_send_code": "Unexpected error while sending verification code.",
+        "cant_verify_code": "An error occurred during verification.",
+        "successfully_verified": "Thank you. Your email has been successfully verified.",
+        "incorrect_code": "The provided code is invalid.",
+        "popup_header": "Email address verification",
+        "sent_to": "Verification code has been sent to your email address.",
+        "code_label": "Verification code",
+        "cancel": "Cancel",
+        "ok": "Ok",
+        "email_is_not_verified2": "Your email isn't verified. To take full advantage of the system, please verify your email address.<br><br>Verification code has been sent to <strong>{{ email }}</strong>.",
+        "verify_email": "Verify email",
+        "resend_message": "You can send the code again in <strong>{{ timeout }}</strong>.",
+        "resend_link": "Send code again"
+    },
+    "footer": {
+        "terms__link": "Terms and Conditions",
+        "contact_us__link": "Contact Us"
+    },
+    "dashboard": {
+        "page_title": "Dashboard"
+    },
+    "billing": {
+        "page_title": "Billing",
+        "page_header": "Billing",
+        "make_deposit": "Make Deposit",
+        "balance_tab": "Balance",
+        "invoices_tab": "Invoices",
+        "transactions_tab": "Transactions",
+        "current_balance": "Current Balance",
+        "invoices": {
+            "number__table_header": "Number",
+            "date__table_header": "Date",
+            "total__table_header": "Total",
+            "pay__button": "Pay"
+        },
+        "transactions": {
+            "id__table_th": "Transaction ID",
+            "updated__table_th": "Updated",
+            "amount__table_th": "Amount",
+            "status__table_th": "Status",
+            "payment__table_th": "Payment Provider",
+            "comment__table_th": "Comment"
+        }
+    },
+    "orders": {
+        "page_title": "Orders",
+        "page_header": "Orders",
+        "create": "Create",
+        "columns": {
+            "status":  "Status",
+            "offer": "Offer",
+            "company":  "Company",
+            "contact": "Contact",
+            "phone":  "Phone",
+            "email": "Email",
+            "net":  "Net",
+            "gross": "Gross",
+            "currency":  "Currency",
+            "coordinator": "Coordinator",
+            "date":  "Date",
+            "description": "Description"
+        },
+        "statuses": {
+            "any": "Any",
+            "new": "New",
+            "sent": "Sent",
+            "accepted": "Accepted",
+            "rejected": "Rejected"
+        },
+        "filters": {
+            "filters": "Filters",
+            "status": "Status",
+            "order": "Order",
+            "company": "Company",
+            "internal_id": "Internal ID",
+            "translator": "Translator",
+            "deadline": "Deadline",
+            "description": "Description",
+            "clear": "Clear",
+            "submit": "Submit"
+        },
+        "editor": {
+            "page_title": "Order",
+            "page_header": "Order",
+            "save_send_btn": "Save & Send",
+            "accept_btn": "Accept",
+            "reject_btn": "Reject",
+            "documents_tab": "Documents",
+            "details_tab": "Details",
+            "shipping_tab": "Shipping",
+            "services_tab": "Services",
+            "invoices_tab": "Invoices",
+            "transactions_tab": "Transactions",
+            "instructions": "Instructions",
+            "dropzone_msg": "<div>Click here to upload files</div><span>&mdash;&nbsp;or&nbsp;&mdash;</span><div>Drop files here</div>",
+            "from_language": "From language",
+            "to_language": "To language",
+            "primary_info_sh": "Primary Info",
+            "offer": "Offer",
+            "created": "Created",
+            "status": "Status",
+            "contact_sh": "Contact",
+            "person": "Person",
+            "email": "Email",
+            "phone": "Phone",
+            "fax": "Fax",
+            "delivery_sh": "Delivery",
+            "priority": "Priority",
+            "delivery_type": "Delivery type",
+            "days": "Days",
+            "translation_sh": "Translation",
+            "subject_area": "Subject area",
+            "translation": "Translation",
+            "notary": "Notary",
+            "translation_company_sh": "Translation Company",
+            "translation_company": "Translation Company",
+            "company_name": "Company Name",
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "street": "Street",
+            "apt_suite_room": "Apt / Suite / Room",
+            "city": "City",
+            "state_region": "State / Region",
+            "zip_code": "Zip Code",
+            "country": "Country",
+            "service_name": "Service name"
+        }
+    },
+    "settings": {
+        "profile": {
+            "page_title": "Profile",
+            "profile__header": "Your Profile",
+            "first_name__label": "First name",
+            "last_name__label": "Last name",
+            "email__label": "Email",
+            "verify__button": "Verify email",
+            "language__label": "Language",
+            "init_error__message": "Unexpected error.",
+            "save_error__message": "Unable to save the profile.",
+            "save_success__message": "Saved successfully.",
+            "save__button": "Save",
+            "cancel__button": "Cancel",
+            "date_group_popular": "Popular date formats",
+            "date_group_other": "Other date formats",
+            "time_suffix_24": "(24-hours)",
+            "time_suffix_12": "(12-hours)",
+            "save_success": "Your profile has been saved",
+            "save_failed": "Unexpected error while saving profile.",
+            "switch_account_failed": "Can't switch account.",
+            "switch_account": "Switch Account",
+            "switch__button": "Switch",
+            "rows_per_page": "Rows Per Page",
+            "display_datetime_format": "Display Datetime Format",
+            "select_datetime_format": "Input Datetime Format",
+            "datetime_format_hint": "",
+            "colorize_offers": "Apply color to entire row on offers list page",
+            "projects_offers": "Apply color to entire row on projects list page",
+            "translators_offers": "Apply color to entire row on translators list page",
+            "use_zebra": "Use stripe view for offer and project lists",
+            "project_status_color": "Project Status Colors",
+            "offer_status_color": "Offer Status Colors",
+            "confirm_discard__message": "Do you want to discard unsaved changes?"
+        }
+    }
+}

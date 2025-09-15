@@ -1,0 +1,84 @@
+<!-- Landing page background (copied from auth.component.html, static, no form logic) -->
+<div class="auth">
+  <div class="auth__content">
+    <div class="auth__logo">
+      <img [src]="NEO_RIDE_LOGO_URL" alt="neoride logo" class="auth__logo-svg" style="width: 250px; height: auto; display: block;" />
+      <!-- <span class="slogan">{{'logo.slogan' | translate}}</span> -->
+    </div>
+    <div class="auth__box">
+      <fieldset class="auth__fieldset">
+        <label class="auth__label">
+          <span class="auth__label-text">Phone Number</span>
+          <span class="auth__phone-wrapper">
+            <input type="text" class="auth__input auth__input_phone" disabled placeholder="(XXX) XXX-XXXX">
+            <span class="auth__phone-prefix">
+              <span class="auth__phone-prefix-icon"></span>
+              <span class="auth__phone-prefix-text">+1</span>
+            </span>
+            <button class="auth__phone-clear" type="button" disabled style="display:none">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="auth__phone-clear-icon">
+                <polygon style="fill: currentColor;" points="18.48 17.07 17.07 18.48 12 13.41 6.93 18.48 5.51 17.07 10.59 12 5.51 6.93 6.93 5.51 12 10.59 17.07 5.51 18.48 6.93 13.41 12 18.48 17.07"></polygon>
+              </svg>
+            </button>
+          </span>
+        </label>
+        <div class="auth__controls">
+          <button class="button button_size-2 button_blue" type="button" disabled>
+            <span class="button__caption">Send PIN</span>
+          </button>
+        </div>
+      </fieldset>
+    </div>
+    <div class="auth__footer">
+      <div class="auth__footer-lang">
+        <span>EN</span>
+      </div>
+      <div class="auth__footer-etc">
+        <button class="auth__footer-etc-trigger" type="button" disabled>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path style="fill: currentColor;" d="M7,12a2,2,0,1,1-2-2A2,2,0,0,1,7,12Zm5-2a2,2,0,1,0,2,2A2,2,0,0,0,12,10Zm7,0a2,2,0,1,0,2,2A2,2,0,0,0,19,10Z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal overlay (existing logic) -->
+  <div class="email-verification-overlay">
+    <div class="modal">
+      <div class="modal-content">
+        <ng-container [ngSwitch]="status">
+          <div *ngSwitchCase="'loading'" class="centered">Verifying...</div>
+
+          <ng-container *ngSwitchCase="'success'">
+            <div class="icon-success"><img src="/assets/images/Email verified.png" alt="Success" class="tick-img" /></div>
+            <h2>Email verified</h2>
+            <p>Your account is now fully secured.<br>You can now enjoy all the features of your account.</p>
+            <button class="done-btn" routerLink="/dashboard/invoices">Done</button>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'already'">
+            <div class="icon-success"><img src="/assets/images/Email already verified.png" alt="Success" class="tick-img" /></div>
+            <h2>Email already verified</h2>
+            <p>Your email has already been verified.</p>
+            <button class="done-btn" routerLink="/dashboard/invoices">Done</button>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'expired'">
+            <div class="icon-success"><img src="/assets/images/Email verification link expired.png" alt="Success" class="tick-img" /></div>
+            <h2>Verification link expired</h2>
+            <p>This verification link has expired or is invalid. Please request a new verification email.</p>
+            <button class="done-btn" routerLink="/dashboard/invoices">Done</button>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="'error'">
+            <div class="icon-error">&#10007;</div>
+            <h2>Verification failed</h2>
+            <p>There was a problem verifying your email. Please try again later.</p>
+            <button class="done-btn" routerLink="/dashboard/invoices">Done</button>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div> 

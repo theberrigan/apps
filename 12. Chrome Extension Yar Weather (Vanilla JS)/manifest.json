@@ -1,0 +1,36 @@
+{
+    "manifest_version": 3,
+    "name": "Погода Gismeteo",
+    "short_name": "Погода Gismeteo",
+    "description": "Неофициальное расширение, отображающее текущую погоду на основе данных Gismeteo",
+    "version": "1.0.0",
+    "author": "Berrigan",
+    "minimum_chrome_version": "109",
+    "offline_enabled": false,
+    "icons": {
+        "16": "images/icon_16.png",
+        "24": "images/icon_24.png",
+        "48": "images/icon_48.png",
+        "128": "images/icon_128.png"
+    },
+    "action": {
+        "default_title": ""
+    },
+    "background": {
+        "type": "module",
+        "service_worker": "js/background.js"
+    },
+    "permissions": [
+        "tabs",
+        "alarms",
+        "storage",
+        "scripting",
+        "offscreen",
+        "notifications"
+    ],
+    "host_permissions": [
+        "http://*/*",
+        "https://*/*"
+    ]
+}
+

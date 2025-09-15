@@ -1,0 +1,199 @@
+@import "definitions";
+
+.d-flex {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+.d-block {
+    display: block;
+}
+
+.d-i-block {
+    display: inline-block;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.align-start {
+    align-items: start !important;
+}
+
+.align-end {
+    align-items: end !important;
+}
+
+.align-center {
+    align-items: center !important;
+}
+
+.p-0 {
+    padding: 0 !important;
+}
+
+.m-0 {
+    margin: 0 !important;
+}
+
+.mb-8 {
+    margin-bottom: 8px !important;
+}
+
+.mb-16 {
+    margin-bottom: 16px;
+}
+
+.mb-4 {
+    margin-bottom: 4px !important;
+}
+
+.mt-16 {
+    margin-top: 16px;
+}
+
+.mt-24 {
+    margin-top: 24px;
+}
+
+.mt-32 {
+    margin-top: 32px;
+}
+
+.pr-30 {
+    padding-right: 30px;
+}
+
+.mt-40 {
+    margin-top: 40px;
+}
+
+.ml-16 {
+    margin-left: 16px;
+}
+
+.ml-32 {
+    margin-left: 32px;
+}
+
+.mr-16 {
+    margin-right: 16px;
+}
+
+.mb-24 {
+    margin-bottom: 24px;
+}
+
+.mb-32 {
+    margin-bottom: 32px;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.w-75 {
+    width: 75%;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.w-25 {
+    width: 25%;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
+.important-text {
+    font-weight: bold;
+    font-style: italic;
+    color: #4875e7;
+
+    &--warning {
+        color: #c9372c;
+        font-weight: bold;
+    }
+}
+
+.text-normal {
+    font-weight: normal;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.text-italic {
+    font-style: italic;
+}
+
+.text-underline {
+    text-decoration: underline;
+}
+
+.text-small {
+    font-size: 12px;
+}
+
+.bg-info {
+    background-color: $color-info-yellow;
+}
+
+.desktop-only {
+    @media screen and (max-width: 767px) {
+        display: none !important;
+    }
+}
+
+.mobile-only {
+    @media screen and (min-width: 768px) {
+        display: none !important;
+    }
+}
+
+.slogan {
+    display: inline-block;
+    margin: 18px 0;
+    color: #003A70 !important;
+}
+
+.text--red {
+    color: $color-primary-red !important;
+}
+
+.text--green {
+    color: $color-primary-green !important;
+}
+
+.popup-title {
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: bold;
+    color: #656E7D;
+    margin-bottom: 24px;
+    display: block;
+}

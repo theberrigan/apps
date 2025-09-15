@@ -1,0 +1,95 @@
+<fieldset [disabled]="isSaving">
+    <action-panel>
+        <div class="action-panel__primary">
+            <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ 'settings.payment_providers.page_header' | translate }}</h1>
+        </div>
+        <div class="action-panel__secondary">
+            <div class="action-panel__item">
+                <button type="button" class="button button_regular button_blue" [isProgress]="isSaving" (click)="onSave()">
+                    <span class="button__caption">{{ 'settings.payment_providers.save' | translate }}</span>
+                </button>
+            </div>
+        </div>
+    </action-panel>
+
+    <ng-container [ngSwitch]="state">
+        <div class="payment-providers-editor__spinner" *ngSwitchCase="'loading'">
+            <spinner class="spinner spinner_blue spinner_small"></spinner>
+        </div>
+        <div class="payment-providers-editor__message payment-providers-editor__message_error" *ngSwitchCase="'error'">
+            {{ 'settings.rates.list.error' | translate }}
+        </div>
+        <div class="payment-providers-editor__editor" *ngSwitchCase="'editor'" [ngSwitch]="viewportBreakpoint">
+            <div class="tabs">
+                <div class="tabs__tab tabs__tab_no-icon"
+                    [class.tabs__tab_active]="activeTab === 'sofort'"
+                    [class.tabs__tab_disabled]="!canUseSofort"
+                    (click)="onSwitchTab('sofort')"
+                    (mouseenter)="onSofortTabMouseEvent(true)"
+                    (mouseleave)="onSofortTabMouseEvent(false)"
+                >
+                    <span class="tabs__tab-caption">{{ 'settings.payment_providers.sofort' | translate }}</span>
+                    <span class="tabs__tab-hint" [class.tabs__tab-hint_visible]="isSofortTabHintVisible">{{ 'settings.payment_providers.sofort_tab_hint__message' | translate }}</span>
+                </div>
+                <div class="tabs__tab tabs__tab_no-icon" [class.tabs__tab_active]="activeTab === 'stripe'" (click)="onSwitchTab('stripe')">
+                    <span class="tabs__tab-caption">{{ 'settings.payment_providers.stripe' | translate }}</span>
+                </div>
+            </div>
+
+            <div class="tab-content" [class.tab-content_active]="activeTab === 'sofort'" *ngIf="canUseSofort">
+                <div class="payment-providers-editor__controls">
+                    <div class="payment-providers-editor__control">
+                        <div class="payment-providers-editor__control-input">
+                            <checkbox [(ngModel)]="providers.sofort.enabled" (ngModelChange)="onChange()">{{ 'settings.payment_providers.enabled' | translate }}</checkbox>
+                        </div>
+                    </div>
+                    <div class="payment-providers-editor__control">
+                        <label class="payment-providers-editor__control-label">
+                            <span class="payment-providers-editor__control-label-text">
+                                {{ 'settings.payment_providers.api_key' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular payment-providers-editor__control-input" [(ngModel)]="providers.sofort.apiKey" (ngModelChange)="onChange()">
+                    </div>
+                    <div class="payment-providers-editor__control">
+                        <label class="payment-providers-editor__control-label">
+                            <span class="payment-providers-editor__control-label-text">
+                                {{ 'settings.payment_providers.customer_id' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular payment-providers-editor__control-input" [(ngModel)]="providers.sofort.customerId" (ngModelChange)="onChange()">
+                    </div>
+                    <div class="payment-providers-editor__control">
+                        <label class="payment-providers-editor__control-label">
+                            <span class="payment-providers-editor__control-label-text">
+                                {{ 'settings.payment_providers.project_id' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular payment-providers-editor__control-input" [(ngModel)]="providers.sofort.projectId" (ngModelChange)="onChange()">
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" [class.tab-content_active]="activeTab === 'stripe'" [ngSwitch]="providers.stripe.linked">
+                <div class="payment-providers-editor__editor-stripe" *ngSwitchCase="true">
+                    <div class="payment-providers-editor__editor-stripe-row">
+                        <checkbox [(ngModel)]="providers.stripe.enabled" (ngModelChange)="onChange()">{{ 'settings.payment_providers.enabled' | translate }}</checkbox>
+                    </div>
+                    <div class="payment-providers-editor__editor-stripe-row">
+                        {{ 'settings.payment_providers.stripe_linked__message_1' | translate }}&nbsp;
+                        <a [href]="providers.stripe.url" target="_blank" rel="nofollow noopener">
+                            {{ 'settings.payment_providers.stripe_linked__message_2' | translate }}
+                        </a>.
+                    </div>
+                </div>
+                <div class="payment-providers-editor__editor-stripe" *ngSwitchCase="false">
+                    <div class="payment-providers-editor__editor-stripe-row">
+                        {{ 'settings.payment_providers.stripe_not_linked__message' | translate }}
+                    </div>
+                    <a [href]="providers.stripe.url" rel="nofollow noopener" class="button button_regular button_blue">
+                        {{ 'settings.payment_providers.connect_with' | translate }}&nbsp;Stripe
+                    </a>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</fieldset>

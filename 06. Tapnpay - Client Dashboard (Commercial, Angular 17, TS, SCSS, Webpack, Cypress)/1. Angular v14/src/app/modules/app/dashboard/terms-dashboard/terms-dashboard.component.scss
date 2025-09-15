@@ -1,0 +1,45 @@
+@import '../../../../../assets/css/definitions';
+
+.terms-dashboard {
+    display: block;
+    width: 100%;
+
+    html.viewport_desktop & {
+        &__content {
+            width: 100%;
+            padding: 0 0 100px;
+
+            .terms-inner__wrapper {
+                width: 100%;
+                max-width: 1120px;
+                padding: 0 60px !important;
+            }
+        }
+    }
+
+    html.viewport_tablet & {
+        &__content {
+            width: 100%;
+            padding: 30px 0 0;
+
+            .terms-inner__wrapper {
+                width: 100%;
+                max-width: 1000px;
+                padding: 0 !important;
+            }
+        }
+    }
+
+    html.viewport_mobile & {
+        &__content {
+            width: 100%;
+            padding: 20px 0 0;
+
+            .terms-inner__wrapper {
+                width: 100%;
+                max-width: 1000px;
+                padding: 0 !important;
+            }
+        }
+    }
+}

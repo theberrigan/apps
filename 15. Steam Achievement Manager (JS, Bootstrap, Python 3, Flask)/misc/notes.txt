@@ -1,0 +1,1 @@
+Download steam_api from https://partner.steamgames.com/downloads/list and place it to misc/steam_api dir

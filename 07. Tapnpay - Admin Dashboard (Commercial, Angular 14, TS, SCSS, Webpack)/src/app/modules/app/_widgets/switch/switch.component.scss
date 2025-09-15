@@ -1,0 +1,54 @@
+@import '../../../../../assets/css/definitions.scss';
+
+.switch {
+    $base-height: 24px;
+    $base-width: ceil($base-height * 2);
+    $inner-padding: 4px;
+    $handle-size: ceil($base-height - $inner-padding * 2);
+    $active-offset: $base-width - $inner-padding * 2 - $handle-size;
+
+    display: block;
+    cursor: pointer;
+    user-select: none;
+    width: $base-width;
+    height: $base-height;
+    padding: $inner-padding;
+    border-radius: ceil($base-height / 2);
+    background-color: #c3c7d2;
+
+    &_on {
+        background-color: $color-primary-blue;
+    }
+
+    &,
+    &_on {
+        transition: background-color 0.15s ease-out;
+    }
+
+    &:after {
+        content: '';
+        display: block;
+        background-color: #fff;
+        width: $handle-size;
+        height: $handle-size;
+        border-radius: 50%;
+        transform-origin: 50% 50%;
+        transform: translateX(0);
+    }
+
+    &_on:after {
+        transform: translateX($active-offset);
+    }
+
+    &:after,
+    &_on:after {
+        transition: transform 0.15s ease-out;
+    }
+
+    &_disabled,
+    fieldset:disabled & {
+        opacity: 0.6;
+        cursor: default;
+        pointer-events: none;
+    }
+}

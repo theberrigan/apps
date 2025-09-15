@@ -1,0 +1,46 @@
+<ng-container [ngSwitch]="state">
+    <div class="accounts__message" *ngSwitchCase="'empty'">
+        {{ 'accounts.empty' | translate }}
+    </div>
+    <div *ngSwitchCase="'ready'">
+        <tabs [isFullWidth]="true">
+            <tab
+                *ngFor="let account of accounts"
+                [isFixedWidth]="true"
+                [canClose]="true"
+                [isActive]="account.accountId === activeAccountId"
+                (onActivate)="onSwitchTab(account.accountId)"
+                (onClose)="onCloseTab(account.accountId)"
+                (contextmenu)="onOpenTabContextMenu($event, account)"
+            >
+                {{ account.accountPhone }}
+            </tab>
+        </tabs>
+        <div class="accounts__editor">
+            <ng-container *ngFor="let account of accounts; trackBy: accountTrackBy">
+                <account-editor
+                    *ngIf="account.accountId === activeAccountId"
+                    [data]="account"
+                    (dataChange)="onEditorChange($event)"
+                ></account-editor>
+            </ng-container>
+        </div>
+    </div>
+</ng-container>
+
+<context-menu
+    *ngIf="tabContextMenu"
+    [posX]="tabContextMenu.posX"
+    [posY]="tabContextMenu.posY"
+    (onClose)="onCloseTabContextMenu()"
+>
+    <button type="button" class="context-menu__item" (click)="onCloseTab(tabContextMenu.accountId)">
+        {{ 'accounts.tab_ctx_menu.close' | translate }}
+    </button>
+    <button type="button" class="context-menu__item" (click)="onCloseOtherTabs(tabContextMenu.accountId)">
+        {{ 'accounts.tab_ctx_menu.close_others' | translate }}
+    </button>
+    <button type="button" class="context-menu__item" (click)="onCloseAllTabs()">
+        {{ 'accounts.tab_ctx_menu.close_all' | translate }}
+    </button>
+</context-menu>

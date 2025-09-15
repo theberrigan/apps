@@ -1,0 +1,9 @@
+{
+  "name": "dxmd",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node ./watch-fs.js"
+  },
+  "license": "ISC",
+  "dependencies": {}
+}

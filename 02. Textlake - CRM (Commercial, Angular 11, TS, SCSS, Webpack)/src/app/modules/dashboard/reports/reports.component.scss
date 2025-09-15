@@ -1,0 +1,49 @@
+@import '../../../../assets/css/definitions.scss';
+
+.reports {
+    display: block;
+
+    &__report-types {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+
+        &-item {
+            display: block;
+            width: 100%;
+            padding: 16px 18px;
+            border-radius: 4px;
+            border: 1px solid #DDE3EB;
+            background-color: #fff;
+            font-size: 16px;
+            line-height: 20px;
+            font-weight: $font-weight-medium;
+
+            &,
+            &:hover,
+            &:link,
+            &:active,
+            &:focus,
+            &:visited {
+                text-decoration: none;
+                color: inherit;
+            }
+
+            &:hover {
+                box-shadow: 0 10px 20px rgba(16, 29, 47, 0.1);
+                transition: box-shadow 0.1s ease-out;
+            }
+
+            & + & {
+                margin-top: 10px;
+            }
+        }
+    }
+
+    // html.viewport_tablet &,
+    html.viewport_mobile & {
+        &__report-types {
+            max-width: none;
+        }
+    }
+}

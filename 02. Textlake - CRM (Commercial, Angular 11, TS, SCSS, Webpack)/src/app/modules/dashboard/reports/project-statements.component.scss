@@ -1,0 +1,219 @@
+@import '../../../../assets/css/definitions.scss';
+
+.project-statements {
+    display: block;
+
+    &__spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 50px 0;
+    }
+
+    &__message {
+        font-size: 14px;
+        line-height: 16px;
+        font-weight: $font-weight-medium;
+        text-align: center;
+        padding: 75px 20px;
+        color: $color-empty-message;
+
+        &_error {
+            color: $color-empty-message-error;
+        }
+    }
+
+    &__list {
+        width: 100%;
+        max-width: 720px;
+        margin: 0 auto;
+
+        &-page {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 18px;
+            padding-bottom: 16px;
+        }
+
+        &-statement {
+            border-radius: 4px;
+            border: 1px solid #DDE3EB;
+            background-color: #fff;
+            margin-bottom: 20px;
+
+            &-header {
+                padding: 14px 18px 16px;
+                font-weight: normal;
+                display: flex;
+                flex-flow: row wrap;
+                align-items: center;
+            }
+
+            &-name {
+                font-size: 20px;
+                line-height: 24px;
+            }
+
+            &-status {
+                $color: lighten($color-text-primary, 20%);
+
+                font-size: 12px;
+                line-height: 16px;
+                font-weight: $font-weight-medium;
+                height: 24px;
+                border-radius: 3px;
+                padding: 3px 6px;
+                white-space: nowrap;
+                text-transform: uppercase;
+                color: $color;
+                margin-left: 15px;
+                border: 1px solid $color;
+            }
+
+            &-table {
+                width: 100%;
+                font-size: 14px;
+                line-height: 18px;
+                // color: lighten($color-text-primary, 6%);
+
+                > tbody > tr > th {
+                    white-space: nowrap;
+                    width: 1px;
+                    padding-right: 8px;
+                    text-align: right;
+                    font-weight: $font-weight-medium;
+                }
+
+                > tbody > tr + tr > th,
+                > tbody > tr + tr > td {
+                    vertical-align: top;
+                    padding-top: 10px;
+                }
+
+                & > tbody > tr > th#{&}-checkbox-label {
+                    padding-top: 12px;
+                }
+
+                & > tbody > tr > th#{&}-input-label {
+                    padding-top: 18px;
+                }
+
+                &-input {
+                    width: 100%;
+                    max-width: 300px;
+                }
+            }
+
+            &-details {
+                padding: 5px 18px 21px;
+            }
+
+            &-address-line {
+                display: block;
+            }
+
+            &-item {
+                border-top: 1px solid #DDE3EB;
+                padding: 16px 18px;
+            }
+
+            &-total {
+                border-top: 1px solid #DDE3EB;
+                padding: 16px 18px;
+
+                &-table {
+                    font-size: 16px;
+                    line-height: 20px;
+
+                    td,
+                    th {
+                        text-align: right;
+                    }
+
+                    th + th,
+                    th + td,
+                    td + td {
+                        padding-left: 15px;
+                    }
+
+                    tr + tr th,
+                    tr + tr td {
+                        padding-top: 5px;
+                    }
+                }
+            }
+        }
+    }
+
+    &__table-wrap {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        overflow-y: visible;
+        overflow-x: auto;
+    }
+
+    &__table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th,
+        td {
+            padding: 8px 12px;
+            vertical-align: top;
+            font-size: 14px;
+            line-height: 18px;
+            border: 1px solid $color-input-deco-color;
+            background-color: #fff;
+        }
+
+        th {
+            font-weight: $font-weight-medium;
+        }
+
+        td {
+            font-weight: normal;
+        }
+
+        &-header {
+            display: flex;
+            flex-flow: row nowrap;
+        }
+
+        &-project-key {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        &-project-status {
+            white-space: nowrap;
+            text-transform: uppercase;
+            font-size: 11px;
+            line-height: 15px;
+            font-weight: bold;
+            padding: 3px 8px 4px;
+            border-radius: 3px;
+            margin: -2px 0;
+            color: $color-text-primary;
+            background-color: #fff;
+        }
+
+        td#{&}-cell {
+            &_has-input {
+                padding: 0;
+                width: 200px;
+            }
+        }
+
+        &-textarea {
+            width: 100%;
+            resize: vertical;
+            height: 38px;
+            min-height: 38px;
+            font-size: 14px;
+            line-height: 18px;
+            padding: 8px 12px;
+            display: block;
+        }
+    }
+}

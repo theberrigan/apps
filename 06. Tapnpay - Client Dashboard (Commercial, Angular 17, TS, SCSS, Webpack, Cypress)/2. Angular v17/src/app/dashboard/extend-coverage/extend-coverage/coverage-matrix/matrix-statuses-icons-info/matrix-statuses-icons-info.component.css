@@ -1,0 +1,18 @@
+:host {
+    display: block;
+    max-width: 360px;
+}
+
+.matrix-info-icon {
+    width: 24px;
+    height: auto;
+    margin-right: 8px;
+}
+
+.matrix-statuses-info {
+    display: flex;
+    flex-direction: column;
+    margin-top: 32px;
+    padding: 12px 24px 0;
+    font-size: 12px;
+}

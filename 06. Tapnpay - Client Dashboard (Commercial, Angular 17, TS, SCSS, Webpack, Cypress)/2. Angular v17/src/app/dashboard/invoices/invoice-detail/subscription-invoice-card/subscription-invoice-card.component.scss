@@ -1,0 +1,58 @@
+@import '../../../../../assets/css/responsive';
+
+.subscription-invoice-detail {
+    padding: 20px 16px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px 0 rgba(14, 14, 14, 0.15);
+    margin-top: 50px;
+
+    @include desktop {
+        padding: 40px 60px 40px 65px;
+        border-radius: 8px;
+    }
+
+    .invoice-type {
+        padding: 4px 16px;
+        border-radius: 4px;
+        background-color: #E0EFFB;
+        text-align: center;
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 600;
+        grid-row-start: 2;
+        grid-column-start: 1;
+        grid-column-end: 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+
+        @include desktop {
+            margin-left: 32px;
+            margin-top: 0;
+            grid-column-start: 2;
+            grid-column-end: 3;
+            grid-row-start: 1;
+        }
+    }
+
+    &-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        align-items: center;
+
+        @include desktop {
+            grid-template-columns: 2fr 2fr 1fr;
+            grid-template-rows: 1fr;
+        }
+
+    }
+
+    .invoice-detail__invoice-amount {
+        @include desktop {
+            grid-column-start: 3;
+            grid-column-end: 4;
+        }
+    }
+}

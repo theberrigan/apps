@@ -1,0 +1,27 @@
+<!-- Page Header -->
+<ng-container [ngSwitch]="viewportBreakpoint">
+    <page-panel *ngSwitchCase="'desktop'">
+        <h1 class="page-panel__header" [innerHTML]="'terms.page_header' | translate"></h1>
+    </page-panel>
+    <app-bar *ngSwitchDefault></app-bar>
+</ng-container>
+
+<div class="terms-page-content" *ngIf="!isLoading">
+
+    <ng-container *ngIf="!isUserHasExtendedTollAuthorities; else multiList">
+        <terms-inner [termsNameToShow]="firstSelectedTerms.terms_name"></terms-inner>
+    </ng-container>
+
+    <ng-template #multiList>
+        <div class="accordion-content-wrap">
+            <accordion [collapsing]="false">
+                <accordion-item *ngFor="let item of allTermsList;"
+                                [title]="item.toll_authority_name | mapToolAuthorityNameStates">
+                    <ng-template accordionContent>
+                        <terms-inner [termsNameToShow]="item.terms_name" [isLoadTerms]="false"></terms-inner>
+                    </ng-template>
+                </accordion-item>
+            </accordion>
+        </div>
+    </ng-template>
+</div>

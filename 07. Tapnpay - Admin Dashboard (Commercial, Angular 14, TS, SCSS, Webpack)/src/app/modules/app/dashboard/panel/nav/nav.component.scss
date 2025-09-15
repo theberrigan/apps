@@ -1,0 +1,78 @@
+@import '../../../../../../assets/css/definitions';
+
+.nav {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+    justify-content: flex-start;
+    height: 100%;
+    user-select: none;
+
+    &__item {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: stretch;
+        justify-content: flex-start;
+        position: relative;
+    }
+
+    &__menu {
+        top: 100%;
+        left: 0;
+        transform: translateY(6px);
+    }
+
+    &__link {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+        padding: 0 20px;
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: $font-weight-semi-bold;
+        position: relative;
+        color: $color-text-primary;
+        background-color: #fff;
+        cursor: pointer;
+
+        &,
+        &:hover,
+        &:active,
+        &:visited,
+        &:focus {
+            text-decoration: none;
+        }
+
+        &:hover,
+        &_focus {
+            color: $color-primary-blue;
+        }
+
+        &_active {
+            color: $color-primary-blue;
+            background-color: #f0f5f9;
+
+            &:after {
+                content: '';
+                display: block;
+                width: 100%;
+                height: 2px;
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                background-color: $color-primary-blue;
+            }
+        }
+
+        &_has-arrow {
+            padding-right: 10px;
+        }
+
+        &-arrow {
+            color: $color-text-primary;
+            opacity: 0.5;
+            margin-left: 3px;
+        }
+    }
+}

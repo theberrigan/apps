@@ -1,0 +1,15 @@
+<popup-custom [isDisabled]="isProgress"
+              class="dashboard__fleet-lpn-wallet-popup">
+    <popup-content>
+        <span
+            [innerHTML]="'dashboard.fleet.wallet_confirm_message' | translate : { amount: walletFleetPaymentAttrs.amountFormatted, wallet: walletFleetPaymentAttrs.wallet }"></span>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button (click)="emmitConfirm()"
+                [isProgress]="isProgress"
+                class="button button_regular button_blue"
+                type="button">
+            <span class="button__caption">{{ 'dashboard.fleet.wallet_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>

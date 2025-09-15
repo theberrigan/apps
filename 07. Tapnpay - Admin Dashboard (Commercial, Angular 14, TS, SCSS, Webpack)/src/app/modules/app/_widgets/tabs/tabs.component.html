@@ -1,0 +1,7 @@
+<div class="tabs__content"
+    #contentEl
+    [style.marginBottom.px]="contentMarginBottom"
+    (wheel)="onMouseWheel($event)"
+>
+    <ng-content></ng-content>
+</div>

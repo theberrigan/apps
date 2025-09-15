@@ -1,0 +1,59 @@
+@import '../../../../../../../assets/css/definitions';
+
+.account-editor-invoices {
+    display: block;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+
+    &__message {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 600;
+        color: $color-sys-message-on-blue-bg;
+        text-align: center;
+        margin-top: 15vh;
+    }
+
+    &__table {
+        width: 100%;
+
+        & .table__cell + .table__cell {
+            padding-left: 40px;
+        }
+
+        & > .table__header &-cell,
+        & > .table__body &-cell {
+            &-invoice {
+
+            }
+
+            &-amount {
+                text-align: right;
+            }
+        }
+
+        & > .table__body &-cell {
+            &-invoice {
+                color: $color-primary-blue;
+            }
+
+            &-amount {
+
+            }
+        }
+    }
+
+    &__extend-select {
+        margin-right: 10px;
+    }
+
+    &__controls {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: flex-end;
+        width: 100%;
+        margin-top: 15px;
+    }
+}

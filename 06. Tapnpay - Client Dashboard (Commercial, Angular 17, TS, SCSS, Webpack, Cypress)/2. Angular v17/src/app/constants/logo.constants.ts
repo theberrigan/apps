@@ -1,0 +1,1 @@
+export const NEO_RIDE_LOGO_URL = 'https://admin.neoride.com/static/media/logo.672b1a20.png'; 

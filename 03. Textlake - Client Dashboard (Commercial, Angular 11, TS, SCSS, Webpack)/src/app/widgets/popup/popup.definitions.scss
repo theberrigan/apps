@@ -1,0 +1,29 @@
+$overlay-v-padding: 50px;
+$header-height: 50px;
+$close-button-width: $header-height;
+$primary-padding: 18px;
+$border-color: #e6e6e6;
+
+$popup-selector: '.popup';
+$html-viewport-selector: 'html.viewport';
+
+$width-types: boxed by-content full modal;
+$breakpoints: mobile tablet desktop;
+
+@mixin width-combinations ($width-type, $child) {
+    $selectors: (#{ $popup-selector }_width_#{ $width-type } #{ $popup-selector }__#{ $child }, );
+
+    @each $breakpoint in $breakpoints {
+        @each $width-type-override in $width-types {
+            @if $width-type != $width-type-override {
+                $selector: #{ $html-viewport-selector }_#{ $breakpoint } #{ $popup-selector }_width_#{ $width-type-override }#{ $popup-selector }_#{ $breakpoint }-width_#{ $width-type } #{ $popup-selector }__#{ $child };
+                $selectors: append($selectors, $selector, $separator: comma);
+            }
+        }
+    }
+
+    #{ $selectors } {
+        @content;
+    }
+}
+

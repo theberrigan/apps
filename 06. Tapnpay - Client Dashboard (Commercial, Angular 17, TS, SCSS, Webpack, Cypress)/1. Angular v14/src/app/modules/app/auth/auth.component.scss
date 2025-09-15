@@ -1,0 +1,375 @@
+@import '../../../../assets/css/definitions';
+
+$logo-ratio: 420 / 1442;
+$logo-width: 250px;
+$logo-height: $logo-width * $logo-ratio;
+
+$box-max-width: 450px;
+
+$etc-margin-left: -10px;
+
+.auth {
+    display: block;
+    min-height: 100vh;
+
+    &__content {
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        min-height: 90vh;
+    }
+
+    &__logo {
+        margin-top: 20px;
+        width: 250px;
+
+        &-svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    &__box {
+        width: 100%;
+        max-width: $box-max-width;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 1px 3px 0 rgba(14, 14, 14, 0.15);
+        padding: 60px 50px;
+        margin-top: 80px;
+    }
+
+    &__fieldset {
+        width: 100%;
+    }
+
+    &__label {
+        display: block;
+
+        &-text {
+            display: inline-flex;
+            font-size: 14px;
+            font-weight: $font-weight-semi-bold;
+            line-height: 20px;
+            color: #73777f;
+            cursor: default;
+            user-select: none;
+            margin-bottom: 8px;
+        }
+    }
+
+    &__input {
+        display: block;
+        width: 100%;
+        height: 46px;
+        border: 1px solid #ced6de;
+        border-radius: $control-primary-radius;
+        background-color: #fff;
+        box-shadow: 0 1px 1px 0 rgba(14, 14, 14, 0.06);
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: $font-weight-semi-bold;
+        padding: 13px 18px;
+
+        &:focus {
+            border-color: #4875e7;
+            box-shadow: 0 0 0 5px #c0dafa;
+        }
+
+        &,
+        &:focus {
+            transition: border-color 0.15s ease-out, box-shadow 0.15s ease-out;
+        }
+
+        &[disabled],
+        &[disabled]:focus,
+        fieldset[disabled] &,
+        fieldset[disabled] &:focus {
+            opacity: 0.5;
+            cursor: default;
+            transition: none;
+            box-shadow: none;
+            border-color: #ced6de;
+            pointer-events: none;
+        }
+
+        &_phone {
+            padding-left: 62px;
+        }
+    }
+
+    &__phone-wrapper {
+        display: block;
+        position: relative;
+    }
+
+    &__phone-prefix {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        padding-left: 15px;
+        user-select: none;
+        cursor: default;
+
+        &-icon {
+            display: block;
+            width: 22px;
+            height: 13px;
+            background: url('../../../../assets/images/flag_usa.png') no-repeat center center;
+            background-size: contain;
+        }
+
+        &-text {
+            display: block;
+            color: $color-input;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: $font-weight-semi-bold;
+            margin-left: 6px;
+        }
+
+        &_disabled,
+        fieldset[disabled] & {
+            opacity: 0.5;
+        }
+    }
+
+    &__phone-clear {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 46px;
+        transform-origin: 50% 50%;
+        cursor: pointer;
+        color: $color-text-primary;
+        background-color: transparent;
+        opacity: 0.75;
+        transform: scale(1);
+
+        &:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        &,
+        &:hover {
+            transition: transform 0.15s ease, opacity 0.15s ease;
+        }
+
+        &[disabled],
+        &[disabled]:focus,
+        fieldset[disabled] &,
+        fieldset[disabled] &:focus {
+            opacity: 0.35;
+            cursor: default;
+            transition: none;
+            pointer-events: none;
+        }
+
+        &-icon {
+            display: block;
+        }
+    }
+
+    &__resend {
+        margin-top: 10px;
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: $font-weight-medium;
+        user-select: none;
+
+        &-message {
+            color: #8a8e96;
+        }
+
+        &-trigger {
+            cursor: pointer;
+            color: $color-link-primary;
+            border-bottom: 1px dotted;
+        }
+
+        fieldset[disabled] & {
+            visibility: hidden;
+        }
+    }
+
+    &__code-wrapper {
+        overflow: hidden;
+        margin: 0 -10px;
+    }
+
+    &__code-input {
+        padding: 20px 10px 10px;
+    }
+
+    &__controls {
+        padding-top: 40px;
+
+        .button {
+            width: 100%;
+        }
+    }
+
+    &__footer {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        width: 100%;
+        max-width: $box-max-width;
+        margin-top: 10px;
+
+        &-lang {
+            margin-right: auto;
+        }
+
+        &-link {
+            font-size: 14px;
+            line-height: 22px;
+            font-weight: $font-weight-medium;
+
+            &_has-dot {
+                position: relative;
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    border-radius: 50%;
+                    height: 6px;
+                    width: 6px;
+                    background-color: #ff0000;
+                    top: 3px;
+                    right: -8px;
+                }
+            }
+        }
+
+        &-etc {
+            position: relative;
+            margin: 0 $etc-margin-left 0 5px;
+
+            &-trigger {
+                display: block;
+                background-color: transparent;
+                color: #979EA6;
+                cursor: pointer;
+                padding: 10px;
+            }
+
+            &-menu {
+                display: flex;
+                flex-flow: column nowrap;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                border-radius: 6px;
+                border: 1px solid #dde3eb;
+                background-color: #fff;
+                padding: 6px 0;
+                transform: translate($etc-margin-left, 6px);
+                box-shadow: 0 3px 12px rgba(27, 31, 35, 0.15);
+
+                &-item {
+                    display: flex;
+                    flex-flow: row nowrap;
+                    align-items: center;
+                    width: 100%;
+                    white-space: nowrap;
+                    cursor: pointer;
+                    padding: 8px 16px;
+                    color: $color-text-primary;
+                    background-color: #fff;
+                    text-align: left;
+
+                    &:hover {
+                        color: #fff;
+                        background-color: $color-primary-blue;
+                    }
+
+                    &,
+                    &:hover,
+                    &:focus,
+                    &:active {
+                        text-decoration: none;
+                    }
+
+                    & > span {
+                        display: block;
+                        font-size: 14px;
+                        line-height: 20px;
+                        font-weight: $font-weight-medium;
+                        position: relative;
+                    }
+                }
+            }
+        }
+
+        .lang-switcher {
+            &__trigger {
+                padding: 10px 0;
+            }
+
+            &__trigger,
+            &__trigger:hover,
+            &_active .lang-switcher__trigger {
+                background-color: transparent;
+            }
+
+            &__menu {
+                transform: translateY(5px);
+                right: auto;
+                left: 0;
+            }
+        }
+    }
+
+    html.viewport_tablet &,
+    html.viewport_mobile & {
+        background-color: #fff;
+
+        &__content {
+            min-height: 100vh;
+        }
+
+        &__logo {
+            margin-top: auto;
+        }
+
+        &__box {
+            box-shadow: none;
+            margin-bottom: 30px;
+        }
+
+        &__footer {
+            margin-top: auto;
+            padding: 0 20px 10px;
+
+            &-etc-menu {
+                top: auto;
+                bottom: 100%;
+                transform: translate($etc-margin-left, -6px);
+            }
+
+            .lang-switcher {
+                &__menu {
+                    transform: translateY(-5px);
+                    right: auto;
+                    top: auto;
+                    bottom: 100%;
+                    left: 0;
+                }
+            }
+        }
+    }
+}

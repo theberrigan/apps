@@ -1,0 +1,140 @@
+<ng-container [ngSwitch]="hasActions()">
+    <div class="account-editor-actions__message" *ngSwitchCase="false">
+        {{ 'accounts.actions.no_actions' | translate }}
+    </div>
+    <div class="account-editor-actions__items" *ngSwitchCase="true">
+        <div class="account-editor-actions__item" *ngIf="canReinstateAccount()" (click)="onReinstateAccount()">
+            <span class="account-editor-actions__item-header account-editor-actions__item-header_green">{{ 'accounts.actions.reinstate_account' | translate }}</span>
+            <span class="account-editor-actions__item-text" [innerHTML]="'accounts.actions.reinstate_desc' | translate : { phone: summaryData.phone_number, lockDate: (summaryData.lock_date | datetime : 'display.datetime') }"></span>
+        </div>
+        <div class="account-editor-actions__item" *ngIf="canSendSMS" (click)="onSendSMS()">
+            <span class="account-editor-actions__item-header">{{ 'accounts.actions.send_sms' | translate }}</span>
+            <span class="account-editor-actions__item-text" [innerHTML]="'accounts.actions.send_sms_desc' | translate : { phone: summaryData.phone_number }"></span>
+        </div>
+        <div class="account-editor-actions__item" *ngIf="canSendPIN" (click)="onConfirmIdentity()">
+            <span class="account-editor-actions__item-header">{{ 'accounts.actions.confirm_identity' | translate }}</span>
+            <span class="account-editor-actions__item-text" [ngSwitch]="!!lastPIN">
+                <span *ngSwitchCase="false" [innerHTML]="'accounts.actions.confirm_identity_desc' | translate"></span>
+                <span *ngSwitchCase="true" [innerHTML]="'accounts.actions.confirm_identity_desc_with_pin' | translate : { pin: lastPIN }"></span>
+            </span>
+        </div>
+        <div class="account-editor-actions__item" *ngIf="!isAccountLocked() && isFleetAccount()" (click)="onBlockAccount()">
+            <span class="account-editor-actions__item-header account-editor-actions__item-header_red">{{ 'accounts.actions.block_account' | translate }}</span>
+            <span class="account-editor-actions__item-text" [innerHTML]="'accounts.actions.block_desc' | translate"></span>
+        </div>
+        <div class="account-editor-actions__item" *ngIf="isCloseAccountVisible()" (click)="onCloseAccount()">
+            <span class="account-editor-actions__item-header account-editor-actions__item-header_red" [innerHTML]="'accounts.actions.close_account' | translate"></span>
+            <span class="account-editor-actions__item-text" [innerHTML]="'accounts.actions.close_account_desc' | translate"></span>
+        </div>
+    </div>
+</ng-container>
+
+<popup-custom class="account-editor-actions__reinstate-popup" [isDisabled]="isReinstating" *ngIf="isReinstatePopupVisible">
+    <popup-content [ngSwitch]="isReinstateReasonRequired()">
+        <ng-container *ngSwitchCase="false">
+            {{ 'accounts.actions.reinstate_confirm' | translate }}
+        </ng-container>
+        <ng-container *ngSwitchCase="true">
+            {{ 'accounts.actions.reinstate_message' | translate }}
+            <textarea class="textarea account-editor-actions__reinstate-popup-text"
+                [(ngModel)]="reinstateReason"
+                (ngModelChange)="onChangeReinstateReason()"
+            ></textarea>
+        </ng-container>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button_regular button_light-blue" (click)="onConfirmReinstate(false)">
+            <span class="button__caption">{{ 'accounts.actions.reinstate_cancel' | translate }}</span>
+        </button>
+        <button type="button" class="button button_regular button_blue"
+            [isDisabled]="!canSubmitReinstate()"
+            [isProgress]="isReinstating"
+            (click)="onConfirmReinstate(true)"
+        >
+            <span class="button__caption">{{ 'accounts.actions.reinstate_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<popup-custom class="account-editor-actions__sms-popup" [isDisabled]="isSendingSMS" *ngIf="isSMSPopupVisible">
+    <popup-content>
+        <label class="account-editor-actions__sms-popup-label">
+            <span class="account-editor-actions__sms-popup-label-text">
+                {{ 'accounts.actions.send_sms_label' | translate }}
+            </span>
+            <textarea class="textarea account-editor-actions__sms-popup-text"
+                [(ngModel)]="smsText"
+                (ngModelChange)="onChangeSMSText()"
+            ></textarea>
+        </label>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button_regular button_light-blue" (click)="onConfirmSendSMS(false)">
+            <span class="button__caption">{{ 'accounts.actions.send_sms_cancel' | translate }}</span>
+        </button>
+        <button type="button" class="button button_regular button_blue"
+            [isDisabled]="!isSMSTextValid"
+            [isProgress]="isSendingSMS"
+            (click)="onConfirmSendSMS(true)"
+        >
+            <span class="button__caption">{{ 'accounts.actions.send_sms_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<popup-custom class="account-editor-actions__pin-popup" [isDisabled]="isSendingPIN" *ngIf="isPINPopupVisible">
+    <popup-content>
+        <span [innerHTML]="'accounts.actions.confirm_identity_confirm' | translate : { phone: summaryData.phone_number }"></span>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button_regular button_light-blue" (click)="onConfirmSendPIN(false)">
+            <span class="button__caption">{{ 'accounts.actions.confirm_identity_cancel' | translate }}</span>
+        </button>
+        <button type="button" class="button button_regular button_blue"
+            [isProgress]="isSendingPIN"
+            (click)="onConfirmSendPIN(true)"
+        >
+            <span class="button__caption">{{ 'accounts.actions.confirm_identity_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<popup-custom class="account-editor-actions__close-account-popup"
+    *ngIf="isCloseAccountPopupVisible"
+    [isDisabled]="isClosingAccount"
+>
+    <popup-content>
+        {{ 'accounts.actions.close_account_confirm' | translate }}
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button_regular button_light-red" (click)="onConfirmCloseAccount(false)">
+            <span class="button__caption">{{ 'accounts.actions.close_account_cancel' | translate }}</span>
+        </button>
+        <button type="button" class="button button_regular button_red"
+            [isProgress]="isClosingAccount"
+            (click)="onConfirmCloseAccount(true)"
+        >
+            <span class="button__caption">{{ 'accounts.actions.close_account_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<popup-custom class="account-editor-actions__block-account-popup"
+    *ngIf="isBlockAccountPopupVisible"
+    [isDisabled]="isBlockingAccount"
+>
+    <popup-content>
+        {{ 'accounts.actions.block_account_confirm' | translate }}
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button_regular button_light-red" (click)="onConfirmBlockAccount(false)">
+            <span class="button__caption">{{ 'accounts.actions.block_account_cancel' | translate }}</span>
+        </button>
+        <button type="button" class="button button_regular button_red"
+            [isProgress]="isBlockingAccount"
+            (click)="onConfirmBlockAccount(true)"
+        >
+            <span class="button__caption">{{ 'accounts.actions.block_account_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>

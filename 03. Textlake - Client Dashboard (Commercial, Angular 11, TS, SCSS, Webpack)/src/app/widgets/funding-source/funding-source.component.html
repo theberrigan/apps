@@ -1,0 +1,12 @@
+<div class="funding-source__row">
+    <input type="text" class="input input_regular funding-source__cardholder" [placeholder]="'subs.chn__placeholder' | translate" [(ngModel)]="cardForm.cardholder">
+</div>
+<div class="funding-source__row">
+    <div class="input input_regular funding-source__number" [class.input_focus]="hasCardNumberFocus" #cardNumberNest></div>
+</div>
+<div class="funding-source__row">
+    <div class="input input_regular funding-source__expire" [class.input_focus]="hasCardExpireFocus" #cardExpireNest></div>
+    <div class="input input_regular funding-source__cvc" [class.input_focus]="hasCardCVCFocus" #cardCVCNest></div>
+    <input type="text" class="input input_regular funding-source__zip" [placeholder]="'subs.zip__placeholder' | translate" [(ngModel)]="cardForm.zip"/>
+</div>
+<div class="funding-source__error" *ngIf="!!cardErrorMessage">{{ cardErrorMessage }}</div>

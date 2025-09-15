@@ -1,0 +1,50 @@
+@import './definitions.scss';
+
+.select {
+    $font-size: 14px;
+    $line-height: ($font-size + 4px);
+    $padding-y: (($control-height-regular - $line-height - ($control-border-size * 2)) / 2);
+
+    display: inline-flex;
+    color: $color-text-primary;
+    font-size: $font-size;
+    line-height: $line-height;
+    font-family: inherit;
+    font-weight: $font-weight-medium;
+    text-align: left;
+    border-radius: $control-primary-radius;
+    border: $control-border-size solid $color-input-deco-color;
+    box-shadow: $control-box-shadow;
+    background: #fff url('../images/dropdown_arrow.svg') no-repeat right 10px center;
+    appearance: none;
+    box-sizing: border-box;
+    max-width: 100%;
+    cursor: default;
+
+    &::-ms-expand {
+        display: none;
+    }
+
+    &_regular {
+        height: $control-height-regular;
+        min-width: 60px;
+        padding: $padding-y 30px $padding-y 10px;
+    }
+
+    fieldset:disabled &,
+    &:disabled {
+        box-shadow: none;
+        transform: none;
+        pointer-events: none;
+        opacity: 0.7;
+        cursor: default;
+    }
+
+    optgroup {
+        background-color: #e6e6e6;
+    }
+
+    option {
+        background-color: #fff;
+    }
+}

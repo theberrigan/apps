@@ -1,0 +1,285 @@
+@import '../../assets/css/definitions';
+
+.nav-mobile {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(#000, 0.75);
+    user-select: none;
+    z-index: 10000 !important;
+    overscroll-behavior: none;
+
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 150ms, opacity 150ms;
+
+    &_open {
+        visibility: visible;
+        opacity: 1;
+        transition: visibility 0s linear 0s, opacity 150ms;
+        z-index: 10000 !important;
+    }
+
+    &-active {
+        overflow: hidden !important;
+    }
+
+    &__overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__drawer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        max-width: 300px;
+        height: 100%;
+        background-color: #fff;
+        overflow: hidden;
+        transform: translateX(-100%);
+        transition: transform 150ms ease;
+    }
+
+    &_open &__drawer {
+        transform: translateX(0);
+        transition: transform 150ms ease;
+    }
+
+    &__layout {
+        display: block;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: none;
+
+        &_nav {
+            padding-top: 18px;
+        }
+    }
+
+    &__logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-left: 0;
+        margin: 0;
+        margin-top: 6px;
+        .slogan {
+            font-size: 12px;
+            margin: 6px 0 4px;
+        }
+        #neoride-logo-svg {
+            height: 34px;
+            width: auto;
+            margin-top: 8px;
+        }
+        &-svg {
+            display: block;
+            width: 135px;
+            height: auto;
+        }
+    }
+
+    &__wrapper {
+        margin-top: 24px;
+    }
+
+    &__list {
+        width: 100%;
+
+        &_langs {
+            margin-top: 20px;
+        }
+
+        > li {
+            padding: 2px 10px;
+        }
+
+        &-button,
+        &-link {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            border-radius: 6px;
+            padding: 12px 15px 12px 16px;
+            background-color: #fff;
+            width: 100%;
+            color: #6f7174;
+
+            &-icon {
+                width: 24px;
+                height: 24px;
+            }
+
+            &-text {
+                display: block;
+                font-size: 15px;
+                line-height: 24px;
+                min-height: 24px;
+                vertical-align: middle;
+                font-weight: 500;
+                color: #53565d;
+                margin-right: auto;
+                margin-left: 42px;
+            }
+
+            &-icon + &-text {
+                margin-left: 18px;
+            }
+        }
+
+        &-button {
+
+        }
+
+        &-link {
+            position: relative;
+
+            &,
+            &:link,
+            &:hover,
+            &:focus,
+            &:active {
+                text-decoration: none;
+            }
+
+            &_active {
+                background-color: $figma-green;
+                color: #fff;
+            }
+
+            &_active &-text {
+                color: #fff;
+            }
+
+            &_has-dot:after {
+                content: '';
+                position: absolute;
+                border-radius: 50%;
+                height: 6px;
+                width: 6px;
+                background-color: #ff0000;
+                top: 11px;
+                left: 43px;
+            }
+        }
+    }
+
+    &__sep {
+        width: 100%;
+        height: 1px;
+        margin: 8px 0;
+        background-color: #dde3eb;
+    }
+
+    &__langs-header {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        height: $app-bar-height;
+        color: #6f7174;
+        border-bottom: 1px solid #dde3eb;
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: $font-weight-semi-bold;
+        padding-left: 20px;
+
+        &-icon {
+            display: block;
+        }
+
+        &-text {
+            display: block;
+            padding-left: 20px;
+        }
+    }
+}
+
+.nav-child-link {
+    padding-left: 18px;
+}
+
+.nav-mobile__logo-img {
+    width: 150px;
+    max-width: 90%;
+    height: auto;
+    display: block;
+    margin: 0 0 6px 0;
+}
+
+.nav-mobile__list-link:hover,
+.nav-mobile__list-link:focus,
+.nav-mobile__list-link_active {
+    background-color: #E3FDF5 !important;
+    color: #003A70 !important;
+    border-left: 6px solid #00C08B !important;
+    border-radius: 0 8px 8px 0;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.nav-mobile__list > li {
+    margin-bottom: 8px;
+}
+.nav-mobile__list-link:hover .nav-mobile__list-link-icon,
+.nav-mobile__list-link:focus .nav-mobile__list-link-icon,
+.nav-mobile__list-link_active .nav-mobile__list-link-icon,
+.nav-mobile__list-link:hover .nav-mobile__list-link-text,
+.nav-mobile__list-link:focus .nav-mobile__list-link-text,
+.nav-mobile__list-link_active .nav-mobile__list-link-text {
+    color: #003A70 !important;
+}
+
+.nav-mobile__lang-option_selected,
+.nav-mobile__lang-option_selected:hover,
+.nav-mobile__lang-option_selected:focus {
+    background-color: rgba(0, 192, 139, 0.08) !important;
+    color: #222 !important;
+    font-weight: 600;
+}
+
+.nav-mobile__lang-option_selected .nav-mobile__list-link-text,
+.nav-mobile__lang-option_selected:hover .nav-mobile__list-link-text,
+.nav-mobile__lang-option_selected:focus .nav-mobile__list-link-text {
+    color: #222 !important;
+}
+
+.nav-mobile__lang-confirm {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 24px;
+    width: 90%;
+    max-width: 320px;
+    margin: 0 auto;
+    height: 48px;
+    background: $figma-green;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    padding: 0;
+    z-index: 10001;
+}
+.nav-mobile__lang-confirm:hover,
+.nav-mobile__lang-confirm:focus {
+    background: darken($figma-green, 8%);
+}
+
+.terms-external-icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    vertical-align: middle;
+}

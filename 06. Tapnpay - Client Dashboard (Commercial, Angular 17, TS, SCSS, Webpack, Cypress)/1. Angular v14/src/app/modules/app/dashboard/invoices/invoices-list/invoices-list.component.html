@@ -1,0 +1,142 @@
+<!-- Page Header -->
+<ng-container [ngSwitch]="viewportBreakpoint">
+    <page-panel *ngSwitchCase="'desktop'">
+        <h1 class="page-panel__header" [innerHTML]="'invoices.invoices_list.page_header' | translate"></h1>
+    </page-panel>
+    <app-bar *ngSwitchDefault></app-bar>
+</ng-container>
+
+<!-- Page Content -->
+<div class="invoices-list__content" [ngSwitch]="listState">
+    <div class="invoices-list__loading" *ngSwitchCase="'loading'">
+        <loader></loader>
+    </div>
+    <div class="invoices-list__message" *ngSwitchCase="'empty'">
+        {{ 'invoices.invoices_list.no_invoices' | translate }}
+    </div>
+    <div class="invoices-list__message invoices-list__message_error" *ngSwitchCase="'error'">
+        {{ 'invoices.invoices_list.loading_error' | translate }}
+    </div>
+    <ng-container *ngSwitchCase="'list'" [ngSwitch]="viewportBreakpoint">
+        <ng-container *ngSwitchCase="'desktop'">
+            <div class="invoices-list__table-wrap">
+                <div class="table table_middle table_striped table_nowrap invoices-list__table" [class.table_clickable]="!isSubmitting">
+                    <div class="table__header">
+                        <div class="table__row">
+                            <div class="table__cell invoices-list__table-cell-checkbox">
+                                <checkbox-static [isChecked]="isAllInvoicesChecked" [isDisabled]="isSubmitting" (click)="onCheckAllInvoices()"></checkbox-static>
+                            </div>
+                            <div class="table__cell invoices-list__table-cell-invoice">
+                                {{ 'invoices.invoices_list.invoice_no_th' | translate }}
+                            </div>
+                            <div class="table__cell invoices-list__table-cell-amount">
+                                {{ 'invoices.invoices_list.total_amount_th' | translate }}
+                            </div>
+                            <div class="table__cell invoices-list__table-cell-transactions">
+                                {{ 'invoices.invoices_list.transactions_th' | translate }}
+                            </div>
+                            <div class="table__cell invoices-list__table-cell-date">
+                                {{ 'invoices.invoices_list.date_th' | translate }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table__body">
+                        <div class="table__row" *ngFor="let item of invoiceItems" (click)="onItemClick(item, $event)">
+                            <div class="table__cell invoices-list__table-cell-checkbox" (click)="onCheckboxCellClick(item, $event)">
+                                <checkbox-static [isChecked]="item.isChecked" [isDisabled]="isSubmitting"></checkbox-static>
+                            </div>
+                            <div class="table__cell invoices-list__table-cell-invoice">
+                                {{ item.name }}
+                            </div>
+                            <div class="table__cell invoices-list__table-cell-amount">
+                                {{ item.amount | currency }}
+                            </div>
+                            <div class="table__cell invoices-list__table-cell-transactions">
+                                {{ item.transactionCount }}
+                            </div>
+                            <div class="table__cell table__cell_wrap invoices-list__table-cell-date">
+                                {{ item.createTs | datetime : 'display.date' }}
+                                <span class="invoices-list__table-due-in"
+                                    *ngIf="item.showTimeLeft"
+                                    [class.invoices-list__table-due-in_low]="item.isLowTimeLeft"
+                                >
+                                    {{ 'invoices.invoices_list.due_in' | translate : { time: item.hoursLeft } }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+            <h1 class="page-header">{{ 'invoices.invoices_list.page_header' | translate }}</h1>
+            <div class="invoices-list__list">
+                <div class="invoices-list__list-item" *ngFor="let item of invoiceItems" (click)="onItemClick(item, $event)">
+                    <div class="invoices-list__list-item-cell invoices-list__list-item-cell_checkbox" (click)="onCheckboxCellClick(item, $event)">
+                        <checkbox-static [isChecked]="item.isChecked" [isDisabled]="isSubmitting"></checkbox-static>
+                    </div>
+                    <div class="invoices-list__list-item-cell invoices-list__list-item-cell_info">
+                        <div class="invoices-list__list-item-name">{{ item.name }}</div>
+                        <div class="invoices-list__list-item-date">
+                            {{ item.createTs | datetime : 'display.date' }}
+                            <span class="invoices-list__list-item-date-due-in"
+                                *ngIf="item.showTimeLeft"
+                                [class.invoices-list__list-item-date-due-in_low]="item.isLowTimeLeft"
+                            >
+                                {{ 'invoices.invoices_list.due_in' | translate : { time: item.hoursLeft } }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="invoices-list__list-item-cell invoices-list__list-item-cell_amount">
+                        {{ item.amount | currency }}
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+</div>
+
+<invoice-payment
+    #paymentComponent
+    [invoiceItems]="invoiceItemsToPay"
+    [totalAmount]="checkedInvoiceAmount"
+    (onPaymentBegin)="onPaymentBegin()"
+    (onPaymentSuccess)="onPaymentSuccess($event)"
+    (onPaymentCancel)="onPaymentCancel()"
+    (onPaymentChecked)="onPaymentChecked()"
+></invoice-payment>
+
+<!-- Context Panels -->
+<context-panel *ngIf="viewportBreakpoint === 'desktop' && isActionsVisible">
+    <div class="context-panel__label" [innerHTML]="'invoices.invoices_list.total_amount' | translate : { amount: (checkedInvoiceAmount | currency) }"></div>
+    <button type="button" class="button button_size-42 button_white-blue context-panel__control"
+        [isDisabled]="isSubmitting"
+        [isProgress]="isSubmitting"
+        (click)="onMakePayment()"
+    >
+        <span class="button__caption" [innerHTML]="'invoices.invoices_list.tap_to_pay' | translate"></span>
+    </button>
+    <button type="button" class="button button_size-42 button_white-grey context-panel__control"
+        [isDisabled]="isSubmitting"
+        (click)="onShowDetails()"
+    >
+        <span class="button__caption" [innerHTML]="'invoices.invoices_list.show_details' | translate"></span>
+    </button>
+</context-panel>
+
+<!-- Mobile Controls Panel -->
+<div class="invoices-list__controls" *ngIf="viewportBreakpoint !== 'desktop' && isActionsVisible" [@invoicesListMobileActions]>
+    <button type="button" class="button button_regular button_light-blue invoices-list__controls-details"
+        [isDisabled]="isSubmitting"
+        (click)="onShowDetails()"
+    >
+        <span class="button__caption" [innerHTML]="'invoices.invoices_list.show_details' | translate"></span>
+    </button>
+    <button type="button" class="button button_regular button_blue invoices-list__controls-pay"
+        [isDisabled]="isSubmitting"
+        [isProgress]="isSubmitting"
+        (click)="onMakePayment()"
+    >
+        <span class="button__caption" [innerHTML]="'invoices.invoices_list.tap_to_pay_with_amount' | translate : { amount: (checkedInvoiceAmount | currency) }"></span>
+    </button>
+</div>

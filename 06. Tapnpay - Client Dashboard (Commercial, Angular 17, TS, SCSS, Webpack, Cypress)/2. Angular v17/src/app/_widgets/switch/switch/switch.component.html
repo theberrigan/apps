@@ -1,0 +1,10 @@
+<div class="switch-control">
+    <span class="switch-label" [class]="{'switch-label--active' : !checked}">Disable</span>
+    <div class="switch-container"
+         [class.switch-on]="checked"
+         (click)="toggle()">
+        <div class="switch-toggle"></div>
+    </div>
+    <span class="switch-label" [class]="{'switch-label--active' : checked}">Enable</span>
+</div>
+

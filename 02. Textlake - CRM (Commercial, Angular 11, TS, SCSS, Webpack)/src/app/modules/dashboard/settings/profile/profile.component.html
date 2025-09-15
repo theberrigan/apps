@@ -1,0 +1,121 @@
+<popup-custom class="profile__editor" #popup [options]="{ closeBy: 'manual', stickyHeader: true, stickyControls: true }" (onCloseRequest)="onCloseRequest($event)">
+    <popup-box>
+        <popup-header>{{ 'settings.profile.profile__header' | translate }}</popup-header>
+        <popup-content>
+            <!-- TODO: error -->
+            <ng-container [ngSwitch]="state">
+                <div class="profile__error" *ngSwitchCase="'error'">{{ 'settings.profile.init_error__message' | translate }}</div>
+                <ng-container *ngSwitchCase="'ready'">
+                    <fieldset [formGroup]="form" [disabled]="isSaving" *ngIf="form">
+                        <div class="profile__controls">
+                            <div class="profile__control">
+                                <label class="profile__control-label">
+                                    <span class="profile__control-label-text">
+                                        {{ 'settings.profile.email__label' | translate }}
+                                    </span>
+                                </label>
+                                <div class="profile__control-input">
+                                    <input type="text" class="input input_regular profile__input-email" formControlName="email">
+                                    <span class="profile__email-verification-link" *ngIf="!userData.profile.primaryEmailVerified" (click)="onVerifyEmail()">
+                                        {{ 'settings.profile.verify__button' | translate }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="profile__control">
+                                <label class="profile__control-label">
+                                    <span class="profile__control-label-text">
+                                        {{ 'settings.profile.language__label' | translate }}
+                                    </span>
+                                </label>
+                                <select class="select select_regular profile__control-input" formControlName="language">
+                                    <option *ngFor="let languageOption of languageOptions" [ngValue]="languageOption.value">
+                                        {{ languageOption.display | translate }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="profile__control">
+                                <label class="profile__control-label">
+                                    <span class="profile__control-label-text">
+                                        {{ 'settings.profile.display_datetime_format' | translate }}
+                                    </span>
+                                </label>
+                                <div class="profile__control-input profile__input-datetime" formGroupName="datetimeDisplayFormat">
+                                    <select class="select select_regular" formControlName="date">
+                                        <optgroup *ngFor="let dateFormatOption of dateFormatOptions" [label]="dateFormatOption.label | translate">
+                                            <option *ngFor="let format of dateFormatOption.formats" [ngValue]="format">
+                                                {{ sampleDate | datetime : format }}
+                                            </option>
+                                        </optgroup>
+                                    </select>
+                                    <select class="select select_regular" formControlName="time">
+                                        <option *ngFor="let timeFormatOption of timeFormatOptions" [ngValue]="timeFormatOption.format">
+                                            {{ sampleDate | datetime : timeFormatOption.format }} {{ timeFormatOption.suffix | translate }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="profile__control">
+                                <label class="profile__control-label">
+                                    <span class="profile__control-label-text">
+                                        {{ 'settings.profile.select_datetime_format' | translate }}
+                                    </span>
+                                </label>
+                                <div class="profile__control-input profile__input-datetime" formGroupName="datetimeSelectFormat">
+                                    <select class="select select_regular" formControlName="date">
+                                        <optgroup *ngFor="let dateFormatOption of dateFormatOptions" [label]="dateFormatOption.label | translate">
+                                            <option *ngFor="let format of dateFormatOption.formats" [ngValue]="format">
+                                                {{ sampleDate | datetime : format }}
+                                            </option>
+                                        </optgroup>
+                                    </select>
+                                    <select class="select select_regular" formControlName="time">
+                                        <option *ngFor="let timeFormatOption of timeFormatOptions" [ngValue]="timeFormatOption.format">
+                                            {{ sampleDate | datetime : timeFormatOption.format }} {{ timeFormatOption.suffix | translate }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="profile__control" *ngIf="viewportBreakpoint === 'desktop'">
+                                <div class="profile__control-input profile__input-colorization">
+                                    <checkbox formControlName="offersColorizeEntireRow">
+                                        <span class="profile__checkbox-caption">{{ 'settings.profile.colorize_offers' | translate }}</span>
+                                    </checkbox>
+                                    <checkbox formControlName="projectsColorizeEntireRow">
+                                        <span class="profile__checkbox-caption">{{ 'settings.profile.projects_offers' | translate }}</span>
+                                    </checkbox>
+                                    <checkbox formControlName="translatorsColorizeEntireRow">
+                                        <span class="profile__checkbox-caption">{{ 'settings.profile.translators_offers' | translate }}</span>
+                                    </checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile__colors">
+                            <div class="profile__colors-column" formGroupName="projectsStatusesColors">
+                                <div class="profile__colors-column-header">{{ 'settings.profile.project_status_color' | translate }}</div>
+                                <color-picker [formControlName]="projectStatus.key" *ngFor="let projectStatus of projectsStatuses">
+                                    {{ projectStatus.display | translate }}
+                                </color-picker>
+                            </div>
+                            <div class="profile__colors-column" formGroupName="offersStatusesColors">
+                                <div class="profile__colors-column-header">{{ 'settings.profile.offer_status_color' | translate }}</div>
+                                <color-picker [formControlName]="offerStatus.key" *ngFor="let offerStatus of offersStatuses">
+                                    {{ offerStatus.display | translate }}
+                                </color-picker>
+                            </div>
+                        </div>
+                    </fieldset>
+                </ng-container>
+            </ng-container>
+        </popup-content>
+        <popup-controls>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_regular button_white" (click)="onCloseRequest()" [isDisabled]="isSaving">
+                    <span class="button__caption">{{ 'settings.profile.cancel__button' | translate }}</span>
+                </button>
+                <button type="button" class="button button_regular button_blue" (click)="onSave()" [isDisabled]="isSaving" [isProgress]="isSaving">
+                    <span class="button__caption">{{ 'settings.profile.save__button' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup-custom>

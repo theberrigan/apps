@@ -1,0 +1,56 @@
+@import './definitions.scss';
+@import './mixins.scss';
+
+html,
+body {
+    background: #6c58b5;
+    background: linear-gradient(-35deg, #5b3fc1, #8180ff);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+[hidden],
+.hidden {
+    display: none !important;
+}
+
+.clear-fix {
+    @include clear-fix;
+}
+
+.no-scroll {
+    @include no-scroll;
+}
+
+.no-select {
+    @include no-select;
+}
+
+.dragging {
+    cursor: default !important;
+    @extend .no-select;
+}
+
+input[type='text'],
+input[type='password'],
+input[type='number'],
+textarea {
+    color: $color-text-primary;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.nowrap,
+.text-nowrap {
+    white-space: nowrap;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}

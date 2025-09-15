@@ -1,0 +1,80 @@
+<ng-container [ngSwitch]="activePopup">
+    <popup-custom class="invoice-payment__payment-popup"
+        *ngSwitchCase="'zip'"
+        [isDisabled]="isSubmitting"
+        (onClose)="hideZipPopup()"
+    >
+        <popup-content>
+            <label class="invoice-payment__label">
+                <span class="invoice-payment__label-text">{{ 'invoices.invoice_payment.zip_code' | translate }}</span>
+                <input type="text" class="invoice-payment__input invoice-payment__input_zip"
+                    [(ngModel)]="zipCode"
+                    (ngModelChange)="validateZipPopup()"
+                >
+            </label>
+            <div class="invoice-payment__message invoice-payment__message_error"
+                *ngIf="isIncorrectZipVisible"
+                [innerHTML]="'invoices.invoice_payment.payment_error_304' | translate"
+            ></div>
+        </popup-content>
+        <popup-controls [isStretched]="true">
+            <button type="button" class="button button_regular button_light-blue" (click)="onCloseZipPopup()">
+                <span class="button__caption">{{ 'invoices.invoice_payment.cancel' | translate }}</span>
+            </button>
+            <button type="button" class="button button_regular button_blue"
+                (click)="onSubmitZipPopup()"
+                [isDisabled]="!isZipPopupValid || isSubmitting"
+                [isProgress]="isSubmitting"
+            >
+                <span class="button__caption">{{ 'invoices.invoice_payment.ok' | translate }}</span>
+            </button>
+        </popup-controls>
+    </popup-custom>
+
+    <popup-custom class="invoice-payment__payment-result-popup"
+        *ngSwitchCase="'result'"
+        [isDisabled]="isSubmitting"
+        (onClose)="onHideResultPopup(false)"
+    >
+        <popup-content>
+            <span [innerHTML]="resultMessageKey | translate : resultMessageData"></span>
+        </popup-content>
+        <popup-controls [isStretched]="true" [ngSwitch]="isPaymentResultOk">
+            <button type="button" class="button button_regular button_blue" *ngSwitchCase="true" (click)="onHideResultPopup(false)">
+                <span class="button__caption">{{ 'invoices.invoice_payment.result_ok' | translate }}</span>
+            </button>
+            <div class="invoice-payment__payment-result-popup-buttons" *ngSwitchCase="false">
+                <button type="button" class="button button_regular button_light-blue" (click)="onHideResultPopup(false)">
+                    <span class="button__caption">{{ 'invoices.invoice_payment.result_cancel' | translate }}</span>
+                </button>
+                <button type="button" class="button button_regular button_blue" (click)="onHideResultPopup(true)">
+                    <span class="button__caption">{{ 'invoices.invoice_payment.result_change_payment_method' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-custom>
+
+    <popup-custom class="invoice-payment__wallet-payment-confirm-popup"
+        *ngSwitchCase="'wallet-payment-confirm'"
+        [isDisabled]="isSubmitting"
+    >
+        <popup-content>
+            <span [innerHTML]="'invoices.invoice_payment.confirm_message' | translate : { amount: walletPaymentAttrs.amountFormatted, wallet: walletPaymentAttrs.wallet }"></span>
+        </popup-content>
+        <popup-controls [isStretched]="true">
+            <button type="button" class="button button_regular button_light-blue" (click)="onCloseWalletPaymentConfirmPopup(false)">
+                <span class="button__caption">{{ 'invoices.invoice_payment.confirm_cancel' | translate }}</span>
+            </button>
+            <button type="button" class="button button_regular button_blue" [isProgress]="isSubmitting" (click)="onCloseWalletPaymentConfirmPopup(true)">
+                <span class="button__caption">{{ 'invoices.invoice_payment.confirm_ok' | translate }}</span>
+            </button>
+        </popup-controls>
+    </popup-custom>
+
+    <payment-method
+        *ngSwitchCase="'method'"
+        [mode]="methodPopupMode"
+        [isSilentInit]="false"
+        (onDone)="onPaymentMethodSelected($event)"
+    ></payment-method>
+</ng-container>

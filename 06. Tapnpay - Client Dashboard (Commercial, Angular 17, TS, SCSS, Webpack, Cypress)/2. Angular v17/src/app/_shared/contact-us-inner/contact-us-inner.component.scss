@@ -1,0 +1,18 @@
+&_required &-text {
+    position: relative;
+
+    &:after {
+        content: '*';
+        display: inline-block;
+        position: static;
+        margin-left: 2px;
+        color: #f14a4a;
+        background: none;
+        border-radius: 0;
+        height: auto;
+        width: auto;
+        font-size: 16px;
+        line-height: 1;
+        vertical-align: super;
+    }
+} 

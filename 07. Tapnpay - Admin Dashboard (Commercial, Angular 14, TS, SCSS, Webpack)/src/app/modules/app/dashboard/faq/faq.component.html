@@ -1,0 +1,30 @@
+<div class="faq__heading">
+    <div class="faq__header">{{ 'faq.page_header' | translate }}</div>
+    <div class="faq__controls">
+        <a href="https://tapnpay.biz/faq" target="nofollow noopener" class="button button_regular button_light-blue">
+            {{ 'faq.view_faq' | translate }}
+        </a>
+    </div>
+</div>
+<ng-container [ngSwitch]="isUploading">
+    <div class="faq__indicator" *ngSwitchCase="true">
+        <loader></loader>
+    </div>
+    <div class="faq__deco-dropzone"
+        *ngSwitchCase="false"
+        (click)="onDecoDropzoneClick()"
+        [innerHTML]="'faq.deco_dropzone_text' | translate"
+    ></div>
+</ng-container>
+<form class="faq__upload-form" #uploadForm>
+    <input type="file" class="faq__upload-input" [disabled]="isUploading" #uploadInput (change)="onFileChange()">
+</form>
+<div class="faq__dropzone" *ngIf="isDropzoneVisible">
+    <div class="faq__dropzone-content" [innerHTML]="'faq.dropzone_text' | translate"></div>
+    <div class="faq__dropzone-screen"
+        (dragleave)="onDropzoneDragLeave($event)"
+        (dragenter)="onDropzoneDragEnter($event)"
+        (dragover)="onDropzoneDragOver($event)"
+        (drop)="onFileDrop($event)"
+    ></div>
+</div>

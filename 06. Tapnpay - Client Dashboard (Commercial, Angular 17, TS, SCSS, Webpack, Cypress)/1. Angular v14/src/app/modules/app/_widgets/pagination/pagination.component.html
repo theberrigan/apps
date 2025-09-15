@@ -1,0 +1,15 @@
+<ng-container *ngIf="data && buttons && isVisible">
+    <div class="pagination__buttons">
+        <button type="button" class="button button_regular"
+            *ngFor="let button of buttons"
+            [isDisabled]="isLoading || button.isDisabled"
+            [ngClass]="{
+                'button_white': !button.isActive,
+                'button_blue': button.isActive
+            }"
+            (click)="onClickSpecific(button.page)"
+        >
+            <span class="button__caption">{{ button.isGap ? '…' : (button.page + 1) }}</span>
+        </button>
+    </div>
+</ng-container>

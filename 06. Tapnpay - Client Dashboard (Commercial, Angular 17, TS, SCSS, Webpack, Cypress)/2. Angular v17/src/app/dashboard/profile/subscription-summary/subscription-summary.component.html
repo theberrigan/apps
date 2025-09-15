@@ -1,0 +1,252 @@
+<!-- Page Header -->
+<ng-container [ngSwitch]="viewportBreakpoint">
+    <page-panel *ngSwitchCase="'desktop'">
+        <h1 class="page-panel__header page-panel__header_has-arrow"
+            (click)="onGoBack()"
+            [innerHTML]="'subscription_summary.page_header' | translate"></h1>
+    </page-panel>
+    <app-bar [showBackButton]="true" (onBack)="onGoBack()" *ngSwitchDefault>
+    </app-bar>
+</ng-container>
+
+<!-- Page Content -->
+<div class="subscription-summary__content" [ngSwitch]="dataState">
+
+    <div class="subscription-summary__loading" *ngSwitchCase="dataStates.LOADING">
+        <loader></loader>
+    </div>
+
+    <div class="subscription-summary__message subscription-summary__message_error" *ngSwitchCase="dataStates.ERROR">
+        {{ 'subscription_summary.load_error' | translate }}
+    </div>
+
+    <div *ngSwitchCase="dataStates.READY">
+
+        <ng-container *ngIf="currentSubscription">
+            <h3 class="mt-24">{{ 'subscription_summary.current_subs_title' | translate }}</h3>
+            <app-subscription-info-card
+                class="d-block mb-32"
+                [subscriptionToShow]="currentSubscription"></app-subscription-info-card>
+        </ng-container>
+
+
+        <ng-container *ngIf="nextDownGradeSubscription">
+            <h3>{{ 'subscription_summary.next_subs_title' | translate }}</h3>
+            <app-subscription-info-card [subscriptionToShow]="nextDownGradeSubscription"></app-subscription-info-card>
+        </ng-container>
+
+
+        <div class="subscription-summary__button-panel">
+            <button (click)="startCancelMembership()"
+                    *ngIf="isShowCancel"
+                    class="button button_regular button_light-red subscription-summary__button"
+                    type="button">
+                <span class="button__caption">{{ 'subscription_summary.cancel' | translate }}</span>
+            </button>
+
+            <button (click)="onUpdateClick()"
+                    *ngIf="isShowUpdateButton()"
+                    class="button button_regular button_light-blue subscription-summary__button"
+                    type="button">
+                <span class="button__caption">{{ 'subscription_summary.update' | translate }}</span>
+            </button>
+
+            <button (click)="restoreCurrentSubscription()"
+                    *ngIf="isShowRestoreButton()"
+                    [isProgress]="cancelMembershipState.isRestoreProcessing"
+                    class="button button_regular button_light-blue subscription-summary__button">
+                <span class="button__caption">{{ 'subscription_summary.restore' | translate }}</span>
+            </button>
+        </div>
+
+
+        <popup-custom [isSmall]="true" *ngIf="isActiveCancelStep(1)">
+            <popup-content>
+                <span class="popup-title">{{ 'subscription_summary.cancellation_flow.step1.header' | translate }}</span>
+                <p class="benefits-list-title">
+                    {{ 'subscription_summary.cancellation_flow.step1.benefits_title' | translate }}
+                </p>
+                <ul class="benefits-list">
+                    <li class="benefits-list__item">
+                        {{ 'subscription_summary.cancellation_flow.step1.benefits.benefit1' | translate }}
+                    </li>
+                    <li class="benefits-list__item">
+                        {{ 'subscription_summary.cancellation_flow.step1.benefits.benefit2' | translate }}
+                    </li>
+                    <li class="benefits-list__item">
+                        {{ 'subscription_summary.cancellation_flow.step1.benefits.benefit3' | translate }}
+                    </li>
+                </ul>
+
+            </popup-content>
+            <popup-controls [isColumn]="true">
+                <button type="button"
+                        class="button button_regular button_blue w-100"
+                        (click)="closeCancelMembership()">
+                    <span
+                        class="button__caption">{{ 'subscription_summary.cancellation_flow.step1.cancel' | translate }}</span>
+                </button>
+
+                <button type="button"
+                        class="button button--link text-cancel-button"
+                        (click)="setActiveCancelStep(2)">
+                    <span
+                        class="button__caption">{{ 'subscription_summary.cancellation_flow.step1.confirm' | translate }}</span>
+                </button>
+
+            </popup-controls>
+        </popup-custom>
+
+        <popup-custom [isSmall]="true" *ngIf="isActiveCancelStep(2)">
+            <popup-content>
+                <span class="popup-title">{{ 'subscription_summary.cancellation_flow.step2.header' | translate }}</span>
+                <div class="cancel-reason-form">
+                    <div class="cancel-reason-form__control">
+                        <label class="custom-radio" for="cancel-reason-1">
+                            {{ 'subscription_summary.cancellation_flow.step2.reasons.reason1' | translate }}
+                            <input type="radio"
+                                   id="cancel-reason-1"
+                                   name="cancel-reason"
+                                   value="I_dont_find_the_service"
+                                   [checked]="true"
+                                   [(ngModel)]="cancelMembershipState.cancelReason" required>
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="cancel-reason-form__control">
+                        <label class="custom-radio" for="cancel-reason-2">
+                            {{ 'subscription_summary.cancellation_flow.step2.reasons.reason2' | translate }}
+                            <input type="radio"
+                                   id="cancel-reason-2"
+                                   name="cancel-reason"
+                                   value="one_time_use"
+                                   [(ngModel)]="cancelMembershipState.cancelReason">
+                            <span class="checkmark"></span>
+                        </label>
+                        <span class="checkmark"></span>
+                    </div>
+                    <div class="cancel-reason-form__control">
+                        <label class="custom-radio" for="cancel-reason-3">
+                            {{ 'subscription_summary.cancellation_flow.step2.reasons.reason3' | translate }}
+                            <input type="radio"
+                                   id="cancel-reason-3"
+                                   name="cancel-reason"
+                                   value="i_found_a_better_alternative_service"
+                                   [(ngModel)]="cancelMembershipState.cancelReason">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="cancel-reason-form__control">
+                        <label class="custom-radio" for="cancel-reason-4">
+                            {{ 'subscription_summary.cancellation_flow.step2.reasons.reason4' | translate }}
+                            <input type="radio"
+                                   id="cancel-reason-4"
+                                   name="cancel-reason"
+                                   value="coverage_issues"
+                                   [(ngModel)]="cancelMembershipState.cancelReason">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="cancel-reason-form__control">
+                        <label class="custom-radio" for="cancel-reason-5">
+                            {{ 'subscription_summary.cancellation_flow.step2.reasons.reason5' | translate }}
+                            <input type="radio"
+                                   id="cancel-reason-5"
+                                   name="cancel-reason"
+                                   value="I_dont_understand_how_it_works"
+                                   [(ngModel)]="cancelMembershipState.cancelReason">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="cancel-reason-form__control mb-4">
+                        <label class="custom-radio" for="cancel-reason-6">
+                            {{ 'subscription_summary.cancellation_flow.step2.reasons.reason6' | translate }}
+                            <input type="radio"
+                                   id="cancel-reason-6"
+                                   name="cancel-reason"
+                                   value="other"
+                                   [(ngModel)]="cancelMembershipState.cancelReason">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="cancel-reason-form__control">
+                        <input [disabled]="cancelMembershipState.cancelReason !== 'other'"
+                               [class.input_focus]="cancelMembershipState.cancelReason === 'other'"
+                               class="input input_regular w-100"
+                               id="cancel-reason-7"
+                               name="cancel-reason"
+                               type="text"
+                               maxlength="128"
+                               [(ngModel)]="cancelMembershipState.otherReasonValue"
+                        >
+                    </div>
+                    <div
+                        *ngIf="!cancelMembershipState.cancelReason || (cancelMembershipState.cancelReason === 'other' && !cancelMembershipState.otherReasonValue)"
+                        class="subscription-summary__message_error">
+                        <span>{{ 'subscription_summary.cancellation_flow.validation_required_message' | translate }}</span>
+                    </div>
+                </div>
+            </popup-content>
+            <popup-controls [isColumn]="true">
+                <span class="small-text mb-4"
+                      [innerHTML]="'subscription_summary.cancellation_flow.step2.text' | translate : {date: getActiveUntilDate() | date : 'mediumDate'} ">
+                </span>
+                <button type="button"
+                        class="button button_regular button_blue w-100"
+                        (click)="closeCancelMembership()"
+                        [isDisabled]="cancelMembershipState.isProcessing">
+                    <span class="button__caption">
+                        {{ 'subscription_summary.cancellation_flow.step2.cancel' | translate }}
+                    </span>
+                </button>
+                <button type="button" [isProgress]="cancelMembershipState.isProcessing"
+                        class="button button_regular button--link text-cancel-button"
+                        [disabled]="!cancelMembershipState.cancelReason || (cancelMembershipState.cancelReason === 'other' && !cancelMembershipState.otherReasonValue)"
+                        (click)="cancelMembershipFinally()">
+                    <span class="button__caption">
+                        {{ 'subscription_summary.cancellation_flow.step2.confirm' | translate }}
+                    </span>
+                </button>
+
+            </popup-controls>
+        </popup-custom>
+
+        <popup-custom [isSmall]="true" *ngIf="isActiveCancelStep(3)">
+            <popup-content>
+                <span class="popup-title">{{ 'subscription_summary.cancellation_flow.step3.header' | translate }}</span>
+                <p [innerHTML]="'subscription_summary.cancellation_flow.step3.text' | translate:{date: getActiveUntilDate() | date : 'mediumDate'} "></p>
+
+            </popup-content>
+            <popup-controls>
+                <button type="button"
+                        class="button button_regular button_blue w-100"
+                        (click)="closeCancelMembership()">
+                    <span
+                        class="button__caption">{{ 'subscription_summary.cancellation_flow.step3.confirm' | translate }}</span>
+                </button>
+            </popup-controls>
+        </popup-custom>
+
+        <popup-custom [isSmall]="true" *ngIf="cancelMembershipState.isShowRestoreConfirmation">
+            <popup-content>
+                <span class="popup-title">{{ 'subscription_summary.cancellation_flow.step4.header' | translate }}</span>
+                <p [innerHTML]="'subscription_summary.cancellation_flow.step4.text.text1' | translate:{date: getActiveUntilDate() | date : 'mediumDate'} "></p>
+                <p class="mt-16">
+                    {{ 'subscription_summary.cancellation_flow.step4.text.text2' | translate }}
+                </p>
+
+            </popup-content>
+            <popup-controls>
+                <button type="button"
+                        class="button button_regular button_blue w-100"
+                        (click)="closeRestoreMembership()">
+                    <span
+                        class="button__caption">
+                        {{ 'subscription_summary.cancellation_flow.step4.confirm' | translate }}
+                    </span>
+                </button>
+            </popup-controls>
+        </popup-custom>
+
+    </div>
+</div>

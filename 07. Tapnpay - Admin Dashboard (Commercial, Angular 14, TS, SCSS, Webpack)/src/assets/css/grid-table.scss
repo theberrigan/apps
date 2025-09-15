@@ -1,0 +1,123 @@
+@import './definitions.scss';
+
+$root-selector: '.grid-table';
+$header-selector: $root-selector + '__header';
+$body-selector:   $root-selector + '__body';
+$row-selector:    $root-selector + '__row';
+$cell-selector:   $root-selector + '__cell';
+
+/*
+.grid-table
+    .grid-table_top | .grid-table_middle | .grid-table_bottom
+    .grid-table_striped
+    .grid-table_clickable
+
+ */
+
+#{ $root-selector } {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 20%);
+
+    &_top {
+        align-items: start;
+    }
+
+    &_middle {
+        align-items: center;
+    }
+
+    &_bottom {
+        align-items: end;
+    }
+
+    &__header,
+    &__body,
+    &__row {
+        display: contents;
+    }
+
+    &__header {
+
+    }
+
+    &__body {
+
+    }
+
+    &__row {
+
+    }
+
+    &__cell {
+        &_top {
+            align-self: start;
+        }
+
+        &_middle {
+            align-self: center;
+        }
+
+        &_bottom {
+            align-self: end;
+        }
+    }
+
+    // ------------------------
+
+    &_striped {
+        // Rows
+        // -------------------------------
+
+        & #{ $row-selector } {
+            cursor: default;
+        }
+
+        & #{ $body-selector } #{ $row-selector } {
+            $bg-color: #fff;
+
+            border-radius: 8px;
+            border: 1px solid $bg-color;
+            background-color: $bg-color;
+            box-shadow: 0 1px 3px 0 rgba(#0e0e0e, 0.1);
+        }
+
+        & #{ $body-selector } #{ $row-selector } + #{ $row-selector } {
+            margin-top: $table-striped-reversed-row-border-radius;
+        }
+
+        // Cells
+        // -------------------------------
+
+        & #{ $cell-selector } {
+            padding: 15px 0;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: $font-weight-semi-bold;
+        }
+
+        & #{ $cell-selector } + #{ $cell-selector } {
+            padding-left: 14px;
+        }
+
+        & #{ $header-selector } #{ $cell-selector } {
+            color: #92959e;
+        }
+
+        & #{ $body-selector } #{ $cell-selector } {
+            color: #656e7d;
+        }
+
+        // ToDO: replace with a gap?
+        & #{ $cell-selector }:first-child {
+            padding-left: 18px;
+        }
+
+        & #{ $cell-selector }:last-child {
+            padding-right: 18px;
+        }
+    }
+
+    &_clickable {
+
+    }
+}

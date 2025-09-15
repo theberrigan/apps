@@ -1,0 +1,834 @@
+{
+    "coverage": {
+        "page_title": "Toll Coverage",
+        "page_header": "Toll Coverage",
+        "common_error": "An error occurred while loading map",
+        "search_placeholder": "Search route or gantry",
+        "no_routes": "No routes",
+        "show_on_map_tt": "Show on the map",
+        "sidebar_header": "Routes & Gantries"
+    },
+    "extend_coverage": {
+        "page_title": "Extend neoRide Coverage",
+        "activated_toll_authorities_block_title": "Your coverage details are shown below.",
+        "extend_list_block_title": "Select new toll authorities to extend your coverage",
+        "terms_attention_message": "ATTENTION: By clicking \"Extend\" you acknowledge that you have read and accepted to corresponding Terms & Conditions.",
+        "extend_button": "Extend",
+        "cancel_button": "Cancel",
+        "error_message": "Error. Your coverage has not been extended. Please try again later.",
+        "success_message": "Your neoRide coverage has been successfully extended.",
+        "message_no_toll_authorities": "Thank you for registering for all the current toll authorities neoRide works with. Please check back often as we continue to add new states and roadways.",
+        "terms_and_conditions_link": "Terms & Conditions",
+        "terms_popup_title": "Terms & Conditions",
+        "terms_popup_close_button": "Close",
+        "navigation_title": "Extend Coverage",
+        "lpn_select_title": "Select license plate",
+        "coverage_status": {
+            "active": "License Plate is covered",
+            "inactive": "License Plate in not covered",
+            "pending": "Registration with Toll Authority in progress, the status will be updated in 24 hours"
+        }
+    },
+    "faq": {
+        "page_title": "FAQ",
+        "page_header": "FAQ",
+        "no_questions": "No questions found",
+        "loading_error": "An error occurred while loading FAQ",
+        "empty_search": "No questions found",
+        "search_placeholder": "Search questions..."
+    },
+    "page_panel": {
+        "edit_profile": "Edit Profile",
+        "change_lang": "Change Language",
+        "logout": "Logout",
+        "choose_lang": "Choose Language"
+    },
+    "datetime": {
+        "today__text": "Today",
+        "back__button": "Back",
+        "hours__text": "Hours",
+        "minutes__text": "Minutes",
+        "cancel__button": "Cancel",
+        "ok__button": "Ok"
+    },
+    "terms": {
+        "page_title": "Terms & Conditions",
+        "page_header": "Terms & Conditions",
+        "form": {
+            "i_accept": "I accept Terms & Conditions and Privacy policy",
+            "send": "Ok"
+        },
+        "submit": {
+            "ok": "Congratulations! You have successfully enrolled { licensePlates } with neoRide. All future tolls will be sent to you via a daily text message for your review and approval. You will receive 1 or more texts each day you use the toll road and you have <strong>{ hoursToPay }&nbsp;hours</strong> to approve your tolls. For more information, go to <a target=\"_blank\" href=\"https://www.neoride.com/postpaid\">https://www.neoride.com/postpaid</a>. Thank you for using neoRide!",
+            "error": "Uh oh! We are having some technical difficulties and are working quickly to fix them. Please try again and if you continue to experience this issue, please contact us at https://postpaid.neoride.com/contact-us, so we can help! Thank you!"
+        }
+    },
+    "contact_us": {
+        "page_title": "Contact Us",
+        "page_header": "Contact Us",
+        "form": {
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "email": "Email",
+            "phone": "Phone",
+            "comment": "Comment",
+            "brand": "I'm Driving In",
+            "send": "Send"
+        },
+        "submit": {
+            "ok": "Thank you! We will review your request and respond within 1 business day. Please go to our FAQ's to view helpful information.",
+            "error": "Uh oh! We are having some technical difficulties and are working quickly to fix them. Please try again and if you continue to experience this issue, please contact us at https://postpaid.neoride.com/contact-us, so we can help! Thank you!"
+        }
+    },
+    "nav": {
+        "lang": {
+            "language": "Language",
+            "change": "Change Language",
+            "confirm": "Confirm"
+        },
+        "items": {
+            "login": "Login",
+            "profile": "Profile",
+            "logout": "Logout",
+            "invoices": "Invoices",
+            "history": "History",
+            "toll_coverage": "Toll Coverage",
+            "faq": "FAQ",
+            "contact_us": "Contact Us",
+            "terms": "Terms & Conditions"
+        }
+    },
+    "not_found": {
+        "page_title": "Page not Found",
+        "page_header": "Page not Found",
+        "message": "Page cannot be found."
+    },
+    "auth": {
+        "page_title": "Login",
+        "page_header": "Login",
+        "phone_label": "Your Mobile Phone",
+        "pin_label": "PIN from SMS",
+        "send_pin_button": "Send SMS with a PIN",
+        "login_button": "Login",
+        "resend_message": "Please send PIN again in <strong>{ time }</strong> seconds",
+        "resend_trigger": "Send PIN again",
+        "phone_error": "Uh oh! We are experiencing a temporary technical issue. Please try again.",
+        "pin_error": "Uh oh! We are experiencing a temporary technical issue. Please try again.",
+        "pin_resend_ok": "PIN has been sent to your phone",
+        "pin_error_100": "The PIN you provided is incorrect, please try again.",
+        "pin_error_102": "Your PIN has been deactivated due to too many attempts. Please start the login process over.",
+        "pin_error_104": "You have requested PIN in the last one minute, to request PIN again please wait for a minute.",
+        "error_105": "We're sorry, your account is currently inactive. Please contact us at https://postpaid.neoride.com/contact-us for questions about your account status.",
+        "error_107": "We see you are a neoRide Mobile Application user. Please utilize your downloaded application on your device to access your account details.",
+        "error_108": "This phone number is not associated with any account. Please verify the number or create a new account to get started.",
+        "clear_phone": "Use a different phone number",
+        "tnc": "Terms & Conditions",
+        "faq": "FAQ",
+        "contact_us": "Contact Us",
+        "invalid_auth_token": "Your authentication session is invalid or expired"
+    },
+    "dashboard": {
+        "page_title": "Dashboard",
+        "page_header": "Dashboard",
+        "welcome": {
+            "message_default": "Congratulations! You have successfully enrolled { licensePlates } with neoRide. All future tolls will be sent to you via a daily text message for your review and approval. You will receive 1 or more texts each day you use the toll road and you have <strong>{ hoursToPay }&nbsp;hours</strong> to approve your tolls. For more information, go to <a target=\"_blank\" href=\"https://www.neoride.com/postpaid\">https://www.neoride.com/postpaid</a>. Thank you for using neoRide!",
+            "message_203": "We're sorry but we are unable to register you for neoRide at this time. Please contact us at <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a> so we can help. Thank you!",
+            "message_205": "You have enrolled <strong>{ licensePlates }</strong> with neoRide however, the payment failed. To inquire about the payment failure, contact us at <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>. Within 24 hours, all future tolls will be sent to you via a daily text message for your review and approval. You will receive 1 or more texts each day you use the toll road, and you have { hoursToPay }&nbsp;hours to approve your tolls. Thank you for using neoRide!",
+            "message_307": "We're sorry but we were unable to register your vehicle for neoRide and your payment will be refunded in full. Refer to your paper bill for available payment options. Contact us at <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a> for questions. Thank you from the neoRide team!",
+            "message_approved": "Congratulations! You have successfully paid invoice <strong>{ invoice }</strong> for <strong>{ amount }</strong> and registered your vehicle { licensePlates } to pay future tolls with neoRide. All future toll charges will be sent to you via text message for review and approval. You will receive one or more texts each day you use the toll road, and you can approve the charges by the due date to avoid fines or late fees. If you are enrolled in automatic payment, approval and payment will be automatic, and we will notify you only if action is required. For more information, For more information, go to <a target=\"_blank\" href=\"https://www.neoride.com/postpaid\">https://www.neoride.com/postpaid</a>. Thank you for using neoRide!",
+            "message_declined": "Per your request, your existing toll bill will not be paid, however, you have successfully enrolled { licensePlates } with neoRide. All future toll charges will be sent to you via text message for review and approval. You will receive one or more texts each day you use the toll road, and you can approve the charges by the due date to avoid fines or late fees. If you are enrolled in automatic payment, approval and payment will be automatic, and we will notify you only if action is required. For more information, go to <a target=\"_blank\" href=\"https://www.neoride.com/postpaid\">https://www.neoride.com/postpaid</a>. Thank you for using neoRide!",
+            "ok": "Ok"
+        },
+        "payment": {
+            "reg_n_pay_message_has_zip": "You have a current invoice <strong>{ invoice }</strong> for <strong>{ amount }</strong> that can be paid with neoRide. To pay for this invoice, enter your Zip Code found on your cell phone bill then tap <strong>Yes</strong>. To enroll without paying this outstanding invoice, tap <strong>No</strong>.",
+            "reg_n_pay_message_no_zip": "You have a current invoice <strong>{ invoice }</strong> for <strong>{ amount }</strong> that can be paid with neoRide. To pay for this invoice, tap <strong>Yes</strong>. To enroll without paying this outstanding invoice, tap <strong>No</strong>.",
+            "zip_code": "Please enter your Zip Code",
+            "yes": "Yes",
+            "no": "No",
+            "payment_error": "Uh oh! We are having some technical difficulties and are working quickly to fix them. Please try again and if you continue to experience this issue, please contact us at https://postpaid.neoride.com/contact-us, so we can help! Thank you!"
+        },
+        "fleet": {
+            "header_message": "Confirm LPN(s) below then tap PAY to approve the <span class=\"important-text\">one-time enrollment fee</span> and complete your registration.",
+            "header_message_ppb": "Please provide vehicle(s) information",
+            "submit_button": "Submit",
+            "pay_button": "Pay { amount }",
+            "zip_code": "Please enter your Zip Code",
+            "zip_pay": "Pay",
+            "wallet_confirm_message": "<strong>{ amount }</strong> will be payed with <strong>{ wallet }</strong>.",
+            "wallet_ok": "Ok",
+            "message_declined": "You're almost there!<br/>Your neoRide account has been successfully created. To finalize your registration and start toll coverage, please add a vehicle to your account or contact our support team for assistance. For more details, visit <a target=\"_blank\" href=\"https://www.neoride.com/postpaid\">https://www.neoride.com/postpaid</a>. Thank you for choosing neoRide!",
+            "message_issues": "We're sorry but there is a technical issue with your invoice authorization. Please try again later. If you are still unable to authorize your invoice, please contact us at <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>. Thank you!",
+            "message_ok": "You have successfully enrolled with neoRide. All future toll charges will be sent to you via a text message for your review and approval. You will receive 1 or more texts each day you use the toll road, and you have can approve the toll charges within the due date to avoid fines or late fees. For more information, go to <a target=\"_blank\" href=\"https://www.neoride.com/postpaid\">https://www.neoride.com/postpaid</a><br>Thank you for using neoRide!",
+            "vehicle_type_select_label": "Vehicle Type:",
+            "vehicle_types": {
+                "rental": "Rental",
+                "personal": "Personal"
+            }
+        },
+        "period_select_date": "Rental Car End Date",
+        "period_select_time": "Estimated Return Time",
+        "period_select": {
+            "validation_errors": {
+                "create_date_required": "Select a date when your car rental will end.",
+                "create_time_required": "Select an estimated return time for your car rental.",
+                "create_date_min": "Date cannot be before today.",
+                "create_time_min": "Minimum rental period is one hour.",
+                "create_date_max": "Rental car period can not go beyond {maxDate}.  Please select a vehicle return date within that timeline.",
+                "invalid_time_format": "Invalid time format. Please use HH:MM AM/PM format."
+            }
+        },
+        "account_soft_lock": {
+            "message": "Welcome back! It appears you have an unpaid balance with neoRide. To reactivate your account, tap the link below to pay your outstanding balance.",
+            "btn": "Pay Now"
+        },
+        "user_subscription_invoice_expired": {
+            "message": "Welcome back! Your membership renewal is <span class=\"important-text important-text--warning\">OVERDUE!</span> To resume toll coverage, renew your membership today!",
+            "btn": "Go to invoices"
+        },
+        "global_notification": {
+            "message": "DCB is sunsetting on 03/21/2024, please plan to choose a different payment plan from the 21\nst\n. Sorry for the inconvenience!"
+        }
+    },
+    "neoride_banner": {
+        "download_app": "Download app",
+        "description": "TapNpay is now neoRide! Enjoy toll automation, parking and discounts.",
+        "title_1": "Download the app and ",
+        "title_2": "pay for tolls & parking easily!",
+        "description_desktop": "tapNpay is now part of neoRide (enjoy the extra benefits!)",
+        "description_mobile": "tapNpay is now part of neoRide",
+        "banner_desktop_url": "neoride_phone_desktop_en.png",
+        "banner_mobile_url": "neoride_phone_en.png"
+    },
+    "timepicker": {
+        "set_time": "Set Time"
+    },
+    "lpn_categories": {
+        "select_label": "Select license type",
+        "PASSENGER": "Passenger",
+        "APPORTIONED-TRUCK": "Apportioned – Truck",
+        "APPORTIONED-TRAILER": "Apportioned – Trailer",
+        "TEMPORARY": "Temporary",
+        "OTHER": "Other – (including Specialty)",
+        "DEALER/MANUFACTURER": "Dealer/Manufacturer",
+        "TRAILER": "Dealer/Manufacturer - Trailer",
+        "IL-PASSENGER": "Passenger",
+        "IL-APPORTIONED-TRUCK": "Apportioned – Truck",
+        "IL-APPORTIONED-TRAILER": "Apportioned – Trailer",
+        "IL-TEMPORARY": "Temporary",
+        "IL-OTHER-B-TRUCK": "Other – B Truck",
+        "IL-OTHER-SPECIALITY": "Other – Specialty",
+        "IL-OTHER-PUBLIC-TRANSPORTATION": "Other – Public Transportation",
+        "IL-OTHER-TRUCK/TRAILER COMMERCIAL": "Other - Truck/Trailer Commercial",
+        "IL-OTHER-MILITARY": "Other - Military",
+        "IL-OTHER-PERSON-WITH-DISABILITIES": "Other – Person with disabilities",
+        "IL-OTHER-MOTORCYCLE": "Other – Motorcycle",
+        "IL-OTHER-GOVERNMENT-OFFICIAL": "Other – Government Official",
+        "IL-OTHER-NONE": "Other – None of the above",
+        "IL-DEALER/MANUFACTURER-PASSENGER": "Dealer/Manufacturer – Passenger",
+        "IL-DEALER/MANUFACTURER-MOTORCYCLE": "Dealer/Manufacturer – Motorcycle",
+        "IL-DEALER/MANUFACTURER-TRAILER": "Dealer/Manufacturer – Trailer",
+        "IL-DEALER/MANUFACTURER-NONE": "Dealer/Manufacturer – None of the above"
+    },
+    "profile": {
+        "page_title": "Profile",
+        "page_header": "Profile",
+        "unregister_vehicles_header": "Manage Vehicles",
+        "unregister_vehicles_text": "Register and unregister vehicles in the neoRide services. All invoices and charges must be approved before unregister a vehicle.",
+        "deactivate_account_header": "Deactivate Account",
+        "deactivate_account_text": "Deactivate your account with neoRide. All invoices and charges must be approved before deactivating your account.",
+        "payment_method_header": "Change Payment Method",
+        "payment_method_text": "Change your preferred payment method to be used for future payments.",
+        "subscription_header": "Manage Membership",
+        "subscription_text": "Make updates to your existing vehicle membership plan. Toll usage charges will be sent to you based on the date/time the vehicle(s) were registered to your account.",
+        "confirm_deactivate_account": "Do you want to deactivate account?",
+        "confirm_deactivate_account_ok": "Ok",
+        "confirm_deactivate_account_cancel": "Cancel",
+        "deactivate_account_ok": "Your account has been deactivated",
+        "deactivate_account_error": "Uh oh! We are having some technical difficulties and are working quickly to fix them. Please try again and if you continue to experience this issue, please contact us at https://postpaid.neoride.com/contact-us, so we can help! Thank you!",
+        "deactivate_account_error_204": "This account currently has an outstanding invoice(s). To deactivate your account, please first go to your invoices to authorize the current invoice(s) then deactivate your account again. For questions, please go to https://postpaid.neoride.com/contact-us.",
+        "deactivate_account_error_217": "Your account can not be deactivated due to outstanding disputes currently under review.",
+        "deactivate_account_result_ok": "Ok",
+        "pbm": {
+            "confirm_with_zip": "You have a current invoice <strong>{ invoice }</strong> for <strong>{ amount }</strong> that can be paid with neoRide. To pay for this invoice, enter your Zip Code found on your cell phone bill then tap <strong>Yes</strong>. To enroll without paying this outstanding invoice, tap <strong>No</strong>.",
+            "confirm_without_zip": "You have a current invoice <strong>{ invoice }</strong> for <strong>{ amount }</strong> that can be paid with neoRide. To pay for this invoice, tap <strong>Yes</strong>. To enroll without paying this outstanding invoice, tap <strong>No</strong>.",
+            "zip_code": "Please enter your Zip Code",
+            "button_yes": "Yes",
+            "button_no": "No",
+            "button_ok": "Ok",
+            "common_error": "Uh oh! We are having some technical difficulties and are working quickly to fix them.",
+            "message_approved": "Congratulations! You have successfully paid invoice <strong>{ invoice }</strong> for <strong>{ amount }</strong> and registered your vehicle { licensePlates } to pay future tolls with neoRide. Within <strong>24&nbsp;hours</strong>, all future tolls will be sent to you via daily text message for review and approval. You will receive 1 or more texts each day you use the toll road and you have <strong>{ hoursToPay }&nbsp;hours</strong> to approve your tolls. For more information, go to <a target=\"_blank\" href=\"https://www.neoride.com/postpaid\">https://www.neoride.com/postpaid</a>. Thank you for using neoRide!",
+            "message_declined": "Per your request, your existing toll bill will not be paid, however, you have successfully enrolled { licensePlates } with neoRide. All future tolls will be sent to you via daily text message for your review and approval. You will receive 1 or more texts each day you use the toll road and you have <strong>{ hoursToPay }&nbsp;hours</strong> to approve your tolls. For more information, go to <a target=\"_blank\" href=\"https://www.neoride.com/postpaid\">https://www.neoride.com/postpaid</a>. Thank you for using neoRide!"
+        },
+        "fleet": {
+            "header_message": "Confirm LPN(s) below then tap PAY to approve the one-time enrollment fee and complete your registration.",
+            "submit_button": "Submit",
+            "pay_button": "Pay { amount }",
+            "zip_code": "Please enter your Zip Code",
+            "zip_pay": "Pay",
+            "wallet_confirm_message": "<strong>{ amount }</strong> will be payed with <strong>{ wallet }</strong>.",
+            "wallet_ok": "Ok",
+            "message_declined": "License plate(s) has not been added to your account.",
+            "message_issues": "License plate(s) has not been added to your account.",
+            "message_ok": "License plate successfully added"
+        }
+    },
+    "invoices": {
+        "page_title": "Invoices",
+        "page_header": "Invoices",
+        "invoices_list": {
+            "page_title": "Invoices",
+            "page_header": "Invoices",
+            "no_invoices": "No outstanding invoices",
+            "loading_error": "Uh oh! We are having some technical difficulties and are working quickly to fix them. Please try again and if you continue to experience this issue, please contact us at https://postpaid.neoride.com/contact-us, so we can help! Thank you!",
+            "invoice_no_th": "Invoice #",
+            "total_amount_th": "Total Amount",
+            "transactions_th": "Transactions",
+            "date_th": "Date",
+            "due_in": "Due in { time } { time, plural, =0{hours} one{hour} other{hours} }",
+            "past_due": "Past Due",
+            "total_amount": "Total: <strong class=\"context-panel__amount\">{ amount }</strong>",
+            "tap_to_pay": "Tap to Pay",
+            "tap_to_pay_with_amount": "Tap to Pay <strong>{ amount }</strong>",
+            "tap_to_pay_with_fee_sum": "Pay <span class=\"amount-sum\">{amount} </span> now",
+            "processing_fee": "Processing fee <span class=\"processing-fee-amount-sum\">{amount} </span>",
+            "show_details": "Show Details",
+            "subscription_list_title": "Membership renewal invoices"
+        },
+        "invoice_detail": {
+            "page_title": "Payment Details",
+            "page_header": "Payment Details",
+            "invoice_header": "Invoice <strong>{ name }</strong>",
+            "lpn_th": "LPN",
+            "location_th": "Location",
+            "amount_th": "Amount",
+            "date_th": "Date",
+            "status_th": "Status",
+            "awaiting_payment": "Awaiting payment",
+            "dispute_button": "Dispute",
+            "restore_button": "Restore",
+            "dispute_ok_button": "Ok",
+            "dispute_cancel_button": "Cancel",
+            "total_amount": "Total: <strong class=\"context-panel__amount\">{ amount }</strong>",
+            "tap_to_pay": "Tap to Pay",
+            "tap_to_pay_with_amount": "Tap to Pay <strong>{ amount }</strong>",
+            "save_changes": "Save Changes",
+            "confirm_reason_change": "All disputed transactions for this invoice will change to <strong>{ reason }</strong>.",
+            "dispute_rejected": "The tolling authority has rejected the dispute on this transaction. The transaction will be charged on your cell phone bill when the invoice is accepted. For questions, please go to <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>.",
+            "dispute_rejected_ok": "Ok"
+        },
+        "invoice_payment": {
+            "zip_code": "Please enter your Zip Code",
+            "cancel": "Cancel",
+            "ok": "Ok",
+            "method_cancel": "Cancel",
+            "payment_success": "Success! You have approved the charges on Invoice # { invoices } on <strong>{ date }</strong> for the amount of <strong>{ amount }</strong>. To review your authorized payments, please go to the History section at <a target=\"_blank\" href=\"https://postpaid.neoride.com/\">https://postpaid.neoride.com/</a> for details. Thank you for using neoRide!",
+            "payment_success_fleet_has_disputed": "Transactions on neoRide invoice { disputedInvoices } totaling <strong>{ disputedAmount }</strong> have been disputed and will be reviewed by the tolling authority. If the disputes are accepted, you will not be responsible for payment. If rejected, an invoice will be created and sent to you payment authorization. Questions? <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>",
+            "payment_success_debt_unlock": "Welcome back! Your account has been reinstated and within 24 hours, all future tolls will be sent to you via a daily text message for review and approval. You will receive 1 or more texts each day you use the toll road and you have 47 hours to approve your tolls. For more information, go to https://www.neoride.com/postpaid.",
+            "payment_error": "Uh oh! We are having some technical difficulties and are working quickly to fix them. Please try again and if you continue to experience this issue, please contact us at Uh oh! We are having some technical https://postpaid.neoride.com/contact-us, so we can help! Thank you!",
+            "payment_error_min_limit": "Your invoice does not meet the required minimum amount. Additional tolls incurred within the 47-hour payment window will be added to this invoice for your review and approval. After 47-hours, your invoice will be sent back to the toll authority for billing by mail. Questions? Contact us at <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>.",
+            "payment_error_max_limit": "Your payment processor rejected approval for this invoice as daily or monthly account limits may have been exceeded. Other payment options are available above. Questions? <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>",
+            "payment_error_300": "Your cell phone carrier rejected your approval to pay this invoice. Contact the carrier to resolve possible account issues. Other payment options are available above. Questions? <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>",
+            "payment_error_301": "Uh oh! We are having some technical difficulties and are working quickly to fix them. If you continue to experience this issue, please contact us at <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>, so we can help! Thank you!",
+            "payment_error_302": "Your cell phone carrier rejected your approval to pay invoice { invoices } totaling <strong>{ amount }</strong>. Contact the carrier to resolve possible account issues. Other payment options are available above. Questions? Contact us at <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>.",
+            "payment_error_303": "We're sorry, but you have reached the number of allowable attempts to enter a valid Zip Code for your cell phone account. Your neoRide has been temporarily deactivated. Please contact us at <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a> if you would like your account reinstated. Thank you!",
+            "payment_error_304": "We're sorry, but the zip code you submitted does not match the zip code on your cell phone account. After several unsuccessful attempts, your neoRide account will be temporarily deactivated. Please contact your service provider to determine the correct zip code on your cell phone account. Thank you!",
+            "payment_error_308": "We're sorry, but your payment method was declined. Please choose another payment method.",
+            "payment_error_309": "We're sorry, but your card was declined due to insufficient credit. Please choose another payment method.",
+            "payment_error_312": "To avoid double charging your PayPal account, we only allow payment requests once per minute. Please check your Invoice status later and attempt to pay again if needed.",
+            "payment_error_402": "The number of active vehicles on your account exceeds the amount allowed for your Annual Membership renewal invoice.  Please remove {licensePlatesOverLimit} vehicles to proceed with your Membership renewal request or select an upgraded package to accommodate all your current vehicles.",
+            "payment_error_no_avail_method": "Payment method not configured.",
+            "result_ok": "Ok",
+            "result_cancel": "Cancel",
+            "result_change_payment_method": "Change method",
+            "confirm_message": "Pay <strong>{ amount }</strong> with <strong>{ wallet }</strong>? Tap YES below.",
+            "confirm_ok": "Yes",
+            "confirm_cancel": "No"
+        },
+        "dispute_reasons": {
+            "none": "Select dispute reason",
+            "not_my_vehicle": "Not my vehicle",
+            "vehicle_stolen": "Vehicle stolen",
+            "vehicle_sold": "Vehicle sold",
+            "owner_deceased": "Owner deceased",
+            "owner_bankruptcy": "Owner bankruptcy"
+        },
+        "alerts": {
+            "surcharge": "Processing Fee of { surcharge } will be included in the payment."
+        }
+    },
+    "history": {
+        "page_title": "History",
+        "page_header": "History",
+        "no_invoices": "Invoice history is empty",
+        "invoices_error": "An error occurred while loading Invoice History",
+        "no_transactions": "No Transaction History available.",
+        "transactions_error": "An error occurred while loading Transactions History",
+        "no_disputes": "No Dispute History available.",
+        "disputes_error": "An error occurred while loading Dispute History",
+        "invoices_tab": "Invoices",
+        "transactions_tab": "Transactions",
+        "disputes_tab": "Disputes",
+        "invoices_tab_header": "Invoice History",
+        "transactions_tab_header": "Transaction History",
+        "disputes_tab_header": "Dispute History",
+        "filters": {
+            "header": "Filters",
+            "from_date": "From Date",
+            "to_date": "To Date",
+            "reset": "Reset",
+            "ok": "Ok",
+            "button": "Filters"
+        },
+        "invoice_number": "Invoice #",
+        "invoice_amount": "Amount",
+        "invoice_payment_method": "Payment Method",
+        "invoice_date": "Date",
+        "invoice_amount_processing_fee": "Processing fee",
+        "invoice_total_amount": "Total",
+        "invoices_multiple": "Invoices",
+        "transaction_lpn": "LPN",
+        "transaction_location": "Location",
+        "transaction_amount": "Amount",
+        "transaction_date": "Date",
+        "dispute_lpn": "LPN",
+        "dispute_location": "Location",
+        "dispute_amount": "Disputed",
+        "dispute_reason": "Reason",
+        "dispute_date": "Date",
+        "invoice": {
+            "page_title": "Invoice History",
+            "page_header": "Invoice History",
+            "page_title_specific": "Invoice { invoice } history",
+            "page_header_specific": "Invoice { invoice } history",
+            "no_entries": "Invoice history is empty",
+            "loading_error": "An error occurred while loading invoices",
+            "approved_by_user": "Approved",
+            "transaction_pbm": "Invoice #",
+            "transaction_lpn": "LPN",
+            "transaction_location": "Location",
+            "transaction_amount": "Amount",
+            "transaction_status": "Status",
+            "transaction_date": "Date",
+            "transaction_otf_th": "Transaction",
+            "transaction_otf": "One-time-fee",
+            "transaction_subscription_th": "Transaction",
+            "transaction_subscription": "{maxLp} vehicle(s) Annual Membership"
+        }
+    },
+    "vehicles": {
+        "page_title": "Vehicles",
+        "page_header": "My vehicles ({active}/{max})",
+        "add_vehicle": "Add vehicle",
+        "add_vehicle_popup_title": "Add your vehicle",
+        "add_popup_label": "License Plate",
+        "add_vehicle_cancel": "Cancel",
+        "add_vehicle_ok": "Ok",
+        "add_success": "License plate successfully added",
+        "add_error_common": "License plate(s) has not been added to your account.",
+        "add_error_203": "The license plate entered can not be assigned to your neoRide account",
+        "add_error_208": "Invalid license plate format",
+        "add_error_209": "License Plate registration is declined due to account lock",
+        "add_error_210": "License Plate registration is declined due to payment lock",
+        "add_error_211": "This license plate is already associated to your neoRide account",
+        "add_error_212": "The license plate entered is not eligible for neoRide service",
+        "add_error_213": "The license plate entered can not be assigned to your neoRide account",
+        "no_vehicles": "There are no vehicles activated for this account.",
+        "vehicles_error": "An error occurred while loading vehicles",
+        "lpn_th": "LPN",
+        "date_th": "Date Activated",
+        "date_unreg_th": "Deactivation Date",
+        "unreg_button": "Unregister",
+        "confirm_unreg": "Do you want to unregister <strong>{ lps } { lpn }</strong>?",
+        "unreg_ok": "Vehicle unregistered",
+        "unreg_error": "An error occurred while deregistering your vehicle. Please try again later.",
+        "unreg_error_204": "This license plate currently has an outstanding invoice(s). To remove your license plate, please go to your Invoices to authorize or dispute the current invoice. Once complete, your license plate can be removed from your account. For questions, please go to https://postpaid.neoride.com/contact-us.",
+        "confirm_unreg_cancel": "Cancel",
+        "confirm_unreg_ok": "Ok",
+        "error_popup_ok": "Ok",
+        "is_rental_license_plate": "This is a Rental Car license plate.",
+        "plates_list_personal_title": "Personal car plates",
+        "plates_list_rental_title": "Rental car plates",
+        "plates_list_personal_title_inactive": "Inactive personal car plates",
+        "plates_list_rental_title_inactive": "Inactive rental car plates",
+        "membership_limit_message": "Your membership covers {max} vehicles",
+        "rental_period_extend_modal_title": "Select new return date and time for",
+        "extend_period_btn_text": "Extend Rental",
+        "rental_period_return_date_label": "Return Date",
+        "rental_period_extend_susses": "License plate rental period successfully extended",
+        "rental_period_extend_error": "License plate rental period not extended",
+        "rental_period_extend": {
+            "validation_error": {
+                "min_date_from_period_extend": "Rental extension date must be after original rental period end date.",
+                "max_period_extend": "Maximum extension for rental period is 2 weeks.",
+                "min_period_extend": "Minimum rental period extension is 1 hour.",
+                "date_required": "Rental extension date is required.",
+                "time_required": "Estimated rental return time is required."
+            }
+        },
+        "status_history_modal_title": "License plate status history",
+        "tabs_titles": {
+            "active": "Active",
+            "inactive": "Inactive"
+        },
+        "statuses": {
+            "inactive": "Deactivated"
+        }
+    },
+    "confirm_box": {
+        "ok": "Ok",
+        "cancel": "Cancel"
+    },
+    "payment_method": {
+        "method_header": {
+            "setup": "Now let's set up your payment method. Please choose your payment method from the options below.",
+            "change": "Unfortunately, your preferred payment method is currently unavailable. Please select another one.",
+            "first_change": "Change payment method for future payments.",
+            "edit": "Edit payment method"
+        },
+        "options": {
+            "dcb": "Direct Carrier Billing",
+            "wallet": "Digital Wallet",
+            "card": "Credit/Debit Card",
+            "card_debit": "Debit Card",
+            "card_credit": "Credit Card"
+        },
+        "eligibility_check": {
+            "needs_check": "Eligibility check required",
+            "ineligible": "Ineligible right now",
+            "check_success": "Eligibility check complete",
+            "check_error": "Unable to determine eligibility",
+            "check_tooltip": "Click to check eligibility"
+        },
+        "card_type": {
+            "credit": "Credit card",
+            "debit": "Debit card",
+            "prepaid": "Prepaid card",
+            "unknown": "Card"
+        },
+        "error": {
+            "method_submit_failed": "Failed to save payment method.",
+            "card_delete_failed": "Failed to delete card.",
+            "venmo_delete_failed": "Failed to detach Venmo account.",
+            "credit_only": "Debit card payments are not accepted at this time. Please enter a valid Credit card number.",
+            "debit_only": "Credit card payments are not accepted at this time. Please enter a valid Debit card number.",
+            "credit_and_debit_only": "Credit and debit cards only allowed",
+            "venmo_attach_failed": "Failed to attach Venmo account"
+        },
+        "card": {
+            "card_header": "Please enter your credit/debit card details",
+            "card_debit_header": "Please enter your debit card details",
+            "card_credit_header": "Please enter your credit card details",
+            "secured": "Card details secured by",
+            "agreement_checkbox": "I authorize neoRide to send instructions to the financial institution that issued my card to take payments from my card account in accordance with the terms of my agreement with you.",
+            "error_cancel": "Cancel",
+            "submit_ok": "Ok",
+            "submit_cancel": "Cancel"
+        },
+        "card_delete": {
+            "message": "Do you really want to delete card <strong>{ card }</strong>?",
+            "ok": "Ok",
+            "cancel": "Cancel"
+        },
+        "venmo_delete": {
+            "message": "Do you really want to detach Venmo account <strong>{ venmoAccount }</strong>?",
+            "ok": "Ok",
+            "cancel": "Cancel"
+        },
+        "add_card": "Add Credit/Debit Card",
+        "add_card_debit": "Add Debit Card",
+        "add_card_credit": "Add Credit Card",
+        "method_unavailable": "Unavailable on desktop",
+        "method_unacceptable": "Currently not acceptable",
+        "error_cancel": "Cancel",
+        "setup_close": "Close",
+        "setup_cancel": "Cancel",
+        "setup_use_as_method": "Use as a Payment Method",
+        "setup_ok": "Ok"
+    },
+    "payment_methods": {
+        "dcb": "Carrier",
+        "paypal": "PayPal",
+        "debit_card": "Debit Card",
+        "credit_card": "Credit Card",
+        "wallet": "Wallet",
+        "apple_pay": "Apple Pay",
+        "google_pay": "Google Pay",
+        "venmo": "Venmo"
+    },
+    "stripe": {
+        "error": {
+            "specific": {
+                "amount_too_large": "The specified amount is greater than the maximum amount allowed.",
+                "amount_too_small": "The specified amount is less than the minimum amount allowed.",
+                "authentication_required": "The payment requires authentication to proceed.",
+                "balance_insufficient": "The transfer or payout could not be completed because the associated account does not have a sufficient balance available.",
+                "card_decline_rate_limit_exceeded": "This card has been declined too many times. You can try to charge this card again after 24 hours.",
+                "customer_max_payment_methods": "You have added the maximum number of payment methods. Please delete your existing payment method to add a new one.",
+                "email_invalid": "The email address is invalid.",
+                "expired_card": "The card has expired. Check the expiration date or use a different card.",
+                "incorrect_address": "The card's address is incorrect. Check the card's address or use a different card.",
+                "incorrect_cvc": "The card's security code is incorrect. Check the card's security code or use a different card.",
+                "incorrect_number": "The card number is incorrect. Check the card's number or use a different card.",
+                "incorrect_zip": "The card's postal code is incorrect. Check the card's postal code or use a different card.",
+                "invalid_card_type": "This card type is not supported for payouts. Provide a non-prepaid debit card instead.",
+                "invalid_characters": "Please check that the form is filled out correctly.",
+                "invalid_cvc": "The card's security code is invalid. Check the card's security code or use a different card.",
+                "invalid_expiry_month": "The card's expiration month is incorrect. Check the expiration date or use a different card.",
+                "invalid_expiry_year": "The card's expiration year is incorrect. Check the expiration date or use a different card.",
+                "invalid_number": "The card number is invalid. Check the card details or use a different card.",
+                "payment_intent_authentication_failure": "The provided payment method has failed authentication.",
+                "payment_method_provider_decline": "The payment was declined.",
+                "payment_method_provider_timeout": "The payment method failed due to a timeout.",
+                "setup_attempt_failed": "An error occurred while adding a new payment method.",
+                "setup_intent_authentication_failure": "The provided payment method has failed authentication.",
+                "postal_code_invalid": "The postal code provided was incorrect.",
+                "processing_error": "An error occurred while processing the card. Try again later or with a different payment method."
+            },
+            "common": {
+                "generic": "We are having some technical difficulties and are working quickly to fix them. Please try again later.",
+                "card_failure": "A bank card error has occurred. Please try again later.",
+                "payment_failure": "An error occurred during payment. Please try again later."
+            },
+            "decline": {
+                "call_issuer": "Your card was declined. You can call your bank for details.",
+                "card_not_supported": "Your card is not supported.",
+                "card_velocity_exceeded": "Your card was declined for making repeated attempts too frequently.",
+                "currency_not_supported": "Your card is not supported for this currency.",
+                "fake_merchant_test_card": "This verification trigger card was declined. This card must be used for a Custom account created in testmode.",
+                "generic_decline": "Your card was declined.",
+                "incorrect_pin": "Incorrect PIN.",
+                "insufficient_funds": "Your card has insufficient funds.",
+                "invalid_account": "Invalid account.",
+                "invalid_amount": "Invalid amount.",
+                "live_mode_test_card": "Your card was declined. Your request was in live mode, but used a known test card.",
+                "not_permitted": "Cardmember not enrolled / not permitted",
+                "pin_try_exceeded": "Allowable number of PIN tries exceeded.",
+                "test_mode_live_card": "Your card was declined. Your request was in test mode, but used a non test card. For a list of valid test cards, visit: https://stripe.com/docs/testing.",
+                "transaction_not_allowed": "Your card does not support this type of purchase.",
+                "authentication_required": "The card was declined as the transaction requires authentication.",
+                "approve_with_id": "The payment cannot be authorized.",
+                "do_not_honor": "The card has been declined for an unknown reason.",
+                "do_not_try_again": "The card has been declined for an unknown reason.",
+                "duplicate_transaction": "A transaction with identical amount and credit card information was submitted very recently.",
+                "expired_card": "The card has expired.",
+                "fraudulent": "The payment has been declined as Stripe suspects it is fraudulent.",
+                "incorrect_number": "The card number is incorrect.",
+                "incorrect_cvc": "The CVC number is incorrect.",
+                "incorrect_zip": "The ZIP/postal code is incorrect.",
+                "invalid_cvc": "The CVC number is incorrect.",
+                "invalid_expiry_month": "The expiration month is invalid.",
+                "invalid_expiry_year": "The expiration year is invalid.",
+                "invalid_number": "The card number is incorrect.",
+                "invalid_pin": "The PIN entered is incorrect. This decline code only applies to payments made with a card reader.",
+                "issuer_not_available": "The card issuer could not be reached, so the payment could not be authorized.",
+                "lost_card": "The card has been declined because it is reported lost.",
+                "merchant_blacklist": "The payment has been declined because it matches a value on the Stripe user's block list.",
+                "new_account_information_available": "The card, or account the card is connected to, is invalid.",
+                "no_action_taken": "The card has been declined for an unknown reason.",
+                "offline_pin_required": "The card has been declined as it requires a PIN.",
+                "online_or_offline_pin_required": "The card has been declined as it requires a PIN.",
+                "pickup_card": "The card cannot be used to make this payment (it is possible it has been reported lost or stolen).",
+                "processing_error": "An error occurred while processing the card.",
+                "reenter_transaction": "The payment could not be processed by the issuer for an unknown reason.",
+                "restricted_card": "The card cannot be used to make this payment (it is possible it has been reported lost or stolen).",
+                "revocation_of_all_authorizations": "The card has been declined for an unknown reason.",
+                "revocation_of_authorization": "The card has been declined for an unknown reason.",
+                "security_violation": "The card has been declined for an unknown reason.",
+                "service_not_allowed": "The card has been declined for an unknown reason.",
+                "stolen_card": "The payment has been declined because the card is reported stolen.",
+                "stop_payment_order": "The card has been declined for an unknown reason.",
+                "testmode_decline": "A Stripe test card number was used.",
+                "try_again_later": "The card has been declined for an unknown reason.",
+                "withdrawal_count_limit_exceeded": "The customer has exceeded the balance or credit limit available on their card."
+            }
+        }
+    },
+    "debt_lock": {
+        "welcome_message": "Welcome back! It appears you have an unpaid balance with neoRide. To reactivate your account, tap the link below to pay your outstanding balance.",
+        "pay_debt_button": "Go to invoices"
+    },
+    "subscription_summary": {
+        "page_header": "Membership Summary",
+        "current_subs_title": "Current Membership",
+        "next_subs_title": "Future Membership",
+        "load_error": "An error occurred while loading membership summary",
+        "cancel": "Cancel Membership",
+        "update": "Update Membership",
+        "restore": "Restore Membership",
+        "status": "Status:",
+        "renewal": "Renewal Date:",
+        "renewal_value": "{date}",
+        "fee": "Annual Fee:",
+        "fee_value": "{amount}",
+        "vehicle_limit": "Vehicle Limit:",
+        "active_until": "Active Until:",
+        "active_until_value": "{date}",
+        "expired_on": "Expired On:",
+        "expired_on_value": "{date}",
+        "status_enum": {
+            "active": "Active",
+            "expired": "Expired",
+            "active_until_expiration": "Active Until Expiration",
+            "no_subscription": "No membership"
+        },
+        "cancel_popup": {
+            "text": "Are you sure you want to cancel your neoRide Membership?",
+            "cancel": "Back",
+            "confirm": "Confirm"
+        },
+        "cancel_confirm_popup": {
+            "text": "You have successfully canceled you neoRide Membership. Your vehicle(s) will remain covered until <strong>{date}</strong>. <br/><br/> If you would like to end your coverage immediately, please visit your Profile and Deactivate your neoRide Account.",
+            "confirm": "OK"
+        },
+        "cancellation_flow": {
+            "step1": {
+                "header": "Do you still want to cancel your membership?",
+                "benefits_title": "With the neoRide membership you have the following benefits:",
+                "benefits": {
+                    "benefit1": "Toll payments from your phone.",
+                    "benefit2": "License plate toll payment.",
+                    "benefit3": "Service coverage across multiple states."
+                },
+                "cancel": "Keep benefits",
+                "confirm": "Yes, cancel my membership"
+            },
+            "step2": {
+                "header": "We would like to hear your feedback",
+                "reasons": {
+                    "reason1": "I don't find the service valuable",
+                    "reason2": "One-time use",
+                    "reason3": "I found a better alternative service",
+                    "reason4": "Coverage issues",
+                    "reason5": "I don't understand how it works",
+                    "reason6": "Other (please specify)"
+                },
+                "text": "If you cancel now, you can still continue using our service until {date}.",
+                "cancel": "Keep benefits",
+                "confirm": "Confirm cancellation"
+            },
+            "step3": {
+                "header": "Your membership has been canceled",
+                "text": "We are sorry to see you go. Your vehicle(s) will remain <strong>covered until {date}</strong>.",
+                "confirm": "Got it"
+            },
+            "step4": {
+                "header": "Your membership has been restored!",
+                "text": {
+                    "text1": "Your vehicle(s) will remain <strong>covered until {date}</strong>",
+                    "text2": "Thank you for using neoRide!"
+                },
+                "confirm": "Ok"
+            },
+            "validation_required_message": "Please select a reason for canceling your subscription."
+        }
+    },
+    "subscription_select": {
+        "page_header": "Choose your membership",
+        "intro": "Rental cars are included in your membership, feel free to add or remove them as you see fit.",
+        "continue": "Continue",
+        "cancel": "Cancel",
+        "vehicles": "vehicle(s)",
+        "per_year": "Per year",
+        "discount": "Save {value}",
+        "available_plans_limit_message": "Current number of vehicles on your account exceeds this Membership package."
+    },
+    "subscription_payment_preview": {
+        "intro_new_header": "Confirm Membership",
+        "intro_new": "Vehicles can be added and removed at any time",
+        "intro_upgrade": "Upgrade my Annual Membership package to include {additionalLP} additional vehicle(s). <strong>Note: Price listed is pro-rated.</strong><br/><br/>The new Annual Membership invoice will be <strong>{futureInvoiceAmount}</strong> to be billed on <strong>{futureInvoiceDate}</strong>.",
+        "intro_downgrade": "Reduce my Annual Membership package to {futureMaxLp} vehicles(s).<br/><br/>Your future membership amount will be <strong>{futureInvoiceAmount} to be invoiced on {futureInvoiceDate}</strong>.",
+        "downgrade_with_renewal_invoice": "Downgrade my Annual Membership package to cover <strong>{reducedLP}</strong> fewer vehicle(s). <strong>Note: The new price will reflect the change in coverage.</strong><br/><br/>Your updated Annual Membership invoice will be <strong>{futureInvoiceAmount}</strong>, scheduled to be billed on <strong>{futureInvoiceDate}.</strong>",
+        "no_changes_with_renewal_invoice": "Your current Membership is nearing its expiration. You have less than 10 days remaining before it ends on <strong>{currentActiveUntil}</strong>. <br/> Renew today to maintain your coverage for <strong>{currentMaxLp}</strong> license plates without interruption. <br/><br/> Please be reminded, your next renewal payment of <strong>{futureInvoiceAmount}</strong> will be due on <strong>{futureInvoiceDate}</strong>.",
+        "intro_same": "You have selected to keep your exising <strong>{maxLP} vehicle(s)</strong> Annual Membership package. <br/></br>No changes will be made to your account.",
+        "package_key": "Package:",
+        "package_value": "Annual",
+        "coverage_key": "Coverage:",
+        "coverage_value": "{maxLP} vehicle(s)",
+        "payment_key": "Payment:",
+        "price_key": "Price:",
+        "price_value": "{amount}",
+        "back": "Modify Membership",
+        "pay_button": "Pay {amount}",
+        "downgrade_button": "OK",
+        "ok_button": "OK",
+        "payment_update": "Modify Payment"
+    },
+    "subscription_acknowledgement": {
+        "upgrade": "You have successfully upgraded to a <strong>{maxLP} vehicle(s)</strong> Annual Membership package.",
+        "downgrade": "You have successfully reduced your neoRide Annual Membership. Your vehicle(s) will remain covered until <strong>{activeUntil}</strong>. <br/><br/>If you would like to end a specific license plate coverage immediately, please visit your Profile and de-register that plate from your account.",
+        "ok_button": "OK"
+    },
+    "subscription_limit": {
+        "text": "Your current membership coverage only allows <strong>{maxLP} vehicles</strong> on your account at a time. <br/><br/>You can remove an active vehicle and add another one or simply <strong>upgrade</strong> your Subscription package.",
+        "cancel": "Back",
+        "update": "Update"
+    },
+    "subscription_payments": {
+        "declined_error": "Your payment method was declined. Please try again or use a different payment method."
+    },
+    "logo": {
+        "slogan": "a toll payment service from"
+    },
+    "invoices_auto_payment": {
+        "auto_payment_enabled": "Auto payments are enabled",
+        "auto_payment_enable_error": "An error occurred while enabling auto payments",
+        "auto_payment_disabled": "Auto payments are disabled",
+        "auto_payment_disable_error": "An error occurred while disabling auto payments",
+        "checkbox_label": "Enable auto payments",
+        "paypal_warning_message": "Auto payment is not available for this payment method. Auto payment will be disabled."
+    },
+    "header_main_info": {
+        "membership": {
+            "expires": "Your membership expires on { expirationDate }",
+            "link_text": "Renew Now"
+        },
+        "invoices": {
+            "title": "Invoices"
+        },
+        "vehicles": {
+            "title": "Vehicles"
+        }
+    },
+    "registration": {
+        "page_header": "Registration",
+        "intro": "Welcome to your account registration. Please fill in your details below.",
+        "first_name": "First Name",
+        "first_name_placeholder": "Enter your first name",
+        "first_name_required": "First name is required",
+        "first_name_min_length": "First name must be at least 2 characters",
+        "first_name_max_length": "First name cannot exceed 50 characters",
+        "first_name_invalid_chars": "First name can only contain letters, spaces, hyphens and apostrophes",
+        "last_name": "Last Name",
+        "last_name_placeholder": "Enter your last name",
+        "last_name_required": "Last name is required",
+        "last_name_min_length": "Last name must be at least 2 characters",
+        "last_name_max_length": "Last name cannot exceed 50 characters",
+        "last_name_invalid_chars": "Last name can only contain letters, spaces, hyphens and apostrophes",
+        "email": "Email",
+        "email_placeholder": "Enter your email address",
+        "email_required": "Email is required",
+        "email_invalid": "Please enter a valid email address",
+        "email_max_length": "Email cannot exceed 100 characters",
+        "email_exists": "This email is already associated with an active user. Please use a different email address.",
+        "preferred_language": "Preferred Language for Text Communication",
+        "language_english": "English",
+        "language_spanish": "Spanish",
+        "terms_prefix": "I agree to the",
+        "terms_link": "Terms & Conditions",
+        "terms_required": "You must accept the terms to continue",
+        "continue": "Continue",
+        "select_language": "Preferred Language for Text Communication",
+        "english": "English",
+        "spanish": "Spanish",
+        "agree": "I agree the",
+        "terms_and_conditions": "Terms and conditions",
+        "cancel": "Cancel",
+        "ok": "Ok"
+    },
+    "logout": {
+        "title": "Logout",
+        "confirm_message": "Are you sure you want to log out?",
+        "no": "No",
+        "yes": "Yes"
+    }
+}

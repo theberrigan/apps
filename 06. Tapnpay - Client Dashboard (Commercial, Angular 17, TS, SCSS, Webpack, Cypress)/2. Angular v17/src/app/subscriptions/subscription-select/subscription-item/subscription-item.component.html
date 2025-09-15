@@ -1,0 +1,21 @@
+<div class="plan-item"
+     [ngClass]="{'plan-item--active': isSelected, 'plan-item--disabled': isDisabled}"
+     (click)="setSelectedSubscription(plan)">
+
+    <div class="plan-item__left-col">
+        <div class="vehicles">
+            <span class="vehicles__count-number">{{plan.max_license_plates}}</span>
+            <span class="vehicles__cont-text">{{'subscription_select.vehicles' | translate}}</span>
+        </div>
+        <div class="period">
+            {{'subscription_select.per_year' | translate}}
+        </div>
+    </div>
+    <div class="plan-item__right-col">
+        <div class="price">{{plan.price | currencyFormat}}</div>
+        <div class="discount" *ngIf="plan.discount > 0"
+             [innerHTML]="'subscription_select.discount' | translate : { value: plan.discount / 10000 | percent}"></div>
+        <div class="discount" *ngIf="plan.discount === 0"></div>
+    </div>
+
+</div>

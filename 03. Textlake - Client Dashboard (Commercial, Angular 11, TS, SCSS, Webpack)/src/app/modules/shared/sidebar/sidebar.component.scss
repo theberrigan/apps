@@ -1,0 +1,256 @@
+@import '../../../../assets/css/definitions.scss';
+@import '../../../../assets/css/mixins.scss';
+
+$items-border-color-blurred: rgba(0, 0, 0, 0.1);
+$mobile-deactivate-header-height: 50px;
+$mobile-close-button-padding: 10px;
+$scrollbar-padding: 2px;
+$scrollbar-size: 5px;
+$scrollbar-radius: ceil($scrollbar-size / 2);
+$scrollbar-color: rgba(3, 10, 25, 0.25);
+$label-padding-y: 10px;
+$label-padding-x: 10px;  // max 10
+$content-padding-x: 20px;
+
+.sidebar {
+    display: none;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: $z-index-sidebar;
+
+    .dashboard_sidebar-active & {
+        display: block;
+    }
+
+    &__overlay {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(#000, 0.75);
+    }
+
+    &__nest {
+        height: 100%;
+        width: 100%;
+    }
+
+    &__header {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        height: $mobile-deactivate-header-height;
+        position: relative;
+        color: #fff;
+        background-color: $color-primary-blue;
+        box-shadow: 0 1px 5px $items-border-color-blurred;
+    }
+
+    &__button-deactivate {
+        color: inherit;
+        background-color: transparent;
+        cursor: pointer;
+        padding: 17px 20px;
+        height: 100%;
+        flex-grow: 1;
+
+        &-arrow {
+            float: right;
+        }
+    }
+
+    &__scroll-area {
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: 100%;
+        width: 100%;
+
+        .scrollbar__track .scrollbar__handle,
+        .scrollbar__track .scrollbar__handle.simplebar-visible {
+            width: $scrollbar-size;
+            right: $scrollbar-padding;
+        }
+
+        .scrollbar__track .scrollbar__handle:before,
+        .scrollbar__track .scrollbar__handle.simplebar-visible:before {
+            opacity: 1;
+            border-radius: $scrollbar-radius;
+            background: $scrollbar-color;
+        }
+
+        .scrollbar__track.simplebar-vertical .scrollbar__handle:before {
+            top: $scrollbar-padding;
+            bottom: $scrollbar-padding;
+        }
+    }
+
+    &__content {
+        padding: 24px $content-padding-x;
+    }
+
+    &__title {
+        display: block;
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: $font-weight-medium;
+        white-space: nowrap;
+        padding: 0 20px 2px;
+
+        &:empty {
+            display: none;
+        }
+    }
+
+    &__section {
+        display: block;
+
+        & + & {
+            margin-top: 24px;
+        }
+
+        &_collapsed + & {
+            margin-top: 0;
+        }
+
+        & + &_has-label {
+            // compensate label negative margin-top
+            padding-top: $label-padding-y;
+        }
+    }
+
+    &__label {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        font-size: 16px;
+        line-height: 18px;
+        font-weight: bold;
+        cursor: default;
+        padding: $label-padding-y $label-padding-x;
+        margin: (-1 * $label-padding-y) (-1 * $label-padding-x) 10px;
+        @include no-select;
+
+        &-toggle {
+            margin-left: 10px;
+            color: inherit;
+            transform-origin: 50% 50%;
+            transform: rotate(180deg);
+        }
+    }
+
+    &__section_can-collapse &__label {
+        cursor: pointer;
+    }
+
+    &__section_collapsed &__label {
+        margin-bottom: 5px;
+
+        &-toggle {
+            transform: none;
+        }
+    }
+
+    &-trigger {
+        display: inline-flex;
+
+        &__button_has-mark:after {
+            content: '';
+            display: block;
+            height: 6px;
+            width: 6px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(14px, -11px);
+            border-radius: 50%;
+            background-color: $color-primary-red;
+        }
+    }
+
+    // --------------
+
+    html.viewport_mobile .dashboard_sidebar-active &,
+    html.viewport_tablet .dashboard_sidebar-active & {
+        z-index: $z-index-sidebar-mobile-active;
+    }
+
+    html.viewport_desktop & {
+        top: $panel-height;
+        width: $sidebar-width;
+        box-shadow: -1px 0 0 #dde3eb;
+
+        &__nest {
+            background-color: $color-primary-bg;
+        }
+    }
+
+    html.viewport_desktop .dashboard_action-panel-active & {
+        top: ($panel-height + $action-panel-height);
+    }
+
+    html.viewport_mobile &,
+    html.viewport_tablet & {
+        left: 0;
+        top: 0;
+
+        &__nest {
+            background-color: #fff;
+        }
+
+        &__scroll-area {
+            height: calc(100% - #{$mobile-deactivate-header-height});
+        }
+    }
+
+    html.viewport_tablet & {
+        &__overlay {
+            display: block;
+        }
+
+        &__nest {
+            position: absolute;
+            top: 0;
+            right: 0;
+            max-width: 340px;
+        }
+    }
+
+    html.device_desktop.browser_chrome & {
+        &__nest {
+            padding-right: $scrollbar-padding;
+        }
+
+        &__header {
+            // compensate nest padding-right
+            margin-right: (-1 * $scrollbar-padding);
+        }
+
+        &__scroll-area {
+            overflow-y: scroll;
+
+            &::-webkit-scrollbar {
+                height: $scrollbar-size;
+                width: $scrollbar-size;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: transparent;
+                border-radius: $scrollbar-radius;
+                margin: ($scrollbar-padding + 1px) 0 $scrollbar-padding;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: $scrollbar-color;
+                border-radius: $scrollbar-radius;
+            }
+        }
+
+        &__content {
+            // compensate native styled scrollbar width
+            padding-right: ($content-padding-x - $scrollbar-padding - $scrollbar-size);
+        }
+    }
+}

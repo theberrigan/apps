@@ -1,0 +1,9 @@
+<div class="subscription-invoice-detail">
+    <div class="subscription-invoice-detail-content">
+        <h2 class="invoice-detail__invoice-header"
+            [innerHTML]="'invoices.invoice_detail.invoice_header' | translate : { name: invoiceItem.name }"></h2>
+        <div class="invoice-type">Membership renewal</div>
+        <div class="invoice-detail__invoice-amount"
+             [innerHTML]="invoiceItem.amount | currencyFormat"></div>
+    </div>
+</div>

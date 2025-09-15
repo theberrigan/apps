@@ -1,0 +1,154 @@
+@import '../../../../../assets/css/definitions.scss';
+
+.roles-editor {
+    display: block;
+
+    &__spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 50px 0;
+    }
+
+    &__message {
+        font-size: 14px;
+        line-height: 16px;
+        font-weight: $font-weight-medium;
+        text-align: center;
+        padding: 75px 20px;
+        color: $color-empty-message;
+
+        &_error {
+            color: $color-empty-message-error;
+        }
+    }
+
+    &__users {
+        width: 100%;
+        max-width: 540px;
+        margin: 0 auto;
+    }
+
+    &__hint {
+        font-size: 14px;
+        font-weight: $font-weight-medium;
+    }
+
+    &__list {
+        display: flex;
+        flex-flow: column nowrap;
+        width: 100%;
+        margin-top: 20px;
+
+        &-item {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: stretch;
+            cursor: pointer;
+            border: 1px solid #DDE3EB;
+            background-color: #fff;
+            border-radius: 4px;
+            user-select: none;
+
+            & + & {
+                margin-top: 5px;
+            }
+
+            &_deactivated {
+                background-color: #eff2f5;
+            }
+
+            &-username {
+                flex: 1;
+                font-size: 14px;
+                line-height: 18px;
+                padding: 10px 15px;
+            }
+
+            &-you {
+                padding-left: 3px;
+                font-weight: $font-weight-medium;
+            }
+
+            &_deactivated &-username {
+                opacity: 0.75;
+            }
+
+            &-switcher {
+                $bg-height: 20px;
+                $bg-padding: 2px;
+
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+                padding: 0 10px 0 0;
+
+                &-bg {
+                    height: $bg-height;
+                    width: 36px;
+                    padding: $bg-padding;
+                    border-radius: ceil($bg-height / 2);
+                    background-color: $color-primary-green;
+                    transition: background-color 0.1s ease-out;
+
+                    &:after {
+                        $size: ($bg-height - ($bg-padding * 2));
+
+                        content: '';
+                        display: block;
+                        width: $size;
+                        height: $size;
+                        background-color: #fff;
+                        border-radius: 50%;
+                        transform: translateX(100%);
+                        transition: transform 0.1s ease-out;
+                    }
+                }
+            }
+
+            &_deactivated &-switcher {
+                &-bg {
+                    background-color: $color-primary-red;
+
+                    &:after {
+                        transform: translateX(0);
+                    }
+                }
+            }
+        }
+    }
+
+    &__editor {
+        &-user {
+            font-size: 14px;
+            line-height: 18px;
+            font-weight: $font-weight-medium;
+        }
+
+        &-roles {
+            margin-top: 20px;
+
+            .checkbox + .checkbox {
+                margin-top: 15px;
+            }
+        }
+
+        .popup__box {
+            max-width: 400px;
+        }
+
+        html.viewport_tablet &,
+        html.viewport_mobile & {
+            .popup__scroll-area {
+                padding: 0;
+            }
+
+            .popup__box {
+                width: 100%;
+                max-width: none;
+                min-height: 100%;
+                border-radius: 0;
+            }
+        }
+    }
+}

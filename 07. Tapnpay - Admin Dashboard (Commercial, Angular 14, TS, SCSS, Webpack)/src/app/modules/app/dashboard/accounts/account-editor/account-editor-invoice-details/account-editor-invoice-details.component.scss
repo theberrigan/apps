@@ -1,0 +1,56 @@
+@import '../../../../../../../assets/css/definitions';
+
+.account-editor-invoice-details {
+    display: block;
+
+    &__loader {
+        width: 100%;
+        padding: 200px 0;
+    }
+
+    &__invoice {
+        & + & {
+            margin-top: 50px;
+        }
+
+        &-top {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+        }
+
+        &-header {
+
+        }
+
+        &-amount {
+            font-size: 21px;
+            line-height: 28px;
+            font-weight: $font-weight-medium;
+            margin-left: 20px;
+        }
+    }
+
+    &__table {
+        width: 100%;
+        margin-top: 20px;
+
+        &-cell {
+            &-amount {
+                text-align: right;
+            }
+
+            &-date {
+                padding-left: 50px !important;
+            }
+        }
+    }
+
+    &__popup {
+        .popup__box {
+            max-width: 780px;
+        }
+    }
+}

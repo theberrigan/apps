@@ -1,0 +1,10 @@
+@import '../../../../../assets/css/definitions.scss';
+
+.flatpicker {
+    display: block;
+
+    &__input {
+        display: block;
+        width: 100%;
+    }
+}

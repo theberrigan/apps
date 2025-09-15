@@ -1,0 +1,17 @@
+<popup-custom class="subscription-limit" *ngIf="isVisible">
+    <popup-content>
+        <div [innerHTML]="'subscription_limit.text' | translate : {maxLP: maxLicensePlates}"></div>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button"
+                class="button button_regular button_light-blue"
+                (click)="onCancelSubscriptionLimit()">
+            <span class="button__caption">{{ 'subscription_limit.cancel' | translate }}</span>
+        </button>
+        <button type="button"
+                class="button button_regular button_blue"
+                (click)="onUpdateSubscriptionLimit()">
+            <span class="button__caption">{{ 'subscription_limit.update' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>

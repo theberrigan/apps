@@ -1,0 +1,91 @@
+<div class="auth__content">
+    <div class="auth__logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1442" height="420" class="auth__logo-svg" preserveAspectRatio="xMidYMid meet">
+            <use xlink:href="#svg-logo"></use>
+        </svg>
+    </div>
+    <div class="auth__box">
+        <fieldset class="auth__fieldset" [disabled]="isSubmitting">
+            <label class="auth__label">
+                <span class="auth__label-text">{{ 'auth.phone_label' | translate }}</span>
+                <!--<svg xmlns="http://www.w3.org/2000/svg" width="1235" height="650" preserveAspectRatio="xMidYMid meet">
+                    <use xlink:href="#svg-flag-usa"></use>
+                </svg>-->
+                <span class="auth__phone-wrapper">
+                    <input type="text" class="auth__input auth__input_phone"
+                        #phoneInput
+                        [disabled]="activeField !== 'phone'"
+                        [(ngModel)]="form.phone"
+                        (ngModelChange)="validate()"
+                        (keyup)="onInputKeyUp($event)"
+                    >
+                    <span class="auth__phone-prefix" [class.auth__phone-prefix_disabled]="activeField !== 'phone'">
+                        <span class="auth__phone-prefix-icon"></span>
+                        <span class="auth__phone-prefix-text">+1</span>
+                    </span>
+                    <button type="button" class="auth__phone-clear"
+                        *ngIf="activeField !== 'phone'"
+                        [@showHidePhoneClear]
+                        (click)="onClearPhone()"
+                        [title]="'auth.clear_phone' | translate"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="auth__phone-clear-icon">
+                            <polygon style="fill: currentColor;" points="18.48 17.07 17.07 18.48 12 13.41 6.93 18.48 5.51 17.07 10.59 12 5.51 6.93 6.93 5.51 12 10.59 17.07 5.51 18.48 6.93 13.41 12 18.48 17.07"></polygon>
+                        </svg>
+                    </button>
+                </span>
+            </label>
+            <div class="auth__code-wrapper" *ngIf="activeField === 'pin'" [@showHidePin] (@showHidePin.done)="onPinShown($event)">
+                <div class="auth__code-input">
+                    <label class="auth__label">
+                        <span class="auth__label-text">{{ 'auth.pin_label' | translate }}</span>
+                        <input type="text" class="auth__input"
+                            #pinInput
+                            [disabled]="activeField !== 'pin'"
+                            [(ngModel)]="form.pin"
+                            (ngModelChange)="validate()"
+                            (keyup)="onInputKeyUp($event)"
+                        >
+                    </label>
+                    <div class="auth__resend" [ngSwitch]="!!resendTimer">
+                        <div class="auth__resend-message" *ngSwitchCase="true" [innerHTML]="'auth.resend_message' | translate : { time: resendTimerTimeout }"></div>
+                        <span class="auth__resend-trigger" *ngSwitchCase="false" (click)="onResend()" [innerHTML]="'auth.resend_trigger' | translate"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="auth__controls">
+                <button type="button" class="button button_size-2 button_blue"
+                    [isDisabled]="isSubmitting || !isFormValid"
+                    [isProgress]="isSubmitting"
+                    (click)="onSubmit()"
+                >
+                    <span class="button__caption" [ngSwitch]="activeField">
+                        <span *ngSwitchCase="'phone'">{{ 'auth.send_pin_button' | translate }}</span>
+                        <span *ngSwitchCase="'pin'">{{ 'auth.login_button' | translate }}</span>
+                    </span>
+                </button>
+            </div>
+        </fieldset>
+    </div>
+    <div class="auth__footer">
+        <div class="auth__footer-lang">
+            <lang-switcher></lang-switcher>
+        </div>
+        <a *ngIf="false" [routerLink]="termsSession.link" class="auth__footer-link" [class.auth__footer-link_has-dot]="termsSession.hasDot">{{ 'auth.tnc' | translate }}</a>
+        <div class="auth__footer-etc">
+            <button type="button" class="auth__footer-etc-trigger" (click)="onEtcTriggerClick($event)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path style="fill: currentColor;" d="M7,12a2,2,0,1,1-2-2A2,2,0,0,1,7,12Zm5-2a2,2,0,1,0,2,2A2,2,0,0,0,12,10Zm7,0a2,2,0,1,0,2,2A2,2,0,0,0,19,10Z"></path>
+                </svg>
+            </button>
+            <div class="auth__footer-etc-menu" (click)="onEtcMenuClick($event)" *ngIf="isEtcMenuActive">
+                <a routerLink="/faq" class="auth__footer-etc-menu-item" (click)="onEtcItemClick($event)">
+                    <span>{{ 'auth.faq' | translate }}</span>
+                </a>
+                <a routerLink="/contact-us" class="auth__footer-etc-menu-item" (click)="onEtcItemClick($event)">
+                    <span>{{ 'auth.contact_us' | translate }}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

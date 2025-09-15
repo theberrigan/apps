@@ -1,0 +1,719 @@
+<fieldset [disabled]="isSubmitting" class="ta-contract__content" [ngSwitch]="state">
+    <div class="ta-contract__loading" *ngSwitchCase="'loading'">
+        <loader></loader>
+    </div>
+    <div class="ta-contract__message ta-contract__message_error" *ngSwitchCase="'error'">
+        {{ 'contracts.ta.editor.common_error' | translate }}
+    </div>
+    <ng-container *ngSwitchCase="'ready'">
+        <form class="form"
+            [class.form_show-errors]="showFormErrors"
+            (submit)="onSubmit()"
+            [formGroup]="form"
+        >
+            <div class="ta-contract__heading">
+                <div class="ta-contract__header" (click)="onBack()">
+                    <div class="ta-contract__header-text">
+                        {{ 'contracts.ta.editor.page_header' | translate }}
+                    </div>
+                </div>
+                <div class="ta-contract__controls">
+                    <button type="submit" class="button button_regular button_light-blue"
+                        [isProgress]="isSubmitting"
+                    >
+                        <span class="button__caption">
+                            {{ 'contracts.ta.editor.save_button' | translate }}
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="ta-contract__sections">
+                <div class="ta-contract__section">
+                    <div class="ta-contract__section-header">
+                        {{ 'General Contract Details' | translate }}
+                    </div>
+                    <div class="ta-contract__section-controls">
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Contract Name
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="text" class="input input_regular" formControlName="name">
+                                <div class="ta-contract__section-control-error">
+                                    Contract name should contain at least 2 characters
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-input">
+                                <checkbox formControlName="enabled">Enabled</checkbox>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Customer Name/Toll Authority
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <div class="ta-contract__customer-control">
+                                    <select class="select select_regular ta-contract__customer-control-select" formControlName="customerId">
+                                        <option *ngFor="let option of customerOptions" [ngValue]="option.value">
+                                            {{ option.display }}
+                                        </option>
+                                    </select>
+                                    <button type="button" class="button button_regular button_light-blue ta-contract__customer-control-button" (click)="onCreateCustomer()">
+                                        <span class="button_caption">
+                                            {{ 'contracts.ta.editor.create_customer_button' | translate }}
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="ta-contract__section-control-error">
+                                    Please select a customer name
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Contract Start Date
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <datepicker
+                                    formControlName="startDate"
+                                    [type]="'iso'"
+                                    [format]="'input.datetime'"
+                                ></datepicker>
+                                <div class="ta-contract__section-control-error">
+                                    Please select a contract start date
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Contract End Date
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <datepicker
+                                    formControlName="endDate"
+                                    [type]="'iso'"
+                                    [format]="'input.datetime'"
+                                ></datepicker>
+                                <div class="ta-contract__section-control-error">
+                                    Please select a contract end date
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    AP Carrying Days
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="apCarryingDays">
+                                <div class="ta-contract__section-control-error">
+                                    AP carrying days must be a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Saas Fee Structure
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <select class="select select_regular" formControlName="saasFeeStructure">
+                                    <option *ngFor="let option of saasFeeStructureOptions" [ngValue]="option.value">
+                                        {{ option.display }}
+                                    </option>
+                                </select>
+                                <div class="ta-contract__section-control-error">
+                                    Please select a saas fee structure
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Saas Fee Amount
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="saasFeeAmount">
+                                <div class="ta-contract__section-control-error">
+                                    Saas fee amount must be a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Signed Contract File
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <a class="ta-contract__download"
+                                    *ngIf="currentDoc && currentDoc.downloadUrl"
+                                    [href]="currentDoc.downloadUrl"
+                                    [download]="currentDoc.name"
+                                    [title]="currentDoc.name || ''"
+                                >
+                                    <span class="ta-contract__download-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
+                                            <path fill="currentColor" d="M14.71,12.71,8,19.41l-6.71-6.7,1.42-1.42L7,15.59V1H9V15.59l4.29-4.3Z"/>
+                                        </svg>
+                                    </span>
+                                    <span class="ta-contract__download-name">
+                                        {{ currentDoc.name }}
+                                    </span>
+                                </a>
+                                <div class="ta-contract__uploader" [class.ta-contract__uploader_selected]="uploadDoc">
+                                    <input type="file" class="ta-contract__uploader-input" #fileInputEl (change)="onFileSelected()">
+                                    <div class="ta-contract__uploader-text"
+                                        [title]="uploadDoc ? uploadDoc.file.name : ''"
+                                        [ngSwitch]="!!uploadDoc"
+                                    >
+                                        <ng-container *ngSwitchCase="true">{{ uploadDoc.file.name }}</ng-container>
+                                        <ng-container *ngSwitchCase="false">No file selected for upload</ng-container>
+                                    </div>
+                                    <button type="button" class="button button_regular button_white ta-contract__uploader-button" (click)="onSelectFile()">
+                                        <span class="button__caption">Select File</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ta-contract__section">
+                    <div class="ta-contract__section-header">
+                        {{ 'Contract Fee Descriptions' | translate }}
+                    </div>
+                    <div class="ta-contract__section-subheader">
+                        <div class="ta-contract__section-subheader-text">DCB Fee Structure</div>
+                    </div>
+                    <div class="ta-contract__section-controls">
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 1 % Fee
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="dcbTier1Rate">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 1 Max Volume
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="dcbTier1Volume">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 2 % Fee
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="dcbTier2Rate">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 2 Max Volume
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="dcbTier2Volume">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 3 % Fee
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="dcbTier3Rate">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ta-contract__section-subheader">
+                        <div class="ta-contract__section-subheader-text">Credit Card Fee Structure</div>
+                    </div>
+                    <div class="ta-contract__section-controls">
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 1 % Fee
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="creditTier1Rate">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 1 Max Volume
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="creditTier1Volume">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 2 % Fee
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="creditTier2Rate">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 2 Max Volume
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="creditTier2Volume">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 3 % Fee
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="creditTier3Rate">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ta-contract__section-subheader">
+                        <div class="ta-contract__section-subheader-text">Debit Card Fee Structure</div>
+                    </div>
+                    <div class="ta-contract__section-controls">
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 1 % Fee
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="debitTier1Rate">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 1 Max Volume
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="debitTier1Volume">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 2 % Fee
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="debitTier2Rate">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 2 Max Volume
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="debitTier2Volume">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 3 % Fee
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="debitTier3Rate">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ta-contract__section-subheader">
+                        <div class="ta-contract__section-subheader-text">Digital Wallet Fee Structure</div>
+                    </div>
+                    <div class="ta-contract__section-controls">
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 1 % Fee
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="walletTier1Rate">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 1 Max Volume
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="walletTier1Volume">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 2 % Fee
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="walletTier2Rate">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 2 Max Volume
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="walletTier2Volume">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 3 % Fee
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="walletTier3Rate">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ta-contract__section-subheader">
+                        <div class="ta-contract__section-subheader-text">PayPal Fee Structure</div>
+                    </div>
+                    <div class="ta-contract__section-controls">
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 1 % Fee
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="paypalTier1Rate">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 1 Max Volume
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="paypalTier1Volume">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 2 % Fee
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="paypalTier2Rate">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 2 Max Volume
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="paypalTier2Volume">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-control">
+                            <div class="ta-contract__section-control-label">
+                                <label class="ta-contract__section-control-label-text">
+                                    Tier 3 % Fee
+                                </label>
+                            </div>
+                            <div class="ta-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="paypalTier3Rate">
+                                <div class="ta-contract__section-control-error">
+                                    This field must be filled with a number
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ta-contract__section">
+                    <div class="ta-contract__section-header">
+                        {{ 'Key Contact Information' | translate }}
+                    </div>
+                    <div class="ta-contract__section-controls">
+                        <div class="ta-contract__section-subheader">
+                            <div class="ta-contract__section-subheader-text">Customer Contact</div>
+                        </div>
+                        <div class="ta-contract__section-controls">
+                            <div class="ta-contract__section-control">
+                                <div class="ta-contract__section-control-label">
+                                    <label class="ta-contract__section-control-label-text">
+                                        Name
+                                    </label>
+                                </div>
+                                <div class="ta-contract__section-control-input">
+                                    <input type="text" class="input input_regular" formControlName="customerContactName">
+                                    <div class="ta-contract__section-control-error">
+                                        Contact name should contain at least 2 characters
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ta-contract__section-control">
+                                <div class="ta-contract__section-control-label">
+                                    <label class="ta-contract__section-control-label-text">
+                                        Phone
+                                    </label>
+                                </div>
+                                <div class="ta-contract__section-control-input">
+                                    <input type="text" class="input input_regular" formControlName="customerContactPhone">
+                                    <div class="ta-contract__section-control-error">
+                                        Incorrect phone
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ta-contract__section-control">
+                                <div class="ta-contract__section-control-label">
+                                    <label class="ta-contract__section-control-label-text">
+                                        Email
+                                    </label>
+                                </div>
+                                <div class="ta-contract__section-control-input">
+                                    <input type="text" class="input input_regular" formControlName="customerContactEmail">
+                                    <div class="ta-contract__section-control-error">
+                                        Incorrect email
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-subheader">
+                            <div class="ta-contract__section-subheader-text">PayPal Contact</div>
+                        </div>
+                        <div class="ta-contract__section-controls">
+                            <div class="ta-contract__section-control">
+                                <div class="ta-contract__section-control-label">
+                                    <label class="ta-contract__section-control-label-text">
+                                        Name
+                                    </label>
+                                </div>
+                                <div class="ta-contract__section-control-input">
+                                    <input type="text" class="input input_regular" formControlName="paypalContactName">
+                                    <div class="ta-contract__section-control-error">
+                                        Contact name should contain at least 2 characters
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ta-contract__section-control">
+                                <div class="ta-contract__section-control-label">
+                                    <label class="ta-contract__section-control-label-text">
+                                        Phone
+                                    </label>
+                                </div>
+                                <div class="ta-contract__section-control-input">
+                                    <input type="text" class="input input_regular" formControlName="paypalContactPhone">
+                                    <div class="ta-contract__section-control-error">
+                                        Incorrect phone
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ta-contract__section-control">
+                                <div class="ta-contract__section-control-label">
+                                    <label class="ta-contract__section-control-label-text">
+                                        Email
+                                    </label>
+                                </div>
+                                <div class="ta-contract__section-control-input">
+                                    <input type="text" class="input input_regular" formControlName="paypalContactEmail">
+                                    <div class="ta-contract__section-control-error">
+                                        Incorrect email
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ta-contract__section-subheader">
+                            <div class="ta-contract__section-subheader-text">tapNpay Contact</div>
+                        </div>
+                        <div class="ta-contract__section-controls">
+                            <div class="ta-contract__section-control">
+                                <div class="ta-contract__section-control-label">
+                                    <label class="ta-contract__section-control-label-text">
+                                        Name
+                                    </label>
+                                </div>
+                                <div class="ta-contract__section-control-input">
+                                    <input type="text" class="input input_regular" formControlName="tnpContactName">
+                                    <div class="ta-contract__section-control-error">
+                                        Contact name should contain at least 2 characters
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ta-contract__section-control">
+                                <div class="ta-contract__section-control-label">
+                                    <label class="ta-contract__section-control-label-text">
+                                        Phone
+                                    </label>
+                                </div>
+                                <div class="ta-contract__section-control-input">
+                                    <input type="text" class="input input_regular" formControlName="tnpContactPhone">
+                                    <div class="ta-contract__section-control-error">
+                                        Incorrect phone
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ta-contract__section-control">
+                                <div class="ta-contract__section-control-label">
+                                    <label class="ta-contract__section-control-label-text">
+                                        Email
+                                    </label>
+                                </div>
+                                <div class="ta-contract__section-control-input">
+                                    <input type="text" class="input input_regular" formControlName="tnpContactEmail">
+                                    <div class="ta-contract__section-control-error">
+                                        Incorrect email
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+</fieldset>
+
+<!-- Popups -->
+
+<popup-custom class="ta-contract__customer-popup" *ngIf="isCustomerPopupVisible" [isDisabled]="isSubmitting">
+    <popup-content>
+        <label class="ta-contract__customer-popup-label">
+            <span class="ta-contract__customer-popup-label-text">{{ 'contracts.ta.editor.create_customer_label' | translate }}</span>
+            <input type="text" class="input input_regular ta-contract__customer-popup-input"
+                [(ngModel)]="customerName"
+                (ngModelChange)="validateCustomerName()"
+            >
+        </label>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button_regular button_light-blue" (click)="onCancelCreateCustomer()">
+            <span class="button__caption">{{ 'contracts.ta.editor.create_customer_cancel' | translate }}</span>
+        </button>
+        <button type="button" class="button button_regular button_blue"
+            [isProgress]="isSubmitting"
+            [isDisabled]="!isCustomerNameValid"
+            (click)="onConfirmCreateCustomer()"
+        >
+            <span class="button__caption">{{ 'contracts.ta.editor.create_customer_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>

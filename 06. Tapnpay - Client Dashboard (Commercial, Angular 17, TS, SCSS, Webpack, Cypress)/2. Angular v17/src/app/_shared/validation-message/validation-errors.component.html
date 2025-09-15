@@ -1,0 +1,77 @@
+<div *ngIf="validatedFormControl && validatedFormControl.invalid
+    && (validatedFormControl.dirty || validatedFormControl.touched)"
+     class="alert">
+    <ng-container *ngIf="validatedFormControl.errors?.required">
+        <small class="control-validation-error">
+            {{ requiredErrorMessage ? (requiredErrorMessage | translate) : 'This field is required' }}
+        </small>
+    </ng-container>
+    <ng-container *ngIf="validatedFormControl.errors?.maxlength">
+        <small class="control-validation-error">
+            Maximum length exceeded.
+        </small>
+    </ng-container>
+    <ng-container *ngIf="validatedFormControl.errors?.email">
+        <small class="control-validation-error">
+            Please enter a valid email address.
+        </small>
+    </ng-container>
+    <ng-container *ngIf="validatedFormControl.errors?.matching">
+        <small class="control-validation-error">
+            Passwords do not match
+        </small>
+    </ng-container>
+    <ng-container *ngIf="validatedFormControl.errors?.hasNumber">
+        <small class="control-validation-error">
+            Passwords do not has number
+        </small>
+    </ng-container>
+
+    <ng-container *ngIf="validatedFormControl.errors?.hasSmallCase">
+        <small class="control-validation-error">
+            Passwords do not has capital case
+        </small>
+    </ng-container>
+
+    <ng-container *ngIf="validatedFormControl.errors?.hasSpecialCharacters">
+        <small class="control-validation-error">
+            Passwords do not has special characters
+        </small>
+    </ng-container>
+    <ng-container *ngIf="validatedFormControl.errors?.minDateToday">
+        <small class="control-validation-error">
+            {{ 'dashboard.period_select.validation_errors.create_date_min' | translate }}
+        </small>
+    </ng-container>
+    <ng-container *ngIf="validatedFormControl.errors?.dateTodayAndMinDurationOneHour">
+        <small class="control-validation-error">
+            {{ 'dashboard.period_select.validation_errors.create_time_min' | translate }}
+        </small>
+    </ng-container>
+    <ng-container *ngIf="validatedFormControl.errors?.maxDurationTwoWeeks">
+        <small class="control-validation-error">
+            {{ 'vehicles.rental_period_extend.validation_error.min_period_extend' | translate }}
+        </small>
+    </ng-container>
+    <ng-container *ngIf="validatedFormControl.errors?.minDateForExtend">
+        <small class="control-validation-error">
+            {{ 'vehicles.rental_period_extend.validation_error.min_date_from_period_extend' | translate }}
+        </small>
+    </ng-container>
+    <ng-container *ngIf="validatedFormControl.errors?.minExtendOneHour">
+        <small class="control-validation-error">
+            {{ 'vehicles.rental_period_extend.validation_error.min_period_extend' | translate }}
+        </small>
+    </ng-container>
+    <ng-container *ngIf="validatedFormControl.errors?.maxDate">
+        <small class="control-validation-error">
+            {{ 'dashboard.period_select.validation_errors.create_date_max' | translate : {maxDate: maxRentalPeriodDate | datetime} }}
+        </small>
+    </ng-container>
+    <ng-container *ngIf="validatedFormControl.errors?.invalidTimeFormat">
+        <small class="control-validation-error">
+            {{ 'dashboard.period_select.validation_errors.invalid_time_format' | translate }}
+        </small>
+    </ng-container>
+</div>
+

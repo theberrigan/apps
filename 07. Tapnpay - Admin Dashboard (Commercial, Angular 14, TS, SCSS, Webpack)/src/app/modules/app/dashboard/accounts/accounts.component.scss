@@ -1,0 +1,20 @@
+@import '../../../../../assets/css/definitions';
+
+.accounts {
+    display: block;
+    width: 100%;
+    padding: 30px 0 20px;
+
+    &__message {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 600;
+        color: $color-sys-message-on-blue-bg;
+        text-align: center;
+        margin-top: 15vh;
+    }
+
+    &__editor {
+        margin-top: 30px;
+    }
+}

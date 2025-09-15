@@ -1,0 +1,1905 @@
+<action-panel *ngIf="layout !== 'client-editor'" [ngSwitch]="layout">
+    <ng-container *ngSwitchCase="'editor'">
+        <div class="action-panel__primary" *ngIf="viewportBreakpoint !== 'mobile'">
+            <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">
+                <ng-container *ngIf="offerToLoad === 'create'">{{ 'offers.editor.page_title_create' | translate }}</ng-container>
+                <ng-container *ngIf="offerToLoad && offerToLoad !== 'create'">{{ 'offers.editor.page_title_edit' | translate : { offerKey: offerToLoad } }}</ng-container>
+            </h1>
+        </div>
+        <div class="action-panel__secondary" [class.action-panel__secondary_full-width]="viewportBreakpoint === 'mobile'" *ngIf="editorState === 'editor'">
+            <div class="action-panel__item" [class.action-panel__item_full-width]="viewportBreakpoint === 'mobile'">
+                <button type="button" class="button button_regular button_blue" [isProgress]="networkProcess === 'saving-offer'" (click)="onSaveOffer()">
+                    <span class="button__caption">{{ 'offers.editor.save__button' | translate }}</span>
+                </button>
+            </div>
+            <ng-container [ngSwitch]="viewportBreakpoint">
+                <ng-container *ngSwitchCase="'desktop'">
+                    <div class="action-panel__item">
+                        <button type="button" class="button button_regular button_white" (click)="showBillingPopup()">
+                            <span class="button__caption">{{ 'offers.editor.save_n_send__button' | translate }}</span>
+                        </button>
+                    </div>
+                    <div class="action-panel__item" *ngIf="offer && offer.key && (!!offer.projectKey || canEdit)">
+                        <button type="button" class="button button_regular button_white"
+                            *ngIf="!offer.projectKey"
+                            [isProgress]="networkProcess === 'project-popup-loading'"
+                            (click)="showProjectPopup()"
+                        >
+                            <span class="button__caption">{{ 'offers.editor.create_project__button' | translate }}</span>
+                        </button>
+                        <a class="button button_regular button_white" *ngIf="offer.projectKey" [routerLink]="[ '/dashboard/project/' + offer.projectKey ]">
+                            {{ 'offers.editor.view_project__link' | translate }}&nbsp;<strong>{{ offer.projectKey }}</strong>
+                        </a>
+                    </div>
+                    <div class="action-panel__item">
+                        <button type="button" class="button button_regular button_white" [isProgress]="networkProcess === 'loading-company-profile'" (click)="showQuote()">
+                            <span class="button__caption">{{ 'offers.editor.quote__button' | translate }}</span>
+                        </button>
+                    </div>
+                    <div class="action-panel__item" *ngIf="emailPreviewState !== 'empty'">
+                        <button type="button" class="button button_regular button_white" (click)="showEmailPopup()">
+                            <span class="button__caption">{{ 'offers.editor.email__button' | translate }}</span>
+                        </button>
+                    </div>
+                    <div class="action-panel__item" *ngIf="canEdit && !!offer.key && isClientSelected">
+                        <button type="button" class="button button_regular button_white" (click)="showTransactionPopup()">
+                            <span class="button__caption">{{ 'offers.editor.acp__button' | translate }}</span>
+                        </button>
+                    </div>
+                </ng-container>
+                <div class="action-panel__item" *ngSwitchDefault>
+                    <div class="offer-editor__actions">
+                        <button type="button" class="button button_regular button_white" data-actions-menu="trigger">
+                            <svg class="button__icon" xmlns="http://www.w3.org/2000/svg" width="12" height="18" viewBox="0 0 12 18">
+                                <circle style="fill: currentColor;" cx="6.5" cy="13.5" r="1.5"></circle>
+                                <circle style="fill: currentColor;" cx="6.5" cy="8.5" r="1.5"></circle>
+                                <circle style="fill: currentColor;" cx="6.5" cy="3.5" r="1.5"></circle>
+                            </svg>
+                        </button>
+                        <div class="menu offer-editor__actions-menu" [class.menu_visible]="isActionsMenuActive">
+                            <div class="menu__content">
+                                <div class="user-menu">
+                                    <ul class="menu__items">
+                                        <li class="menu__item" data-actions-menu="item">
+                                            <button type="button" (click)="showBillingPopup()">
+                                                {{ 'offers.editor.save_n_send__button' | translate }}
+                                            </button>
+                                        </li>
+                                        <li class="menu__item" data-actions-menu="item" *ngIf="offer && offer.key && (!!offer.projectKey || canEdit)">
+                                            <button type="button" *ngIf="!offer.projectKey" (click)="showProjectPopup()">
+                                                <span class="button__caption">{{ 'offers.editor.create_project__button' | translate }}</span>
+                                            </button>
+                                            <a *ngIf="offer.projectKey" [routerLink]="[ '/dashboard/project/' + offer.projectKey ]">
+                                                {{ 'offers.editor.view_project__link' | translate }}&nbsp;<strong>{{ offer.projectKey }}</strong>
+                                            </a>
+                                        </li>
+                                        <div class="menu__item" data-actions-menu="item">
+                                            <button type="button" (click)="showQuote()">
+                                                <span class="button__caption">{{ 'offers.editor.quote__button' | translate }}</span>
+                                            </button>
+                                        </div>
+                                        <div class="menu__item" data-actions-menu="item" *ngIf="emailPreviewState !== 'empty'">
+                                            <button type="button" (click)="showEmailPopup()">
+                                                <span class="button__caption">{{ 'offers.editor.email__button' | translate }}</span>
+                                            </button>
+                                        </div>
+                                        <div class="menu__item" data-actions-menu="item" *ngIf="canEdit && !!offer.key && isClientSelected">
+                                            <button type="button" (click)="showTransactionPopup()">
+                                                <span class="button__caption">{{ 'offers.editor.acp__button' | translate }}</span>
+                                            </button>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <div class="action-panel__item">
+                <button type="button" class="button button_regular button_white" (click)="showSettingsPopup()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" class="button__icon">
+                        <use xlink:href="#svg-gear"></use>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="'company-selector'">
+        <div class="action-panel__primary" *ngIf="viewportBreakpoint !== 'mobile'">
+            <h1 class="action-panel__header action-panel__header_has-arrow" (click)="layout = 'editor'">{{ 'offers.company.select_company__header' | translate }}</h1>
+        </div>
+        <div class="action-panel__secondary" [class.action-panel__secondary_full-width]="viewportBreakpoint === 'mobile'">
+            <div class="action-panel__item" [class.action-panel__item_full-width]="viewportBreakpoint === 'mobile'">
+                <button type="button" class="button button_regular button_blue" (click)="onSubmitCompany()" [isDisabled]="!selectedCompany" [isProgress]="companySelectorAction == 'submit'">
+                    <span class="button__caption">{{ 'offers.company.select__button' | translate }}</span>
+                </button>
+            </div>
+            <div class="action-panel__item" *ngIf="canCreateClient">
+                <button type="button" class="button button_regular button_white" (click)="onCreateCompany()" [isDisabled]="!canCreateCompany()" [isProgress]="companySelectorAction == 'create'">
+                    <span class="button__caption">{{ 'offers.company.create__button' | translate }}</span>
+                </button>
+            </div>
+            <div class="action-panel__item">
+                <button type="button" class="button button_regular button_white" (click)="layout = 'editor'">
+                    <span class="button__caption">{{ 'offers.company.cancel__button' | translate }}</span>
+                </button>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="'service-selector'">
+        <div class="action-panel__primary" *ngIf="viewportBreakpoint !== 'mobile'">
+            <h1 class="action-panel__header action-panel__header_has-arrow" (click)="onServiceSelectorSubmit(false)">{{ 'offers.service.service__header' | translate }}</h1>
+        </div>
+        <div class="action-panel__secondary" [class.action-panel__secondary_full-width]="viewportBreakpoint === 'mobile'">
+            <div class="action-panel__item" [class.action-panel__item_full-width]="viewportBreakpoint === 'mobile'">
+                <button type="button" class="button button_regular button_blue" (click)="onServiceSelectorSubmit()" [disabled]="isServiceSelectorSelectionEmpty()">
+                    <span class="button__caption">{{ 'offers.service.update__button' | translate }}</span>
+                </button>
+            </div>
+            <div class="action-panel__item">
+                <button type="button" class="button button_regular button_white" (click)="onServiceSelectorSubmit(false)">
+                    <span class="button__caption">{{ 'offers.service.cancel__button' | translate }}</span>
+                </button>
+            </div>
+            <div class="action-panel__item">
+                <sidebar-trigger [sidebar]="sidebarEl" [hasMark]="false" (onClick)="sidebarEl.toggle()"></sidebar-trigger>
+            </div>
+        </div>
+    </ng-container>
+</action-panel>
+
+<sidebar #sidebar *ngIf="layout === 'service-selector'" [(isDesktopActive)]="isServiceSelectorSidebarActive">
+    <div class="sidebar__title">&nbsp;</div>
+    <div class="sidebar__section">
+        <sort-select class="filters__filter-input" [(ngModel)]="serviceSelectorSort" [options]="serviceSelectorSortOptions" (ngModelChange)="onServiceSelectorSortChanged()"></sort-select>
+    </div>
+    <div class="sidebar__section">
+        <div class="sidebar__label" [canCollapse]="false">{{ 'offers.service.filter__header' | translate }}</div>
+        <form *ngIf="serviceSelectorFiltersForm" [formGroup]="serviceSelectorFiltersForm">
+            <div class="filters">
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'offers.service.filter_from__label' | translate }}</label>
+                    <select class="select select_regular filters__filter-input" formControlName="from">
+                        <option
+                            *ngFor="let directionOption of directionOptions"
+                            [ngValue]="directionOption.value"
+                            [innerHTML]="directionOption.display | translate"
+                        ></option>
+                    </select>
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'offers.service.filter_to__label' | translate }}</label>
+                    <select class="select select_regular filters__filter-input" formControlName="to">
+                        <option
+                            *ngFor="let directionOption of directionOptions"
+                            [ngValue]="directionOption.value"
+                            [innerHTML]="directionOption.display | translate"
+                        ></option>
+                    </select>
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'offers.service.filter_rate__label' | translate }}</label>
+                    <select class="select select_regular filters__filter-input" formControlName="rate">
+                        <option
+                            *ngFor="let rateOption of rateOptions"
+                            [ngValue]="rateOption.value"
+                            [innerHTML]="rateOption.value == null ? (rateOption.display | translate) : rateOption.display"
+                        ></option>
+                    </select>
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'offers.service.filter_name__label' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="name">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'offers.service.filter_short_name__label' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="shortName">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'offers.service.filter_unit__label' | translate }}</label>
+                    <select class="select select_regular filters__filter-input" formControlName="unit">
+                        <option
+                            *ngFor="let unitOption of unitOptions"
+                            [ngValue]="unitOption.value"
+                            [innerHTML]="unitOption.value == null ? (unitOption.display | translate) : unitOption.display"
+                        ></option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+</sidebar>
+
+<ng-container [ngSwitch]="layout">
+    <client-editor #clientEditor *ngSwitchCase="'client-editor'" [mode]="'embedded'" [clientId]="offer.client.id" (onHideEditor)="onClientEdited($event)"></client-editor>
+    <fieldset *ngSwitchCase="'editor'" [ngSwitch]="editorState" [disabled]="networkProcess">
+        <div class="offer-editor__spinner" *ngSwitchCase="'loading'">
+            <spinner class="spinner spinner_blue spinner_small"></spinner>
+        </div>
+        <div class="offer-editor__error" *ngSwitchCase="'error'">
+            {{ 'offers.editor.init_error__message' | translate }}
+        </div>
+        <ng-container *ngSwitchCase="'editor'">
+            <div class="tabs">
+                <div class="tabs__tab" [class.tabs__tab_active]="activeTab === 'details'" (click)="switchTab('details')">
+                    <span class="tabs__tab-caption">{{ 'offers.editor.details__tab' | translate }}</span>
+                    <svg class="tabs__tab-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path style="fill: currentColor;" d="M9,0a8.74,8.74,0,0,1,4.5,1.22A9,9,0,0,1,16.78,4.5,8.74,8.74,0,0,1,18,9a8.74,8.74,0,0,1-1.22,4.5,9,9,0,0,1-3.28,3.28A8.74,8.74,0,0,1,9,18a8.74,8.74,0,0,1-4.5-1.22A9,9,0,0,1,1.22,13.5,8.74,8.74,0,0,1,0,9,8.74,8.74,0,0,1,1.22,4.5,9,9,0,0,1,4.5,1.22,8.74,8.74,0,0,1,9,0ZM9,16.26a7.06,7.06,0,0,0,3.63-1,7.32,7.32,0,0,0,2.65-2.65,7.21,7.21,0,0,0,0-7.26,7.4,7.4,0,0,0-2.65-2.65,7.21,7.21,0,0,0-7.26,0A7.48,7.48,0,0,0,2.72,5.37a7.21,7.21,0,0,0,0,7.26,7.4,7.4,0,0,0,2.65,2.65A7.06,7.06,0,0,0,9,16.26Zm2-3.05v-.87a.43.43,0,0,0-.12-.31.46.46,0,0,0-.31-.13h-.44V8.27a.44.44,0,0,0-.43-.43H7.4A.42.42,0,0,0,7.09,8a.41.41,0,0,0-.12.3v.88a.41.41,0,0,0,.12.3.42.42,0,0,0,.31.13h.44V11.9H7.4a.46.46,0,0,0-.31.13.43.43,0,0,0-.12.31v.87a.45.45,0,0,0,.12.31.46.46,0,0,0,.31.13h3.2a.46.46,0,0,0,.31-.13A.45.45,0,0,0,11,13.21ZM9,4a1.44,1.44,0,0,0-1.07.46,1.45,1.45,0,0,0-.45,1.07,1.48,1.48,0,0,0,.45,1.07,1.5,1.5,0,0,0,2.14,0,1.48,1.48,0,0,0,.45-1.07,1.45,1.45,0,0,0-.45-1.07A1.44,1.44,0,0,0,9,4Z"></path>
+                    </svg>
+                </div>
+                <div class="tabs__tab" [class.tabs__tab_active]="activeTab === 'documents'" (click)="switchTab('documents')" *ngIf="canEdit || !!offer.instruction || offer.attachments.length > 0">
+                    <span class="tabs__tab-caption">{{ 'offers.editor.documents__tab' | translate }}</span>
+                    <svg class="tabs__tab-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path style="fill: currentColor;" d="M16,16.31a1.61,1.61,0,0,1-.51,1.2,1.7,1.7,0,0,1-1.24.49H3.75a1.7,1.7,0,0,1-1.24-.49A1.61,1.61,0,0,1,2,16.31V1.69A1.61,1.61,0,0,1,2.51.49,1.7,1.7,0,0,1,3.75,0h7.44a1.72,1.72,0,0,1,1.24.49l3.06,3A1.57,1.57,0,0,1,16,4.64ZM14.25,6.19H10.46a.84.84,0,0,1-.62-.25.79.79,0,0,1-.26-.6V1.69H3.75V16.31h10.5ZM12.5,9.7a.38.38,0,0,1-.13.3.44.44,0,0,1-.31.13H5.94A.44.44,0,0,1,5.63,10a.38.38,0,0,1-.13-.3v-1a.38.38,0,0,1,.13-.3.43.43,0,0,1,.31-.12h6.12a.43.43,0,0,1,.31.12.38.38,0,0,1,.13.3ZM5.94,11.25a.43.43,0,0,0-.31.12.41.41,0,0,0-.13.3v1a.41.41,0,0,0,.13.3.43.43,0,0,0,.31.12h6.12a.43.43,0,0,0,.31-.12.41.41,0,0,0,.13-.3v-1a.41.41,0,0,0-.13-.3.43.43,0,0,0-.31-.12ZM11.33,4.5H14.1L11.33,1.83Z"></path>
+                    </svg>
+                </div>
+                <div class="tabs__tab" [class.tabs__tab_active]="activeTab === 'shipping'" (click)="switchTab('shipping')">
+                    <span class="tabs__tab-caption">{{ 'offers.editor.shipping__tab' | translate }}</span>
+                    <svg class="tabs__tab-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path style="fill: currentColor;" d="M8.75,0a6.51,6.51,0,0,1,3.37.91,6.9,6.9,0,0,1,2.46,2.46,6.52,6.52,0,0,1,.91,3.38,6.32,6.32,0,0,1-.24,1.82,10.83,10.83,0,0,1-.95,2c-.33.56-1,1.67-2,3.31l-2.07,3.26a1.64,1.64,0,0,1-.88.72,1.69,1.69,0,0,1-1.13,0,1.62,1.62,0,0,1-.87-.72L5.23,13.92q-1.55-2.46-2-3.27a11.73,11.73,0,0,1-.94-2.08A6,6,0,0,1,2,6.75a6.52,6.52,0,0,1,.91-3.38A6.9,6.9,0,0,1,5.37.91,6.52,6.52,0,0,1,8.75,0Zm0,16.3L11,12.79c.94-1.5,1.56-2.49,1.86-3a9.56,9.56,0,0,0,.79-1.65,4.5,4.5,0,0,0,.2-1.4,4.83,4.83,0,0,0-.69-2.53,5.18,5.18,0,0,0-1.84-1.85,5,5,0,0,0-2.53-.68,4.92,4.92,0,0,0-2.53.68A5.13,5.13,0,0,0,4.37,4.22a4.92,4.92,0,0,0-.68,2.53,4.69,4.69,0,0,0,.19,1.42,8.13,8.13,0,0,0,.83,1.67c.28.49.89,1.49,1.82,3S8.16,15.37,8.75,16.3ZM5.94,6.75A2.82,2.82,0,0,0,8.75,9.56a2.71,2.71,0,0,0,2-.83,2.71,2.71,0,0,0,.83-2,2.71,2.71,0,0,0-.83-2,2.7,2.7,0,0,0-2-.82A2.8,2.8,0,0,0,5.94,6.75Z"></path>
+                    </svg>
+                </div>
+                <div class="tabs__tab" [class.tabs__tab_active]="activeTab === 'transactions'" (click)="switchTab('transactions')" *ngIf="isClientSelected">
+                    <span class="tabs__tab-caption">{{ 'offers.editor.transactions__tab' | translate }}</span>
+                    <svg class="tabs__tab-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path style="fill: currentColor;" d="M9,0a8.74,8.74,0,0,1,4.5,1.22A9,9,0,0,1,16.78,4.5,8.74,8.74,0,0,1,18,9a8.74,8.74,0,0,1-1.22,4.5,9,9,0,0,1-3.28,3.28A8.74,8.74,0,0,1,9,18a8.74,8.74,0,0,1-4.5-1.22A9,9,0,0,1,1.22,13.5,8.74,8.74,0,0,1,0,9,8.74,8.74,0,0,1,1.22,4.5,9,9,0,0,1,4.5,1.22,8.74,8.74,0,0,1,9,0ZM9,16.26a7.06,7.06,0,0,0,3.63-1,7.32,7.32,0,0,0,2.65-2.65,7.21,7.21,0,0,0,0-7.26,7.32,7.32,0,0,0-2.65-2.65,7.21,7.21,0,0,0-7.26,0A7.32,7.32,0,0,0,2.72,5.37a7.21,7.21,0,0,0,0,7.26,7.32,7.32,0,0,0,2.65,2.65A7.06,7.06,0,0,0,9,16.26Zm-.76-1.74V13.46a4.09,4.09,0,0,1-1.71-.65c-.26-.19-.48-.36-.65-.51a.25.25,0,0,1,0-.36l.83-1.09a.31.31,0,0,1,.19-.13.25.25,0,0,1,.21.09c.2.15.4.3.62.44a2.76,2.76,0,0,0,1.34.4,1.19,1.19,0,0,0,.69-.2.66.66,0,0,0,.29-.6q0-.26-.36-.51a6.32,6.32,0,0,0-1-.47A5.87,5.87,0,0,1,6.9,9,2.25,2.25,0,0,1,6,7.11a2.32,2.32,0,0,1,.62-1.63,3,3,0,0,1,1.63-.91V3.45a.2.2,0,0,1,.09-.18.32.32,0,0,1,.2-.08H9.58a.25.25,0,0,1,.18.08.22.22,0,0,1,.08.18V4.54a4.13,4.13,0,0,1,1.52.5,3.16,3.16,0,0,1,.53.39.26.26,0,0,1,0,.34L11.29,7a.19.19,0,0,1-.17.12.28.28,0,0,1-.23,0c-.17-.12-.37-.24-.58-.36a2,2,0,0,0-1.13-.29,1.67,1.67,0,0,0-.76.16.54.54,0,0,0-.33.51.74.74,0,0,0,.4.6,6.78,6.78,0,0,0,1.09.47v0A6.72,6.72,0,0,1,11.29,9a2.11,2.11,0,0,1,.9,1.74,2.59,2.59,0,0,1-.67,1.8,2.92,2.92,0,0,1-1.68.92v1.06a.27.27,0,0,1-.08.21.25.25,0,0,1-.18.08H8.53a.32.32,0,0,1-.2-.08A.25.25,0,0,1,8.24,14.52Z"></path>
+                    </svg>
+                </div>
+                <div class="tabs__tab"
+                    *ngIf="!!offer.key"
+                    [class.tabs__tab_active]="activeTab === 'history'"
+                    [class.tabs__tab_disabled]="!canViewHistory"
+                    (click)="switchTab('history')"
+                    (mouseenter)="onHistoryTabMouseEvent(true)"
+                    (mouseleave)="onHistoryTabMouseEvent(false)"
+                >
+                    <span class="tabs__tab-caption">{{ 'offers.editor.changes__tab' | translate }}</span>
+                    <span class="tabs__tab-hint" [class.tabs__tab-hint_visible]="isHistoryTabHintVisible">{{ 'log.history_tab_hint__message' | translate }}</span>
+                    <svg class="tabs__tab-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path style="fill: currentColor;" d="M.73.73A.39.39,0,0,0,.27.65a.41.41,0,0,0-.27.4V6.24a.4.4,0,0,0,.13.31.42.42,0,0,0,.31.13H5.62A.39.39,0,0,0,6,6.41.38.38,0,0,0,6,6L4,4a7.23,7.23,0,0,1,2.3-1.53A7,7,0,0,1,9,1.89a6.92,6.92,0,0,1,3.56,1,7.15,7.15,0,0,1,2.59,2.59,7.08,7.08,0,0,1,0,7.12,7.15,7.15,0,0,1-2.59,2.59,6.92,6.92,0,0,1-3.56,1,6.92,6.92,0,0,1-2.56-.47A6.7,6.7,0,0,1,4.28,14.3.45.45,0,0,0,4,14.21a.44.44,0,0,0-.3.13l-.72.72a.43.43,0,0,0-.11.31.36.36,0,0,0,.15.31A9,9,0,0,0,9,18a8.74,8.74,0,0,0,4.5-1.22,9.07,9.07,0,0,0,3.28-3.26A8.69,8.69,0,0,0,18,9,8.76,8.76,0,0,0,16.78,4.5,9,9,0,0,0,13.5,1.22,8.74,8.74,0,0,0,9,0,8.92,8.92,0,0,0,5.53.69a8.52,8.52,0,0,0-2.88,2Z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="tab-content" [class.tab-content_active]="activeTab === 'details'">
+                <div class="tab-content-header tab-content-header_tablet tab-content-header_mobile">{{ 'offers.editor.details__tab' | translate }}</div>
+                <div class="offer-editor__sections">
+                    <div class="offer-editor__sections-col">
+                        <div class="offer-editor__section offer-editor__section_narrow">
+                            <div class="offer-editor__section-header">
+                                <span>{{ 'offers.editor.primary__section_header' | translate }}</span>
+                            </div>
+                            <div class="offer-editor__section-control" *ngIf="!!offer.key">
+                                <label class="offer-editor__section-label">{{ 'offers.editor.offer__label' | translate }}</label>
+                                <div class="offer-editor__section-input">{{ offer.key }}</div>
+                            </div>
+                            <div class="offer-editor__section-control" *ngIf="!!offer.created">
+                                <label class="offer-editor__section-label">{{ 'offers.editor.created__label' | translate }}</label>
+                                <div class="offer-editor__section-input">{{ offer.created | datetime : dateDisplayFormat }}</div>
+                            </div>
+                            <div class="offer-editor__section-control">
+                                <label class="offer-editor__section-label">{{ 'offers.editor.status__label' | translate }}</label>
+                                <div class="offer-editor__section-input">
+                                    <select class="select select_regular"
+                                        [(ngModel)]="offer.statusId"
+                                        [disabled]="!canEdit || !!offer.projectKey && isStatus('accepted')"
+                                        (ngModelChange)="isChanged = true"
+                                    >
+                                        <option
+                                            *ngFor="let statusOption of statusOptions"
+                                            [ngValue]="statusOption.value"
+                                            [innerHTML]="statusOption.display | translate"
+                                        ></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="offer-editor__section-control">
+                                <label class="offer-editor__section-label">{{ 'offers.editor.coordinator__label' | translate }}</label>
+                                <div class="offer-editor__section-input">
+                                    <select class="select select_regular"
+                                        [(ngModel)]="offer.coordinatorId"
+                                        (ngModelChange)="isChanged = true"
+                                        [disabled]="!canEdit"
+                                    >
+                                        <option
+                                            *ngFor="let coordinatorOption of coordinatorOptions"
+                                            [ngValue]="coordinatorOption.value"
+                                            [innerHTML]="coordinatorOption.display"
+                                            [disabled]="!coordinatorOption.isActive"
+                                        ></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="offer-editor__section offer-editor__section_narrow">
+                            <div class="offer-editor__section-header">
+                                <span>{{ 'offers.editor.client_n_contact__section_header' | translate }}</span>
+                            </div>
+                            <div class="offer-editor__section-control">
+                                <label class="offer-editor__section-label">
+                                    <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">{{ 'offers.editor.company_name__label' | translate }}</span>
+                                </label>
+                                <div class="offer-editor__section-input">
+                                    <div class="offer-editor__section-input-client" *ngIf="!!(offer.client && offer.client.name)">
+                                        {{ offer.client.name }}
+                                    </div>
+                                    <div class="offer-editor__section-input-client">
+                                        <button type="button" class="button button_regular button_blue" (click)="layout = 'company-selector'" *ngIf="canEdit">
+                                            <span class="button__caption">{{ 'offers.editor.find_company__button' | translate }}</span>
+                                        </button>
+                                    </div>
+                                    <div class="offer-editor__section-input-client">
+                                        <button type="button" class="button button_regular button_blue" (click)="layout = 'client-editor'" *ngIf="canEditClient()">
+                                            <span class="button__caption">{{ 'offers.editor.edit_contact__button' | translate }}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="offer-editor__section-control">
+                                <label class="offer-editor__section-label">{{ 'offers.editor.contact__label' | translate }}</label>
+                                <div class="offer-editor__section-input offer-editor__section-input_column">
+                                    <select class="select select_regular"
+                                        [ngModel]="offer.contact.id"
+                                        [disabled]="!canEdit || !offer.client || !offer.client.id"
+                                        (ngModelChange)="onContactChanged($event)"
+                                    >
+                                        <ng-container *ngFor="let contact of contacts">
+                                            <option
+                                                *ngIf="!contact.inactive || contact.id == offer.contact.id"
+                                                [ngValue]="contact.id"
+                                                [disabled]="contact.inactive"
+                                                [innerHTML]="contact.id > 0 ? contact.fullName : (canEdit ? ('offers.editor.create_new_contact' | translate) : ' ')"
+                                            ></option>
+                                        </ng-container>
+                                    </select>
+                                    <!-- TODO:
+                                    <div class="offer-editor__section-input-error" *ngIf="offer.contact.inactive">
+                                        {{ 'offers.editor.contact_inactive__message' | translate }}
+                                    </div>
+                                    -->
+                                </div>
+                            </div>
+                            <div class="offer-editor__section-control">
+                                <label class="offer-editor__section-label">
+                                    <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">{{ 'offers.editor.company_person__label' | translate }}</span>
+                                </label>
+                                <div class="offer-editor__section-input offer-editor__section-input_person">
+                                    <select class="select select_regular"
+                                        [disabled]="!canEdit || !!offer.contact.id || !offer.client || !offer.client.id"
+                                        [(ngModel)]="offer.contact.title"
+                                        (ngModelChange)="isChanged = true"
+                                    >
+                                        <option
+                                            *ngFor="let personPrefixOption of personPrefixOptions"
+                                            [ngValue]="personPrefixOption.value && (personPrefixOption.value | translate)"
+                                            [innerHTML]="personPrefixOption.display && (personPrefixOption.display | translate)"
+                                        ></option>
+                                    </select>
+                                    <input type="text" maxlength="255" class="input input_regular"
+                                        [disabled]="!canEdit || !!offer.contact.id || !offer.client || !offer.client.id"
+                                        [(ngModel)]="offer.contact.fullName"
+                                        (ngModelChange)="isChanged = true"
+                                    >
+                                </div>
+                            </div>
+                            <div class="offer-editor__section-control">
+                                <label class="offer-editor__section-label">
+                                    <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">{{ 'offers.editor.email__label' | translate }}</span>
+                                </label>
+                                <div class="offer-editor__section-input">
+                                    <input type="text" class="input input_regular"
+                                        [disabled]="!canEdit || !!offer.contact.id || !offer.client || !offer.client.id"
+                                        [(ngModel)]="offer.contact.email"
+                                        (ngModelChange)="isChanged = true"
+                                    >
+                                </div>
+                            </div>
+                            <div class="offer-editor__section-control">
+                                <label class="offer-editor__section-label">
+                                    <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">{{ 'offers.editor.phone__label' | translate }}</span>
+                                </label>
+                                <div class="offer-editor__section-input">
+                                    <input type="text" class="input input_regular"
+                                       [disabled]="!canEdit || !!offer.contact.id || !offer.client || !offer.client.id"
+                                       [(ngModel)]="offer.contact.phone"
+                                       (ngModelChange)="isChanged = true"
+                                    >
+                                </div>
+                            </div>
+                            <div class="offer-editor__section-control">
+                                <label class="offer-editor__section-label">
+                                    <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">{{ 'offers.editor.fax__label' | translate }}</span>
+                                </label>
+                                <div class="offer-editor__section-input">
+                                    <input type="text" class="input input_regular"
+                                       [disabled]="!canEdit || !!offer.contact.id || !offer.client || !offer.client.id"
+                                       [(ngModel)]="offer.contact.fax"
+                                       (ngModelChange)="isChanged = true"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="offer-editor__sections-col">
+                        <div class="offer-editor__section offer-editor__section_narrow">
+                            <div class="offer-editor__section-header">
+                                <span>{{ 'offers.editor.delivery__section_header' | translate }}</span>
+                            </div>
+                            <div class="offer-editor__section-control">
+                                <label class="offer-editor__section-label">{{ 'offers.editor.priority__label' | translate }}</label>
+                                <div class="offer-editor__section-input">
+                                    <select class="select select_regular"
+                                        [disabled]="!canEdit"
+                                        [(ngModel)]="offer.priorityId"
+                                        (ngModelChange)="isChanged = true"
+                                    >
+                                        <option
+                                            *ngFor="let priorityOption of priorityOptions"
+                                            [ngValue]="priorityOption.value"
+                                            [innerHTML]="priorityOption.display"
+                                        ></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="offer-editor__section-control">
+                                <label class="offer-editor__section-label">{{ 'offers.editor.delivery_type__label' | translate }}</label>
+                                <div class="offer-editor__section-input">
+                                    <select class="select select_regular"
+                                        [disabled]="!canEdit"
+                                        [(ngModel)]="offer.deliveryTypeId"
+                                        (ngModelChange)="isChanged = true"
+                                    >
+                                        <option
+                                            *ngFor="let deliveryTypeOption of deliveryTypeOptions"
+                                            [ngValue]="deliveryTypeOption.value"
+                                            [innerHTML]="deliveryTypeOption.display"
+                                        ></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="offer-editor__section-control">
+                                <label class="offer-editor__section-label">{{ 'offers.editor.days__label' | translate }}</label>
+                                <div class="offer-editor__section-input">
+                                    <input type="text" maxlength="255" class="input input_regular"
+                                        [disabled]="!canEdit"
+                                        [(ngModel)]="offer.days"
+                                        (ngModelChange)="isChanged = true"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="offer-editor__section offer-editor__section_narrow">
+                            <div class="offer-editor__section-header">
+                                <span>{{ 'offers.editor.translation__section_header' | translate }}</span>
+                            </div>
+                            <div class="offer-editor__section-control">
+                                <label class="offer-editor__section-label">{{ 'offers.editor.subject_area__label' | translate }}</label>
+                                <div class="offer-editor__section-input">
+                                    <select class="select select_regular"
+                                            [disabled]="!canEdit"
+                                            [(ngModel)]="offer.fieldId"
+                                            (ngModelChange)="isChanged = true"
+                                    >
+                                        <option
+                                            *ngFor="let subjectAreaOption of subjectAreaOptions"
+                                            [ngValue]="subjectAreaOption.value"
+                                            [innerHTML]="subjectAreaOption.display"
+                                        ></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="offer-editor__section-control">
+                                <label class="offer-editor__section-label">{{ 'offers.editor.translation__label' | translate }}</label>
+                                <div class="offer-editor__section-input">
+                                    <select class="select select_regular"
+                                            [disabled]="!canEdit"
+                                            [(ngModel)]="offer.translationTypeId"
+                                            (ngModelChange)="isChanged = true"
+                                    >
+                                        <option
+                                            *ngFor="let translationTypeOption of translationTypeOptions"
+                                            [ngValue]="translationTypeOption.value"
+                                            [innerHTML]="translationTypeOption.display"
+                                        ></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="offer-editor__section-control">
+                                <label class="offer-editor__section-label">{{ 'offers.editor.notary__label' | translate }}</label>
+                                <div class="offer-editor__section-input">
+                                    <checkbox
+                                        [disabled]="!canEdit"
+                                        [(ngModel)]="offer.notary"
+                                        (ngModelChange)="isChanged = true"
+                                    ></checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="offer-editor__section offer-editor__section_narrow">
+                            <div class="offer-editor__section-header">
+                                <span>{{ 'offers.editor.miscellaneous__section_header' | translate }}</span>
+                            </div>
+                            <div class="offer-editor__section-control">
+                                <label class="offer-editor__section-label">{{ 'offers.editor.external_id__label' | translate }}</label>
+                                <div class="offer-editor__section-input">
+                                    <input type="text" class="input input_regular"
+                                       [disabled]="!canEdit"
+                                       [(ngModel)]="offer.externalId"
+                                       (ngModelChange)="isChanged = true"
+                                    >
+                                </div>
+                            </div>
+                            <div class="offer-editor__section-control">
+                                <label class="offer-editor__section-label">
+                                    <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">{{ 'offers.editor.description__label' | translate }}</span>
+                                </label>
+                                <div class="offer-editor__section-input">
+                                    <textarea class="textarea"
+                                        [disabled]="!canEdit"
+                                        [(ngModel)]="offer.description"
+                                        (ngModelChange)="isChanged = true"
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SERVICES -->
+                <br><br><br>
+                <button type="button" class="button button_regular button_blue" (click)="layout = 'service-selector'">
+                    {{ 'offers.editor.add_service__button' | translate }}
+                </button>
+                <ng-container *ngIf="offer.services.length > 0" [ngSwitch]="viewportBreakpoint">
+                    <div *ngSwitchCase="'mobile'">
+                        <ng-container *ngFor="let service of offer.services">
+                            <div class="offer-editor__service-name">
+                                <span>{{ service.name }}</span>
+                                <button type="button" class="offer-editor__service-delete" *ngIf="canEdit" (click)="removeService(service)"></button>
+                            </div>
+                            <table class="items-table items-table_non-hover items-table_offer-services">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <strong>{{ 'offers.editor.from__table_th' | translate }}</strong><br>
+                                            {{ getLangName(service.from) | translate }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>{{ 'offers.editor.to__table_th' | translate }}</strong><br>
+                                            {{ getLangName(service.to) | translate }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>{{ 'offers.editor.unit__table_th' | translate }}</strong><br>
+                                            {{ service.unit }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>{{ 'offers.editor.cpu__table_th' | translate }}</strong><br>
+                                            {{ getServiceBasePrice(service) / 100 | currency : offer.currency : 'symbol' : '.2-2' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="offer-editor__service-editable_green">
+                                            <strong>{{ 'offers.editor.in__table_th' | translate }}</strong><br>
+                                            <input type="text"
+                                                class="offer-editor__service-input"
+                                                number-mask
+                                                [disabled]="!canEdit"
+                                                [(numberModel)]="service.in"
+                                                [numberModelOptions]="{
+                                                    min: 0,
+                                                    updateOn: 'blur',
+                                                    defaultValue: 0,
+                                                    fractionFixTo: 2,
+                                                    type: 'float',
+                                                    sign: '+',
+                                                    viewFraction: 100,
+                                                    delimiter: ','
+                                                }"
+                                                (numberModelChange)="onServiceValueChanged(service, 'in', $event)"
+                                            >
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="offer-editor__service-editable_blue">
+                                            <strong>{{ 'offers.editor.out_rounded__table_th' | translate }}</strong><br>
+                                            <input type="text"
+                                                class="offer-editor__service-input"
+                                                number-mask
+                                                [disabled]="!canEdit"
+                                                [(numberModel)]="service.outRounded"
+                                                [numberModelOptions]="{
+                                                    min: 0,
+                                                    updateOn: 'blur',
+                                                    defaultValue: 0,
+                                                    fractionFixTo: 2,
+                                                    type: 'float',
+                                                    sign: '+',
+                                                    viewFraction: 100,
+                                                    delimiter: ','
+                                                }"
+                                                (numberModelChange)="onServiceValueChanged(service, 'outRounded', $event)"
+                                            >
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="offer-editor__service-editable_blue" [class.offer-editor__service-cell_grey]="!service.billable">
+                                            <strong>{{ 'offers.editor.ratio__table_th' | translate }}</strong><br>
+                                            <input type="text"
+                                                class="offer-editor__service-input"
+                                                number-mask
+                                                [disabled]="!canEdit || !service.billable"
+                                                [(numberModel)]="service.ratio"
+                                                [numberModelOptions]="{
+                                                    min: 0,
+                                                    updateOn: 'blur',
+                                                    defaultValue: 10000,
+                                                    fractionFixTo: 4,
+                                                    type: 'float',
+                                                    sign: '+',
+                                                    viewFraction: 10000,
+                                                    delimiter: ','
+                                                }"
+                                                (numberModelChange)="onServiceValueChanged(service, 'ratio', $event)"
+                                            >
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td [class.offer-editor__service-cell_grey]="!service.billable">
+                                            <strong>
+                                                <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">
+                                                    {{ 'offers.editor.price__table_th' | translate }}
+                                                </span>
+                                            </strong><br>
+                                            {{ service.price / 100 | currency : offer.currency : 'symbol' : '.2-2' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="offer-editor__service-editable_blue" [class.offer-editor__service-cell_grey]="!service.billable">
+                                            <strong>
+                                                <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">
+                                                    {{ 'offers.editor.discount__table_th' | translate }}
+                                                </span>
+                                            </strong><br>
+                                            <input type="text"
+                                                class="offer-editor__service-input"
+                                                number-mask
+                                                [disabled]="!canEdit || !service.billable"
+                                                [(numberModel)]="service.discount"
+                                                [numberModelOptions]="{
+                                                    updateOn: 'blur',
+                                                    defaultValue: 0,
+                                                    fractionFixTo: 2,
+                                                    type: 'float',
+                                                    viewFraction: 100,
+                                                    delimiter: ','
+                                                }"
+                                                (numberModelChange)="onServiceValueChanged(service, 'discount', $event)"
+                                            >
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td [class.offer-editor__service-cell_grey]="!service.billable">
+                                            <strong>
+                                                <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">
+                                                    {{ 'offers.editor.net__table_th' | translate }}
+                                                </span>
+                                            </strong><br>
+                                            {{ service.net / 100 | currency : offer.currency : 'symbol' : '.2-2' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td [class.offer-editor__service-cell_grey]="!service.billable">
+                                            <strong>
+                                                <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">
+                                                    {{ 'offers.editor.gross__table_th' | translate }}
+                                                </span>
+                                            </strong><br>
+                                            {{ service.gross / 100 | currency : offer.currency : 'symbol' : '.2-2' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <checkbox [disabled]="!canEdit" [(ngModel)]="service.billable" (ngModelChange)="onServiceBillableChanged(service)">
+                                                &nbsp;{{ 'offers.editor.billable__table_th' | translate }}
+                                            </checkbox>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="offer.attachments.length > 0">
+                                        <td class="offer-editor__service-attachments">
+                                            <span class="offer-editor__service-attachment" *ngFor="let attachment of attachmentsMap[service.serviceId]">
+                                                <button type="button" (click)="onUnlinkAttachment(service, attachment)" *ngIf="canEdit"></button>
+                                                <span>{{ attachment.name }}</span>
+                                            </span>
+                                            <button type="button" class="button button_regular button_blue" (click)="showAttachmentsPopup(service)" *ngIf="canEdit && hasLinkableAttachments(service)">
+                                                {{ 'offers.editor.select_documents__button' | translate }}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ng-container>
+                    </div>
+                    <div class="items-table-wrap items-table-wrap_offer-services" *ngSwitchDefault>
+                        <table class="items-table items-table_non-hover items-table_offer-services">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'offers.editor.name__table_th' | translate }}</th>
+                                    <th>{{ 'offers.editor.from__table_th' | translate }}</th>
+                                    <th>{{ 'offers.editor.to__table_th' | translate }}</th>
+                                    <th>{{ 'offers.editor.unit__table_th' | translate }}</th>
+                                    <th class="offer-editor__service-currency">{{ 'offers.editor.cpu__table_th' | translate }}</th>
+                                    <th class="offer-editor__service-currency">{{ 'offers.editor.in__table_th' | translate }}</th>
+                                    <th class="offer-editor__service-currency">{{ 'offers.editor.out_rounded__table_th' | translate }}</th>
+                                    <th class="offer-editor__service-currency">{{ 'offers.editor.ratio__table_th' | translate }}</th>
+                                    <th class="offer-editor__service-currency">
+                                        <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">
+                                            {{ 'offers.editor.price__table_th' | translate }}
+                                        </span>
+                                    </th>
+                                    <th class="offer-editor__service-currency">
+                                        <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">
+                                            {{ 'offers.editor.discount__table_th' | translate }}
+                                        </span>
+                                    </th>
+                                    <th class="offer-editor__service-currency">
+                                        <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">
+                                            {{ 'offers.editor.net__table_th' | translate }}
+                                        </span>
+                                    </th>
+                                    <th class="offer-editor__service-currency">
+                                        <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">
+                                            {{ 'offers.editor.gross__table_th' | translate }}
+                                        </span>
+                                    </th>
+                                    <th>{{ 'offers.editor.billable__table_th' | translate }}</th>
+                                    <th *ngIf="canEdit">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let service of offer.services">
+                                <tr>
+                                    <td>{{ service.name }}</td>
+                                    <td class="text-nowrap">{{ getLangName(service.from) | translate }}</td>
+                                    <td class="text-nowrap">{{ getLangName(service.to) | translate }}</td>
+                                    <td class="text-nowrap">{{ service.unit }}</td>
+                                    <td class="offer-editor__service-currency">
+                                        {{ getServiceBasePrice(service) / 100 | currency : offer.currency : 'symbol' : '.2-2' }}
+                                    </td>
+                                    <td class="offer-editor__service-editable offer-editor__service-editable_green">
+                                        <input type="text"
+                                            class="offer-editor__service-input"
+                                            number-mask
+                                            [disabled]="!canEdit"
+                                            [(numberModel)]="service.in"
+                                            [numberModelOptions]="{
+                                                min: 0,
+                                                updateOn: 'blur',
+                                                defaultValue: 0,
+                                                fractionFixTo: 2,
+                                                type: 'float',
+                                                sign: '+',
+                                                viewFraction: 100,
+                                                delimiter: ','
+                                            }"
+                                            (numberModelChange)="onServiceValueChanged(service, 'in', $event)"
+                                        >
+                                    </td>
+                                    <td class="offer-editor__service-editable offer-editor__service-editable_blue">
+                                        <input type="text"
+                                            class="offer-editor__service-input"
+                                            number-mask
+                                            [disabled]="!canEdit"
+                                            [(numberModel)]="service.outRounded"
+                                            [numberModelOptions]="{
+                                                min: 0,
+                                                updateOn: 'blur',
+                                                defaultValue: 0,
+                                                fractionFixTo: 2,
+                                                type: 'float',
+                                                sign: '+',
+                                                viewFraction: 100,
+                                                delimiter: ','
+                                            }"
+                                            (numberModelChange)="onServiceValueChanged(service, 'outRounded', $event)"
+                                        >
+                                    </td>
+                                    <td class="offer-editor__service-editable offer-editor__service-editable_blue" [class.offer-editor__service-cell_grey]="!service.billable">
+                                        <input type="text"
+                                            class="offer-editor__service-input"
+                                            number-mask
+                                            [disabled]="!canEdit || !service.billable"
+                                            [(numberModel)]="service.ratio"
+                                            [numberModelOptions]="{
+                                                min: 0,
+                                                updateOn: 'blur',
+                                                defaultValue: 10000,
+                                                fractionFixTo: 4,
+                                                type: 'float',
+                                                sign: '+',
+                                                viewFraction: 10000,
+                                                delimiter: ','
+                                            }"
+                                            (numberModelChange)="onServiceValueChanged(service, 'ratio', $event)"
+                                        >
+                                    </td>
+                                    <td class="offer-editor__service-currency" [class.offer-editor__service-cell_grey]="!service.billable">
+                                        {{ service.price / 100 | currency : offer.currency : 'symbol' : '.2-2' }}
+                                    </td>
+                                    <td class="offer-editor__service-editable offer-editor__service-editable_blue" [class.offer-editor__service-cell_grey]="!service.billable">
+                                        <input type="text"
+                                            class="offer-editor__service-input"
+                                            number-mask
+                                            [disabled]="!canEdit || !service.billable"
+                                            [(numberModel)]="service.discount"
+                                            [numberModelOptions]="{
+                                                updateOn: 'blur',
+                                                defaultValue: 0,
+                                                fractionFixTo: 2,
+                                                type: 'float',
+                                                viewFraction: 100,
+                                                delimiter: ','
+                                            }"
+                                            (numberModelChange)="onServiceValueChanged(service, 'discount', $event)"
+                                        >
+                                    </td>
+                                    <td class="offer-editor__service-currency" [class.offer-editor__service-cell_grey]="!service.billable">
+                                        {{ service.net / 100 | currency : offer.currency : 'symbol' : '.2-2' }}
+                                    </td>
+                                    <td class="offer-editor__service-currency" [class.offer-editor__service-cell_grey]="!service.billable">
+                                        {{ service.gross / 100 | currency : offer.currency : 'symbol' : '.2-2' }}
+                                    </td>
+                                    <td class="offer-editor__service-billable">
+                                        <checkbox [disabled]="!canEdit" [(ngModel)]="service.billable" (ngModelChange)="onServiceBillableChanged(service)"></checkbox>
+                                    </td>
+                                    <td class="offer-editor__service-actions" *ngIf="canEdit">
+                                        <button type="button" class="offer-editor__service-delete" (click)="removeService(service)"></button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="offer.attachments.length > 0">
+                                    <td [colSpan]="canEdit ? 14 : 13" class="offer-editor__service-attachments">
+                                        <span class="offer-editor__service-attachment" *ngFor="let attachment of attachmentsMap[service.serviceId]">
+                                            <button type="button" (click)="onUnlinkAttachment(service, attachment)" *ngIf="canEdit"></button>
+                                            <span>{{ attachment.name }}</span>
+                                        </span>
+                                        <button type="button" class="button button_regular button_blue" (click)="showAttachmentsPopup(service)" *ngIf="canEdit && hasLinkableAttachments(service)">
+                                            {{ 'offers.editor.select_documents__button' | translate }}
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </ng-container>
+                <div class="offer-editor__currencies">
+                    <div class="offer-editor__currencies-cell" [ngSwitch]="isCurrencyLocked">
+                        <ng-container *ngSwitchCase="true">
+                            <label class="offer-editor__currencies-label">
+                                {{ 'offers.editor.currency__label' | translate }}
+                            </label><!--
+                         --><span>{{ currency.name }}</span><!--
+                         --><button type="button" class="button button_regular button_white" *ngIf="canEdit" (click)="unlockCurrency()">
+                                {{ 'offers.editor.currency_unlock__button' | translate }}
+                            </button>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="false">
+                            <label class="offer-editor__currencies-label">
+                                {{ 'offers.editor.currency__label' | translate }}
+                            </label><!--
+                         --><select class="select select_regular" [(ngModel)]="offer.currency" (ngModelChange)="onCurrencyChanged($event)">
+                                <option
+                                    *ngFor="let currencyOption of currencyOptions"
+                                    [ngValue]="currencyOption.value"
+                                    [innerHTML]="currencyOption.display"
+                                ></option>
+                            </select>
+                        </ng-container>
+                    </div>
+                    <div class="offer-editor__currencies-cell">
+                        <label class="offer-editor__currencies-label">
+                            {{ 'offers.editor.tax_vat__label' | translate }}
+                        </label><!--
+                     --><select class="select select_regular"
+                            [disabled]="!canEdit"
+                            [ngModel]="offer.tax.id"
+                            (ngModelChange)="onTaxChanged($event)"
+                        >
+                            <option
+                                *ngFor="let taxOption of taxOptions"
+                                [ngValue]="taxOption.value"
+                                [innerHTML]="taxOption.display"
+                            ></option>
+                        </select>
+                    </div>
+                    <div class="offer-editor__currencies-cell">
+                        <div class="offer-editor__currencies-total">
+                            <div class="offer-editor__currencies-total-row">
+                                <div class="offer-editor__currencies-total-cell">
+                                    <label class="offer-editor__currencies-label">
+                                        {{ 'offers.editor.total_net__label' | translate }}
+                                    </label>
+                                </div>
+                                <div class="offer-editor__currencies-total-cell">
+                                    {{ totalNet / 100 | currency : offer.currency : 'symbol' : '.2-2' }}
+                                </div>
+                            </div>
+                            <div class="offer-editor__currencies-total-row">
+                                <div class="offer-editor__currencies-total-cell">
+                                    <label class="offer-editor__currencies-label">
+                                        {{ 'offers.editor.total_gross__label' | translate }}
+                                    </label>
+                                </div>
+                                <div class="offer-editor__currencies-total-cell">
+                                    {{ totalGross / 100 | currency : offer.currency : 'symbol' : '.2-2' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" [class.tab-content_active]="activeTab === 'documents'">
+                <div class="tab-content-header tab-content-header_tablet tab-content-header_mobile">{{ 'offers.editor.documents__tab' | translate }}</div>
+                <div class="offer-editor__section offer-editor__section_wide">
+                    <div class="offer-editor__section-header">
+                        <span>{{ 'offers.editor.doc_instructions' | translate }}</span>
+                    </div>
+                    <div class="offer-editor__instructions" [ngSwitch]="isInstructionsEditorEnabled">
+                        <div class="offer-editor__instructions-text"
+                             *ngSwitchCase="false"
+                             #instructionsText
+                             [class.offer-editor__instructions-text_empty]="!getInstructionsText()"
+                             [innerHTML]="getInstructionsText() || (canEdit ? ('offers.editor.doc_edit_instructions' | translate) : '&nbsp;')"
+                             [title]="canEdit ? ('offers.editor.doc_instructions_edit' | translate) : ''"
+                             (click)="isInstructionsEditorEnabled = true"
+                        ></div>
+                        <div class="offer-editor__instructions-editor" *ngSwitchCase="true">
+                            <textarea class="textarea"
+                                #instructionsEditor
+                                [(ngModel)]="offer.instruction"
+                                [style.height.px]="instructionsEditorHeight"
+                                (keyup)="onInstructionsEditorKeyUp($event)"
+                                (blur)="isInstructionsEditorEnabled = false"
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="offer-editor__section offer-editor__section_wide">
+                    <div class="offer-editor__section-header">
+                        <span>{{ 'offers.editor.documents' | translate }}</span>
+                    </div>
+                    <div class="offer-editor__dropzone"
+                         ng2FileDrop
+                         *ngIf="uploader"
+                         [uploader]="uploader"
+                         (fileOver)="onDropzoneOver($event)"
+                         (click)="onDropzoneClick()"
+                         [ngClass]="{
+                             'offer-editor__dropzone_over': isDropzoneOver,
+                             'offer-editor__dropzone_busy': uploader.isUploading
+                         }"
+                    >
+                        <div class="offer-editor__dropzone-content">
+                            <div class="offer-editor__dropzone-message" [innerHTML]="'offers.editor.dropzone_text__message' | translate"></div>
+                            <div class="offer-editor__dropzone-progress">
+                                <div [style.width.%]="uploadingProgress"></div>
+                                <span>{{ uploadingProgress }}%</span>
+                            </div>
+                        </div>
+                        <div class="offer-editor__dropzone-screen"></div>
+                        <input type="file" multiple="multiple"
+                            #uploaderInput
+                            ng2FileSelect
+                            [uploader]="uploader"
+                        >
+                    </div>
+                    <div class="offer-editor__documents" *ngIf="offer.attachments && offer.attachments.length">
+                        <ul class="offer-editor__documents-list">
+                            <li class="offer-editor__document" *ngFor="let attachment of offer.attachments; let i = index">
+                                <div class="offer-editor__document-icon">
+                                    <a download class="offer-editor__document-icon-circle" [href]="attachmentsUrls[attachment.uuid]"></a>
+                                </div>
+                                <div class="offer-editor__document-details">
+                                    <div class="offer-editor__document-name">{{ i + 1 }}.&nbsp;{{ attachment.name }}</div>
+                                    <div class="offer-editor__document-comments">
+                                        <div class="offer-editor__document-comment"
+                                            [ngSwitch]="isEditingFileComment(attachment, 'publicComment')"
+                                        >
+                                            <textarea class="offer-editor__document-comment-input"
+                                                *ngSwitchCase="true"
+                                                #fileCommentEditor
+                                                [(ngModel)]="attachment.publicComment"
+                                                (keyup)="onFileCommentEditorKeyUp($event)"
+                                                (blur)="disableFileCommentEditor()"
+                                            ></textarea>
+                                            <div class="offer-editor__document-comment-text"
+                                                 *ngSwitchCase="false"
+                                                 [class.offer-editor__document-comment-text_empty]="!getFileCommentText(attachment, 'publicComment')"
+                                                 [innerHTML]="getFileCommentText(attachment, 'publicComment') || (canEdit ? ('offers.editor.doc_edit_public_comment' | translate) : '&nbsp;')"
+                                                 (click)="enableFileCommentEditor(attachment, 'publicComment')"
+                                            ></div>
+                                        </div>
+                                        <div class="offer-editor__document-comment"
+                                             [ngSwitch]="isEditingFileComment(attachment, 'privateComment')"
+                                        >
+                                            <textarea class="offer-editor__document-comment-input"
+                                                *ngSwitchCase="true"
+                                                #fileCommentEditor
+                                                [(ngModel)]="attachment.privateComment"
+                                                (keyup)="onFileCommentEditorKeyUp($event)"
+                                                (blur)="disableFileCommentEditor()"
+                                            ></textarea>
+                                            <div class="offer-editor__document-comment-text"
+                                                *ngSwitchCase="false"
+                                                 [class.offer-editor__document-comment-text_empty]="!getFileCommentText(attachment, 'privateComment')"
+                                                [innerHTML]="getFileCommentText(attachment, 'privateComment') || (canEdit ? ('offers.editor.doc_edit_private_comment' | translate) : '&nbsp;')"
+                                                (click)="enableFileCommentEditor(attachment, 'privateComment')"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="offer-editor__document-delete" *ngIf="canEdit" (click)="onDeleteAttachment(attachment)"></button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" [class.tab-content_active]="activeTab === 'shipping'">
+                <div class="tab-content-header tab-content-header_tablet tab-content-header_mobile">{{ 'offers.editor.shipping__tab' | translate }}</div>
+                <div class="offer-editor__section offer-editor__section_narrow">
+                    <div class="offer-editor__section-control" [class.offer-editor__section-control_public]="isPublicFieldsHighlighted">
+                        <label class="offer-editor__section-label" for="offer-editor__field_shipping-companyName">
+                            <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">{{ 'offers.editor.delivery_company_name__label' | translate }}</span>
+                        </label>
+                        <div class="offer-editor__section-input">
+                            <input type="text" maxlength="255" class="input input_regular" id="offer-editor__field_shipping-companyName"
+                                [disabled]="!canEdit"
+                                [(ngModel)]="offer.shippingAddress.companyName"
+                                (ngModelChange)="isChanged = true"
+                            >
+                        </div>
+                    </div>
+                    <div class="offer-editor__section-control" [class.offer-editor__section-control_public]="isPublicFieldsHighlighted">
+                        <label class="offer-editor__section-label" for="offer-editor__field_shipping-firstName">
+                            <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">{{ 'offers.editor.delivery_first_name__label' | translate }}</span>
+                        </label>
+                        <div class="offer-editor__section-input">
+                            <input type="text" maxlength="255" class="input input_regular" id="offer-editor__field_shipping-firstName"
+                                [disabled]="!canEdit"
+                                [(ngModel)]="offer.shippingAddress.firstName"
+                                (ngModelChange)="isChanged = true"
+                            >
+                        </div>
+                    </div>
+                    <div class="offer-editor__section-control" [class.offer-editor__section-control_public]="isPublicFieldsHighlighted">
+                        <label class="offer-editor__section-label" for="offer-editor__field_shipping-lastName">
+                            <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">{{ 'offers.editor.delivery_last_name__label' | translate }}</span>
+                        </label>
+                        <div class="offer-editor__section-input">
+                            <input type="text" maxlength="255" class="input input_regular" id="offer-editor__field_shipping-lastName"
+                                [disabled]="!canEdit"
+                                [(ngModel)]="offer.shippingAddress.lastName"
+                                (ngModelChange)="isChanged = true"
+                            >
+                        </div>
+                    </div>
+                    <div class="offer-editor__section-control" [class.offer-editor__section-control_public]="isPublicFieldsHighlighted">
+                        <label class="offer-editor__section-label" for="offer-editor__field_shipping-street">
+                            <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">{{ 'offers.editor.delivery_street__label' | translate }}</span>
+                        </label>
+                        <div class="offer-editor__section-input">
+                            <input type="text" maxlength="255" class="input input_regular" id="offer-editor__field_shipping-street"
+                                [disabled]="!canEdit"
+                                [(ngModel)]="offer.shippingAddress.street"
+                                (ngModelChange)="isChanged = true"
+                            >
+                        </div>
+                    </div>
+                    <div class="offer-editor__section-control" [class.offer-editor__section-control_public]="isPublicFieldsHighlighted">
+                        <label class="offer-editor__section-label" for="offer-editor__field_shipping-suite">
+                            <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">{{ 'offers.editor.delivery_apt__label' | translate }}</span>
+                        </label>
+                        <div class="offer-editor__section-input">
+                            <input type="text" maxlength="255" class="input input_regular" id="offer-editor__field_shipping-suite"
+                                [disabled]="!canEdit"
+                                [(ngModel)]="offer.shippingAddress.suite"
+                                (ngModelChange)="isChanged = true"
+                            >
+                        </div>
+                    </div>
+                    <div class="offer-editor__section-control" [class.offer-editor__section-control_public]="isPublicFieldsHighlighted">
+                        <label class="offer-editor__section-label" for="offer-editor__field_shipping-city">
+                            <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">{{ 'offers.editor.city__label' | translate }}</span>
+                        </label>
+                        <div class="offer-editor__section-input">
+                            <input type="text" maxlength="255" class="input input_regular" id="offer-editor__field_shipping-city"
+                                [disabled]="!canEdit"
+                                [(ngModel)]="offer.shippingAddress.city"
+                                (ngModelChange)="isChanged = true"
+                            >
+                        </div>
+                    </div>
+                    <div class="offer-editor__section-control" [class.offer-editor__section-control_public]="isPublicFieldsHighlighted">
+                        <label class="offer-editor__section-label" for="offer-editor__field_shipping-state">
+                            <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">{{ 'offers.editor.delivery_state__label' | translate }}</span>
+                        </label>
+                        <div class="offer-editor__section-input">
+                            <input type="text" maxlength="255" class="input input_regular" id="offer-editor__field_shipping-state"
+                                [disabled]="!canEdit"
+                                [(ngModel)]="offer.shippingAddress.state"
+                                (ngModelChange)="isChanged = true"
+                            >
+                        </div>
+                    </div>
+                    <div class="offer-editor__section-control" [class.offer-editor__section-control_public]="isPublicFieldsHighlighted">
+                        <label class="offer-editor__section-label" for="offer-editor__field_shipping-zipCode">
+                            <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">{{ 'offers.editor.delivery_zip__label' | translate }}</span>
+                        </label>
+                        <div class="offer-editor__section-input">
+                            <input type="text" maxlength="255" class="input input_regular" id="offer-editor__field_shipping-zipCode"
+                                [disabled]="!canEdit"
+                                [(ngModel)]="offer.shippingAddress.zipCode"
+                                (ngModelChange)="isChanged = true"
+                            >
+                        </div>
+                    </div>
+                    <div class="offer-editor__section-control" [class.offer-editor__section-control_public]="isPublicFieldsHighlighted">
+                        <label class="offer-editor__section-label" for="offer-editor__field_shipping-country">
+                            <span [class.offer-editor__public-field]="isPublicFieldsHighlighted">{{ 'offers.editor.delivery_country__label' | translate }}</span>
+                        </label>
+                        <div class="offer-editor__section-input">
+                            <input type="text" maxlength="255" class="input input_regular" id="offer-editor__field_shipping-country"
+                                [disabled]="!canEdit"
+                                [(ngModel)]="offer.shippingAddress.country"
+                                (ngModelChange)="isChanged = true"
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" [class.tab-content_active]="activeTab === 'transactions'" [ngSwitch]="transactionsState" *ngIf="isClientSelected">
+                <div class="tab-content-header tab-content-header_tablet tab-content-header_mobile">{{ 'offers.editor.transactions__tab' | translate }}</div>
+                <div class="offer-editor__spinner" *ngSwitchCase="'loading'">
+                    <spinner class="spinner spinner_blue spinner_small"></spinner>
+                </div>
+                <div *ngSwitchCase="'empty'" class="offer-editor__message">{{ 'offers.editor.no_transaction__message' | translate }}</div>
+                <div *ngSwitchCase="'error'" class="offer-editor__error">{{ 'offers.editor.unknown_error__message' | translate }}</div>
+                <div *ngSwitchCase="'ready'" class="">
+                    <div class="items-table-wrap">
+                        <table class="items-table">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'offers.editor.transaction_id__table_th' | translate }}</th>
+                                    <th>{{ 'offers.editor.transaction_updated__table_th' | translate }}</th>
+                                    <th>{{ 'offers.editor.transaction_amount__table_th' | translate }}</th>
+                                    <th>{{ 'offers.editor.transaction_status__table_th' | translate }}</th>
+                                    <th>{{ 'offers.editor.transaction_payment__table_th' | translate }}</th>
+                                    <th>{{ 'offers.editor.transaction_comment__table_th' | translate }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let transaction of transactions">
+                                    <td>{{ transaction.transactionId }}</td>
+                                    <td>{{ transaction.updated | datetime : dateDisplayFormat }}</td>
+                                    <td>{{ transaction.amount / 100 | currency : transaction.currency : 'symbol' : '.2-2' }}</td>
+                                    <td>{{ transaction.status }}</td>
+                                    <td>{{ transaction.paymentProvider }}</td>
+                                    <td>{{ transaction.comment }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="offer-editor__transactions-total" *ngIf="transactionsTotalAmount != null && transactionsTotalAmountCurrency != null">
+                        <strong>{{ 'offers.editor.total_amount' | translate }}:</strong> {{ transactionsTotalAmount / 100 | currency : transactionsTotalAmountCurrency : 'symbol' : '.2-2' }}
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" [class.tab-content_active]="activeTab === 'history'" [ngSwitch]="historyState">
+                <div class="tab-content-header tab-content-header_tablet tab-content-header_mobile">{{ 'offers.editor.changes__tab' | translate }}</div>
+                <div class="offer-editor__spinner" *ngSwitchCase="'loading'">
+                    <spinner class="spinner spinner_blue spinner_small"></spinner>
+                </div>
+                <div *ngSwitchCase="'empty'" class="offer-editor__message">{{ 'offers.editor.empty_history__message' | translate }}</div>
+                <div *ngSwitchCase="'error'" class="offer-editor__error">{{ 'offers.editor.unknown_error__message' | translate }}</div>
+                <div *ngSwitchCase="'ready'" class="items-table-wrap">
+                    <table class="items-table">
+                        <thead>
+                            <tr>
+                                <th>{{ 'log.person__table_th' | translate }}</th>
+                                <th>{{ 'log.time__table_th' | translate }}</th>
+                                <th>{{ 'log.action__table_th' | translate }}</th>
+                                <th>{{ 'log.item__table_th' | translate }}</th>
+                                <th>{{ 'log.old_value__table_th' | translate }}</th>
+                                <th>{{ 'log.new_value__table_th' | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let record of historyRecords; let isFirstRecord = first">
+                                <tr *ngFor="let item of record.items; let i = index" [class.offer-history--record]="!isFirstRecord && i === 0">
+                                    <td>{{ i === 0 ? record.updatedBy : ' ' }}</td>
+                                    <td>
+                                        <ng-container *ngIf="i === 0">{{ record.timestamp | datetime : dateDisplayFormat }}</ng-container>
+                                    </td>
+                                    <td>{{ item.action }}</td>
+                                    <td>{{ item.item }}</td>
+                                    <td>{{ item.oldValue }}</td>
+                                    <td>{{ item.newValue }}</td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </ng-container>
+    </fieldset>
+    <fieldset *ngSwitchCase="'company-selector'" [disabled]="companySelectorAction != 'idle'">
+        <div class="offer-editor__company-selector">
+            <input type="text" class="input input_large offer-editor__company-selector-input" [(ngModel)]="companySelectorValue" (ngModelChange)="onCompanySearch()">
+            <div class="offer-editor__company-selector-hint">{{ 'offers.company.company_name__help_block' | translate }}</div>
+            <ng-container [ngSwitch]="companySelectorState">
+                <div class="offer-editor__spinner" *ngSwitchCase="'searching'">
+                    <spinner class="spinner spinner_blue spinner_small"></spinner>
+                </div>
+                <div class="offer-editor__message" *ngSwitchCase="'empty'">
+                    <span [innerHTML]="'offers.company.no_results__message' | translate : { companyName: companySelectorValue }"></span>
+                    <ng-container *ngIf="canCreateCompany()">
+                        <br><span class="pseudo-link" (click)="onCreateCompany()" [innerHTML]="'offers.company.no_results__message_2' | translate"></span>
+                    </ng-container>
+                </div>
+                <div class="offer-editor__error" *ngSwitchCase="'error'" [innerHTML]="'offers.company.unknown_error__message' | translate"></div>
+                <div *ngSwitchCase="'list'" class="company-selector--results">
+                    <div class="offer-editor__company-selector-results-label" [innerHTML]="'offers.company.results__message' | translate : { companyName: companySelectorValue }"></div>
+                    <ul class="offer-editor__companies-list">
+                        <li class="offer-editor__companies-list-item"
+                            *ngFor="let company of companySelectorCompanies"
+                            (click)="onCompanySelect(company)"
+                            (dblclick)="onCompanySelect(company, true)"
+                            [class.offer-editor__companies-list-item_active]="selectedCompany === company"
+                        >{{ company.name }}</li>
+                    </ul>
+                </div>
+            </ng-container>
+        </div>
+    </fieldset>
+    <!-- <SERVICE_SELECTOR> -->
+    <fieldset *ngSwitchCase="'service-selector'">
+        <ng-container [ngSwitch]="serviceSelectorState">
+            <div class="offer-editor__spinner" *ngSwitchCase="'init'">
+                <spinner class="spinner spinner_blue spinner_small"></spinner>
+            </div>
+            <div class="offer-editor__error" *ngSwitchCase="'error'">
+                {{ 'offers.service.unknown_error__message' | translate }}
+            </div>
+            <div class="offer-editor__message" *ngSwitchCase="'empty'">
+                <span [innerHTML]="'offers.service.no_services__message' | translate"></span>&nbsp;<!--
+             --><a class="pseudo-link" *ngIf="canCreateService" routerLink="/dashboard/settings/services" [queryParams]="{ action: 'create' }" [innerHTML]="'offers.service.no_services__message_2' | translate"></a>
+            </div>
+            <ng-container *ngSwitchCase="'ready'">
+                <div class="offer-editor__service-selector-hint">{{ 'offers.service.showing_50__help_block' | translate }}</div>
+                <div class="offer-editor__service-selector-list">
+                    <table class="items-table items-table_offer-services">
+                        <thead>
+                            <tr>
+                                <th style="width: 1px;">&nbsp;</th>
+                                <th>{{ 'offers.service.service_name__table_th' | translate }}</th>
+                                <th>{{ 'offers.service.service_short_name__table_th' | translate }}</th>
+                                <th>{{ 'offers.service.service_from__table_th' | translate }}</th>
+                                <th>{{ 'offers.service.service_to__table_th' | translate }}</th>
+                                <th>{{ 'offers.service.service_price__table_th' | translate }}</th>
+                                <th>{{ 'offers.service.service_unit__table_th' | translate }}</th>
+                                <th>{{ 'offers.service.service_rate__table_th' | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let service of serviceSelectorServices">
+                                <tr *ngIf="service.isVisible" [class.items-table__row_selected]="service.isUsed">
+                                    <td style="width: 1px;">
+                                        <checkbox [(ngModel)]="service.isSelected"></checkbox>
+                                    </td>
+                                    <td>
+                                        <span class="offer-editor__service-selector-service-name">
+                                            {{ service.service.name }}
+                                        </span>
+                                    </td>
+                                    <td>{{ service.service.shortName }}</td>
+                                    <td>{{ getLanguageNameByCode(service.service.from) | translate }}</td>
+                                    <td>{{ getLanguageNameByCode(service.service.to) | translate }}</td>
+                                    <td>{{ service.service.price * (currency.rate / 10000) / 100 | currency : currency.key : 'symbol' : '.2-2' }}</td>
+                                    <td>{{ service.service.unit }}</td>
+                                    <td>{{ getRateNameById(service.service.rate) }}</td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-container>
+        </ng-container>
+    </fieldset>
+    <!-- </SERVICE_SELECTOR> -->
+</ng-container>
+
+<!-- Editor settings popup -->
+<popup-custom #settingsPopup [options]="{ closeBy: 'manual' }" class="popup_offer-editor" (onCloseRequest)="hideSettingsPopup()">
+    <popup-box>
+        <popup-header>{{ 'offers.editor.editor_settings' | translate }}</popup-header>
+        <popup-content>
+            <checkbox [(ngModel)]="isPublicFieldsHighlighted">{{ 'offers.editor.highlight_public_fields__checkbox' | translate }}</checkbox>
+        </popup-content>
+        <popup-controls>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_regular button_blue" (click)="hideSettingsPopup()">
+                    <span class="button__caption">{{ 'offers.editor.settings_ok' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup-custom>
+
+<!-- Email preview popup -->
+<popup-custom #emailPopup [options]="{ stickyHeader : true, stickyControls : true, closeBy: 'manual' }" class="popup popup_width_boxed popup_mobile-width_modal popup_tablet-width_modal popup_offer-email" (onCloseRequest)="hideEmailPopup()">
+    <popup-box>
+        <popup-header>{{ 'offers.editor.original_email_header' | translate }}</popup-header>
+        <popup-content>
+            <div class="offer-editor__email-popup-from" *ngIf="!!attachedEmailFrom">
+                <strong>{{ 'offers.editor.original_email_from' | translate }}</strong>:&nbsp;{{ attachedEmailFrom }}
+            </div>
+            <ng-container [ngSwitch]="emailPreviewState">
+                <isolated-view [html]="emailPreviewHTML"></isolated-view>
+                <!--<iframe class="offer-editor__email-popup-iframe" *ngSwitchCase="'contain'" [style.height.px]="emailIframeHeight" #emailPreviewIframe></iframe>-->
+                <div class="offer-editor__email-popup-error" *ngSwitchCase="'error'">
+                    {{ 'offers.editor.original_email_error' | translate }}
+                </div>
+            </ng-container>
+        </popup-content>
+        <popup-controls>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_regular button_blue" (click)="hideEmailPopup()">
+                    <span class="button__caption">{{ 'offers.editor.original_email_ok' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup-custom>
+
+<!-- Create project popup -->
+<popup-custom #projectPopup [options]="{ closeBy: 'manual' }" class="popup_offer-project" (onCloseRequest)="hideProjectPopup()">
+    <popup-box>
+        <popup-header>{{ 'offers.editor.offer2project.create_project' | translate }}</popup-header>
+        <popup-content>
+            <!-- Content -->
+            <fieldset [disabled]="!!networkProcess" *ngIf="projectCoordinatorOptions && projectCoordinatorParams">
+                <div class="offer-editor__popup-control">
+                    <label class="offer-editor__popup-control-label">{{ 'offers.editor.offer2project.project_coordinator' | translate }}</label>
+                    <div class="offer-editor__popup-control-input">
+                        <select class="select select_regular" [(ngModel)]="projectCoordinatorParams.coordinatorId">
+                            <option
+                                *ngFor="let projectCoordinatorOption of projectCoordinatorOptions"
+                                [ngValue]="projectCoordinatorOption.value"
+                                [innerHTML]="projectCoordinatorOption.display"
+                            ></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="offer-editor__popup-control">
+                    <div class="offer-editor__popup-control-label"></div>
+                    <div class="offer-editor__popup-control-input">
+                        <checkbox [(ngModel)]="projectCoordinatorParams.rememberCoordinator">{{ 'offers.editor.offer2project.remember_selection' | translate }}</checkbox>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- /Content -->
+        </popup-content>
+        <popup-controls>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_regular button_white" (click)="hideProjectPopup()">
+                    <span class="button__caption">{{ 'offers.editor.offer2project.cancel' | translate }}</span>
+                </button>
+                <button type="button" class="button button_regular button_blue"
+                    [isProgress]="networkProcess == 'create-project'"
+                    (click)="submitProjectPopup()"
+                >
+                    <span class="button__caption">{{ 'offers.editor.offer2project.ok' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup-custom>
+
+<!-- Attachments popup -->
+<popup-custom #attachmentsPopup [options]="{ closeBy: 'manual' }" class="popup_offer-attachments" (onCloseRequest)="hideAttachmentsPopup()">
+    <popup-box>
+        <popup-header>{{ 'offers.editor.add_documents__header' | translate }}</popup-header>
+        <popup-content>
+            <!-- Content -->
+            <ul class="offer-editor__attachment-list">
+                <li class="offer-editor__attachment-list-item"
+                    *ngFor="let attachment of linkableAttachments; let i = index"
+                    (click)="onLinkAttachment(attachment)"
+                >
+                    <strong>{{ i + 1 }}.</strong>&nbsp;{{ attachment.name }}
+                </li>
+            </ul>
+            <!-- /Content -->
+        </popup-content>
+        <popup-controls>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_regular button_blue" (click)="hideAttachmentsPopup()">
+                    <span class="button__caption">{{ 'offers.editor.close_popup__button' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup-custom>
+
+<!-- Quote popup -->
+<popup-custom #quotePopup [options]="{ closeBy: 'manual' }" class="popup_offer-quote" (onCloseRequest)="hideQuotePopup()">
+    <popup-box>
+        <popup-header>{{ 'offers.editor.quote_preview.quote_preview__header' | translate }}</popup-header>
+        <popup-content>
+            <!-- Content -->
+            <div #quotePreview style="padding: 0; margin: 0; outline: 0; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                <ng-container *ngIf="!!offer">
+                    <table border="0" cellpadding="0" cellspacing="0" style="border: 0; border-collapse: collapse; border-spacing: 0; width: 100%; font-family: inherit;">
+                        <tbody style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <tr>
+                            <td colspan="2" style="border: 0; vertical-align: top;">
+                                <h2 style="margin: 0 0 15px; padding: 0; display: block; font-size: 24px; font-weight: 100; text-align: center; text-transform: uppercase; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                    {{ 'offers.editor.quote_preview.quote__header_part' | translate }} {{ offer.key }}
+                                </h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: 0; vertical-align: top;">
+                                <ng-container *ngIf="companyProfile != null">
+                                    <table border="0" cellpadding="0" cellspacing="0" style="border: 0; border-collapse: collapse; border-spacing: 0;">
+                                        <tbody>
+                                        <tr *ngIf="!!companyProfile.name">
+                                            <td colspan="2" style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                                {{ companyProfile.name }}
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="!!companyProfile.email">
+                                            <td style="border: 0; vertical-align: middle; padding: 0 5px 0 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.email__label' | translate }}:</td>
+                                            <td style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ companyProfile.email }}</td>
+                                        </tr>
+                                        <tr *ngIf="!!companyProfile.phone">
+                                            <td style="border: 0; vertical-align: middle; padding: 0 5px 0 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.phone__label' | translate }}:</td>
+                                            <td style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ companyProfile.phone }}</td>
+                                        </tr>
+                                        <tr *ngIf="!!companyProfile.fax">
+                                            <td style="border: 0; vertical-align: middle; padding: 0 5px 0 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.fax__label' | translate }}:</td>
+                                            <td style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ companyProfile.fax }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="padding: 0; line-height: 15px;">&nbsp;</td>
+                                        </tr>
+                                        <tr *ngIf="!!offer.created">
+                                            <td style="border: 0; vertical-align: middle; padding: 0 5px 0 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.date__label' | translate }}:</td>
+                                            <td style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ currentDate | datetime : dateDisplayFormat }}</td>
+                                        </tr>
+                                        <tr *ngIf="offer.days != null">
+                                            <td style="border: 0; vertical-align: middle; padding: 0 5px 0 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.delivery_days__label' | translate }}:</td>
+                                            <td style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ offer.days }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <table border="0" cellpadding="0" cellspacing="0" style="border: 0; border-collapse: collapse; border-spacing: 0; width: 100%;"><tbody><tr><td style="padding: 0; line-height: 15px;">&nbsp;</td></tr></tbody></table>
+                                    <table border="0" cellpadding="0" cellspacing="0" style="border: 0; border-collapse: collapse; border-spacing: 0;">
+                                        <tbody>
+                                        <tr *ngIf="!!(companyProfile.street || companyProfile.street2)">
+                                            <td style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                                {{ companyProfile.street }} {{ companyProfile.street2 }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                                <ng-container *ngIf="!!companyProfile.city">{{ companyProfile.city }},</ng-container> {{ companyProfile.state }} {{ companyProfile.zipCode }}
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="!!companyProfile.country">
+                                            <td style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                                {{ companyProfile.country }}
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <table border="0" cellpadding="0" cellspacing="0" style="border: 0; border-collapse: collapse; border-spacing: 0; width: 100%;"><tbody><tr><td style="padding: 0; line-height: 15px;">&nbsp;</td></tr></tbody></table>
+                                    <table border="0" cellpadding="0" cellspacing="0" style="border: 0; border-collapse: collapse; border-spacing: 0;">
+                                        <tbody>
+                                        <tr *ngIf="!!companyProfile.bankName">
+                                            <td style="border: 0; vertical-align: middle; padding: 0 5px 0 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.bank_name__label' | translate }}:</td>
+                                            <td style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ companyProfile.bankName }}</td>
+                                        </tr>
+                                        <tr *ngIf="!!companyProfile.bankAccount">
+                                            <td style="border: 0; vertical-align: middle; padding: 0 5px 0 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.bank_account__label' | translate }}:</td>
+                                            <td style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ companyProfile.bankAccount }}</td>
+                                        </tr>
+                                        <tr *ngIf="!!companyProfile.tin">
+                                            <td style="border: 0; vertical-align: middle; padding: 0 5px 0 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.tin__label' | translate }}:</td>
+                                            <td style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ companyProfile.tin }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </ng-container>
+                                <ng-container *ngIf="viewportBreakpoint === 'mobile'">
+                                    <table border="0" cellpadding="0" cellspacing="0" style="border: 0; border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding: 0; line-height: 15px;">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 0; line-height: 15px; border-top: 1px solid #afafaf;">&nbsp;</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table border="0" cellpadding="0" cellspacing="0" style="border: 0; border-collapse: collapse; border-spacing: 0;">
+                                        <tbody>
+                                        <tr>
+                                            <td colspan="2" style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                                {{ clientProfile ? (clientProfile.legalName || clientProfile.name) : offer.client ? offer.client.name : '' }}
+                                            </td>
+                                        </tr>
+                                        <ng-container *ngIf="clientProfile != null">
+                                            <tr *ngIf="!!clientProfile.email">
+                                                <td style="border: 0; vertical-align: middle; padding: 0 5px 0 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.email__label' | translate }}:</td>
+                                                <td style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ clientProfile.email }}</td>
+                                            </tr>
+                                            <tr *ngIf="!!clientProfile.phone">
+                                                <td style="border: 0; vertical-align: middle; padding: 0 5px 0 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.phone__label' | translate }}:</td>
+                                                <td style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ clientProfile.phone }}</td>
+                                            </tr>
+                                            <tr *ngIf="!!clientProfile.fax">
+                                                <td style="border: 0; vertical-align: middle; padding: 0 5px 0 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.fax__label' | translate }}:</td>
+                                                <td style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ clientProfile.fax }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="padding: 0; line-height: 15px;">&nbsp;</td>
+                                            </tr>
+                                            <tr *ngIf="!!(clientProfile.addressLine || clientProfile.addressLine2)">
+                                                <td colspan="2" style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                                    {{ clientProfile.addressLine }} {{ clientProfile.addressLine2 }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                                    <ng-container *ngIf="!!clientProfile.city">{{ clientProfile.city }}</ng-container>, {{ clientProfile.state }} {{ clientProfile.zip }}
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="!!clientProfile.country">
+                                                <td colspan="2" style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                                    {{ clientProfile.country }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="padding: 0; line-height: 15px;">&nbsp;</td>
+                                            </tr>
+                                            <tr *ngIf="!!clientProfile.tin">
+                                                <td style="border: 0; vertical-align: middle; padding: 0 5px 0 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.tin__label' | translate }}:</td>
+                                                <td style="border: 0; vertical-align: middle; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ clientProfile.tin }}</td>
+                                            </tr>
+                                        </ng-container>
+                                        </tbody>
+                                    </table>
+                                    <table border="0" cellpadding="0" cellspacing="0" style="border: 0; border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding: 0; line-height: 15px;">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 0; line-height: 15px; border-top: 1px solid #afafaf;">&nbsp;</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </ng-container>
+                            </td>
+                            <td style="vertical-align: top;" *ngIf="viewportBreakpoint !== 'mobile'">
+                                <table border="0" cellpadding="0" cellspacing="0" style="border: 0; border-collapse: collapse; border-spacing: 0; float: right; text-align: right;">
+                                    <tbody>
+                                    <tr>
+                                        <td colspan="2" style="text-align: right; padding: 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                            {{ clientProfile ? (clientProfile.legalName || clientProfile.name) : offer.client ? offer.client.name : '' }}
+                                        </td>
+                                    </tr>
+                                    <ng-container *ngIf="clientProfile != null">
+                                        <tr *ngIf="!!clientProfile.email">
+                                            <td style="padding: 0 5px 0 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.email__label' | translate }}:</td>
+                                            <td style="width: 1px; white-space: nowrap; text-align:left; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ clientProfile.email }}</td>
+                                        </tr>
+                                        <tr *ngIf="!!clientProfile.phone">
+                                            <td style="padding: 0 5px 0 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.phone__label' | translate }}:</td>
+                                            <td style="width: 1px; white-space: nowrap; text-align:left; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ clientProfile.phone }}</td>
+                                        </tr>
+                                        <tr *ngIf="!!clientProfile.fax">
+                                            <td style="padding: 0 5px 0 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.fax__label' | translate }}:</td>
+                                            <td style="width: 1px; white-space: nowrap; text-align:left; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ clientProfile.fax }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="padding: 0; line-height: 15px;">&nbsp;</td>
+                                        </tr>
+                                        <tr *ngIf="!!(clientProfile.addressLine || clientProfile.addressLine2)">
+                                            <td colspan="2" style="padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                                {{ clientProfile.addressLine }} {{ clientProfile.addressLine2 }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                                <ng-container *ngIf="!!clientProfile.city">{{ clientProfile.city }}</ng-container>, {{ clientProfile.state }} {{ clientProfile.zip }}
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="!!clientProfile.country">
+                                            <td colspan="2" style="padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                                {{ clientProfile.country }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="padding: 0; line-height: 15px;">&nbsp;</td>
+                                        </tr>
+                                        <tr *ngIf="!!clientProfile.tin">
+                                            <td style="padding: 0 5px 0 0; font-size: 14px; line-height: 22px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.tin__label' | translate }}:</td>
+                                            <td style="width: 1px; white-space: nowrap; text-align:left; padding: 0; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ clientProfile.tin }}</td>
+                                        </tr>
+                                    </ng-container>
+                                    </tbody>
+                                </table>
+                                <span style="display: block; content: ''; clear: both; width: 100%;"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="padding: 0; line-height: 15px;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;" [innerHTML]="'offers.editor.quote_preview.reference__message' | translate : { offerKey: offer.key }"></td>
+                        </tr>
+                        <tr *ngIf="!!offer.services && offer.services.length > 0">
+                            <td colspan="2" style="vertical-align: top; padding-top: 15px;">
+                                <table *ngIf="viewportBreakpoint !== 'mobile'" border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-spacing: 0; width: 100%; border: 1px solid #666666;">
+                                    <thead>
+                                    <tr>
+                                        <th style="min-width: 150px; vertical-align: middle; border: 1px solid #666666; padding: 6px 8px; font-size: 14px; line-height: 16px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.service__table_th' | translate }}</th>
+                                        <th style="vertical-align: middle; border: 1px solid #666666; padding: 6px 8px; font-size: 14px; line-height: 16px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.documents__table_th' | translate }}</th>
+                                        <th style="white-space: nowrap; vertical-align: middle; border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.net__table_th' | translate }}</th>
+                                        <th style="white-space: nowrap; vertical-align: middle; border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.tax__table_th' | translate }}</th>
+                                        <th style="white-space: nowrap; vertical-align: middle; border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.gross__table_th' | translate }}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <ng-container *ngFor="let service of offer.services">
+                                        <tr *ngIf="service.billable">
+                                            <td style="min-width: 150px; border: 1px solid #666666; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ service.name }}</td>
+                                            <td style="border: 1px solid #666666; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                                <ng-container *ngFor="let attachment of attachmentsMap[service.serviceId]">
+                                                    <span style="display: block; padding-right: 7px;">{{ attachment.name }};</span>
+                                                </ng-container>
+                                            </td>
+                                            <td style="white-space: nowrap; border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ (service.net / 100).toFixed(2) }}</td>
+                                            <td style="white-space: nowrap; border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ ((service.gross - service.net) / 100).toFixed(2) }}</td>
+                                            <td style="white-space: nowrap; border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ (service.gross / 100).toFixed(2) }}</td>
+                                        </tr>
+                                    </ng-container>
+                                    <tr class="quote-services-total">
+                                        <td colspan="2" style="border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.total__table_td' | translate }}:</td>
+                                        <td style="white-space: nowrap; border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ (calcTotalServicesNet() / 100).toFixed(2) }}</td>
+                                        <td style="white-space: nowrap; border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ (calcTotalServicesTax() / 100).toFixed(2) }}</td>
+                                        <td style="white-space: nowrap; border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ (calcTotalServicesGross() / 100).toFixed(2) }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <table *ngIf="viewportBreakpoint === 'mobile'" border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-spacing: 0; width: 100%; border: 1px solid #666666;">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2" style="vertical-align: middle; border: 1px solid #666666; text-align: center; padding: 6px 8px; font-size: 14px; line-height: 16px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.services' | translate }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngFor="let service of offer.services;">
+                                            <ng-container *ngIf="service.billable">
+                                                <tr>
+                                                    <td colspan="2" style="border: 1px solid #666666; border-top-width: 2px; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                                        <strong>{{ 'offers.editor.quote_preview.service__table_th' | translate }}</strong><br>
+                                                        {{ service.name }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="border: 1px solid #666666; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                                        <strong>{{ 'offers.editor.quote_preview.documents__table_th' | translate }}</strong><br>
+                                                        <ng-container *ngFor="let attachment of attachmentsMap[service.serviceId]">
+                                                            <span style="display: block; padding-right: 7px;">{{ attachment.name }};</span>
+                                                        </ng-container>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.net__table_th' | translate }}</td>
+                                                    <td style="width: 1px; border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif; white-space: nowrap;">{{ (service.net / 100).toFixed(2) }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.tax__table_th' | translate }}</td>
+                                                    <td style="width: 1px; border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif; white-space: nowrap;">{{ ((service.gross - service.net) / 100).toFixed(2) }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: 1px solid #666666; border-bottom-width: 2px; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.gross__table_th' | translate }}</td>
+                                                    <td style="width: 1px; border: 1px solid #666666; border-bottom-width: 2px; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif; white-space: nowrap;">{{ (service.gross / 100).toFixed(2) }}</td>
+                                                </tr>
+                                            </ng-container>
+                                        </ng-container>
+                                        <tr>
+                                            <td style="border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.total_net__text' | translate }}</td>
+                                            <td style="width: 1px; border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif; white-space: nowrap;">{{ (calcTotalServicesNet() / 100).toFixed(2) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.total_tax__text' | translate }}</td>
+                                            <td style="width: 1px; border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif; white-space: nowrap;">{{ (calcTotalServicesTax() / 100).toFixed(2) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-weight: bold; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">{{ 'offers.editor.quote_preview.total_gross__text' | translate }}</td>
+                                            <td style="width: 1px; border: 1px solid #666666; text-align: right; padding: 6px 8px; font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif; white-space: nowrap;">{{ (calcTotalServicesGross() / 100).toFixed(2) }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="vertical-align: top; padding-top: 15px;font-size: 14px; line-height: 16px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                <span style="text-transform: uppercase;">{{ 'offers.editor.quote_preview.total_due__table_td' | translate }}:</span>&nbsp;<strong>{{ calcTotalServicesGross() / 100 | currency : offer.currency : 'symbol' : '.2-2' }}</strong>
+                            </td>
+                        </tr>
+                        <tr *ngIf="!!offer.description">
+                            <td colspan="2" style="vertical-align: top; padding-top: 15px; font-size: 14px; line-height: 22px; font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, Roboto, Open Sans, sans-serif;">
+                                {{ offer.description }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+            </div>
+            <!-- /Content -->
+        </popup-content>
+        <popup-controls>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_regular button_blue" (click)="copyQuoteText()" *ngIf="isCopyingSupported && viewportBreakpoint !== 'mobile'">
+                    <span class="button__caption">{{ 'offers.editor.quote_preview.popup_copy__button' | translate }}</span>
+                </button>
+                <button type="button" class="button button_regular button_white" (click)="hideQuotePopup()">
+                    <span class="button__caption">{{ 'offers.editor.quote_preview.popup_close__button' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup-custom>
+
+<!-- Billing popup -->
+<popup-custom #billingPopup [options]="{ closeBy: 'manual' }" class="popup_offer-billing" (onCloseRequest)="hideBillingPopup()">
+    <popup-box>
+        <popup-header>{{ 'offers.editor.quote_details.popup_header' | translate }}</popup-header>
+        <popup-content>
+            <!-- Content -->
+            <fieldset *ngIf="billingForm" [disabled]="!!networkProcess">
+                <div class="offer-editor__popup-control">
+                    <label class="offer-editor__popup-control-label">{{ 'offers.editor.quote_details.to' | translate }}</label>
+                    <div class="offer-editor__popup-control-input">
+                        <input type="text" maxlength="255" placeholder="me@gmail.com, john@doe.com" class="input input_regular"
+                            [class.input_has-error]="billingFormErrors.to"
+                            [(ngModel)]="billingForm.to"
+                            (keyup)="validateBillingForm('to')"
+                        >
+                    </div>
+                </div>
+                <div class="offer-editor__popup-control">
+                    <label class="offer-editor__popup-control-label">{{ 'offers.editor.quote_details.cc' | translate }}</label>
+                    <div class="offer-editor__popup-control-input">
+                        <input type="text" maxlength="255" class="input input_regular"
+                            [class.input_has-error]="billingFormErrors.cc"
+                            [(ngModel)]="billingForm.cc"
+                            (keyup)="validateBillingForm('cc')"
+                        >
+                    </div>
+                </div>
+                <div class="offer-editor__popup-control">
+                    <label class="offer-editor__popup-control-label">{{ 'offers.editor.quote_details.bcc' | translate }}</label>
+                    <div class="offer-editor__popup-control-input">
+                        <input type="text" maxlength="255" class="input input_regular"
+                            [class.input_has-error]="billingFormErrors.bcc"
+                            [(ngModel)]="billingForm.bcc"
+                            (keyup)="validateBillingForm('bcc')"
+                        >
+                    </div>
+                </div>
+                <div class="offer-editor__popup-control">
+                    <label class="offer-editor__popup-control-label">{{ 'offers.editor.quote_details.message' | translate }}</label>
+                    <div class="offer-editor__popup-control-input">
+                        <textarea class="textarea" autofocus
+                            #billingFormMessage
+                            [(ngModel)]="billingForm.message"
+                        ></textarea>
+                    </div>
+                </div>
+                <div class="offer-editor__billing-popup-error" *ngIf="!!sendingBillingError" [ngSwitch]="sendingBillingError">
+                    <ng-container *ngSwitchCase="'error.email.notverified'">
+                        {{ 'offers.editor.quote_details.ve_1' | translate }}
+                        <span class="offer-editor__billing-popup-error-link" (click)="sendEmailVerificationCode()">
+                            {{ 'offers.editor.quote_details.ve_2' | translate }}
+                        </span>
+                        {{ 'offers.editor.quote_details.ve_3' | translate }}
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'error.email.invalid'">
+                        {{ 'offers.editor.quote_details.form_is_invalid' | translate }}
+                    </ng-container>
+                </div>
+            </fieldset>
+            <!-- /Content -->
+        </popup-content>
+        <popup-controls>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_regular button_white" (click)="hideBillingPopup()">
+                    <span class="button__caption">{{ 'offers.editor.quote_details.cancel' | translate }}</span>
+                </button>
+                <button type="button" class="button button_regular button_blue"
+                    (click)="submitBillingPopup()"
+                    [isProgress]="networkProcess === 'saving-offer'"
+                    [isDisabled]="!isBillingFormValid()"
+                >
+                    <span class="button__caption">{{ 'offers.editor.quote_details.sns' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup-custom>
+
+<!-- Transaction popup -->
+<popup-custom #transactionPopup [options]="{ closeBy: 'manual' }" class="popup_offer-transaction" (onCloseRequest)="hideTransactionPopup($event)">
+    <popup-box>
+        <popup-header>{{ 'offers.editor.add_cash_payment' | translate }}</popup-header>
+        <popup-content>
+            <!-- Content -->
+            <fieldset *ngIf="transaction" [disabled]="!!networkProcess">
+                <div class="offer-editor__popup-control">
+                    <label class="offer-editor__popup-control-label">{{ 'offers.editor.add_cash_payment_amount' | translate }}</label>
+                    <div class="offer-editor__popup-control-input">
+                        <input type="text" maxlength="255" class="input input_regular"
+                            number-mask
+                            [(numberModel)]="transaction.amount"
+                            [numberModelOptions]="{
+                                type: 'number',
+                                viewFraction: 100
+                            }"
+                        >
+                    </div>
+                </div>
+                <div class="offer-editor__popup-control">
+                    <label class="offer-editor__popup-control-label">{{ 'offers.editor.add_cash_payment_currency' | translate }}</label>
+                    <div class="offer-editor__popup-control-input">
+                        <select class="select select_regular" [(ngModel)]="transaction.currency">
+                            <option *ngFor="let currencyOption of currencyOptions" [ngValue]="currencyOption.value">
+                                {{ currencyOption.display }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="offer-editor__popup-control">
+                    <label class="offer-editor__popup-control-label">{{ 'offers.editor.add_cash_payment_comment' | translate }}</label>
+                    <div class="offer-editor__popup-control-input">
+                        <textarea maxlength="255" class="textarea" [(ngModel)]="transaction.comment"></textarea>
+                    </div>
+                </div>
+            </fieldset>
+            <!-- /Content -->
+        </popup-content>
+        <popup-controls>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_regular button_white" (click)="hideTransactionPopup()">
+                    <span class="button__caption">{{ 'offers.editor.cash_payment_cancel' | translate }}</span>
+                </button>
+                <button type="button" class="button button_regular button_blue"
+                    (click)="submitTransactionPopup()"
+                    [isProgress]="networkProcess === 'create-transaction'"
+                    [isDisabled]="!isTransactionValid()"
+                >
+                    <span class="button__caption">{{ 'offers.editor.cash_payment_ok' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup-custom>

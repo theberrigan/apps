@@ -1,0 +1,24 @@
+<popup class="profile__editor" #popup [options]="{ closeBy: 'manual', stickyHeader: true, stickyControls: true }" (onCloseRequest)="onCloseRequest($event)">
+    <popup-box>
+        <popup-header>{{ 'settings.profile.profile__header' | translate }}</popup-header>
+        <popup-content>
+            <!-- TODO: error -->
+            <ng-container [ngSwitch]="state">
+                <div class="profile__error" *ngSwitchCase="'error'">{{ 'settings.profile.init_error__message' | translate }}</div>
+                <ng-container *ngSwitchCase="'ready'">
+                    Settings
+                </ng-container>
+            </ng-container>
+        </popup-content>
+        <popup-controls>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_regular button_white" (click)="onCloseRequest()" [isDisabled]="isSaving">
+                    <span class="button__caption">{{ 'settings.profile.cancel__button' | translate }}</span>
+                </button>
+                <button type="button" class="button button_regular button_blue" (click)="onSave()" [isDisabled]="isSaving" [isProgress]="isSaving">
+                    <span class="button__caption">{{ 'settings.profile.save__button' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup>

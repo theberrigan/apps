@@ -1,0 +1,83 @@
+<div class="ta-list__content" [ngSwitch]="listState">
+    <div class="ta-list__loading" *ngSwitchCase="'loading'">
+        <loader></loader>
+    </div>
+    <div class="ta-list__message" *ngSwitchCase="'empty'">
+        {{ 'ta.list.no_TAs' | translate }}<br>
+        <a href="#" (click)="onCreateTA($event)">{{ 'ta.list.create_pseudo_link' | translate }}</a>
+    </div>
+    <div class="ta-list__message ta-list__message_error" *ngSwitchCase="'error'">
+        {{ 'ta.list.common_error' | translate }}
+    </div>
+    <ng-container *ngSwitchCase="'ready'">
+        <div class="ta-list__heading">
+            <div class="ta-list__header">{{ 'ta.list.page_header' | translate }}</div>
+            <div class="ta-list__controls">
+                <button type="button" class="button button_regular button_light-blue" (click)="onCreateTA()">
+                    <span class="button__caption">
+                        {{ 'ta.list.create_button' | translate }}
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="table table_middle table_striped table_clickable table_nowrap ta-list__table">
+            <div class="table__header">
+                <div class="table__row">
+                    <div class="table__cell">
+                        {{ 'ta.list.th_name' | translate }}
+                    </div>
+                    <div class="table__cell">
+                        {{ 'ta.list.th_phone' | translate }}
+                    </div>
+                    <div class="table__cell">
+                        {{ 'ta.list.th_status' | translate }}
+                    </div>
+                </div>
+            </div>
+            <div class="table__body">
+                <div class="table__row" *ngFor="let authority of authorities" (click)="onEditTA(authority)">
+                    <div class="table__cell">
+                        {{ authority.display_name }}
+                    </div>
+                    <div class="table__cell">
+                        {{ authority.phone }}
+                    </div>
+                    <div class="table__cell" [ngSwitch]="authority.enabled">
+                        <span *ngSwitchCase="true" class="ta-list__status ta-list__status_green">
+                            {{ 'ta.list.status_enabled' | translate }}
+                        </span>
+                        <span *ngSwitchCase="false" class="ta-list__status ta-list__status_red">
+                            {{ 'ta.list.status_disabled' | translate }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+<!-- Popups -->
+
+<popup-custom class="ta-list__create-popup" *ngIf="isCreatePopupVisible" [isDisabled]="isSubmitting">
+    <popup-content>
+        <label class="ta-list__create-popup-label">
+            <span class="ta-list__create-popup-label-text">{{ 'ta.list.create_label' | translate }}</span>
+            <input type="text" class="input input_regular ta-list__create-popup-input"
+                [(ngModel)]="taName"
+                (ngModelChange)="validateTAName()"
+            >
+        </label>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button_regular button_light-blue" (click)="onCancelCreate()">
+            <span class="button__caption">{{ 'ta.list.create_cancel' | translate }}</span>
+        </button>
+        <button type="button" class="button button_regular button_blue"
+            [isProgress]="isSubmitting"
+            [isDisabled]="!isTANameValid"
+            (click)="onConfirmCreate()"
+        >
+            <span class="button__caption">{{ 'ta.list.create_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>

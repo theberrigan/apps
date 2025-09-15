@@ -1,0 +1,16 @@
+import {Pipe, PipeTransform} from '@angular/core';
+import {CurrencyService} from '../services/currency.service';
+
+@Pipe({
+    name: 'currencyFormat'
+})
+export class CurrencyFormatPipe implements PipeTransform {
+    constructor(
+        public currencyService: CurrencyService
+    ) {
+    }
+
+    transform(value: number, currency: string = '$'): string {
+        return this.currencyService.format(value, currency);
+    }
+}

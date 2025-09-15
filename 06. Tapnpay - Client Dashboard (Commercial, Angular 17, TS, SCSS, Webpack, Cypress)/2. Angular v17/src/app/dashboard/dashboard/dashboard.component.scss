@@ -1,0 +1,320 @@
+@import '../../../assets/css/definitions';
+@import '../../../assets/css/mixins';
+
+.app-header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    color: white;
+    text-align: center;
+
+    align-content: center; /* Adjust based on your design */
+    background-color: #003A70; /* Changed from blue to figma green */
+    z-index: 1000; /* Ensure it stays on top */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.app-banner{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px ;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-size: 16px;
+    text-align: left;
+}
+.btn-get-started{
+    padding: 10px 10px;
+    overflow: visible;
+    font-size: 12px;
+    color: #003A70 !important;
+    border: 1px solid #003A70 !important;
+}
+.btn-get-started:hover, .btn-get-started:focus {
+    color: #003A70 !important;
+    border-color: #003A70 !important;
+}
+.btn-get-started:hover .button__caption,
+.btn-get-started:focus .button__caption {
+    color: #003A70 !important;
+}
+.btn-get-started:hover .btn-icon,
+.btn-get-started:focus .btn-icon {
+    color: #003A70 !important;
+}
+.btn-icon{
+    font-size: 22px;
+    margin-right: 4px;
+    font-weight: 400;
+}
+.btn-get-started .button__caption {
+    font-size: 14px;
+    font-weight: 700;
+}
+.dashboard {
+    $sidebar-width: 290px;
+    $sep-width: $sidebar-width - (40px * 2);
+
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+    width: 100%;
+    min-height: 100vh;
+    margin-top: 60px;
+    background-color: #F7FCFA;
+
+    &__sidebar-nest {
+        flex-shrink: 0;
+        flex-grow: 0;
+        width: $sidebar-width;
+    }
+
+    &__content {
+        flex-shrink: 0;
+        flex-grow: 0;
+        width: calc(100% - #{ $sidebar-width });
+    }
+
+    &__fleet-lpn-popup {
+        .popup__box {
+            max-width: 400px;
+        }
+
+        .popup__controls .button {
+            width: 100%;
+        }
+
+        &-header {
+            font-size: 14px;
+            line-height: 20px;
+            margin-bottom: 25px;
+        }
+
+        &-table {
+            width: 100%;
+        }
+    }
+
+    &__debt-lock-popup,
+    &__fleet-lpn-wallet-popup {
+        .popup__box {
+            max-width: 400px;
+        }
+
+        .popup__content {
+            padding-bottom: 30px;
+        }
+
+        .popup__controls {
+            padding-right: 30px;
+            padding-bottom: 30px;
+            padding-left: 30px;
+        }
+    }
+
+    &__fleet-lpn-zip-popup {
+        &-zip {
+            display: block;
+            // margin-top: 18px;
+            width: 100%;
+        }
+
+        // -----------------------------------------------------------------
+
+        .popup__box {
+            max-width: 400px;
+        }
+
+        .popup__content {
+            padding-bottom: 30px;
+        }
+
+        .popup__controls {
+            padding-right: 30px;
+            padding-bottom: 30px;
+            padding-left: 30px;
+        }
+    }
+
+    &__welcome-popup {
+        .popup__box {
+            max-width: 524px !important;
+            min-width: 524px;
+            width: 524px;
+            height: 580px;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            background: #fff;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .congrats-popup__combined {
+            width: 100%;
+            /* height: 160px; */
+            /* object-fit: cover; */
+            border-top-left-radius: 18px;
+            border-top-right-radius: 18px;
+            margin: 0;
+            padding: 0;
+            background: #e3fdf5;
+            display: block;
+            margin-bottom: 40px;
+        }
+        .congrats-popup__body {
+            text-align: center;
+            margin-top: 0;
+            padding: 0 32px 0 32px;
+        }
+        .congrats-popup__title {
+            color: #43C59E;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            margin-top: 0;
+            text-align: center;
+        }
+        .congrats-popup__text {
+            color: #222;
+            font-size: 16px;
+            line-height: 1.6;
+            font-weight: 400;
+            margin-bottom: 24px;
+            letter-spacing: 0.01em;
+            // text-align: center;
+            padding: 0;
+            max-width: 100%;
+            // margin-left: auto;
+            // margin-right: auto;
+            white-space: pre-line;
+        }
+        .congrats-popup__ok {
+            width: 90%;
+            max-width: 320px;
+            background: #43C59E;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 14px 0;
+            margin: 0 auto 24px auto;
+            display: block;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .congrats-popup__ok:hover {
+            background: #36a885;
+        }
+        .popup__content {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+    }
+
+    &__payment-popup {
+        &-zip {
+            display: block;
+            margin-top: 18px;
+            width: 100%;
+        }
+
+        // -----------------------------------------------------------------
+
+        .popup__box {
+            max-width: 400px;
+        }
+
+        .popup__content {
+            padding-bottom: 30px;
+        }
+
+        .popup__controls {
+            padding-right: 30px;
+            padding-bottom: 30px;
+            padding-left: 30px;
+        }
+    }
+
+    html.viewport_desktop & {
+        &__welcome-popup {
+            .popup__box {
+                max-width: 500px;
+            }
+        }
+    }
+
+    html.viewport_mobile &,
+    html.viewport_tablet & {
+        &__nav {
+            display: none;
+        }
+
+        &__content {
+            width: 100%;
+            // max-width: none;
+            padding-top: $app-bar-height;
+        }
+    }
+}
+
+@media print {
+    .dashboard {
+        &__content {
+            width: 100% !important;
+            padding: 0 !important;
+        }
+
+        &__sidebar-nest {
+            display: none !important;
+        }
+    }
+}
+
+@media (max-width: 600px), (min-width: 601px) and (max-width: 991px) {
+    .app-header {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0;
+        width: 100%;
+        z-index: 4000 !important;
+        display: flex !important;
+    }
+    .app-bar {
+        top: 60px !important;
+        display: flex !important;
+        flex-flow: row nowrap !important;
+        align-items: center !important;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 991px) {
+  .app-header {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  .app-banner {
+    width: 100%;
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 483px) {
+  .app-banner_top-left,
+  .app-banner_top-right,
+  .app-banner .button__caption {
+    font-size: 12px !important;
+    text-align: left !important;
+  }
+  .app-banner {
+    gap: 8px !important;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}

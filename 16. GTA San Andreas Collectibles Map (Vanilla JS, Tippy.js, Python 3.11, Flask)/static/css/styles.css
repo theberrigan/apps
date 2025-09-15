@@ -1,0 +1,427 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+*,
+[tabindex]:focus {
+    outline: 0 !important;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+html,
+body {
+    height: 100%;
+    text-align: left;
+    color: #000;
+    text-rendering: optimizeLegibility;
+    font-family: Arial, Tahoma, sans-serif;
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+}
+
+body {
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: normal;
+}
+
+div, svg, img, video, article, aside, figcaption,
+figure, footer, header, hgroup, main, nav, section {
+    display: block;
+}
+
+b,
+strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+}
+
+small {
+    font-size: 90%;
+}
+
+sub,
+sup {
+    position: relative;
+    font-size: 75%;
+    line-height: 0;
+    vertical-align: baseline;
+}
+
+sub {
+    bottom: -0.25em;
+}
+
+sup {
+    top: -0.5em;
+}
+
+a {
+    cursor: pointer;
+    /* color: $color-link-primary; */
+    text-decoration: none;
+    background-color: transparent;
+
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+fieldset {
+    display: block;
+    min-width: 0;
+}
+
+textarea,
+button,
+input {
+    font-family: inherit;
+}
+
+button::-moz-focus-inner,
+[type='button']::-moz-focus-inner,
+[type='reset']::-moz-focus-inner,
+[type='submit']::-moz-focus-inner {
+    padding: 0;
+    border: 0 none;
+}
+
+input[type='text'],
+input[type='password'] {
+    vertical-align: middle;
+}
+
+textarea {
+    overflow: auto;
+    resize: vertical;
+}
+
+input[type='text'],
+input[type='password'],
+input[type='number'],
+textarea {
+    font-family: inherit;
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: inherit;
+}
+
+pre,
+code,
+kbd,
+samp {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 1em;
+}
+
+pre {
+    overflow: auto;
+}
+
+svg {
+    overflow: hidden;
+    cursor: inherit;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+hr {
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible;
+}
+
+template {
+    display: none !important;
+}
+
+/* ---------------------------- */
+
+@font-face {
+    font-family: 'icomoon';
+    src: url('../fonts/icomoon.eot?h9yqoj');
+    src: url('../fonts/icomoon.eot?h9yqoj#iefix') format('embedded-opentype'),
+         url('../fonts/icomoon.ttf?h9yqoj') format('truetype'),
+         url('../fonts/icomoon.woff?h9yqoj') format('woff'),
+         url('../fonts/icomoon.svg?h9yqoj#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+.tippy-content a,
+.tippy-content a:hover,
+.tippy-content a:active,
+.tippy-content a:visited {
+    color: #3e9ef3;
+}
+
+/* ---------------------------- */
+
+.panel {
+    display: flex;
+    flex-flow: row nowrap;
+    width: 100%;
+    height: 30px;
+    background-color: #100810;
+}
+
+.panel__button {
+    display: flex;
+    border: none;
+    cursor: pointer;
+    padding: 0 8px;
+    background-color: transparent;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    opacity: 0.5;
+
+    font-family: 'icomoon' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.panel__button_active {
+    opacity: 1;    
+}
+
+.panel__button:before {
+    color: #fff;
+}
+
+.panel__button_asset:before {
+    content: "\e909";
+}
+
+.panel__button_horseshoe:before {
+    content: "\e923";
+}
+
+.panel__button_oyster:before {
+    content: "\e930";
+}
+
+.panel__button_snapshot:before {
+    content: "\e943";
+}
+
+.panel__button_stunt-jump:before {
+    content: "\e947";
+}
+
+.panel__button_tag:before {
+    content: "\e948";
+}
+
+.panel__button_girlfriend:before {
+    content: "\e91d";
+}
+
+.panel__button_triathlon:before {
+    content: "\e94c";
+}
+
+.panel__button_shooting-range:before {
+    content: "\e941";
+}
+
+.panel__button_vehicle-challenge:before {
+    content: "\e94d";
+}
+
+.panel__button_vehicle-mission:before {
+    content: "\e94e";
+}
+
+.panel__button_armor:before {
+    content: "\e907";
+}
+
+.panel__button_bribe:before {
+    content: "\e90f";
+}
+
+.panel__button_gift:before {
+    content: "\e91c";
+}
+
+.panel__button_item:before {
+    content: "\e928";
+}
+
+.panel__button_weapon:before {
+    content: "\e952";
+}
+
+.panel__button_visibility:before {
+    content: "X";
+    font-family: Consolas, "Courier New", monospace;
+}
+
+.map {
+    width: 100%;
+    height: calc(100% - 30px);
+    background-color: #738AAF;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+    cursor: default;
+}
+
+.map__container {
+    position: absolute;
+    width: 6344px;
+    height: 6344px;
+    box-shadow: 0px 0px 0px 1px #000;
+    /*transition: width 0.1s linear, height 0.1s linear;*/
+}
+
+.map__image {
+    width: 100%;
+    height: 100%;
+    background: #738AAF url('../images/map.png') no-repeat;
+    background-size: cover;
+}
+
+.map__markers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    /* Manual tunning */
+    /*top: 127px;
+    left: 204px;
+    bottom: 138px;
+    right: 104px;*/
+}
+
+.map__marker {
+    display: none;
+    cursor: pointer;
+    position: absolute;
+    background: url('../images/markers.png') no-repeat;
+    width: 33px;
+    height: 44px;
+    margin: -44px 0 0 -16px;
+}
+
+.map__marker_active {
+    display: block;
+}
+
+.map__marker_asset {
+    background-position: 0 -132px;
+}
+    
+.map__marker_tag {
+    background-position: 0 -968px;
+}
+
+.map__marker_stunt-jump {
+    background-position: 0 -924px;
+}
+
+.map__marker_weapon {
+    background-position: 0 -2904px;
+}
+
+.map__marker_armor {
+    background-position: 0 -2640px;
+}
+
+.map__marker_bribe {
+    background-position: 0 -2684px;
+}
+
+.map__marker_gift {
+    background-position: 0 -2728px;
+}
+
+.map__marker_vehicle-challenge {
+    background-position: 0 -2552px;
+}
+
+.map__marker_shooting-range {
+    background-position: 0 -2420px;
+}
+
+.map__marker_vehicle-mission {
+    background-position: 0 -2596px;
+}
+
+.map__marker_snapshot {
+    background-position: 0 -880px;
+}
+
+.map__marker_horseshoe {
+    background-position: 0 -792px;
+}
+
+.map__marker_oyster {
+    background-position: 0 -836px;
+}
+
+.map__marker_shooting-range {
+    background-position: 0 -1848px;
+}
+
+.map__marker_girlfriend {
+    background-position: 0 -1144px;
+}
+
+.map__marker_triathlon {
+    background-position: 0 -1364px;
+}
+
+.map__marker_item {
+    background-position: 0 -2816px;
+}
+
+.map__marker_state_default {
+    opacity: 1;
+}
+
+.map__marker_state_progress {
+    background-position: 0 0;
+}
+
+.map__marker_state_complete {
+    opacity: 0.3;
+}

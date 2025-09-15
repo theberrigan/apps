@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>tapNpay</title>
+    <meta name="description" content="tapNpay Client Dashboard"/>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!--<script src="//code.tidio.co/dfluya5i467z0oym3xi9lcopwjxxsyuq.js" async></script>-->
+    <link rel="icon" type="image/x-icon" href="favicon.ico?3">
+    <script type="text/javascript">
+        // Fix for amazon-cognito-identity-js
+        if (global === undefined) {
+            var global = window;
+        }
+
+        // Fix for amazon-s3, Amazon sucks >:-(
+        function updateLocation () {
+            var queryParams = window.location.search;
+
+            if (queryParams[0] === '?') {
+                queryParams = queryParams.slice(1);
+            }
+
+            queryParams = queryParams.split(/[?&]/g).reduce((acc, pair) => {
+                pair = pair.split('=');
+                acc[pair[0]] = pair[1] ? decodeURIComponent(pair[1]) : '';
+                return acc;
+            }, {});
+
+            var route = queryParams.route;
+            delete queryParams.route;
+
+            if (!route) {
+                return;
+            }
+
+            for (var key in queryParams) {
+                if (queryParams.hasOwnProperty(key)) {
+                    route += (route.indexOf('?') > -1 ? '&' : '?') + key + '=' + encodeURIComponent(queryParams[key]);
+                }
+            }
+
+            route += window.location.hash;
+
+            history.replaceState(null, null, route);
+        }
+
+        updateLocation();
+    </script>
+    <style>
+        @-webkit-keyframes app-screen-loader-pulse {
+            0% {
+                -webkit-transform: scale(0.2);
+                transform: scale(0.2);
+                opacity: 0;
+            }
+            33% {
+                -webkit-transform: scale(0.6);
+                transform: scale(0.6);
+                opacity: 1;
+            }
+            100% {
+                -webkit-transform: scale(1.2);
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @-moz-keyframes app-screen-loader-pulse {
+            0% {
+                -moz-transform: scale(0.2);
+                transform: scale(0.2);
+                opacity: 0;
+            }
+            33% {
+                -moz-transform: scale(0.6);
+                transform: scale(0.6);
+                opacity: 1;
+            }
+            100% {
+                -moz-transform: scale(1.2);
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @-o-keyframes app-screen-loader-pulse {
+            0% {
+                -o-transform: scale(0.2);
+                transform: scale(0.2);
+                opacity: 0;
+            }
+            33% {
+                -o-transform: scale(0.6);
+                transform: scale(0.6);
+                opacity: 1;
+            }
+            100% {
+                -o-transform: scale(1.2);
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes app-screen-loader-pulse {
+            0% {
+                -webkit-transform: scale(0.2);
+                -moz-transform: scale(0.2);
+                -o-transform: scale(0.2);
+                transform: scale(0.2);
+                opacity: 0;
+            }
+            33% {
+                -webkit-transform: scale(0.6);
+                -moz-transform: scale(0.6);
+                -o-transform: scale(0.6);
+                transform: scale(0.6);
+                opacity: 1;
+            }
+            100% {
+                -webkit-transform: scale(1.2);
+                -moz-transform: scale(1.2);
+                -o-transform: scale(1.2);
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .app-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-color: #fff;
+            z-index: 2147483647;  /* max z-index */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            opacity: 1;
+        }
+
+        .app-screen__middle {
+            display: block;
+            position: absolute;
+            width: 345px;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .app-screen__logo {
+            display: block;
+            border: none;
+            width: 100%;
+        }
+
+        .app-screen__loader {
+            display: block;
+            position: relative;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            width: 50px;
+            height: 50px;
+            margin: 20px auto 0;
+            left: -6px;
+        }
+
+        .app-screen__loader:before,
+        .app-screen__loader:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            opacity: 0;
+            background-color: rgba(72, 117, 231, 0.8);
+            -webkit-animation: app-screen-loader-pulse 2s linear infinite;
+            -moz-animation: app-screen-loader-pulse 2s linear infinite;
+            -o-animation: app-screen-loader-pulse 2s linear infinite;
+            animation: app-screen-loader-pulse 2s linear infinite;
+        }
+
+        .app-screen__loader:before {
+            -webkit-animation-delay: -1s;
+            -moz-animation-delay: -1s;
+            -o-animation-delay: -1s;
+            animation-delay: -1s;
+        }
+
+        .app-screen_fade-out {
+            opacity: 0;
+        }
+
+        .app-screen,
+        .app-screen_fade-out {
+            -webkit-transition: opacity 0.2s ease-out;
+            -o-transition: opacity 0.2s ease-out;
+            -moz-transition: opacity 0.2s ease-out;
+            transition: opacity 0.2s ease-out;
+        }
+
+        @media (max-width: 500px) {
+            .app-screen__middle {
+                width: 230px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <app-root></app-root>
+    <div class="app-screen">
+        <div class="app-screen__middle">
+            <img class="app-screen__logo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1442' height='420' viewBox='0 0 1442 420'%3E%3Cpath d='M613.18,181.25h43.19v17.64Q671.06,186.5,683,181.66a64.5,64.5,0,0,1,24.41-4.84q25.59,0,43.44,17.88,15,15.18,15,44.93V353.38H723.13V278q0-30.81-2.77-40.93t-9.62-15.4q-6.87-5.29-17-5.3a31.83,31.83,0,0,0-22.49,8.77q-9.39,8.78-13,24.26-1.89,8.06-1.89,34.92v69.06H613.18Z' style='fill: %238cc540'/%3E%3Cpath d='M32.32,117.34H54.47v63.91H89.59v19.14H54.47v153H32.32v-153H2.11V181.25H32.32Zm262,63.91V353.38H272.48V323.79q-13.94,16.93-31.25,25.47a84.43,84.43,0,0,1-37.89,8.55q-36.54,0-62.41-26.5t-25.87-64.47q0-37.17,26.11-63.6T204,176.82q21.21,0,38.37,9t30.14,27V181.25Zm-88.52,16.93a66.81,66.81,0,0,0-59,34.61,69.76,69.76,0,0,0,.08,69.53,67.91,67.91,0,0,0,25.05,25.83,65.36,65.36,0,0,0,33.74,9.25,69.14,69.14,0,0,0,34.44-9.17,64.12,64.12,0,0,0,25-24.81q8.78-15.65,8.77-35.24,0-29.85-19.67-49.93T205.79,198.18Zm138.67-16.93h22.15v31.64q13.11-18,30.18-27a80.3,80.3,0,0,1,38.09-9q36.66,0,62.74,26.42t26.08,63.6q0,38-25.84,64.47t-62.35,26.5a83.8,83.8,0,0,1-37.77-8.55q-17.22-8.53-31.13-25.47v92.55H344.46Zm88.59,16.93q-28.73,0-48.38,20.07T365,268.18q0,19.6,8.76,35.24a63.83,63.83,0,0,0,25.09,24.81,69.46,69.46,0,0,0,34.49,9.17,65,65,0,0,0,33.54-9.25,67.84,67.84,0,0,0,25-25.83,69.79,69.79,0,0,0,.07-69.53,66.68,66.68,0,0,0-58.95-34.61ZM687,97.5c-33.87,0-64.94,23.2-89.24,61.87,25.39-30.2,56.12-47.87,89.24-47.87s63.85,17.67,89.24,47.87C751.94,120.7,720.87,97.5,687,97.5Z' style='fill: %231a5d89'/%3E%3Cpath d='M850.34,181.25h22.15v31.64q13.11-18,30.19-27a80.23,80.23,0,0,1,38.08-9q36.68,0,62.75,26.42t26.07,63.6q0,38-25.84,64.47t-62.34,26.5a83.82,83.82,0,0,1-37.78-8.55q-17.22-8.53-31.13-25.47v92.55H850.34Zm88.59,16.93q-28.73,0-48.37,20.07t-19.65,49.93q0,19.6,8.76,35.24a63.9,63.9,0,0,0,25.09,24.81,69.46,69.46,0,0,0,34.49,9.17,65,65,0,0,0,33.54-9.25,67.84,67.84,0,0,0,25-25.83,69.79,69.79,0,0,0,.07-69.53,66.68,66.68,0,0,0-59-34.61Zm303.6-16.93V353.38h-21.84V323.79q-13.92,16.93-31.24,25.47a84.43,84.43,0,0,1-37.89,8.55q-36.54,0-62.41-26.5t-25.87-64.47q0-37.17,26.1-63.6t62.81-26.42q21.19,0,38.37,9t30.13,27V181.25ZM1154,198.18a66.81,66.81,0,0,0-59,34.61,69.76,69.76,0,0,0,.08,69.53,67.82,67.82,0,0,0,25,25.83,65.39,65.39,0,0,0,33.74,9.25,69.15,69.15,0,0,0,34.45-9.17,64.12,64.12,0,0,0,25-24.81q8.76-15.65,8.77-35.24,0-29.85-19.68-49.93T1154,198.18Zm119.84-16.93h23.41l59.16,132.55,57.44-132.55h23.57L1334.76,416.34h-23.4l33.14-76ZM687,50.5c-47.78,0-91.1,30-122.67,78.6C598,91.8,640.62,69.5,687,69.5s89,22.3,122.67,59.6C778.1,80.49,734.78,50.5,687,50.5Z' style='fill: %2325a8e0'/%3E%3Cpath d='M861.53,125.57C820.28,63.89,757.41,24.5,687,24.5S553.72,63.89,512.47,125.57C550.16,52.25,614.26,4,687,4S823.84,52.25,861.53,125.57Z' style='fill: %23f69320'/%3E%3C/svg%3E%0A" alt="tapNpay logo"/>
+            <div class="app-screen__loader"></div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+<button type="button" class="datepicker-bubble__now datepicker-bubble__now_date"
+        (click)="emmitCurrentDateSelectEvent()">
+    <span class="datepicker-bubble__now-day">{{ nowDate.date }}</span>
+    <span class="datepicker-bubble__now-today">{{ 'datetime.today__text' | translate }}</span>
+    <span class="datepicker-bubble__now-month">{{ nowDate.month }} {{ nowDate.year }}</span>
+</button>

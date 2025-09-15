@@ -1,0 +1,12 @@
+<popup-custom *ngIf="config" [isSmall]="true">
+    <popup-content>
+        <span [innerHTML]="config.messageKey | translate"></span>
+    </popup-content>
+    <popup-controls [isStretched]="isStretched">
+        <button (click)="onConfirm()"
+                class="button button_regular button_blue"
+                type="button">
+            <span class="button__caption">{{ config.buttonLabelKey | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>

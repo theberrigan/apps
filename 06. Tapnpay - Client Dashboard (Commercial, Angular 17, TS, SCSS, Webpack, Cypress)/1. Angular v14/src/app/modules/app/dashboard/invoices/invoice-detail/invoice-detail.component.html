@@ -1,0 +1,334 @@
+<!-- Page Header -->
+<ng-container [ngSwitch]="viewportBreakpoint">
+    <page-panel *ngSwitchCase="'desktop'">
+        <h1 class="page-panel__header page-panel__header_has-arrow" (click)="onGoBack()">
+            <span [innerHTML]="'invoices.invoice_detail.page_header' | translate"></span>
+        </h1>
+        <div class="page-panel__controls">
+            <button class="page-panel__button" type="button" (click)="onPrint()" *ngIf="isReady">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M21.69,7H19V2.34A1.34,1.34,0,0,0,17.66,1H6.34A1.34,1.34,0,0,0,5,2.34V7H2.31A2.32,2.32,0,0,0,0,9.31v8.38A2.32,2.32,0,0,0,2.31,20H5v2.66A1.34,1.34,0,0,0,6.34,24H17.66A1.34,1.34,0,0,0,19,22.66V20h2.69A2.32,2.32,0,0,0,24,17.69V9.31A2.32,2.32,0,0,0,21.69,7ZM7,3H17V7H7ZM17,22H7V15H17Zm5-4.31a.31.31,0,0,1-.31.31H19V13H5v5H2.31A.31.31,0,0,1,2,17.69V9.31A.31.31,0,0,1,2.31,9H21.69a.31.31,0,0,1,.31.31Z"/>
+                </svg>
+            </button>
+        </div>
+    </page-panel>
+    <app-bar *ngSwitchDefault [showBackButton]="true" (onBack)="onGoBack()">
+        <button type="button" class="app-bar__button" (click)="onPrint()" *ngIf="isReady">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M19.69,7H18V3.34A1.34,1.34,0,0,0,16.66,2H7.34A1.34,1.34,0,0,0,6,3.34V7H4.31A2.32,2.32,0,0,0,2,9.31v6.38A2.32,2.32,0,0,0,4.31,18H6v2.66A1.34,1.34,0,0,0,7.34,22h9.32A1.34,1.34,0,0,0,18,20.66V18h1.69A2.32,2.32,0,0,0,22,15.69V9.31A2.32,2.32,0,0,0,19.69,7ZM8,4h8V7H8Zm8,16H8V14h8Zm4-4.31a.31.31,0,0,1-.31.31H18V12H6v4H4.31A.31.31,0,0,1,4,15.69V9.31A.31.31,0,0,1,4.31,9H19.69a.31.31,0,0,1,.31.31Z"/>
+            </svg>
+        </button>
+    </app-bar>
+</ng-container>
+
+<!-- Page Content -->
+<div class="invoice-detail__content" *ngIf="isReady" [ngSwitch]="viewportBreakpoint">
+    <ng-container *ngSwitchCase="'desktop'">
+        <div class="invoice-detail__invoice" *ngFor="let invoiceItem of invoiceItems">
+            <div class="invoice-detail__invoice-top">
+                <h2 class="invoice-detail__invoice-header"
+                    [innerHTML]="'invoices.invoice_detail.invoice_header' | translate : { name: invoiceItem.name }"
+                ></h2>
+                <div class="invoice-detail__invoice-amount" [innerHTML]="invoiceItem.amount | currency"></div>
+            </div>
+            <div class="invoice-detail__license-plate" *ngFor="let licensePlate of invoiceItem.licensePlates">
+                <h3 class="invoice-detail__license-plate-header">{{ licensePlate.lpNumber }}</h3>
+                <div class="table table_middle table_striped table_reversed table_nowrap invoice-detail__table">
+                    <div class="table__header">
+                        <div class="table__row">
+                            <div class="table__cell invoice-detail__table-cell-location">
+                                {{ 'invoices.invoice_detail.location_th' | translate }}
+                            </div>
+                            <div class="table__cell invoice-detail__table-cell-amount">
+                                {{ 'invoices.invoice_detail.amount_th' | translate }}
+                            </div>
+                            <div class="table__cell invoice-detail__table-cell-date">
+                                {{ 'invoices.invoice_detail.date_th' | translate }}
+                            </div>
+                            <div class="table__cell invoice-detail__table-cell-status">
+                                {{ 'invoices.invoice_detail.status_th' | translate }}
+                            </div>
+                            <div class="table__cell invoice-detail__table-cell-button">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table__body">
+                        <div class="table__row"
+                             *ngFor="let transactionItem of licensePlate.transactionItems"
+                             [class.invoice-detail__table-row-disputed]="transactionItem.disputeReason !== 'NONE'"
+                        >
+                            <div class="table__cell invoice-detail__table-cell-location"
+                                [ngSwitch]="hasLocationRoute(transactionItem.location)"
+                            >
+                                <span class="pseudo-link"
+                                    *ngSwitchCase="true"
+                                    (click)="onShowLocationMap(transactionItem.location)"
+                                >
+                                    {{ transactionItem.location }}
+                                </span>
+                                <ng-container *ngSwitchCase="false">{{ transactionItem.location }}</ng-container>
+                            </div>
+                            <div class="table__cell invoice-detail__table-cell-amount">
+                                {{ transactionItem.amount | currency }}
+                            </div>
+                            <div class="table__cell invoice-detail__table-cell-date">
+                                {{ transactionItem.createTs | datetime : 'display.datetime' }}
+                            </div>
+                            <div class="table__cell invoice-detail__table-cell-status"
+                                [ngSwitch]="transactionItem.disputeReason"
+                            >
+                                <ng-container *ngSwitchCase="'NONE'">{{ 'invoices.invoice_detail.awaiting_payment' | translate }}</ng-container>
+                                <ng-container *ngSwitchDefault>{{ disputeReasonMap[transactionItem.disputeReason] | translate }}</ng-container>
+                            </div>
+                            <div class="table__cell invoice-detail__table-cell-button" [ngSwitch]="transactionItem.disputeReason">
+                                <div class="table__cell-content table__cell-content_right">
+                                    <button type="button" class="button button_regular button_white-grey"
+                                        *ngSwitchCase="'NONE'"
+                                        [isDisabled]="isSubmitting"
+                                        (click)="onShowDisputeInterface(licensePlate, transactionItem)"
+                                    >
+                                        {{ 'invoices.invoice_detail.dispute_button' | translate }}
+                                    </button>
+                                    <button type="button" class="button button_regular button_white-blue"
+                                        *ngSwitchDefault
+                                        [isDisabled]="isSubmitting"
+                                        (click)="onCancelDispute(transactionItem)"
+                                    >
+                                        {{ 'invoices.invoice_detail.restore_button' | translate }}
+                                    </button>
+                                    <div class="invoice-detail__table-dispute" *ngIf="transactionItem.id === disputeInterfaceId" @dispute>
+                                        <select class="select select_regular select_no-border invoice-detail__table-dispute-select"
+                                            [disabled]="isSubmitting"
+                                            [(ngModel)]="disputeReason"
+                                        >
+                                            <option *ngFor="let reason of disputeReasonOptions" [ngValue]="reason.value">
+                                                {{ reason.display | translate }}
+                                            </option>
+                                        </select>
+                                        <button type="button" class="button button_regular button_white-blue"
+                                            [isDisabled]="isSubmitting"
+                                            (click)="onCommitDisputeReason(licensePlate, transactionItem)"
+                                        >
+                                            {{ 'invoices.invoice_detail.dispute_ok_button' | translate }}
+                                        </button>
+                                        <button type="button" class="button button_regular button_white-grey"
+                                            [isDisabled]="isSubmitting"
+                                            (click)="onHideDisputeInterface()"
+                                        >
+                                            {{ 'invoices.invoice_detail.dispute_cancel_button' | translate }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+        <h1 class="page-header">{{ 'invoices.invoice_detail.page_header' | translate }}</h1>
+        <div class="invoice-detail__invoice-mobile" *ngFor="let invoiceItem of invoiceItems">
+            <div class="invoice-detail__invoice-mobile-top">
+                <h2 class="invoice-detail__invoice-mobile-header">{{ invoiceItem.name }}</h2>
+                <div class="invoice-detail__invoice-mobile-amount" [innerHTML]="invoiceItem.amount | currency"></div>
+            </div>
+            <div class="invoice-detail__license-plate-mobile" *ngFor="let licensePlate of invoiceItem.licensePlates">
+                <h3 class="invoice-detail__license-plate-mobile-header">{{ licensePlate.lpNumber }}</h3>
+                <div class="invoice-detail__list">
+                    <div class="invoice-detail__list-item"
+                        *ngFor="let transactionItem of licensePlate.transactionItems"
+                        [class.invoice-detail__list-item_disputed]="transactionItem.disputeReason !== 'NONE'"
+                    >
+                        <div class="invoice-detail__list-item-cell invoice-detail__list-item-cell_info">
+                            <div class="invoice-detail__list-item-location"
+                                [ngSwitch]="hasLocationRoute(transactionItem.location)"
+                            >
+                                <span class="pseudo-link"
+                                    *ngSwitchCase="true"
+                                    (click)="onShowLocationMap(transactionItem.location)"
+                                >
+                                    {{ transactionItem.location }}
+                                </span>
+                                <ng-container *ngSwitchCase="false">{{ transactionItem.location }}</ng-container>
+                            </div>
+                            <div class="invoice-detail__list-item-date">
+                                {{ transactionItem.createTs | datetime : 'display.datetime' }}
+                            </div>
+                        </div>
+                        <div class="invoice-detail__list-item-cell invoice-detail__list-item-cell_amount">
+                            {{ transactionItem.amount | currency }}
+                        </div>
+                        <div class="invoice-detail__list-item-cell invoice-detail__list-item-cell_menu">
+                            <div class="invoice-detail__list-item-menu-wrap">
+                                <button type="button" class="invoice-detail__list-item-menu-trigger"
+                                    [disabled]="isSubmitting"
+                                    (click)="onMenuTriggerClick(transactionItem, $event)"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <path d="M12,7a2,2,0,1,1,2-2A2,2,0,0,1,12,7Zm2,5a2,2,0,1,0-2,2A2,2,0,0,0,14,12Zm0,7a2,2,0,1,0-2,2A2,2,0,0,0,14,19Z"></path>
+                                    </svg>
+                                </button>
+                                <div class="invoice-detail__list-item-menu invoice-detail__list-item-menu_top"
+                                    *ngIf="menuActiveTransactionItemId === transactionItem.id"
+                                    (click)="onMenuClick($event)"
+                                >
+                                    <ng-container [ngSwitch]="transactionItem.disputeReason">
+                                        <button type="button" class="invoice-detail__list-item-menu-item"
+                                            *ngSwitchCase="'NONE'"
+                                            [disabled]="isSubmitting"
+                                            (click)="onShowMobileDisputeInterface(licensePlate, transactionItem, $event)"
+                                        >
+                                            {{ 'invoices.invoice_detail.dispute_button' | translate }}
+                                        </button>
+                                        <button type="button" class="invoice-detail__list-item-menu-item"
+                                            *ngSwitchDefault
+                                            [disabled]="isSubmitting"
+                                            (click)="onCancelDisputeMobile(transactionItem, $event)"
+                                        >
+                                            {{ 'invoices.invoice_detail.restore_button' | translate }}
+                                        </button>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="invoice-detail__list-item-cell invoice-detail__list-item-cell_hidden">
+                            <div class="invoice-detail__list-item-dispute" *ngIf="transactionItem.id === disputeInterfaceId" @dispute>
+                                <select class="select select_regular"
+                                    [disabled]="isSubmitting"
+                                    [(ngModel)]="disputeReason"
+                                >
+                                    <option *ngFor="let reason of disputeReasonOptions" [ngValue]="reason.value">
+                                        {{ reason.display | translate }}
+                                    </option>
+                                </select>
+                                <button type="button" class="invoice-detail__list-item-dispute-ok"
+                                    [disabled]="isSubmitting"
+                                    (click)="onCommitDisputeReason(licensePlate, transactionItem)"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <polygon style="fill: currentColor;" points="9 18.41 3.29 12.71 4.71 11.29 9 15.59 19.31 5.4 20.72 6.83 9 18.41"></polygon>
+                                    </svg>
+                                </button>
+                                <button type="button" class="invoice-detail__list-item-dispute-cancel"
+                                    [disabled]="isSubmitting"
+                                    (click)="onHideDisputeInterface()"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                        <polygon style="fill: currentColor;" points="18.66 17.24 17.24 18.66 12 13.41 6.76 18.66 5.34 17.24 10.59 12 5.34 6.76 6.76 5.34 12 10.59 17.24 5.34 18.66 6.76 13.41 12 18.66 17.24"></polygon>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+<div class="invoice-detail__print-content" *ngIf="isReady">
+    <div class="invoice-detail__print-content-header" [innerHTML]="'invoices.invoice_detail.page_header' | translate"></div>
+    <div class="invoice-detail__print-content-subheader">{{ printDate | datetime : 'display.datetime' }}</div>
+    <div class="invoice-detail__print-content-invoice" *ngFor="let invoiceItem of invoiceItems">
+        <div class="invoice-detail__print-content-invoice-header">
+            {{ invoiceItem.name }} ({{ invoiceItem.amount | currency }})
+        </div>
+        <table class="invoice-detail__print-content-invoice-table">
+            <thead>
+                <tr>
+                    <th>{{ 'invoices.invoice_detail.lpn_th' | translate }}</th>
+                    <th>{{ 'invoices.invoice_detail.location_th' | translate }}</th>
+                    <th class="text-right">{{ 'invoices.invoice_detail.amount_th' | translate }}</th>
+                    <th>{{ 'invoices.invoice_detail.date_th' | translate }}</th>
+                    <th>{{ 'invoices.invoice_detail.status_th' | translate }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let licensePlate of invoiceItem.licensePlates">
+                    <tr *ngFor="let transactionItem of licensePlate.transactionItems">
+                        <td>{{ licensePlate.lpNumber }}</td>
+                        <td>{{ transactionItem.location }}</td>
+                        <td class="text-right">{{ transactionItem.amount | currency }}</td>
+                        <td>{{ transactionItem.createTs | datetime : 'display.datetime' }}</td>
+                        <td [ngSwitch]="transactionItem.disputeReason">
+                            <ng-container *ngSwitchCase="'NONE'">{{ 'invoices.invoice_detail.awaiting_payment' | translate }}</ng-container>
+                            <ng-container *ngSwitchDefault>{{ disputeReasonMap[transactionItem.disputeReason] | translate }}</ng-container>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<invoice-payment
+    #paymentComponent
+    [invoiceItems]="invoiceItems"
+    [totalAmount]="totalAmount"
+    (onPaymentBegin)="onPaymentBegin()"
+    (onPaymentSuccess)="onPaymentSuccess($event)"
+    (onPaymentCancel)="onPaymentCancel()"
+></invoice-payment>
+
+<google-map
+    *ngIf="activeCoverageLocation"
+    [data]="activeCoverageLocation"
+    (onClose)="onMapClose()"
+></google-map>
+
+<!-- Context Panels -->
+<context-panel class="invoice-detail__context-panel" *ngIf="viewportBreakpoint === 'desktop'">
+    <div class="context-panel__label" [innerHTML]="'invoices.invoice_detail.total_amount' | translate : { amount: (totalAmount | currency) }"></div>
+    <button type="button" class="button button_size-42 button_white-blue context-panel__control"
+        (click)="onPay()"
+        [isDisabled]="isSubmitting"
+        [isProgress]="isSubmitting"
+        [ngSwitch]="canPay"
+    >
+        <span class="button__caption"
+            *ngSwitchCase="true"
+            [innerHTML]="'invoices.invoice_detail.tap_to_pay' | translate"
+        ></span>
+        <span class="button__caption"
+            *ngSwitchCase="false"
+            [innerHTML]="'invoices.invoice_detail.save_changes' | translate"
+        ></span>
+    </button>
+</context-panel>
+
+<!-- Mobile Controls Panel -->
+<div class="invoice-detail__controls" *ngIf="viewportBreakpoint !== 'desktop'" [@invoiceDetailMobileActions]>
+    <button type="button" class="button button_regular button_blue invoice-detail__controls-pay"
+        (click)="onPay()"
+        [isDisabled]="isSubmitting"
+        [isProgress]="isSubmitting"
+        [ngSwitch]="canPay"
+    >
+        <span class="button__caption"
+            *ngSwitchCase="true"
+            [innerHTML]="'invoices.invoice_detail.tap_to_pay_with_amount' | translate : { amount: (totalAmount | currency) }"
+        ></span>
+        <span class="button__caption"
+            *ngSwitchCase="false"
+            [innerHTML]="'invoices.invoice_detail.save_changes' | translate"
+        ></span>
+    </button>
+</div>
+
+<!-- Popups -->
+<confirm-box #disputeReasonResetConfirmBox>
+    <span [innerHTML]="'invoices.invoice_detail.confirm_reason_change' | translate : { reason: (disputeReasonMap[disputeReason] | translate) }"></span>
+</confirm-box>
+
+<popup-custom class="invoice-detail__dispute-rejected-popup" *ngIf="isDisputeRejectedPopupVisible">
+    <popup-content>
+        <span [innerHTML]="'invoices.invoice_detail.dispute_rejected' | translate"></span>
+    </popup-content>
+    <popup-controls>
+        <button type="button" class="button button_regular button_blue" (click)="onHideDisputeRejectedPopup()">
+            <span class="button__caption">{{ 'invoices.invoice_detail.dispute_rejected_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>

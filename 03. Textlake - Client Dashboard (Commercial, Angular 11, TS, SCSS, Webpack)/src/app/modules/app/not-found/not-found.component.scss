@@ -1,0 +1,36 @@
+.not-found {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    white-space: nowrap;
+    text-align: center;
+
+    &__404 {
+        font-size: 200px;
+        line-height: 200px;
+        font-weight: bold;
+    }
+
+    &__message {
+        margin-top: 20px;
+        font-size: 20px;
+        line-height: 24px;
+    }
+}
+
+html.viewport_mobile {
+    .not-found {
+        &__404 {
+            font-size: 120px;
+            line-height: 120px;
+        }
+
+        &__message {
+            font-size: 18px;
+            line-height: 22px;
+            margin-top: 10px;
+        }
+    }
+}

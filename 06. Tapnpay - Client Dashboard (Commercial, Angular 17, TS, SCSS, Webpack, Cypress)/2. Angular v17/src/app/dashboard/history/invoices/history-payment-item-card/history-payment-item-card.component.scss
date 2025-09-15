@@ -1,0 +1,400 @@
+@import "../../../../../assets/css/responsive";
+
+.align-center {
+    align-items: center;
+}
+
+.mb-0 {
+    margin-bottom: 0 !important;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flex-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+}
+
+.flex-center-center {
+    @extend .flex-center;
+    align-items: center;
+}
+
+.flex-between-center {
+    @extend .flex-between;
+    align-items: center;
+}
+
+.base-text {
+    color: #191919;
+    font-size: 13px;
+    line-height: 16px;
+}
+
+.base-text-normal {
+    @extend .base-text;
+    font-weight: normal;
+}
+
+.base-text-normal-light {
+    @extend .base-text;
+    color: #767676;
+}
+
+.base-text-bold {
+    @extend .base-text;
+    font-weight: 600;
+}
+
+.history-invoice-card {
+    display: flex;
+    padding: 16px 22px 16px 12px;
+    background: #FFFFFF 0 0 no-repeat padding-box;
+    box-shadow: 0 2px 4px #00000029;
+    margin-bottom: 12px;
+    width: 100%;
+    flex-direction: column;
+    border-radius: 6px;
+
+    @include mobile {
+        padding: 16px 16px 16px 8px;
+    }
+
+    &__body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: auto;
+        @include desktop {
+            display: flex;
+            justify-content: space-between;
+            flex-flow: row nowrap;
+            width: 100%;
+        }
+
+        &.opened {
+            @include mobile {
+                grid-template-columns: 1fr;
+
+            }
+        }
+    }
+
+    &__footer {
+        @extend .flex-end;
+        flex-flow: row nowrap;
+    }
+
+    &__separate-line {
+        width: 100%;
+        height: 1px;
+        background: #DBDBDB 0 0 no-repeat padding-box;
+        margin: 8px 0;
+    }
+}
+
+.collapse-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 31px;
+
+    @include mobile {
+        grid-column: 1/2;
+        grid-row: 1/2;
+        justify-content: start;
+    }
+
+    &__btn {
+        @extend .flex-center-center;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+        width: 24px;
+        height: 24px;
+        outline-style: none;
+
+        @include mobile {
+            width: 19px;
+            height: 19px;
+        }
+
+        &--open {
+            background: url("/assets/images/icons/collapse_open.svg") no-repeat;
+            @include mobile {
+                background-size: 19px;
+            }
+        }
+
+        &--close {
+            background: url("/assets/images/icons/collapse_close.svg") no-repeat;
+            @include mobile {
+                background-size: 19px;
+            }
+        }
+    }
+}
+
+.invoice-date-col {
+    display: flex;
+    flex-basis: 41%;
+    flex-flow: row nowrap;
+    height: 31px;
+    align-items: center;
+}
+
+.invoices-list-col {
+    flex: 1 1 59%;
+
+    @include mobile {
+        grid-row-start: 2;
+    }
+}
+
+.flex-col-mobile {
+    @include mobile {
+        display: flex;
+        flex-flow: column nowrap;
+    }
+}
+
+.invoice-item {
+    height: 31px;
+    align-items: center;
+
+    @include desktop {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-auto-rows: auto;
+    }
+
+    @include mobile {
+        height: 34px;
+        margin-bottom: 8px;
+    }
+
+    &__name {
+        @extend .base-text-bold;
+        color: #00C08B;
+        text-decoration: underline;
+        @supports (font-variant-numeric: tabular-nums) {
+            font-variant-numeric: tabular-nums;
+        }
+        transition: color 0.3s;
+
+        &:hover {
+            color: darken(#00C08B, 20%);
+            cursor: pointer;
+        }
+
+        @include mobile {
+            grid-column: 1/2;
+            margin-top: 3px;
+        }
+    }
+
+    &__payment-method-type {
+        @extend .base-text-bold;
+        @include mobile {
+            grid-column-start: 2;
+            font-size: 10px;
+            line-height: 13px;
+            margin-top: 4px;
+            color: #767676;
+        }
+    }
+
+    &__amount {
+        text-align: right;
+        @extend .base-text-bold;
+        @supports (font-variant-numeric: tabular-nums) {
+            font-variant-numeric: tabular-nums;
+        }
+
+        @include mobile {
+            grid-row: 1/3;
+            grid-column: 3/4;
+        }
+
+        &--only-desktop {
+            @include mobile {
+                display: none;
+            }
+        }
+    }
+}
+
+.invoice-amount {
+    @extend .flex-between-center;
+    flex-flow: column nowrap;
+    align-items: flex-end;
+
+    @include mobile {
+        min-width: 148px;
+        max-width: 300px;
+    }
+
+}
+
+.processing-fee {
+    @extend .flex-between-center;
+    color: #707070;
+    font-size: 10px;
+    margin-bottom: 2px;
+    line-height: 13px;
+    width: 100%;
+
+    &__label {
+        text-align: right;
+        display: inline-block;
+        width: 100%;
+    }
+
+    &__amount {
+        @extend .total-amount-base-style;
+    }
+}
+
+.total-amount-base-style {
+    text-align: right;
+    @supports (font-variant-numeric: tabular-nums) {
+        font-variant-numeric: tabular-nums;
+    }
+
+    @include desktop {
+        min-width: 56px;
+    }
+
+    @include mobile {
+        padding-left: 8px;
+    }
+}
+
+.total-fee {
+    @extend .flex-between-center;
+    @extend .base-text-bold;
+    width: 100%;
+
+    &__label {
+        text-align: right;
+        display: inline-block;
+        width: 100%;
+    }
+
+    &__amount {
+        @extend .total-amount-base-style;
+    }
+}
+
+.payment-date {
+    display: flex;
+    align-items: center;
+    height: 31px;
+
+    @include mobile {
+        grid-row: 1/2;
+        grid-column: 2/3;
+    }
+
+    &__date {
+        @extend .base-text-bold;
+    }
+
+    &__time {
+        @extend .base-text-normal-light;
+        display: inline-block;
+        margin-left: 10px;
+
+        @include mobile {
+            font-size: 10px;
+            margin-left: 4px;
+            color: #767676;
+        }
+    }
+}
+
+.total-mobile-closed {
+    grid-column-start: 2;
+    grid-row: 1/3;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.invoice-history-card-n {
+    padding: 16px 22px 16px 12px;
+    background: #FFFFFF 0 0 no-repeat padding-box;
+    box-shadow: 0 2px 4px #00000029;
+    margin-bottom: 12px;
+    width: 100%;
+    border-radius: 6px;
+    display: grid;
+    grid-template-columns: 34px 1fr 2fr;
+
+    @include mobile {
+        grid-template-columns: 27px 2fr 1fr;
+        grid-template-rows: auto auto;
+        padding: 16px 16px 16px 8px;
+    }
+
+    &.open {
+
+        @include mobile {
+            grid-template-columns: 27px 1fr;
+            grid-template-rows: repeat(3, auto);
+        }
+
+        .mobile-only-fee-col {
+            display: none !important;
+        }
+
+        .invoice-history-card-n__footer {
+            grid-column: 1/4;
+            grid-row: 3/4;
+            justify-content: flex-end;
+
+            @include mobile {
+                grid-column: 2/3;
+            }
+        }
+
+        .invoice-item {
+            @include mobile {
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                grid-auto-rows: auto auto;
+            }
+        }
+    }
+
+    &__footer {
+        grid-row: 2/3;
+        grid-column: 1/4;
+        justify-content: flex-end;
+    }
+}
+
+.mobile-only-fee-col {
+    display: none;
+    @include mobile {
+        display: flex;
+        grid-row: 1/3;
+        grid-column: 3/4;
+        align-items: center;
+    }
+}
+
+.invoices-col {
+    @include mobile {
+        grid-row: 2/3;
+        grid-column: 2/3;
+    }
+}

@@ -1,0 +1,80 @@
+{
+    "manifest_version": 3, 
+    "name": "Steam Tools", 
+    "short_name": "Steam Tools", 
+    "description": "Добавляет дополнительные функции в Steam", 
+    "version": "1.0.0", 
+    "author": "Berrigan", 
+    "minimum_chrome_version": "116", 
+    "offline_enabled": true, 
+    "icons": {
+        "16": "images/icons/icon_16.png", 
+        "24": "images/icons/icon_24.png", 
+        "32": "images/icons/icon_32.png", 
+        "48": "images/icons/icon_48.png", 
+        "64": "images/icons/icon_64.png", 
+        "128": "images/icons/icon_128.png"
+    }, 
+    "background": {
+        "type": "module", 
+        "service_worker": "js/background/background.js"
+    }, 
+    "content_scripts": [
+        {
+            "run_at": "document_start", 
+            "matches": [
+                "*://steamcommunity.com/*"
+            ], 
+            "all_frames": false, 
+            "js": [
+                "js/content/community.js"
+            ], 
+            "css": [
+                "css/content/community.css"
+            ]
+        }, 
+        {
+            "run_at": "document_end", 
+            "matches": [
+                "*://store.steampowered.com/*"
+            ], 
+            "all_frames": false, 
+            "js": [
+                "js/content/store.js"
+            ], 
+            "css": [
+                "css/content/store.css"
+            ]
+        }
+    ], 
+    "sandbox": {
+        "pages": [
+            "html/sandbox.html"
+        ]
+    }, 
+    "permissions": [
+        "tabs", 
+        "alarms", 
+        "scripting", 
+        "storage", 
+        "cookies", 
+        "activeTab", 
+        "tts", 
+        "proxy", 
+        "offscreen", 
+        "webRequest", 
+        "webRequestAuthProvider", 
+        "declarativeNetRequest", 
+        "declarativeNetRequestFeedback"
+    ], 
+    "host_permissions": [
+        "*://*/*", 
+        "file:///*"
+    ], 
+    "externally_connectable": {
+        "matches": [
+            "*://*.steampowered.com/*", 
+            "*://*.steamcommunity.com/*"
+        ]
+    }
+}

@@ -1,0 +1,95 @@
+@import './popup.definitions';
+
+@mixin popup-box_width_boxed {
+    max-width: 760px;
+    width: 100%;
+}
+
+#{ $popup-selector } {
+    &__box {
+        visibility: hidden;
+        margin: auto;
+        border-radius: 6px;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+        background-color: #fff;
+        position: relative;
+        @include popup-box_width_boxed;
+
+        html.browser_IE & {
+            margin: $overlay-v-padding auto;
+        }
+
+
+        /*
+        popup_width_boxed
+        popup_width_by-content
+        popup_width_full
+        popup_width_modal
+
+        popup_mobile-width_boxed
+        popup_mobile-width_by-content
+        popup_mobile-width_full
+        popup_mobile-width_modal
+
+        popup_tablet-width_boxed
+        popup_tablet-width_by-content
+        popup_tablet-width_full
+        popup_tablet-width_modal
+
+        popup_desktop-width_boxed
+        popup_desktop-width_by-content
+        popup_desktop-width_full
+        popup_desktop-width_modal
+        */
+
+        // size-mimic iframe
+        &-iframe {
+            position: absolute;
+            z-index: -9999;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    // TODO: remove
+    &_auto-width &__box {
+        max-width: 100%;
+        width: auto;
+    }
+
+    // TODO: remove
+    &_box-transparent  &__box {
+        opacity: 0;
+    }
+
+    &_show-spinner &__spinner {
+        display: block;
+    }
+
+    &_show-box &__box {
+        visibility: visible;
+    }
+}
+
+@include width-combinations(boxed, box) {
+    @include popup-box_width_boxed;
+}
+
+@include width-combinations(by-content, box) {
+    max-width: none;
+    width: auto;
+}
+
+@include width-combinations(full, box) {
+    max-width: none;
+    width: 100%;
+}
+
+@include width-combinations(modal, box) {
+    max-width: none;
+    width: 100%;
+    min-height: 100%;
+}

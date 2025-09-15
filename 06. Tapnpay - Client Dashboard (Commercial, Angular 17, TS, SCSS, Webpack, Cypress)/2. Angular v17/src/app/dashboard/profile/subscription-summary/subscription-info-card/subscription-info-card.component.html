@@ -1,0 +1,75 @@
+<div class="subscription-summary__table-wrap">
+    <div class="table table_middle table_striped table_white table_nowrap subscription-summary__table w-100">
+        <div class="table__header">
+
+            <div class="table__row">
+                <div class="table__cell">
+                </div>
+                <div class="table__cell">
+                </div>
+            </div>
+        </div>
+
+        <div class="table__body">
+            <div class="table__row" *ngIf="propsVisibility.status">
+                <div class="table__cell">
+                    {{ 'subscription_summary.status' | translate }}
+
+                </div>
+                <div class="table__cell">
+                    <span
+                        [ngClass]="{'text--red': isStatusActiveUntilExpiration(), 'text--green': isStatusActive()}">
+                        {{ getStatusMessage() | translate }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="table__row" *ngIf="propsVisibility.renewalDate">
+                <div class="table__cell">
+                    {{ 'subscription_summary.renewal' | translate }}
+                </div>
+                <div class="table__cell">
+                    {{ 'subscription_summary.renewal_value' | translate : {date: (getRenewalDate() | date : 'mediumDate')} }}
+                </div>
+            </div>
+
+            <div class="table__row" *ngIf="propsVisibility.fee">
+                <div class="table__cell">
+                    {{ 'subscription_summary.fee' | translate }}
+                </div>
+                <div class="table__cell">
+                    {{ 'subscription_summary.fee_value' | translate : {amount: (getFee() | currencyFormat)} }}
+                </div>
+            </div>
+
+            <div class="table__row" *ngIf="propsVisibility.vehicleLimit">
+                <div class="table__cell">
+                    {{ 'subscription_summary.vehicle_limit' | translate }}
+                </div>
+                <div class="table__cell">
+                    {{ getVehicleLimit() }}
+                </div>
+            </div>
+
+            <div class="table__row" *ngIf="propsVisibility.activeUntil">
+                <div class="table__cell">
+                    {{ 'subscription_summary.active_until' | translate }}
+                </div>
+                <div class="table__cell">
+                    {{ 'subscription_summary.active_until_value' | translate : {date: (getActiveUntilDate() | date : 'mediumDate')} }}
+                </div>
+            </div>
+
+            <div class="table__row" *ngIf="propsVisibility.expiredOn">
+                <div class="table__cell">
+                    {{ 'subscription_summary.expired_on' | translate }}
+                </div>
+                <div class="table__cell">
+                    {{ 'subscription_summary.expired_on_value' | translate : {date: (getExpiredOnDate()  | date : 'mediumDate')} }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

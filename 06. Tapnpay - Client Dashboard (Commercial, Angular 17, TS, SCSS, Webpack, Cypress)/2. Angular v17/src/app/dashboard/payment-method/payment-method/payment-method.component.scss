@@ -1,0 +1,580 @@
+@use "sass:math";
+
+@import '../../../../assets/css/definitions';
+
+.payment-method {
+    display: block;
+
+    &__method-popup,
+    &__card-popup,
+    &__card-delete-popup,
+    &__venmo-delete-popup {
+        .popup__box {
+            max-width: 400px;
+        }
+
+        &-fatal {
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: $font-weight-medium;
+            color: $color-primary-red;
+            text-align: center;
+        }
+
+        &-error {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: $font-weight-medium;
+            background-color: #ffe9e9;
+            color: #ef4848;
+            margin-bottom: 20px;
+        }
+    }
+
+    &__method-popup {
+        .popup__controls {
+            padding: 0 30px 30px;
+        }
+
+        &-loading {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 240px;
+            background-color: #fff;
+        }
+
+        &-header {
+            color: #4B5563;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: $font-weight-semi-bold;
+            width: 100%;
+            margin-bottom: 30px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        &-methods {
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: stretch;
+            user-select: none;
+        }
+
+
+        &-add-card {
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+    }
+
+    &__card-popup {
+        .popup__box {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .popup__content {
+            padding-bottom: 30px;
+        }
+
+        .popup__controls {
+            padding-right: 30px;
+            padding-bottom: 30px;
+            padding-left: 30px;
+        }
+
+        &-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+        }
+
+        &-header {
+            display: inline-flex;
+            font-size: 14px;
+            font-weight: $font-weight-semi-bold;
+            line-height: 20px;
+            color: #272727;
+            cursor: default;
+            user-select: none;
+            margin-bottom: 15px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        &-input {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            border-radius: $control-primary-radius;
+            border: $control-border-size solid $color-input-deco-color;
+            box-shadow: $control-box-shadow;
+            background-color: #fff !important;
+            height: 46px;
+            padding: 2px 16px 0;
+
+            &_focus {
+                box-shadow: 0 0 0 5px #f5fcfa;
+                border-color: $figma-green;
+            }
+
+            &,
+            &_focus {
+                transition: border-color 0.15s ease-out, box-shadow 0.15s ease-out;
+            }
+
+            &_disabled,
+            fieldset[disabled] & {
+                opacity: 0.7;
+                pointer-events: none;
+                box-shadow: none;
+                transition: none;
+            }
+
+            &_has-error,
+            &_has-error:focus {
+                border-color: $color-input-error-borders;
+            }
+
+            &_card {
+                width: 100%;
+            }
+
+            &_expire {
+                width: 100px;
+            }
+
+            &_cvc {
+                width: 80px;
+                margin-left: auto;
+            }
+
+            & > * {
+                width: 100%;
+            }
+        }
+
+        &-secondary-inputs {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        &-secured {
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            line-height: 18px;
+            color: #73777f;
+            margin-top: 20px;
+
+            &-link {
+                display: block;
+
+                &,
+                &:link,
+                &:visited,
+                &:active,
+                &:focus {
+                    color: inherit;
+                    text-decoration: none;
+                }
+            }
+
+            &-lock {
+                margin-right: 6px;
+                width: 18px;
+                height: 18px;
+                color: #003A70;
+            }
+
+            &-stripe {
+                $width-original: 378px;
+                $height-original: 165.5px;
+                $height: 16px;
+
+                height: $height;
+                width: ceil($height * math.div($width-original, $height-original));
+                margin-left: 3px;
+            }
+        }
+
+        &-agreement {
+            margin-top: 20px;
+
+            &-caption {
+                font-size: 12px;
+                line-height: 18px;
+            }
+        }
+    }
+
+    html.viewport_desktop &,
+    html.viewport_tablet & {
+        &__method-popup {
+            &-method {
+                &-text {
+                    font-size: 14px;
+                    line-height: 20px;
+                }
+            }
+        }
+    }
+
+    html.viewport_mobile &,
+    html.viewport_tablet & {
+
+    }
+
+    html.viewport_desktop & {
+
+    }
+
+    html.viewport_tablet & {
+
+    }
+
+    html.viewport_mobile &,
+    html.viewport_tablet & {
+        &__method-popup {
+            &-method {
+                &-text {
+                    font-size: 12px;
+                    line-height: 18px;
+                }
+            }
+        }
+    }
+}
+
+.no-bottom-border-radius {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.payment-method-message {
+    svg {
+        margin-right: 14px;
+        width: 32px;
+        height: 32px;
+    }
+
+    display: flex;
+    align-items: center;
+    padding: 8px 14px;
+    border: 1px solid #f0f0f0;
+    border-radius: 0 0 8px 8px;
+    background-color: #e8e971;
+    color: #1f1f1f;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    margin-bottom: 8px;
+}
+
+.payment-method-card {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    border-radius: 8px;
+    background-color: #f5fcfa;
+    border: 1px solid #e9f1f7;
+    padding: 0 16px 0 20px;
+    height: 54px;
+    cursor: pointer;
+
+    &_unavailable,
+    &_unknown,
+    &_ineligible {
+        background-color: #f5f5f5;
+        border: 1px solid #f0f0f0;
+    }
+
+    &_unavailable {
+        pointer-events: none;
+    }
+
+    &_unknown {
+
+    }
+
+    &_unavailable,
+    &_ineligible {
+        cursor: default;
+    }
+
+    &_disabled,
+    fieldset:disabled & {
+        pointer-events: none;
+        opacity: 0.7;
+        cursor: default;
+    }
+
+    & + & {
+        margin-top: 8px;
+    }
+
+    &_card {
+        padding-right: 0;
+    }
+
+    &_active {
+        border-color: #003A70;
+        position: relative;
+    }
+
+    &-checkbox {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        color: #fff;
+        background-color: $figma-green;
+        border-radius: 50%;
+    }
+
+    &-delete {
+        color: $color-text-primary;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        background-color: transparent;
+        margin-left: auto;
+        height: 100%;
+        width: 50px;
+
+        &_venmo {
+            margin-right: -10px;
+        }
+
+        &_spinning > svg {
+            transform-origin: 50% 50%;
+            animation: spinning 0.6s linear infinite;
+        }
+    }
+
+    &_disabled &-delete,
+    fieldset:disabled &-delete {
+        pointer-events: none;
+        cursor: default;
+    }
+
+    &_active &-checkbox {
+        display: block;
+    }
+
+    &-text {
+        font-size: 12px;
+        line-height: 18px;
+        font-weight: $font-weight-semi-bold;
+        font-family: 'Roboto', sans-serif;
+        color: #4B5563;
+    }
+
+    &-subtext {
+        width: 100%;
+        font-size: 10px;
+        line-height: 16px;
+        font-weight: $font-weight-medium;
+        color: $color-primary-red;
+    }
+
+    &-logos {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: flex-start;
+        margin-left: auto; // 4px;
+    }
+
+    &-logo {
+        & + & {
+            margin-left: 10px;
+        }
+
+        &_att {
+            $width-original: 1000.27px;
+            $height-original: 411.08px;
+            $height: 24px;
+
+            height: $height;
+            width: ceil($height * math.div($width-original, $height-original));
+        }
+
+        &_verizon {
+            $width-original: 658.2px;
+            $height-original: 146px;
+            $height: 14px;
+
+            height: $height;
+            width: ceil($height * math.div($width-original, $height-original));
+            margin-top: -3px;
+        }
+
+        &_google-pay {
+            $width-original: 52px;
+            $height-original: 22px;
+            $height: 24px;
+
+            height: $height;
+            width: ceil($height * math.div($width-original, $height-original));
+        }
+
+        &_apple-pay {
+            $width-original: 50px;
+            $height-original: 22px;
+            $height: 24px;
+
+            height: $height;
+            width: ceil($height * math.div($width-original, $height-original));
+        }
+
+        &_cards {
+            $width-original: 50px;
+            $height-original: 24px;
+            $height: 24px;
+
+            height: $height;
+            width: ceil($height * math.div($width-original, $height-original));
+        }
+
+        &_paypal {
+            $width-original: 124px;
+            $height-original: 33px;
+            $height: 20px;
+
+            height: $height;
+            width: ceil($height * math.div($width-original, $height-original));
+        }
+
+        &_venmo {
+            $width-original: 48px;
+            $height-original: 32px;
+            $height: 24px;
+
+            height: $height;
+            width: ceil($height * math.div($width-original, $height-original));
+        }
+
+        &_visa,
+        &_mc,
+        &_amex,
+        &_unionpay,
+        &_jcb {
+            $width-original: 24px;
+            $height-original: 16px;
+            $height: 20px;
+
+            height: $height;
+            width: ceil($height * math.div($width-original, $height-original));
+        }
+    }
+
+    &-check-icon {
+        margin-left: auto;
+        height: 100%;
+        color: #00c08b;
+
+        & > svg {
+            transform-origin: 50% 50%;
+            animation: spinning 0.6s linear infinite;
+        }
+    }
+}
+
+.help-contact {
+    color: #191919;
+    font-size: 13px;
+    font-weight: normal;
+    letter-spacing: 0;
+    line-height: 20px;
+    margin-top: 24px;
+    margin-bottom: 12px;
+
+    &__phone {
+        font-weight: 500;
+    }
+}
+
+.select-payment-button-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .autopayment-checkbox {
+        margin-bottom: 16px;
+    }
+}
+
+.payment-method-card-text svg.payment-method__card-logo_cards {
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.payment-method-card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    gap: 8px;
+    padding-right: 16px;
+}
+
+.payment-method-card-logos {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    //
+    height: 100%;
+}
+
+.payment-method__card-logo_cards {
+    display: block;
+    margin-right: 18px; 
+}
+
+.payment-method-card-delete + .payment-method-card-logos svg.payment-method__card-logo_cards {
+    margin-right: 8px;
+}
+
+.button_add-card-blue {
+    background-color: #003A70;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 0;
+    width: 100%;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 16px;
+
+    &:hover,
+    &:focus {
+        background-color: #00234d;
+    }
+}

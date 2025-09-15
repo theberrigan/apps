@@ -1,0 +1,115 @@
+<fieldset [disabled]="isSubmitting" class="ta-editor__content" [ngSwitch]="state">
+    <div class="ta-editor__loading" *ngSwitchCase="'loading'">
+        <loader></loader>
+    </div>
+    <div class="ta-editor__message" *ngSwitchCase="'empty'">
+        {{ 'ta.editor.no_data' | translate }}
+    </div>
+    <div class="ta-editor__message ta-editor__message_error" *ngSwitchCase="'error'">
+        {{ 'ta.editor.common_error' | translate }}
+    </div>
+    <ng-container *ngSwitchCase="'ready'">
+        <div class="ta-editor__heading">
+            <div class="ta-editor__header" (click)="onBack()">
+                <div class="ta-editor__header-text">
+                    {{ 'ta.editor.page_header' | translate : { id: taId } }}
+                </div>
+            </div>
+            <div class="ta-editor__controls">
+                <button type="button" class="button button_regular button_light-blue"
+                    [isDisabled]="!hasChanges"
+                    [isProgress]="isSubmitting"
+                    (click)="onSave()"
+                >
+                    <span class="button__caption">
+                        {{ 'ta.editor.save_button' | translate }}
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="ta-editor__categories">
+            <div class="ta-editor__category" *ngFor="let category of categories">
+                <div class="ta-editor__category-header">
+                    {{ category.name }}
+                </div>
+                <div class="ta-editor__category-controls">
+                    <div class="ta-editor__category-control" *ngFor="let prop of category.properties">
+                        <div class="ta-editor__category-control-label">
+                            <label class="ta-editor__category-control-label-text" [htmlFor]="prop.name">
+                                {{ prop.display_name }}
+                            </label>
+                            <div class="ta-editor__category-control-tooltip" *ngIf="prop.description">
+                                <div class="ta-editor__category-control-tooltip-popup"
+                                    *ngIf="activeTooltipName === prop.name"
+                                    [@tooltipPopup]
+                                    (click)="onTooltipPopupClick($event)"
+                                >
+                                    {{ prop.description }}
+                                    <div class="ta-editor__category-control-tooltip-popup-tail"></div>
+                                </div>
+                                <button type="button" class="ta-editor__category-control-tooltip-trigger"
+                                    (click)="onTooltipTriggerClick($event, prop.name)"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
+                                        <path style="fill: currentColor;" d="M6.68,8.2H5.22V7.8a2.92,2.92,0,0,1,.23-1.24,3.76,3.76,0,0,1,.94-1.1,7.15,7.15,0,0,0,.84-.79,1.14,1.14,0,0,0-.17-1.51,1.38,1.38,0,0,0-1-.36,1.44,1.44,0,0,0-1,.37A2,2,0,0,0,4.47,4.3L3,4.11a2.65,2.65,0,0,1,.87-1.85A3,3,0,0,1,6,1.5a3.06,3.06,0,0,1,2.19.77A2.37,2.37,0,0,1,9,4.06a2.06,2.06,0,0,1-.3,1.07A7.16,7.16,0,0,1,7.42,6.5a2.53,2.53,0,0,0-.63.72A2.6,2.6,0,0,0,6.68,8.2ZM5.22,10.5V8.79H6.83V10.5Z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="ta-editor__category-control-input" [ngSwitch]="prop.type">
+                            <input type="text" class="input input_regular"
+                                *ngSwitchCase="'TEXT'"
+                                [attr.id]="prop.name"
+                                [(ngModel)]="prop.value"
+                                (ngModelChange)="onChange()"
+                            >
+                            <input type="password" class="input input_regular"
+                                *ngSwitchCase="'PASSWORD'"
+                                [attr.id]="prop.name"
+                                [(ngModel)]="prop.value"
+                                (ngModelChange)="onChange()"
+                            >
+                            <select class="select select_regular"
+                                *ngSwitchCase="'DROPDOWN'"
+                                [attr.id]="prop.name"
+                                [(ngModel)]="prop.value"
+                                (ngModelChange)="onChange()"
+                            >
+                                <option *ngFor="let propOption of prop.supported_values" [ngValue]="propOption">
+                                    {{ propOption }}
+                                </option>
+                            </select>
+                            <ng-container *ngIf="prop.name === 'REG_FLOW_INIT_STATE'">
+                                <button type="button" class="button button_regular button_light-blue"
+                                    [isDisabled]="!canShowRegFlowGraph(prop.value)"
+                                    [isProgress]="isRegFlowGraphLoading"
+                                    (click)="onLoadRegFlowGraph(prop.value)"
+                                >
+                                    <span class="button__caption">
+                                        {{ 'ta.editor.flow_diagram' | translate }}
+                                    </span>
+                                </button>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</fieldset>
+
+<div class="ta-editor__graph" *ngIf="isRegFlowGraphVisible">
+    <div class="ta-editor__graph-container">
+        <div class="ta-editor__graph-header">
+            <div class="ta-editor__graph-title">
+                Registration Flow Graph
+            </div>
+            <button type="button" class="ta-editor__graph-close" (click)="onGraphClose()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 16 16">
+                    <path style="fill: currentColor;" d="M14.364,0.222 L15.778,1.636 L9.414,8.000 L15.778,14.364 L14.364,15.778 L8.000,9.414 L1.636,15.778 L0.222,14.364 L6.586,8.000 L0.222,1.636 L1.636,0.222 L8.000,6.586 L14.364,0.222 Z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="ta-editor__graph-canvas" #regFlowGraphEl></div>
+    </div>
+</div>

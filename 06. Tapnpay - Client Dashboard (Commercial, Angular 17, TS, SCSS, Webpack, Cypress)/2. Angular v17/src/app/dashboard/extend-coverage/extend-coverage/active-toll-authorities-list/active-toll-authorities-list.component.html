@@ -1,0 +1,12 @@
+<div class="ui-card">
+    <div class="active-toll-authorities">
+        <div class="extended-toll-authorities">
+            <h2 class="list-title">{{'extend_coverage.activated_toll_authorities_block_title' | translate}}</h2>
+            <ul class="toll-authorities-list">
+                <li class="toll-authorities-list-item" *ngFor="let item of activeList">
+                    {{item.toll_authority_name  | mapToolAuthorityNameStates}}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

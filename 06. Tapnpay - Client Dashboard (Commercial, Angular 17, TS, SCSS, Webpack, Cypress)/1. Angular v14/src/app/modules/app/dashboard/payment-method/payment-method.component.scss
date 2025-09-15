@@ -1,0 +1,469 @@
+@import '../../../../../assets/css/definitions';
+
+.payment-method {
+    display: block;
+
+    &__method-popup,
+    &__card-popup,
+    &__card-delete-popup,
+    &__venmo-delete-popup {
+        .popup__box {
+            max-width: 400px;
+        }
+
+        &-fatal {
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: $font-weight-medium;
+            color: $color-primary-red;
+            text-align: center;
+        }
+
+        &-error {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: $font-weight-medium;
+            background-color: #ffe9e9;
+            color: #ef4848;
+            margin-bottom: 20px;
+        }
+    }
+
+    &__method-popup {
+        .popup__controls {
+            padding: 0 30px 30px;
+        }
+
+        &-loading {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 240px;
+            background-color: #fff;
+        }
+
+        &-header {
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: $font-weight-medium;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        &-methods {
+            display: flex;
+            flex-flow: column nowrap;
+            align-items: stretch;
+            user-select: none;
+        }
+
+        &-method {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            border-radius: 8px;
+            background-color: #f0f6fa;
+            border: 1px solid #e9f1f7;
+            padding: 0 16px;
+            height: 54px;
+            cursor: pointer;
+
+            &_unavailable,
+            &_unknown,
+            &_ineligible {
+                background-color: #f5f5f5;
+                border: 1px solid #f0f0f0;
+            }
+
+            &_unavailable {
+                pointer-events: none;
+            }
+
+            &_unknown {
+
+            }
+
+            &_unavailable,
+            &_ineligible {
+                cursor: default;
+            }
+
+            &_disabled,
+            fieldset:disabled & {
+                pointer-events: none;
+                opacity: 0.7;
+                cursor: default;
+            }
+
+            & + & {
+                margin-top: 8px;
+            }
+
+            &_card {
+                padding-right: 0;
+            }
+
+            &_active {
+                border-color: $color-primary-blue;
+                position: relative;
+            }
+
+            &-checkbox {
+                display: none;
+                position: absolute;
+                top: 50%;
+                left: 0;
+                transform: translate(-50%, -50%);
+                width: 20px;
+                height: 20px;
+                color: #fff;
+                background-color: $color-primary-blue;
+                border-radius: 50%;
+            }
+
+            &-delete {
+                color: $color-text-primary;
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                background-color: transparent;
+                margin-left: auto;
+                height: 100%;
+                width: 50px;
+
+                &_venmo {
+                    margin-right: -10px;
+                }
+
+                &_spinning > svg {
+                    transform-origin: 50% 50%;
+                    animation: spinning 0.6s linear infinite;
+                }
+            }
+
+            &_disabled &-delete,
+            fieldset:disabled &-delete {
+                pointer-events: none;
+                cursor: default;
+            }
+
+            &_active &-checkbox {
+                display: block;
+            }
+
+            &-text {
+                font-size: 12px;
+                line-height: 18px;
+                font-weight: $font-weight-medium;
+            }
+
+            &-subtext {
+                width: 100%;
+                font-size: 10px;
+                line-height: 16px;
+                font-weight: $font-weight-medium;
+                color: $color-primary-red;
+            }
+
+            &-logos {
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+                justify-content: flex-start;
+                margin-left: auto;// 4px;
+            }
+
+            &-logo {
+                & + & {
+                    margin-left: 10px;
+                }
+
+                &_att {
+                    $width-original: 1000.27px;
+                    $height-original: 411.08px;
+                    $height: 24px;
+
+                    height: $height;
+                    width: ceil($height * ($width-original / $height-original));
+                }
+
+                &_verizon {
+                    $width-original: 658.2px;
+                    $height-original: 146px;
+                    $height: 14px;
+
+                    height: $height;
+                    width: ceil($height * ($width-original / $height-original));
+                    margin-top: -3px;
+                }
+
+                &_google-pay {
+                    $width-original: 52px;
+                    $height-original: 22px;
+                    $height: 24px;
+
+                    height: $height;
+                    width: ceil($height * ($width-original / $height-original));
+                }
+
+                &_apple-pay {
+                    $width-original: 50px;
+                    $height-original: 22px;
+                    $height: 24px;
+
+                    height: $height;
+                    width: ceil($height * ($width-original / $height-original));
+                }
+
+                &_cards {
+                    $width-original: 50px;
+                    $height-original: 24px;
+                    $height: 24px;
+
+                    height: $height;
+                    width: ceil($height * ($width-original / $height-original));
+                }
+
+                &_paypal {
+                    $width-original: 124px;
+                    $height-original: 33px;
+                    $height: 20px;
+
+                    height: $height;
+                    width: ceil($height * ($width-original / $height-original));
+                }
+
+                &_venmo {
+                    $width-original: 48px;
+                    $height-original: 32px;
+                    $height: 24px;
+
+                    height: $height;
+                    width: ceil($height * ($width-original / $height-original));
+                }
+
+                &_visa,
+                &_mc,
+                &_amex,
+                &_unionpay,
+                &_jcb {
+                    $width-original: 24px;
+                    $height-original: 16px;
+                    $height: 20px;
+
+                    height: $height;
+                    width: ceil($height * ($width-original / $height-original));
+                }
+            }
+
+            &-check-icon {
+                margin-left: auto;
+                height: 100%;
+                color: #8e939c;
+
+                & > svg {
+                    transform-origin: 50% 50%;
+                    animation: spinning 0.6s linear infinite;
+                }
+            }
+        }
+
+        &-add-card {
+            margin-top: 12px;
+        }
+    }
+
+    &__card-popup {
+        .popup__box {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .popup__content {
+            padding-bottom: 30px;
+        }
+
+        .popup__controls {
+            padding-right: 30px;
+            padding-bottom: 30px;
+            padding-left: 30px;
+        }
+
+        &-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+        }
+
+        &-header {
+            display: inline-flex;
+            font-size: 14px;
+            font-weight: $font-weight-semi-bold;
+            line-height: 20px;
+            color: #73777f;
+            cursor: default;
+            user-select: none;
+            margin-bottom: 15px;
+        }
+
+        &-input {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            border-radius: $control-primary-radius;
+            border: $control-border-size solid $color-input-deco-color;
+            box-shadow: $control-box-shadow;
+            background-color: #fff !important;
+            height: 46px;
+            padding: 2px 16px 0;
+
+            &_focus {
+                box-shadow: 0 0 0 5px #c0dafa;
+                border-color: $color-primary-blue;
+            }
+
+            &,
+            &_focus {
+                transition: border-color 0.15s ease-out, box-shadow 0.15s ease-out;
+            }
+
+            &_disabled,
+            fieldset[disabled] & {
+                opacity: 0.7;
+                pointer-events: none;
+                box-shadow: none;
+                transition: none;
+            }
+
+            &_has-error,
+            &_has-error:focus {
+                border-color: $color-input-error-borders;
+            }
+
+            &_card {
+                width: 100%;
+            }
+
+            &_expire {
+                width: 100px;
+            }
+
+            &_cvc {
+                width: 80px;
+                margin-left: auto;
+            }
+
+            & > * {
+                width: 100%;
+            }
+        }
+
+        &-secondary-inputs {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        &-secured {
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            line-height: 18px;
+            color: #73777f;
+            margin-top: 20px;
+
+            &-link {
+                display: block;
+
+                &,
+                &:link,
+                &:visited,
+                &:active,
+                &:focus {
+                    color: inherit;
+                    text-decoration: none;
+                }
+            }
+
+            &-lock {
+                margin-right: 6px;
+                width: 18px;
+                height: 18px;
+                color: #5e9659;
+            }
+
+            &-stripe {
+                $width-original: 378px;
+                $height-original: 165.5px;
+                $height: 16px;
+
+                height: $height;
+                width: ceil($height * ($width-original / $height-original));
+                margin-left: 3px;
+            }
+        }
+
+        &-agreement {
+            margin-top: 20px;
+
+            &-caption {
+                font-size: 12px;
+                line-height: 18px;
+            }
+        }
+    }
+
+    html.viewport_desktop &,
+    html.viewport_tablet & {
+        &__method-popup {
+            &-method {
+                &-text {
+                    font-size: 14px;
+                    line-height: 20px;
+                }
+            }
+        }
+    }
+
+    html.viewport_mobile &,
+    html.viewport_tablet & {
+
+    }
+
+    html.viewport_desktop & {
+
+    }
+
+    html.viewport_tablet & {
+
+    }
+
+    html.viewport_mobile & {
+        &__method-popup {
+            &-method {
+                &-text {
+                    font-size: 12px;
+                    line-height: 18px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,125 @@
+<div class="account-editor-summary__primary">
+    <div class="vertical-table">
+        <div class="vertical-table__header">{{ 'accounts.summary.account_status_header' | translate }}</div>
+        <div class="vertical-table__items">
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name">{{ 'accounts.summary.phone_number' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value" [ngSwitch]="!!data.phone_number">
+                    <ng-container *ngSwitchCase="true">{{ data.phone_number }}</ng-container>
+                    <ng-container *ngSwitchCase="false">{{ 'accounts.summary.phone_number_unk' | translate }}</ng-container>
+                </div>
+            </div>
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name">{{ 'accounts.summary.account_status' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value">{{ data.account_status }}</div>
+            </div>
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name">{{ 'accounts.summary.active_lpns' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value">{{ activeLPNs }}</div>
+            </div>
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name">{{ 'accounts.summary.inactive_lpns' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value">{{ inactiveLPNs }}</div>
+            </div>
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name">{{ 'accounts.summary.language' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value" [ngSwitch]="!!data.language">
+                    <ng-container *ngSwitchCase="true">{{ data.language }}</ng-container>
+                    <ng-container *ngSwitchCase="false">{{ 'accounts.summary.language_unk' | translate }}</ng-container>
+                </div>
+            </div>
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name">{{ 'accounts.summary.toll' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value" [ngSwitch]="!!data.toll_authority">
+                    <ng-container *ngSwitchCase="true">{{ data.toll_authority }}</ng-container>
+                    <ng-container *ngSwitchCase="false">{{ 'accounts.summary.toll_unk' | translate }}</ng-container>
+                </div>
+            </div>
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name">{{ 'accounts.summary.terms_accepted_date' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value" [ngSwitch]="!!data.terms_accepted">
+                    <ng-container *ngSwitchCase="true">{{ data.terms_accepted | datetime : 'display.datetime' }}</ng-container>
+                    <ng-container *ngSwitchCase="false">{{ 'accounts.summary.terms_not_accepted' | translate }}</ng-container>
+                </div>
+            </div>
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name">{{ 'accounts.summary.payment_method' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value" [ngSwitch]="!!data.payment_channel">
+                    <ng-container *ngSwitchCase="true">{{ data.payment_channel }}</ng-container>
+                    <ng-container *ngSwitchCase="false">{{ 'accounts.summary.payment_method_not_set' | translate }}</ng-container>
+                </div>
+            </div>
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name" [class.vertical-table__item-name_red]="!!data.lock_date">{{ 'accounts.summary.account_lock_date' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value" [ngSwitch]="!!data.lock_date">
+                    <ng-container *ngSwitchCase="true">{{ data.lock_date | datetime : 'display.datetime' }}</ng-container>
+                    <ng-container *ngSwitchCase="false">{{ 'accounts.summary.account_not_locked' | translate }}</ng-container>
+                </div>
+            </div>
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name" [class.vertical-table__item-name_red]="!!data.locked_until">{{ 'accounts.summary.account_lock_until' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value" [ngSwitch]="!!data.locked_until">
+                    <ng-container *ngSwitchCase="true">{{ data.locked_until | datetime : 'display.datetime' }}</ng-container>
+                    <ng-container *ngSwitchCase="false">{{ 'accounts.summary.account_not_locked2' | translate }}</ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="vertical-table">
+        <div class="vertical-table__header">{{ 'accounts.summary.account_statistics_header' | translate }}</div>
+        <div class="vertical-table__items">
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name">{{ 'accounts.summary.account_longevity' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value">~{{ accountLongevity.key | translate : accountLongevity }}</div>
+            </div>
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name">{{ 'accounts.summary.avg_invoice_amount' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value">{{ data.average_invoice_amount | currency : 'USD' }}</div>
+            </div>
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name">{{ 'accounts.summary.disputes_number' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value">{{ data.total_disputes }}</div>
+            </div>
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name">{{ 'accounts.summary.total_invoices_paid' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value">{{ data.total_invoices_paid }}</div>
+            </div>
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name">{{ 'accounts.summary.last_paid_invoice_date' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value" [ngSwitch]="!!data.last_paid_invoice_date">
+                    <ng-container *ngSwitchCase="true">{{ data.last_paid_invoice_date | datetime : 'display.datetime' }}</ng-container>
+                    <ng-container *ngSwitchCase="false">{{ 'accounts.summary.last_paid_invoice_date_never' | translate }}</ng-container>
+                </div>
+            </div>
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name">{{ 'accounts.summary.outstanding_disputes_count' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value">
+                    {{ data.outstanding_disputes_count }}
+                </div>
+            </div>
+            <div class="vertical-table__item">
+                <div class="vertical-table__item-name">{{ 'accounts.summary.outstanding_disputes_amount' | translate }}</div>
+                <div class="vertical-table__item-dots"></div>
+                <div class="vertical-table__item-value">
+                    {{ data.outstanding_disputes_amount | currency : 'USD' }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+<!-- Page Header -->
+<ng-container [ngSwitch]="viewportBreakpoint">
+    <page-panel *ngSwitchCase="'desktop'">
+        <h1 class="page-panel__header" [innerHTML]="'history.page_header' | translate"></h1>
+    </page-panel>
+    <app-bar [hasBorder]="false" *ngSwitchDefault>
+        <button type="button" class="app-bar__button" (click)="onFiltersTriggerClick($event)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                <path style="fill: currentColor;"
+                      d="M7.82,2A3,3,0,0,0,2.18,2H0V4H2.18A3,3,0,0,0,7.82,4H18V2ZM4,3A1,1,0,1,1,5,4,1,1,0,0,1,4,3ZM16.82,8a3,3,0,0,0-5.64,0H0v2H11.18a3,3,0,0,0,5.64,0H18V8ZM13,9a1,1,0,1,1,1,1A1,1,0,0,1,13,9ZM9.82,14a3,3,0,0,0-5.64,0H0v2H4.18a3,3,0,0,0,5.64,0H18V14ZM6,15a1,1,0,1,1,1,1A1,1,0,0,1,6,15Z"/>
+            </svg>
+        </button>
+    </app-bar>
+</ng-container>
+
+<!-- Page Content -->
+<div class="history__content"
+     [ngClass]="{
+        'history__content_invoices': activeTab === 'invoices',
+        'history__content_transactions': activeTab === 'transactions',
+        'history__content_disputes': activeTab === 'disputes'
+    }"
+     [ngSwitch]="listState">
+    <div class="history__controls">
+        <app-history-view-tabs (setActiveTab)="onSwitchTab($event)"></app-history-view-tabs>
+        <app-history-date-filter #historyDateFilter
+            (resetFiltersClick)="onFiltersSubmit(true)"
+            (filtersChange)="onFiltersSubmit(false, $event)"
+        ></app-history-date-filter>
+    </div>
+
+    <ng-container [ngSwitch]="activeTab">
+
+        <!--invoices-->
+        <ng-container *ngSwitchCase="'invoices'">
+            <app-invoices [isLoadingPage]="isLoadingPage"
+                          [invoices]="invoiceItems"
+                          [listState]="listState">
+            </app-invoices>
+        </ng-container>
+
+        <!--transactions-->
+        <ng-container *ngSwitchCase="'transactions'">
+            <app-transactions
+                [isLoadingPage]="isLoadingPage"
+                [transactionItems]="transactionItems"
+                [viewportBreakpoint]="viewportBreakpoint"
+                [isMapAvailable]="isMapAvailable"
+                [listState]="listState"
+                [coverageLocationMap]="coverageLocationMap"
+                (showLocationMap)="onShowLocationMap($event)">
+            </app-transactions>
+        </ng-container>
+
+
+        <!-- disputes -->
+        <ng-container *ngSwitchCase="'disputes'">
+            <app-disputes
+                [isLoadingPage]="isLoadingPage"
+                [disputeItems]="disputeItems"
+                [listState]="listState"
+                [viewportBreakpoint]="viewportBreakpoint"
+                [disputeReasonMap]="disputeReasonMap"
+                [coverageLocationMap]="coverageLocationMap"
+                [isMapAvailable]="isMapAvailable"
+                (showLocationMap)="onShowLocationMap($event)">
+            </app-disputes>
+
+        </ng-container>
+    </ng-container>
+    <div class="history__pagination" *ngIf="!!paginationData && (listState === 'list' || listState === 'loading')">
+        <pagination
+            [data]="paginationData"
+            [isLoading]="listState === 'loading'"
+            (onLoad)="onSwitchPage($event)">
+        </pagination>
+    </div>
+</div>
+
+<google-map
+    *ngIf="activeCoverageLocation"
+    [data]="activeCoverageLocation"
+    (onClose)="onMapClose()">
+</google-map>

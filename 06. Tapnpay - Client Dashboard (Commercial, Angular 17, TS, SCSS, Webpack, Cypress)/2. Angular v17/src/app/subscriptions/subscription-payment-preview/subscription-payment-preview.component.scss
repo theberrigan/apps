@@ -1,0 +1,62 @@
+.subscription-details__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.buttons-panel {
+    margin-left: auto;
+    margin-right: auto;
+
+    &--flex {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        flex-direction: row;
+
+        .button {
+            width: 100%;
+        }
+
+        @media screen and (max-width: 576px) {
+            flex-direction: column;
+            flex-wrap: wrap;
+            .button {
+                margin-left: 0;
+                margin-bottom: 8px;
+            }
+        }
+    }
+}
+
+
+.subscription-payment-preview__table {
+    width: 100%;
+    max-width: 800px;
+}
+
+.subscription-payment-preview {
+    display: block;
+
+    &__content {
+        width: 100%;
+        max-width: 800px;
+    }
+
+    &__table-wrap {
+        width: 100%;
+        overflow-y: visible;
+        overflow-x: auto;
+    }
+
+    &__table > .table__header > .table__row > .table__cell,
+    &__table > .table__body > .table__row > .table__cell {
+        padding-left: 30px;
+        background-color: #f5fcfa;
+    }
+
+    .table__row {
+        background-color: #f5fcfa;
+    }
+}

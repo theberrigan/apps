@@ -1,0 +1,71 @@
+<h2 class="list-title">{{listTitle}}</h2>
+<div class="table table_middle table_striped table_white table_nowrap vehicles__table">
+    <div class="table__header">
+        <div class="table__row">
+            <div class="table__cell">
+                {{ 'vehicles.lpn_th' | translate }}
+            </div>
+            <div class="table__cell">
+                {{ 'vehicles.date_th' | translate }}
+            </div>
+            <div class="table__cell">
+                <div *ngIf="isRental">
+                    {{ 'vehicles.rental_period_return_date_label' | translate }}
+                </div>
+                <div *ngIf="!isRental">
+                    {{ 'vehicles.date_unreg_th' | translate }}
+                </div>
+            </div>
+            <div class="table__cell">&nbsp;</div>
+            <div class="table__cell">&nbsp;</div>
+        </div>
+    </div>
+    <div class="table__body">
+        <div class="table__row" *ngFor="let licensePlate of lpnsList">
+            <div class="table__cell" (click)="onHistoryClick(licensePlate)">
+                {{ licensePlate.lps }} {{ licensePlate.lpn }}
+            </div>
+            <div class="table__cell">
+                {{ licensePlate.registered | datetime : 'display.datetime' }}
+            </div>
+            <div class="table__cell">
+                {{ licensePlate.end_date | datetime : 'display.datetime' }}
+            </div>
+            <div class="table__cell">
+                <ng-container *ngIf="!isLicensePlateExpired(licensePlate)">
+                    <button type="button"
+                            class="button button_regular button_light-red"
+                            (click)="onUnregisterClick(licensePlate)"
+                            [disabled]="isLicensePlateExpired(licensePlate)">
+                        <span class="button__caption">{{ 'vehicles.unreg_button' | translate }}</span>
+                    </button>
+                </ng-container>
+            </div>
+            <div class="table__cell" *ngIf="isRental">
+                <ng-container *ngIf="!isLicensePlateExpired(licensePlate)">
+                    <button type="button"
+                            class="button button_regular button_blue"
+                            (click)="onRentalExtendClick(licensePlate)"
+                            [disabled]="isLicensePlateExpired(licensePlate)">
+                        <span class="button__caption">{{'vehicles.extend_period_btn_text' | translate}}</span>
+                    </button>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+
+
+    <popup-custom *ngIf="historyItems?.length > 0">
+        <popup-content>
+            <app-actions-history [historyItems]="historyItems"></app-actions-history>
+        </popup-content>
+        <popup-controls [isStretched]="true">
+            <button type="button"
+                    class="button button_regular button_blue"
+                    (click)="onHistoryClose()"
+            >
+                <span class="button__caption">{{ 'profile.deactivate_account_result_ok' | translate }}</span>
+            </button>
+        </popup-controls>
+    </popup-custom>
+</div>

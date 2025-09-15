@@ -1,0 +1,162 @@
+@import './font_hnc_definitions';
+
+
+@font-face {
+    font-family: 'HNC';
+    src: url('../fonts/HNC/HelveticaNeueCyr-Thin.woff2') format('woff2'),
+        url('../fonts/HNC/HelveticaNeueCyr-Thin.woff') format('woff'),
+        url('../fonts/HNC/HelveticaNeueCyr-Thin.ttf') format('truetype');
+    font-weight: $font-weight-thin;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HNC';
+    src: url('../fonts/HNC/HelveticaNeueCyr-ThinItalic.woff2') format('woff2'),
+        url('../fonts/HNC/HelveticaNeueCyr-ThinItalic.woff') format('woff'),
+        url('../fonts/HNC/HelveticaNeueCyr-ThinItalic.ttf') format('truetype');
+    font-weight: $font-weight-thin;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HNC';
+    src: url('../fonts/HNC/HelveticaNeueCyr-UltraLight.woff2') format('woff2'),
+        url('../fonts/HNC/HelveticaNeueCyr-UltraLight.woff') format('woff'),
+        url('../fonts/HNC/HelveticaNeueCyr-UltraLight.ttf') format('truetype');
+    font-weight: $font-weight-ulight;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HNC';
+    src: url('../fonts/HNC/HelveticaNeueCyr-UltraLightItalic.woff2') format('woff2'),
+        url('../fonts/HNC/HelveticaNeueCyr-UltraLightItalic.woff') format('woff'),
+        url('../fonts/HNC/HelveticaNeueCyr-UltraLightItalic.ttf') format('truetype');
+    font-weight: $font-weight-ulight;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HNC';
+    src: url('../fonts/HNC/HelveticaNeueCyr-Light.woff2') format('woff2'),
+        url('../fonts/HNC/HelveticaNeueCyr-Light.woff') format('woff'),
+        url('../fonts/HNC/HelveticaNeueCyr-Light.ttf') format('truetype');
+    font-weight: $font-weight-light;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HNC';
+    src: url('../fonts/HNC/HelveticaNeueCyr-LightItalic.woff2') format('woff2'),
+        url('../fonts/HNC/HelveticaNeueCyr-LightItalic.woff') format('woff'),
+        url('../fonts/HNC/HelveticaNeueCyr-LightItalic.ttf') format('truetype');
+    font-weight: $font-weight-light;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HNC';
+    src: url('../fonts/HNC/HelveticaNeueCyr-Roman.woff2') format('woff2'),
+        url('../fonts/HNC/HelveticaNeueCyr-Roman.woff') format('woff'),
+        url('../fonts/HNC/HelveticaNeueCyr-Roman.ttf') format('truetype');
+    font-weight: $font-weight-roman;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HNC';
+    src: url('../fonts/HNC/HelveticaNeueCyr-Italic.woff2') format('woff2'),
+        url('../fonts/HNC/HelveticaNeueCyr-Italic.woff') format('woff'),
+        url('../fonts/HNC/HelveticaNeueCyr-Italic.ttf') format('truetype');
+    font-weight: $font-weight-roman;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HNC';
+    src: url('../fonts/HNC/HelveticaNeueCyr-Medium.woff2') format('woff2'),
+        url('../fonts/HNC/HelveticaNeueCyr-Medium.woff') format('woff'),
+        url('../fonts/HNC/HelveticaNeueCyr-Medium.ttf') format('truetype');
+    font-weight: $font-weight-medium;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HNC';
+    src: url('../fonts/HNC/HelveticaNeueCyr-MediumItalic.woff2') format('woff2'),
+        url('../fonts/HNC/HelveticaNeueCyr-MediumItalic.woff') format('woff'),
+        url('../fonts/HNC/HelveticaNeueCyr-MediumItalic.ttf') format('truetype');
+    font-weight: $font-weight-medium;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HNC';
+    src: url('../fonts/HNC/HelveticaNeueCyr-Bold.woff2') format('woff2'),
+        url('../fonts/HNC/HelveticaNeueCyr-Bold.woff') format('woff'),
+        url('../fonts/HNC/HelveticaNeueCyr-Bold.ttf') format('truetype');
+    font-weight: $font-weight-bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HNC';
+    src: url('../fonts/HNC/HelveticaNeueCyr-BoldItalic.woff2') format('woff2'),
+        url('../fonts/HNC/HelveticaNeueCyr-BoldItalic.woff') format('woff'),
+        url('../fonts/HNC/HelveticaNeueCyr-BoldItalic.ttf') format('truetype');
+    font-weight: $font-weight-bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HNC';
+    src: url('../fonts/HNC/HelveticaNeueCyr-Heavy.woff2') format('woff2'),
+        url('../fonts/HNC/HelveticaNeueCyr-Heavy.woff') format('woff'),
+        url('../fonts/HNC/HelveticaNeueCyr-Heavy.ttf') format('truetype');
+    font-weight: $font-weight-heavy;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HNC';
+    src: url('../fonts/HNC/HelveticaNeueCyr-HeavyItalic.woff2') format('woff2'),
+        url('../fonts/HNC/HelveticaNeueCyr-HeavyItalic.woff') format('woff'),
+        url('../fonts/HNC/HelveticaNeueCyr-HeavyItalic.ttf') format('truetype');
+    font-weight: $font-weight-heavy;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HNC';
+    src: url('../fonts/HNC/HelveticaNeueCyr-Black.woff2') format('woff2'),
+        url('../fonts/HNC/HelveticaNeueCyr-Black.woff') format('woff'),
+        url('../fonts/HNC/HelveticaNeueCyr-Black.ttf') format('truetype');
+    font-weight: $font-weight-black;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HNC';
+    src: url('../fonts/HNC/HelveticaNeueCyr-BlackItalic.woff2') format('woff2'),
+        url('../fonts/HNC/HelveticaNeueCyr-BlackItalic.woff') format('woff'),
+        url('../fonts/HNC/HelveticaNeueCyr-BlackItalic.ttf') format('truetype');
+    font-weight: $font-weight-black;
+    font-style: italic;
+    font-display: swap;
+}

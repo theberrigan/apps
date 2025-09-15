@@ -1,0 +1,584 @@
+@import '../../../../assets/css/definitions';
+@import '../../../../assets/css/responsive';
+
+.vehicles {
+    display: block;
+
+    &__content {
+        width: 100%;
+    }
+
+    &__loading {
+        margin-top: 15vh;
+    }
+
+    &__message {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: $font-weight-semi-bold;
+        color: $color-sys-message-on-blue-bg;
+        text-align: center;
+        margin-top: 15vh;
+
+        &_error {
+            color: $color-sys-message-error-on-blue-bg;
+        }
+    }
+
+    &__table-wrap {
+        width: 100%;
+        overflow-y: visible;
+        overflow-x: auto;
+        padding: 10px;
+        margin: -10px;
+    }
+
+    &__table > .table__header > .table__row > .table__cell,
+    &__table > .table__body > .table__row > .table__cell {
+        padding-left: 30px;
+    }
+
+    &__list {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: stretch;
+        justify-content: flex-start;
+        width: 100%;
+        margin-bottom: 24px;
+
+        &__lpn-actions {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid lightgray;
+            padding-top: 16px;
+        }
+
+        &-item {
+            display: flex;
+            width: 100%;
+            padding: 18px 16px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px 0 rgba(#0e0e0e, 0.1);
+            margin-bottom: 8px;
+
+            @include desktop {
+                padding: 24px;
+                max-width: 600px;
+            }
+
+
+            &-base {
+                flex-flow: row nowrap;
+                align-items: stretch;
+            }
+
+            &-rental {
+                flex-flow: column nowrap;
+            }
+
+            &-primary {
+                display: flex;
+                flex-flow: column nowrap;
+                justify-content: center;
+                align-items: flex-start;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: $font-weight-semi-bold;
+                color: $color-text-primary;
+                flex: 1;
+
+                &-item {
+
+                    &_light {
+                        color: #9399a3;
+                    }
+                }
+            }
+
+            &-secondary {
+                display: flex;
+                flex-flow: column nowrap;
+                justify-content: center;
+                align-items: flex-end;
+            }
+
+
+        }
+    }
+
+    &__add-popup {
+        &-error {
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: $font-weight-medium;
+            background-color: #ffe9e9;
+            color: #ef4848;
+            margin-bottom: 16px;
+        }
+
+        &-label {
+            display: block;
+            width: 100%;
+
+            &-text {
+                display: inline-flex;
+                font-size: 14px;
+                font-weight: $font-weight-semi-bold;
+                line-height: 20px;
+                color: #73777f;
+                cursor: default;
+                user-select: none;
+                margin-bottom: 8px;
+            }
+        }
+
+        &-is_rental {
+            margin-top: 12px;
+        }
+
+        &-input {
+            width: 100%;
+        }
+
+        .popup__box {
+            max-width: 350px;
+        }
+
+        .popup__content {
+            padding: 25px;
+            background-color: #EAF6F3;
+        }
+
+        .popup__controls {
+            padding: 0 25px 25px;
+        }
+    }
+
+    &__unreg-popup,
+    &__error-popup {
+        .popup__box {
+            max-width: 400px;
+        }
+    }
+
+    &__payment-result-popup {
+        .popup__box {
+            max-width: 420px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            padding: 32px 32px 24px 32px;
+            margin: 0 auto;
+        }
+        .popup__content {
+            padding: 0;
+            background: transparent;
+            text-align: left;
+            font-size: 20px;
+            color: #222;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+        .popup__content span {
+            display: block;
+            text-align: left;
+            font-size: 15px;
+            color: #222;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+        .popup__controls {
+            padding: 0;
+            margin-top: 24px;
+            display: flex;
+            justify-content: center;
+        }
+        .button__primary {
+            width: 100%;
+            // max-width: 320px;
+            height: 48px;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: 500;
+            background: $figma-green;
+            color: #fff;
+            border: none;
+            box-shadow: 0 2px 8px rgba(59,91,253,0.08);
+            transition: background 0.2s;
+        }
+        .button__primary:hover {
+            background: darken($figma-green, 10%);
+        }
+    }
+
+    &__payment-popup {
+        &-zip {
+            display: block;
+            margin-top: 18px;
+            width: 100%;
+        }
+
+        .popup__box {
+            max-width: 400px;
+        }
+
+        .popup__content {
+            padding-bottom: 30px;
+        }
+
+        .popup__controls {
+            padding-right: 30px;
+            padding-bottom: 30px;
+            padding-left: 30px;
+        }
+    }
+
+    &__fleet-lpn-popup {
+        .popup__box {
+            max-width: 400px;
+        }
+
+        .popup__controls .button {
+            width: 100%;
+        }
+
+        &-header {
+            font-size: 14px;
+            line-height: 20px;
+            margin-bottom: 25px;
+        }
+
+        &-table {
+            width: 100%;
+        }
+    }
+
+    &__fleet-lpn-wallet-popup {
+        .popup__box {
+            max-width: 400px;
+        }
+
+        .popup__content {
+            padding-bottom: 30px;
+        }
+
+        .popup__controls {
+            padding-right: 30px;
+            padding-bottom: 30px;
+            padding-left: 30px;
+        }
+    }
+
+    &__fleet-lpn-zip-popup {
+        &-zip {
+            display: block;
+            // margin-top: 18px;
+            width: 100%;
+        }
+
+        // -----------------------------------------------------------------
+
+        .popup__box {
+            max-width: 400px;
+        }
+
+        .popup__content {
+            padding-bottom: 30px;
+        }
+
+        .popup__controls {
+            padding-right: 30px;
+            padding-bottom: 30px;
+            padding-left: 30px;
+        }
+    }
+
+    html.viewport_desktop & {
+        &__content {
+            padding: 0 60px 200px;
+            max-width: 1000px;
+        }
+
+        &__payment-result-popup {
+            .popup__box {
+                max-width: 500px;
+            }
+        }
+    }
+
+    html.viewport_tablet &,
+    html.viewport_mobile & {
+        &__content {
+            padding: 30px 14px 100px;
+        }
+    }
+}
+
+.ui-card {
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .05);
+    transition: .3s transform cubic-bezier(.155, 1.105, .295, 1.12), .3s box-shadow, .3s -webkit-transform cubic-bezier(.155, 1.105, .295, 1.12);
+    padding: 48px;
+    width: 100%;
+}
+
+.lpn-name {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1;
+    display: block;
+    margin-bottom: 8px;
+    color: $figma-green;
+}
+
+.lpn-card-value-label {
+    font-size: 12px;
+    font-weight: 400;
+    display: block;
+}
+
+
+.extend-rental-popup {
+    .popup__box {
+        max-width: 400px;
+    }
+
+    .popup-title {
+        font-size: 18px;
+        line-height: 22px;
+        font-weight: 600;
+    }
+}
+
+.header-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+
+    &__title {
+        display: flex;
+        margin-bottom: 8px;
+        align-items: center;
+    }
+}
+
+.vehicles-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    @include desktop {
+        margin-bottom: 24px;
+    }
+    @include mobile {
+        padding: 0 14px;
+    }
+
+    &_wrapper {
+        font-size: 26px;
+        line-height: 32px;
+        font-weight: 600;
+    }
+
+    &__controls {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+}
+
+.vehicles-limit-info {
+    font-size: 11px;
+    line-height: 14px;
+    color: $color-text-primary;
+
+    @include desktop {
+        font-size: 14px;
+        line-height: 18px;
+    }
+}
+
+.nav-tab {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    background-color: #fff;
+
+    &__item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1 1 auto;
+        font-size: 11px;
+        line-height: 14px;
+        font-weight: 600;
+        color: $color-text-primary;
+        cursor: pointer;
+        user-select: none;
+        transition: color .3s;
+        padding: 14px 0;
+        border-bottom: 2px solid transparent;
+
+        &--active {
+            color: $figma-green;
+            border-bottom: 2px solid $figma-green;
+        }
+    }
+}
+
+.vehicles-page-header {
+    display: flex;
+    flex-direction: column;
+    padding: 0 60px;
+
+    @include mobile {
+        padding: 0;
+    }
+
+    @include tablet {
+        padding: 0 14px;
+        width: 100%;
+    }
+    @include desktop {
+        max-width: 720px;
+        padding-top: 48px;
+        flex-direction: column-reverse;
+    }
+}
+
+.vehicle-page-title {
+    color: #656D7C;
+    font-size: 18px;
+    line-height: 22px;
+    margin-bottom: 4px;
+    @include desktop {
+        font-size: 26px;
+        line-height: 32px;
+        font-weight: 600;
+    }
+}
+
+.vehicle-list-title {
+    color: #656D7C;
+    margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 18px;
+    @include desktop {
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: normal;
+    }
+}
+
+// Override Add Vehicle button style
+.button__secondary {
+    background: $figma-green !important;
+    color: #fff !important;
+}
+
+.add-vehicle-modal {
+    background: #eaf6f3;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    padding: 32px 28px 24px 28px;
+    min-width: 340px;
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.add-vehicle-modal__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: #53565d;
+}
+
+.add-vehicle-modal__label {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.add-vehicle-modal__input {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 1rem;
+    border: 1.5px solid #dde3eb;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    background: #fff;
+    transition: border-color 0.2s;
+}
+.add-vehicle-modal__input:focus {
+    border-color: #00c08b;
+    outline: none;
+}
+
+.add-vehicle-modal__checkbox-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.add-vehicle-modal__checkbox {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    accent-color: #00c08b;
+}
+.add-vehicle-modal__checkbox-label {
+    font-size: 1rem;
+    color: #53565d;
+}
+
+.add-vehicle-modal__actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.add-vehicle-modal__btn {
+    flex: 1;
+    height: 44px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid #00c08b;
+    transition: background 0.2s, color 0.2s;
+}
+
+.add-vehicle-modal__btn--cancel {
+    background: #fff;
+    color: #00c08b;
+}
+.add-vehicle-modal__btn--cancel:hover {
+    background: #f6fffa;
+}
+
+.add-vehicle-modal__btn--ok {
+    background: #00c08b;
+    color: #fff;
+    border: 2px solid #00c08b;
+}
+.add-vehicle-modal__btn--ok:disabled {
+    background: #b2e5d6;
+    color: #fff;
+    border-color: #b2e5d6;
+    cursor: not-allowed;
+}
+.add-vehicle-modal__btn--ok:hover:not(:disabled) {
+    background: #009e6d;
+    border-color: #009e6d;
+}
+
+// Remove or override any .popup__content or .popup__controls background/box-shadow that sets white
+.popup__content,
+.popup__controls {
+    background: transparent !important;
+    box-shadow: none !important;
+}

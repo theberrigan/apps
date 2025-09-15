@@ -1,0 +1,43 @@
+@import '../../../../assets/css/definitions.scss';
+@import '../../../../assets/css/mixins.scss';
+
+.sort-select {
+    display: inline-flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+    position: relative;
+    width: 100%;
+
+    .select {
+        flex-grow: 1;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .button {
+        $padding: 10px;
+
+        padding-left: $padding;
+        padding-right: $padding;
+        margin-left: -1px;
+        flex-shrink: 0;
+    }
+
+    .select,
+    .button {
+        z-index: 1;
+    }
+
+    .button.button_blue {
+        z-index: 2;
+    }
+
+    .select + .button {
+        border-radius: 0;
+    }
+
+    .button + .button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+}

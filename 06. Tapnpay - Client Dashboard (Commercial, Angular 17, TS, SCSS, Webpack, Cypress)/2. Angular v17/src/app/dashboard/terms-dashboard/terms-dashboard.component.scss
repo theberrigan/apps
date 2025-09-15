@@ -1,0 +1,22 @@
+@import '../../../assets/css/definitions';
+
+.terms-page-content {
+    max-width: 1120px;
+    padding: 20px;
+    @media screen and (min-width: 620px) {
+        padding: 20px 60px;
+    }
+
+}
+
+.accordion__item {
+    terms-inner {
+        display: none !important;
+    }
+
+    &.active {
+        terms-inner {
+            display: block !important;
+        }
+    }
+}

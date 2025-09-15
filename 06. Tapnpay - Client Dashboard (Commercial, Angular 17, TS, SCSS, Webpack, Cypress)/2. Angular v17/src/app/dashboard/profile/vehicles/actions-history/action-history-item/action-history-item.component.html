@@ -1,0 +1,21 @@
+<div class="timeline-point-container">
+    <div class="timeline-icon">
+        <div class="timeline-icon__point"
+             [class]="{
+                'timeline-icon__point--end': type === 'END',
+                'timeline-icon__point--start': type === 'START'
+              }"></div>
+        <div class="timeline-icon__line timeline-icon__line--end" *ngIf="type === 'END'"></div>
+    </div>
+
+    <div class="action-data">
+        <div class="action-item action-item--start">
+                    <span class="action-item__name">
+                        {{ type === 'START' ? 'Activated' : 'Deactivated' }}
+                    </span>
+            <span class="action__date">
+                        {{date | datetime : 'display.datetime' }}
+                    </span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,122 @@
+@import './font_nhg_definitions';
+
+
+@font-face {
+    font-family: 'NHG';
+    src: url('../fonts/NHG/NeueHaasDisplay-Thin.woff2') format('woff2'),
+    url('../fonts/NHG/NeueHaasDisplay-Thin.woff') format('woff'),
+    url('../fonts/NHG/NeueHaasDisplay-Thin.ttf') format('truetype');
+    font-weight: $font-weight-thin;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NHG';
+    src: url('../fonts/NHG/NeueHaasDisplay-ThinItalic.woff2') format('woff2'),
+    url('../fonts/NHG/NeueHaasDisplay-ThinItalic.woff') format('woff'),
+    url('../fonts/NHG/NeueHaasDisplay-ThinItalic.ttf') format('truetype');
+    font-weight: $font-weight-thin;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NHG';
+    src: url('../fonts/NHG/NeueHaasDisplay-Light.woff2') format('woff2'),
+    url('../fonts/NHG/NeueHaasDisplay-Light.woff') format('woff'),
+    url('../fonts/NHG/NeueHaasDisplay-Light.ttf') format('truetype');
+    font-weight: $font-weight-light;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NHG';
+    src: url('../fonts/NHG/NeueHaasDisplay-LightItalic.woff2') format('woff2'),
+    url('../fonts/NHG/NeueHaasDisplay-LightItalic.woff') format('woff'),
+    url('../fonts/NHG/NeueHaasDisplay-LightItalic.ttf') format('truetype');
+    font-weight: $font-weight-light;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NHG';
+    src: url('../fonts/NHG/NeueHaasDisplay-Roman.woff2') format('woff2'),
+    url('../fonts/NHG/NeueHaasDisplay-Roman.woff') format('woff'),
+    url('../fonts/NHG/NeueHaasDisplay-Roman.ttf') format('truetype');
+    font-weight: $font-weight-roman;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NHG';
+    src: url('../fonts/NHG/NeueHaasDisplay-RomanItalic.woff2') format('woff2'),
+    url('../fonts/NHG/NeueHaasDisplay-RomanItalic.woff') format('woff'),
+    url('../fonts/NHG/NeueHaasDisplay-RomanItalic.ttf') format('truetype');
+    font-weight: $font-weight-roman;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NHG';
+    src: url('../fonts/NHG/NeueHaasDisplay-Medium.woff2') format('woff2'),
+    url('../fonts/NHG/NeueHaasDisplay-Medium.woff') format('woff'),
+    url('../fonts/NHG/NeueHaasDisplay-Medium.ttf') format('truetype');
+    font-weight: $font-weight-medium;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NHG';
+    src: url('../fonts/NHG/NeueHaasDisplay-MediumItalic.woff2') format('woff2'),
+    url('../fonts/NHG/NeueHaasDisplay-MediumItalic.woff') format('woff'),
+    url('../fonts/NHG/NeueHaasDisplay-MediumItalic.ttf') format('truetype');
+    font-weight: $font-weight-medium;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NHG';
+    src: url('../fonts/NHG/NeueHaasDisplay-Bold.woff2') format('woff2'),
+    url('../fonts/NHG/NeueHaasDisplay-Bold.woff') format('woff'),
+    url('../fonts/NHG/NeueHaasDisplay-Bold.ttf') format('truetype');
+    font-weight: $font-weight-bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NHG';
+    src: url('../fonts/NHG/NeueHaasDisplay-BoldItalic.woff2') format('woff2'),
+    url('../fonts/NHG/NeueHaasDisplay-BoldItalic.woff') format('woff'),
+    url('../fonts/NHG/NeueHaasDisplay-BoldItalic.ttf') format('truetype');
+    font-weight: $font-weight-bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NHG';
+    src: url('../fonts/NHG/NeueHaasDisplay-Black.woff2') format('woff2'),
+    url('../fonts/NHG/NeueHaasDisplay-Black.woff') format('woff'),
+    url('../fonts/NHG/NeueHaasDisplay-Black.ttf') format('truetype');
+    font-weight: $font-weight-black;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NHG';
+    src: url('../fonts/NHG/NeueHaasDisplay-BlackItalic.woff2') format('woff2'),
+    url('../fonts/NHG/NeueHaasDisplay-BlackItalic.woff') format('woff'),
+    url('../fonts/NHG/NeueHaasDisplay-BlackItalic.ttf') format('truetype');
+    font-weight: $font-weight-black;
+    font-style: italic;
+    font-display: swap;
+}

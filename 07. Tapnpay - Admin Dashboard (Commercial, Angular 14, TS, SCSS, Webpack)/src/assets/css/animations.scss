@@ -1,0 +1,63 @@
+// Spinning
+// ----------------------
+
+@keyframes spinning {
+    from { transform: rotate(0deg);   }
+    to   { transform: rotate(360deg); }
+}
+
+
+// Pulse
+// ----------------------
+
+@keyframes pulsing {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(4); }
+}
+
+
+// Pulse
+// ----------------------
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.2);
+        opacity: 0;
+    }
+    33% {
+        transform: scale(0.6);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+}
+
+
+// Clock dots
+// ----------------------
+
+@keyframes clockDots {
+    0%   { opacity: 1; }
+    30%  { opacity: 1; }
+    50%  { opacity: 0; }
+    80%  { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+
+// Search attracting
+// ----------------------
+
+@keyframes searchAttracting {
+    0% {
+        background-color: #f0f5f9;
+    }
+    15% {
+        background-color: #d7e6ff;
+    }
+    100% {
+        background-color: #f0f5f9;
+    }
+}

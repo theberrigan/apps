@@ -1,0 +1,39 @@
+<div class="terms-inner__wrapper" [ngSwitch]="state">
+    <div class="terms-inner__loader" *ngSwitchCase="'loading'">
+        <loader></loader>
+    </div>
+    <div class="terms-inner__message terms-inner__message_error" *ngSwitchCase="'error'">
+        An error occurred
+    </div>
+    <div class="terms-inner__docs" *ngSwitchCase="'list'">
+        <div class="terms-inner__docs-header">tapNpay Documents</div>
+        <div class="terms-inner__list">
+            <div class="terms-inner__list-item" *ngFor="let item of docItems" (click)="onListItemClick(item.name)">
+                <div class="terms-inner__list-item-primary">{{ item.title }}</div>
+                <div class="terms-inner__list-item-secondary">{{ item.type }}</div>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngSwitchCase="'terms'">
+        <div class="terms-inner__content" #contentEl [innerHTML]="content" [style.paddingBottom.px]="contentBottomPadding"></div>
+        <div class="terms-inner__panel" #panelEl *ngIf="isAcceptable"
+            [style.left.px]="panelLeft"
+            [style.bottom.px]="panelBottom"
+            [style.width.px]="panelWidth"
+            [class.terms-inner__panel_sticky]="isPanelSticky"
+        >
+            <checkbox [(ngModel)]="isChecked" [disabled]="isSubmitting">
+                {{ 'terms.form.i_accept' | translate }}
+            </checkbox>
+            <div class="terms-inner__panel-button">
+                <button type="button" class="button button_blue button_regular"
+                    [isDisabled]="!isChecked || isSubmitting"
+                    [isProgress]="isSubmitting"
+                    (click)="onSubmit()"
+                >
+                    <span class="button__caption">{{ 'terms.form.send' | translate }}</span>
+                </button>
+            </div>
+        </div>
+    </ng-container>
+</div>

@@ -1,0 +1,167 @@
+@import '../../../assets/css/definitions.scss';
+@import '../../../assets/css/mixins.scss';
+
+.menu {
+    $tongue-height: 8px;
+    $tongue-shift: 10px;
+    $item-padding-x-desktop: 12px;
+    $item-padding-x-touch: 20px;
+    $spacing: 8px;
+
+    display: none;
+    position: absolute;
+    margin-top: $tongue-height;
+    background-color: #fff;
+    border: 1px solid #CED6DE;
+    border-radius: 3px;
+    box-shadow: 0 3px 12px rgba(27, 31, 35, 0.15);
+    padding: $spacing 0;
+    top: 100%;
+    right: 0;
+    min-width: 160px;
+    max-width: calc(100vw - 70px);
+    z-index: $z-index-menu;
+
+    &:before,
+    &:after {
+        content: '';
+        display: block;
+        position: absolute;
+    }
+
+    &:before {
+        border: $tongue-height solid transparent;
+        border-bottom-color: #C4CBD3;
+        right: ($tongue-shift - 1);
+        top: ($tongue-height * -2);
+    }
+
+    &:after {
+        border: ($tongue-height - 1) solid transparent;
+        border-bottom-color: #fff;
+        right: $tongue-shift;
+        top: (($tongue-height - 1) * -2);
+    }
+
+    &_left {
+        right: auto;
+        left: 0;
+
+        &:before {
+            right: auto;
+            left: ($tongue-shift - 1);
+        }
+
+        &:after {
+            right: auto;
+            left: $tongue-shift;
+        }
+    }
+
+    &_visible {
+        display: block;
+    }
+
+    &__content {
+        width: 100%;
+        height: 100%;
+    }
+
+    &__sep {
+        padding: $spacing 0;
+
+        &:after {
+            content: '';
+            display: block;
+            height: 1px;
+            background-color: #d9e2ea;
+        }
+    }
+
+    &__label {
+        cursor: default;
+        font-size: 12px;
+        line-height: 16px;
+        padding: 4px $item-padding-x-desktop;
+        text-transform: uppercase;
+        font-weight: 500;
+        background-color: #D7DEE4;
+        margin: $spacing 0;
+        white-space: nowrap;
+        @include no-select;
+    }
+
+    &__items {
+        display: block;
+        width: 100%;
+    }
+
+    &__item {
+        display: block;
+        background-color: transparent;
+        width: 100%;
+
+        &:hover {
+            background-color: $color-primary-blue;
+        }
+
+        & > a,
+        & > a:hover,
+        & > a:focus,
+        & > a:active,
+        & > a:visited,
+        & > button {
+            color: $color-text-primary;
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            cursor: pointer;
+            background-color: transparent;
+            text-decoration: none;
+            text-align: left;
+            vertical-align: middle;
+            font-size: 14px;
+            line-height: 18px;
+            padding: 6px $item-padding-x-desktop;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        &:hover > a,
+        &:hover > a:hover,
+        &:hover > a:focus,
+        &:hover > a:active,
+        &:hover > a:visited,
+        &:hover > button {
+            color: #fff;
+        }
+
+        &-selectable {
+
+        }
+
+        &-icon {
+            margin-right: 2px;
+        }
+    }
+
+    html.device_touch & {
+        &__item {
+            & > a,
+            & > a:hover,
+            & > a:focus,
+            & > a:active,
+            & > a:visited,
+            & > button {
+                padding: 12px $item-padding-x-touch;
+            }
+        }
+
+        &__label {
+            padding-left: $item-padding-x-touch;
+            padding-right: $item-padding-x-touch;
+        }
+    }
+}

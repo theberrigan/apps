@@ -1,0 +1,43 @@
+<ng-content></ng-content>
+<div class="page-panel__user">
+    <button type="button" class="page-panel__user-trigger" (click)="onUserMenuTriggerClick($event)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" class="page-panel__user-icon">
+            <path style="fill: currentColor;" d="M15,.5A14.5,14.5,0,1,0,29.5,15,14.51,14.51,0,0,0,15,.5Zm0,3a11.49,11.49,0,0,1,9.37,18.16,15.47,15.47,0,0,0-18.74,0A11.49,11.49,0,0,1,15,3.5Zm0,23a11.47,11.47,0,0,1-7.31-2.63,12.46,12.46,0,0,1,14.62,0A11.47,11.47,0,0,1,15,26.5Zm0-10A5.5,5.5,0,1,1,20.5,11,5.51,5.51,0,0,1,15,16.5Zm0-8A2.5,2.5,0,1,0,17.5,11,2.5,2.5,0,0,0,15,8.5Z"></path>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="9" viewBox="0 0 14 9" class="page-panel__user-triangle">
+            <path style="fill: currentColor;" d="M13.14,2.41,8.48,7.07h0L7.07,8.49,1,2.41,2.41,1,7.07,5.66,11.73,1Z"></path>
+        </svg>
+    </button>
+    <div class="page-panel__user-menu" (click)="onUserMenuClick($event)" *ngIf="isUserMenuActive" [ngSwitch]="isLangLayoutActive">
+        <ng-container *ngSwitchCase="false">
+            <a routerLink="/dashboard/profile" class="page-panel__user-menu-item" (click)="onUserMenuItemClick($event)">
+                {{ 'page_panel.edit_profile' | translate }}
+            </a>
+            <button type="button" class="page-panel__user-menu-item" (click)="onToggleLangLayout(true, $event)">
+                {{ 'page_panel.change_lang' | translate }}
+            </button>
+            <button type="button" class="page-panel__user-menu-item" (click)="onLogout($event)">
+                {{ 'page_panel.logout' | translate }}
+            </button>
+        </ng-container>
+        <ng-container *ngSwitchCase="true">
+            <button type="button" class="page-panel__lang-back" (click)="onToggleLangLayout(false, $event)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="12" viewBox="0 0 8 12" class="page-panel__lang-back-icon">
+                    <path style="fill: currentColor;" d="M1,6,5.7,1.29A1,1,0,0,1,7.12,2.71L3.82,6l3.3,3.29a1,1,0,0,1,0,1.42,1,1,0,0,1-1.42,0h0Z"></path>
+                </svg>
+                <span class="page-panel__lang-back-text">{{ 'page_panel.choose_lang' | translate }}</span>
+            </button>
+            <button type="button" class="page-panel__user-menu-item page-panel__user-menu-item_has-mark"
+                *ngFor="let lang of langs"
+                (click)="onLangItemClick(lang, $event)"
+            >
+                <ng-container *ngIf="lang.code === currentLang.code">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="11" viewBox="0 0 14 11" class="page-panel__user-menu-item-icon">
+                        <path fill="currentColor" d="M5,10.4L0.3,5.7c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0L5,7.6l7.3-7.3c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4L5,10.4z"></path>
+                    </svg>
+                </ng-container>
+                <span class="page-panel__user-menu-item-text">{{ lang.name }}</span>
+            </button>
+        </ng-container>
+    </div>
+</div>

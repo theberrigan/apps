@@ -1,0 +1,148 @@
+@import './definitions.scss';
+
+$root-selector: '.flex-table';
+$header-selector: $root-selector + '__header';
+$body-selector: $root-selector + '__body';
+$row-selector: $root-selector + '__row';
+$cell-selector: $root-selector + '__cell';
+$plates-selector: $root-selector + '_plates';
+
+#{ $root-selector } {
+    &,
+    &__header,
+    &__body {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: stretch;
+        justify-content: flex-start;
+    }
+
+    &__header {
+
+    }
+
+    &__body {
+
+    }
+
+    &__row {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: stretch;
+        justify-content: stretch;
+    }
+
+    &__cell {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: flex-start;
+        flex: 1 1 0px;
+
+        &_no-overflow {
+            min-width: 0;
+        }
+
+        &_top {
+            align-items: flex-start;
+        }
+
+        &_middle {
+            align-items: center;
+        }
+
+        &_bottom {
+            align-items: flex-end;
+        }
+    }
+
+    &__value-wrap {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    // ------------------------------
+
+
+
+    &_plates {
+        & > #{ $header-selector } > #{ $row-selector },
+        & > #{ $body-selector } > #{ $row-selector } {
+            cursor: default;
+        }
+
+        & > #{ $body-selector } > #{ $row-selector } {
+            $bg-color: #fff;
+
+            border-radius: 8px;
+            border: 1px solid $bg-color;
+            background-color: $bg-color;
+            box-shadow: 0 1px 3px 0 rgba(#0e0e0e, 0.1);
+        }
+
+        & > #{ $body-selector } > #{ $row-selector } + #{ $row-selector } {
+            margin-top: $table-striped-reversed-row-border-radius;
+        }
+
+        & > #{ $header-selector } > #{ $row-selector } > #{ $cell-selector },
+        & > #{ $body-selector } > #{ $row-selector } > #{ $cell-selector } {
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: $font-weight-semi-bold;
+        }
+
+        & > #{ $header-selector } > #{ $row-selector } > #{ $cell-selector } {
+            color: #92959e;
+        }
+
+        & > #{ $body-selector } > #{ $row-selector } > #{ $cell-selector } {
+            color: #656e7d;
+        }
+
+        & > #{ $header-selector } > #{ $row-selector } > #{ $cell-selector },
+        & > #{ $body-selector } > #{ $row-selector } > #{ $cell-selector } {
+            padding: 15px 0;
+        }
+
+        & > #{ $header-selector } > #{ $row-selector } > #{ $cell-selector } + #{ $cell-selector },
+        & > #{ $body-selector } > #{ $row-selector } > #{ $cell-selector } + #{ $cell-selector } {
+            padding-left: 14px;
+        }
+
+        & > #{ $header-selector } > #{ $row-selector } > #{ $cell-selector }:first-child,
+        & > #{ $body-selector } > #{ $row-selector } > #{ $cell-selector }:first-child {
+            padding-left: 18px;
+        }
+
+        & > #{ $header-selector } > #{ $row-selector } > #{ $cell-selector }:last-child,
+        & > #{ $body-selector } > #{ $row-selector } > #{ $cell-selector }:last-child {
+            padding-right: 18px;
+        }
+    }
+
+    &_reversed {
+        & > #{ $body-selector } > #{ $row-selector } {
+            border: 1px solid $table-striped-reversed-row-border-color;
+            background-color: $table-striped-reversed-row-bg;
+            box-shadow: none;
+        }
+    }
+
+    &_clickable {
+        & > #{ $body-selector } > #{ $row-selector } > #{ $cell-selector } {
+            cursor: pointer;
+        }
+    }
+
+    &_highlightable {
+        &#{ $plates-selector } > #{ $body-selector } > #{ $row-selector } {
+            &:hover {
+                border: 1px solid $color-primary-blue;
+            }
+
+            &,
+            &:hover {
+                transition: border-color 0.15s ease;
+            }
+        }
+    }
+}

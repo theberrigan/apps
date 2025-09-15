@@ -1,0 +1,418 @@
+<div class="panel" [class.panel_inverted]="isPanelInverted">
+    <div class="panel__logo">
+        <svg xmlns="http://www.w3.org/2000/svg">
+            <use xlink:href="#svg-logo"></use>
+        </svg>
+    </div>
+    <nav class="panel__nav">
+        <a class="panel__nav-link" href="#advantages" (click)="onAnchorClick($event)">{{ 'panel.advantages' | translate }}</a>
+        <a class="panel__nav-link" href="#by-the-numbers" (click)="onAnchorClick($event)">{{ 'panel.by_the_numbers' | translate }}</a>
+        <a class="panel__nav-link" href="#price-list" (click)="onAnchorClick($event)">{{ 'panel.price_list' | translate }}</a>
+        <a class="panel__nav-link" href="#for-business" (click)="onAnchorClick($event)">{{ 'panel.for_business' | translate }}</a>
+        <a class="panel__nav-link" href="#our-clients" (click)="onAnchorClick($event)">{{ 'panel.our_clients' | translate }}</a>
+    </nav>
+    <a href="#request" class="panel__apply-button" (click)="onAnchorClick($event)">{{ 'panel.send_request' | translate }}</a>
+    <div class="panel__lang">
+        <button type="button" class="panel__lang-trigger" (click)="onLangTriggerClick($event)">
+            <span class="panel__lang-trigger-text">{{ activeLang }}</span>
+            <span class="panel__lang-trigger-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8">
+                    <path style="fill: currentColor;" d="M6,7.22,2.29,3.51A1,1,0,0,1,3.71,2.1L6,4.39,8.29,2.1A1,1,0,0,1,9.73,3.49l0,0Z"></path>
+                </svg>
+            </span>
+        </button>
+        <div class="panel__lang-menu" *ngIf="isLangMenuActive" (click)="onLangMenuClick($event)">
+            <ul class="panel__lang-menu-list">
+                <li class="panel__lang-menu-item"
+                    *ngFor="let lang of langs"
+                    [class.panel__lang-menu-item_active]="lang.code === activeLang"
+                    (click)="onLangItemClick(lang.code, $event)"
+                >
+                    <span  class="panel__lang-menu-item-mark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="11px" viewBox="0 0 14 11">
+                            <path style="fill: currentColor;" d="M5,10.4L0.3,5.7c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0L5,7.6l7.3-7.3c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4L5,10.4z"></path>
+                        </svg>
+                    </span>
+                    <span  class="panel__lang-menu-item-text">{{ lang.nameKey | translate }} ({{ lang.name }})</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<section class="main">
+    <div class="main__content">
+        <div class="main__logo">
+            <svg xmlns="http://www.w3.org/2000/svg" class="svg svg_mimic-width">
+                <use xlink:href="#svg-logo"></use>
+            </svg>
+        </div>
+        <div class="main__sub-title">{{ 'main.subtitle' | translate }}</div>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 60" class="svg svg_mimic-width main__skew">
+        <polygon style="fill: #fff7f0" points="1481 61 -1 61 -1 56 0 56 1480 0 1481 0 1481 61"></polygon>
+    </svg>
+</section>
+<section class="advantages" id="advantages">
+    <div class="advantages__inner">
+        <div class="advantages__item">
+            <div class="advantages__item-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 170">
+                    <polygon points="73 15 73 130 61 130 61 3 131 3 131 15 73 15" style="fill: #f0c7a7"></polygon>
+                    <polygon points="140 15 140 42 167 42 140 15" style="fill: #bad3f2"></polygon>
+                    <path d="M141.24,12H70V142H170V40.76ZM143,22.24,159.76,39H143ZM164,136H76V18h61V45h27ZM61,130a3,3,0,0,1-3-3V0h70a3,3,0,0,1,0,6H64V127A3,3,0,0,1,61,130Zm71-61H112a3,3,0,0,1,0-6h20a3,3,0,0,1,0,6Zm17,12H91a3,3,0,0,1,0-6h58a3,3,0,0,1,0,6Zm0,12H91a3,3,0,0,1,0-6h58a3,3,0,0,1,0,6Zm-5,12H96a3,3,0,0,1,0-6h48a3,3,0,0,1,0,6Z" style="fill: #3d3e67"></path>
+                </svg>
+            </div>
+            <div class="advantages__item-text">
+                <div class="advantages__item-header" [innerHTML]="'advantages.h1' | translate"></div>
+                <div class="advantages__item-description" [innerHTML]="'advantages.d1' | translate"></div>
+            </div>
+        </div>
+        <div class="advantages__item advantages__item_rtl">
+            <div class="advantages__item-text">
+                <div class="advantages__item-header" [innerHTML]="'advantages.h2' | translate"></div>
+                <div class="advantages__item-description" [innerHTML]="'advantages.d2' | translate"></div>
+            </div>
+            <div class="advantages__item-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 170">
+                    <polygon points="82 15 82 42 109 42 82 15" style="fill: #bad3f2"></polygon>
+                    <path d="M15,15V130H3V3H73V15Zm47,88a15,15,0,1,0,15,15A15,15,0,0,0,62,103Z" style="fill: #f0c7a7"></path>
+                    <path d="M83.24,12.09H12v130H39a3,3,0,0,0,0-6H18v-118H79v27h27v91H85a3,3,0,0,0,0,6h27V40.85Zm1.76,27V22.33l16.76,16.76Zm-82,91a3,3,0,0,1-3-3V.09H70a3,3,0,0,1,0,6H6v121A3,3,0,0,1,3,130.09Zm71-71H54a3,3,0,0,1,0-6H74a3,3,0,0,1,0,6Zm17,12H33a3,3,0,0,1,0-6H91a3,3,0,0,1,0,6Zm0,12H33a3,3,0,0,1,0-6H91a3,3,0,0,1,0,6Zm-5,12H38a3,3,0,0,1,0-6H86a3,3,0,0,1,0,6Zm-24,5a18,18,0,0,0-13,30.43v35.39L62,149l13,16.9V130.52a18,18,0,0,0-13-30.43Zm0,6a12,12,0,1,1-12,12A12,12,0,0,1,62,106.09Zm7,42.18-7-9.1-7,9.1v-13.6a18,18,0,0,0,14,0Z" style="fill: #3d3e67;"></path>
+                </svg>
+            </div>
+        </div>
+        <div class="advantages__item">
+            <div class="advantages__item-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 170">
+                    <path d="M162.68,66a25,25,0,0,1-47.36,0Z" style="fill: #bad3f2"></path>
+                    <path d="M56.68,107a25,25,0,0,1-47.36,0ZM117,139H53v12h64Z" style="fill: #f0c7a7"></path>
+                    <path d="M159,148a3,3,0,1,0,3,3A3,3,0,0,0,159,148ZM12,148a3,3,0,1,0,3,3A3,3,0,0,0,12,148ZM155.22,60l-7.77-25.53-2.07-6.81-3.13-10.27A9,9,0,1,0,130,9a2.26,2.26,0,0,0,0,.26L95.45,22.63A13,13,0,0,0,71.75,30a12.65,12.65,0,0,0,.12,1.75L39.82,44.14A9,9,0,1,0,29.75,58.39L26.62,68.66l-2.07,6.81L16.78,101H2.07a30.43,30.43,0,0,0,1,6A31,31,0,0,0,63,107a30.43,30.43,0,0,0,1-6H49.22L41.45,75.47l-2.07-6.81L36.25,58.39A9,9,0,0,0,42,50a2.26,2.26,0,0,0,0-.26L74,37.35a12.92,12.92,0,0,0,8,5.35V136H50v12H23a3,3,0,0,0,0,6H149a3,3,0,0,0,0-6H120V136H88V42.59A13,13,0,0,0,97.75,30a11.66,11.66,0,0,0-.13-1.78l34.57-13.37a8.83,8.83,0,0,0,3.56,2.54l-3.13,10.27-2.07,6.81L122.78,60H108.07a30.43,30.43,0,0,0,1,6A31,31,0,0,0,169,66a30.43,30.43,0,0,0,1-6ZM31.92,47.21A2.77,2.77,0,0,1,33,47a3,3,0,0,1,1.49,5.6l-.34.17-.07,0h0A2.81,2.81,0,0,1,33,53a3,3,0,0,1-1.08-5.79ZM56.68,107a25,25,0,0,1-47.36,0ZM43,101H23.05l8.19-26.93L33,68.3l1.76,5.77ZM114,142v6H56v-6ZM91.72,30.5a7,7,0,0,1-14-.5,4.89,4.89,0,0,1,0-.54,7,7,0,0,1,14,.54A4.19,4.19,0,0,1,91.72,30.5Zm46.2-24.29A2.77,2.77,0,0,1,139,6a3,3,0,0,1,1.49,5.6,3,3,0,0,1-.41.19A2.81,2.81,0,0,1,139,12a3,3,0,0,1-1.08-5.79Zm-.68,26.86L139,27.3l1.76,5.77L149,60h-19.9ZM139,83a25,25,0,0,1-23.68-17h47.36A25,25,0,0,1,139,83Z" style="fill: #3d3e67"></path>
+                </svg>
+            </div>
+            <div class="advantages__item-text">
+                <div class="advantages__item-header" [innerHTML]="'advantages.h3' | translate"></div>
+                <div class="advantages__item-description" [innerHTML]="'advantages.d3' | translate"></div>
+            </div>
+        </div>
+        <div class="advantages__item advantages__item_rtl">
+            <div class="advantages__item-text">
+                <div class="advantages__item-header" [innerHTML]="'advantages.h4' | translate"></div>
+                <div class="advantages__item-description" [innerHTML]="'advantages.d4' | translate"></div>
+            </div>
+            <div class="advantages__item-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 170">
+                    <path d="M149,64.06V94.5H91V64.06A20.57,20.57,0,0,1,111.56,43.5h1.73a7,7,0,0,0,13.42,0h1.73A20.57,20.57,0,0,1,149,64.06Z" style="fill: #bad3f2"></path>
+                    <path d="M61,64.06V94.5H3V64.06A20.57,20.57,0,0,1,23.56,43.5h1.73a7,7,0,0,0,13.42,0h1.73A20.57,20.57,0,0,1,61,64.06Z" style="fill: #f0c7a7"></path>
+                    <path d="M130,40.19V35.41A17,17,0,0,0,138,21V17A17,17,0,0,0,121,0h-2a17,17,0,0,0-17,17v4a17,17,0,0,0,8,14.41v4.78A25,25,0,0,0,89,58H63A25,25,0,0,0,42,40.19V35.41A17,17,0,0,0,50,21V17A17,17,0,0,0,33,0H31A17,17,0,0,0,14,17v4a17,17,0,0,0,8,14.41v4.78A25,25,0,0,0,0,65V98H10v65H54V98H98v65h44V98h10V65A25,25,0,0,0,130,40.19ZM20,21V17A11,11,0,0,1,31,6h2A11,11,0,0,1,44,17v4a11,11,0,0,1-8,10.58A10.61,10.61,0,0,1,33,32H31a10.61,10.61,0,0,1-3-.42A11,11,0,0,1,20,21ZM36,37.73V41a4,4,0,0,1-8,0V37.73A16.49,16.49,0,0,0,31,38h2A16.49,16.49,0,0,0,36,37.73ZM48,157H35V116a3,3,0,0,0-6,0v41H16V98H48ZM58,91.9A5,5,0,0,1,54,87V80.24l4,4Zm0-16.14-7-7L38.88,80.88a3,3,0,0,0,4.24,4.24L48,80.24V87a10.92,10.92,0,0,0,1.2,5H16V72a3,3,0,0,0-6,0V92H6V65A19,19,0,0,1,23.39,46.07a10,10,0,0,0,17.22,0A19,19,0,0,1,56.66,58H44a3,3,0,0,0,0,6H58c0,.33,0,.67,0,1ZM88,65V92H64V65c0-.34,0-.67,0-1H88C88,64.33,88,64.66,88,65Zm20-44V17A11,11,0,0,1,119,6h2a11,11,0,0,1,11,11v4a11,11,0,0,1-8,10.58,10.61,10.61,0,0,1-3,.42h-2a10.61,10.61,0,0,1-3-.42A11,11,0,0,1,108,21Zm16,16.73V41a4,4,0,0,1-8,0V37.73a16.49,16.49,0,0,0,3,.27h2A16.49,16.49,0,0,0,124,37.73Zm-21.11,32a1.08,1.08,0,0,0-.24-.18,1.65,1.65,0,0,0-.25-.15,2.72,2.72,0,0,0-.57-.23,1.22,1.22,0,0,0-.26-.06l-.12,0a2.55,2.55,0,0,0-.9,0l-.12,0a1.22,1.22,0,0,0-.26.06,2.72,2.72,0,0,0-.57.23,1.65,1.65,0,0,0-.25.15,1.08,1.08,0,0,0-.24.18l-.23.2a2.2,2.2,0,0,0-.2.23,1.08,1.08,0,0,0-.18.24,1.65,1.65,0,0,0-.15.25,2.72,2.72,0,0,0-.23.57,1.22,1.22,0,0,0-.06.26.5.5,0,0,0,0,.12A2.28,2.28,0,0,0,98,72V92H94V65c0-.33,0-.67,0-1h10a5,5,0,0,1,5,5v6.76l-5.88-5.88ZM136,157H123V116a3,3,0,0,0-6,0v41H104V98h32Zm10-65h-4V72a3,3,0,0,0-6,0V92H104V79.24l8,8,12.12-12.12a3,3,0,0,0-4.24-4.24L115,75.76V69a11,11,0,0,0-11-11H95.34a19,19,0,0,1,16-11.93,10,10,0,0,0,17.22,0A19,19,0,0,1,146,65Z" style="fill: #3d3e67"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="numbers" id="by-the-numbers">
+    <div class="numbers__inner">
+        <div class="numbers__bg"></div>
+        <div class="numbers__item">
+            <div class="numbers__item-value">70000</div>
+            <div class="numbers__item-description">{{ 'numbers.pages_translated' | translate }}</div>
+        </div>
+        <div class="numbers__item">
+            <div class="numbers__item-value">115</div>
+            <div class="numbers__item-description">{{ 'numbers.languages' | translate }}</div>
+        </div>
+        <div class="numbers__item">
+            <div class="numbers__item-value">550</div>
+            <div class="numbers__item-description">{{ 'numbers.translators' | translate }}</div>
+        </div>
+        <div class="numbers__item">
+            <div class="numbers__item-value">4500</div>
+            <div class="numbers__item-description">{{ 'numbers.projects' | translate }}</div>
+        </div>
+    </div>
+</section>
+<section class="price-list" id="price-list">
+    <div class="price-list__header">{{ 'price_list.header' | translate }}</div>
+    <div class="price-list__table-wrap">
+        <table class="price-list__table">
+            <thead>
+                <tr>
+                    <th>{{ 'price_list.language' | translate }}</th>
+                    <th class="price-list__table-currency">{{ 'price_list.price_netto' | translate }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ 'price_list.langs_1' | translate }}</td>
+                    <td class="price-list__table-currency">£0,05</td>
+                </tr>
+                <tr>
+                    <td>{{ 'price_list.langs_2' | translate }}</td>
+                    <td class="price-list__table-currency">£0,03</td>
+                </tr>
+                <tr>
+                    <td>{{ 'price_list.langs_3' | translate }}</td>
+                    <td class="price-list__table-currency">£0,04</td>
+                </tr>
+                <tr>
+                    <td>{{ 'price_list.langs_4' | translate }}</td>
+                    <td class="price-list__table-currency">£0,06</td>
+                </tr>
+                <tr>
+                    <td>{{ 'price_list.langs_5' | translate }}</td>
+                    <td class="price-list__table-currency">£0,07</td>
+                </tr>
+                <tr>
+                    <td>{{ 'price_list.langs_6' | translate }}</td>
+                    <td class="price-list__table-currency">£0,08</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="price-list__table-etc">{{ 'price_list.more' | translate }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+<section class="business" id="for-business">
+    <div class="business__inner">
+        <div class="business__bg-pattern"></div>
+        <div class="business__bg-gradient"></div>
+        <div class="business__content">
+            <div class="business__header">{{ 'business.header' | translate }}</div>
+            <div class="business__sub-header">{{ 'business.sub_header' | translate }}</div>
+            <table class="business__table">
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>£<strong>500</strong></th>
+                        <th>£<strong>1000</strong></th>
+                        <th>£<strong>5000</strong></th>
+                        <th>£<strong>10000</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>{{ 'business.item_1' | translate }}</th>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'business.item_2' | translate }}</th>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'business.item_3' | translate }}</th>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'business.item_4' | translate }}</th>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'business.item_5' | translate }}</th>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'business.item_6' | translate }}</th>
+                        <td><span class="business__mark business__mark_no"><i>-</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'business.item_7' | translate }}</th>
+                        <td><span class="business__mark business__mark_no"><i>-</i></span></td>
+                        <td><span class="business__mark business__mark_no"><i>-</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'business.item_8' | translate }}</th>
+                        <td><span class="business__mark business__mark_no"><i>-</i></span></td>
+                        <td><span class="business__mark business__mark_no"><i>-</i></span></td>
+                        <td><span class="business__mark business__mark_no"><i>-</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'business.item_9' | translate }}</th>
+                        <td><span class="business__mark business__mark_no"><i>-</i></span></td>
+                        <td><span class="business__mark business__mark_no"><i>-</i></span></td>
+                        <td><span class="business__mark business__mark_no"><i>-</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                    </tr>
+                    <tr>
+                        <th>{{ 'business.item_10' | translate }}</th>
+                        <td><span class="business__mark business__mark_no"><i>-</i></span></td>
+                        <td><span class="business__mark business__mark_no"><i>-</i></span></td>
+                        <td><span class="business__mark business__mark_no"><i>-</i></span></td>
+                        <td><span class="business__mark business__mark_yes"><i>+</i></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<section class="clients" id="our-clients">
+    <div class="clients__header">{{ 'clients.header' | translate }}</div>
+    <div class="clients__items">
+        <img class="clients__item" src="../../../assets/images/clients/3mk.png" alt="3mk"/>
+        <img class="clients__item" src="../../../assets/images/clients/akad_morska.png" alt="akad_morska"/>
+        <img class="clients__item" src="../../../assets/images/clients/akma.png" alt="akma"/>
+        <img class="clients__item" src="../../../assets/images/clients/alcea.png" alt="alcea"/>
+        <img class="clients__item" src="../../../assets/images/clients/arante.png" alt="arante"/>
+        <img class="clients__item" src="../../../assets/images/clients/barlinek.png" alt="barlinek"/>
+        <img class="clients__item" src="../../../assets/images/clients/Bez-nazwy-1.png" alt="Bez-nazwy-1"/>
+        <img class="clients__item" src="../../../assets/images/clients/bros.png" alt="bros"/>
+        <img class="clients__item" src="../../../assets/images/clients/cekol.png" alt="cekol"/>
+        <img class="clients__item" src="../../../assets/images/clients/cezar.png" alt="cezar"/>
+        <img class="clients__item" src="../../../assets/images/clients/dedra.png" alt="dedra"/>
+        <img class="clients__item" src="../../../assets/images/clients/famet.png" alt="famet"/>
+        <img class="clients__item" src="../../../assets/images/clients/intercars.png" alt="intercars"/>
+        <img class="clients__item" src="../../../assets/images/clients/jutrzenka.png" alt="jutrzenka"/>
+        <img class="clients__item" src="../../../assets/images/clients/kanlux.png" alt="kanlux"/>
+        <img class="clients__item" src="../../../assets/images/clients/kawasaki.png" alt="kawasaki"/>
+        <img class="clients__item" src="../../../assets/images/clients/komfort.png" alt="komfort"/>
+        <img class="clients__item" src="../../../assets/images/clients/kwazar.png" alt="kwazar"/>
+        <img class="clients__item" src="../../../assets/images/clients/lasy_gov.png" alt="lasy_gov"/>
+        <img class="clients__item" src="../../../assets/images/clients/obi.png" alt="obi"/>
+        <img class="clients__item" src="../../../assets/images/clients/okna_plastbud.png" alt="okna_plastbud"/>
+        <img class="clients__item" src="../../../assets/images/clients/opera_poznan.png" alt="opera_poznan"/>
+        <img class="clients__item" src="../../../assets/images/clients/orlen.png" alt="orlen"/>
+        <img class="clients__item" src="../../../assets/images/clients/peekcloppenburg.png" alt="peekcloppenburg"/>
+        <img class="clients__item" src="../../../assets/images/clients/petrolchem.png" alt="petrolchem"/>
+        <img class="clients__item" src="../../../assets/images/clients/pkn.png" alt="pkn"/>
+        <img class="clients__item" src="../../../assets/images/clients/swiss.png" alt="swiss"/>
+        <img class="clients__item" src="../../../assets/images/clients/vestas.png" alt="vestas"/>
+        <img class="clients__item" src="../../../assets/images/clients/vimex.png" alt="vimex"/>
+        <img class="clients__item" src="../../../assets/images/clients/zut.png" alt="zut"/>
+    </div>
+</section>
+<section class="mrof" id="request">
+    <div class="mrof__bg">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 400" class="svg svg_mimic-width mrof__skew">
+            <polygon points="-1 -1.5 1481 -1.5 1481 343.5 1480 343.5 0 399.5 -1 399.5 -1 -1.5" style="fill: #fff7f0"></polygon>
+        </svg>
+    </div>
+    <div class="mrof__content">
+        <div class="mrof__header">{{ 'form.header' | translate }}</div>
+        <fieldset class="mrof__sdleif" [formGroup]="form" *ngIf="form" [disabled]="isSending">
+            <div class="mrof__dleif">
+                <label for="f1" class="mrof__lebal mrof__lebal_req">{{ 'form.name' | translate }}</label>
+                <input type="text" class="mrof__tupni" id="f1" formControlName="name" (input)="validate()">
+            </div>
+            <div class="mrof__dleif">
+                <label for="f2" class="mrof__lebal">{{ 'form.company_name' | translate }}</label>
+                <input type="text" class="mrof__tupni" id="f2" formControlName="companyName">
+            </div>
+            <div class="mrof__dleif">
+                <label for="f3" class="mrof__lebal mrof__lebal_req">{{ 'form.email' | translate }}</label>
+                <input type="text" class="mrof__tupni" id="f3" formControlName="email" (input)="validate()">
+            </div>
+            <div class="mrof__dleif">
+                <label for="f4" class="mrof__lebal mrof__lebal_req">{{ 'form.phone' | translate }}</label>
+                <input type="text" class="mrof__tupni" id="f4" formControlName="phone" (input)="validate()">
+            </div>
+            <div class="mrof__dleif">
+                <label for="f5" class="mrof__lebal mrof__lebal_req">{{ 'form.translate_to' | translate }}</label>
+                <input type="text" class="mrof__tupni" id="f5" formControlName="translateTo" (input)="validate()">
+            </div>
+            <div class="mrof__dleif">
+                <label for="f6" class="mrof__lebal">{{ 'form.instructions' | translate }}</label>
+                <textarea class="mrof__aeratxet" id="f6" formControlName="instructions"></textarea>
+            </div>
+            <div class="mrof__dleif">
+                <label class="mrof__lebal">{{ 'form.files' | translate }}</label>
+                <div class="mrof__dropzone-wrap" [class.mrof__dropzone-wrap_disabled]="isSending">
+                    <div class="mrof__dropzone"
+                         ng2FileDrop
+                         *ngIf="uploader"
+                         [uploader]="uploader"
+                         (fileOver)="onDropzoneOver($event)"
+                         (click)="onDropzoneClick()"
+                         [ngClass]="{
+                             'mrof__dropzone_over': isDropzoneOver,
+                             'mrof__dropzone_busy': isUploading
+                         }"
+                    >
+                        <div class="mrof__dropzone-content" [ngSwitch]="isUploading">
+                            <div class="mrof__dropzone-message"
+                                *ngSwitchCase="false"
+                                [innerHTML]="'form.uploader.dropzone_message' | translate"
+                            ></div>
+                            <div class="mrof__dropzone-progress" *ngSwitchCase="true">
+                                <div class="mrof__dropzone-progress-bg" [style.width.%]="uploadingProgress"></div>
+                                <span class="mrof__dropzone-progress-value">
+                                    <span>{{ uploadingProgress }}%</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mrof__dropzone-screen"></div>
+                        <input type="file" multiple="multiple" class="mrof__dropzone-input"
+                            #uploaderInput
+                            ng2FileSelect
+                            [uploader]="uploader"
+                        >
+                    </div>
+                </div>
+                <div class="mrof__upload-errors" *ngIf="uploadErrors.length > 0">
+                    <div class="mrof__upload-error"
+                         *ngFor="let error of uploadErrors"
+                         [innerHTML]="('form.uploader.errors.' + error.reason) | translate : error.args"
+                    ></div>
+                </div>
+                <div class="mrof__attachments" *ngIf="attachments.length > 0">
+                    <div class="mrof__attachment" *ngFor="let attachment of attachments">
+                        <div class="mrof__attachment-name">{{ attachment.name }}</div>
+                        <button class="mrof__attachment-delete" (click)="onDeleteAttachment(attachment)"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="mrof__slortnoc">
+                <button type="button" class="mrof__timbus-nottub"
+                    [class.mrof__timbus-nottub_progress]="isSending"
+                    [disabled]="!isFormValid || isSending"
+                    (click)="onSubmit()"
+                >
+                    <span class="mrof__timbus-nottub-caption">{{ 'form.send' | translate }}</span>
+                    <span class="mrof__timbus-nottub-spinner">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 38 38">
+                            <path d="M21,2.62A2,2,0,0,0,19,1,18,18,0,0,0,5.26,30.62a2,2,0,0,0,2.51.45A16.49,16.49,0,1,0,21,2.62ZM19,34.5A15.49,15.49,0,0,1,8.48,30.38,2,2,0,0,0,8.31,28,14,14,0,0,1,19,5a2,2,0,0,0,1.9-1.38A15.5,15.5,0,0,1,19,34.5Z" style="fill: #fff;"></path>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+        </fieldset>
+    </div>
+</section>
+<footer class="footer">
+    <div class="footer__inner">
+        &copy; {{ year }} NSGROUP<br>
+        <div class="footer__address">
+            <span [innerHTML]="'footer.address_1' | translate"></span><br>
+            <span [innerHTML]="'footer.address_2' | translate"></span>
+        </div>
+        <div class="footer__recaptcha-copyright">
+            This site is protected by reCAPTCHA and the Google
+            <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+            <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+        </div>
+    </div>
+</footer>
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute; width: 0; height: 0;">
+    <symbol viewBox="0 0 768 96" id="svg-logo">
+        <path style="fill: currentColor;" d="M1.3,1H29.7V54.1H81.3V75.4H1.3ZM115.2,1V17.1H88V1Zm0,20.6V75.4H88V21.6Zm8,53.8V21.6h27v9.5c1-.93,1.79-1.65,2.35-2.15a43.59,43.59,0,0,1,3.7-2.65,28.89,28.89,0,0,1,5.55-2.95,48.22,48.22,0,0,1,7-2,43,43,0,0,1,9.15-1h.6a36.6,36.6,0,0,1,12.55,2,20.5,20.5,0,0,1,8.25,5.1,21.49,21.49,0,0,1,4.25,6.5A18.17,18.17,0,0,1,205,40.8V75.4H177.7V49.7q0-5.7-3.15-9.05T164.7,37.3q-6.69,0-10.5,3.6a12.5,12.5,0,0,0-3.8,9.5v25ZM259.5,94.9h-7.7a83.33,83.33,0,0,1-16.75-1.5A41.61,41.61,0,0,1,224,89.8a20.83,20.83,0,0,1-6.2-5,15.47,15.47,0,0,1-3-4.95,14.25,14.25,0,0,1-.65-4.2v-.3h27.3q1,4.5,14,4.5h.3Q272,79.9,272,66.2V65.1q-8,8-26.2,8h-1.6q-17.2,0-25.3-7.3a23.61,23.61,0,0,1-8.1-18.3V45.7a23.68,23.68,0,0,1,7.6-17.85q7.6-7.25,24-7.25h2.2q17.81,0,27.3,7.9V21.6h27.2V66.4a30.19,30.19,0,0,1-.85,7.2,25,25,0,0,1-3.45,7.5,25.73,25.73,0,0,1-6.75,7A36,36,0,0,1,276.5,93,67,67,0,0,1,259.5,94.9Zm-5-59.1h-.6q-8.29,0-12,3.1a9.71,9.71,0,0,0-3.65,7.7v.5a10.38,10.38,0,0,0,3.75,8.1q3.75,3.3,11.85,3.3h.6q8.4,0,12.8-3.35t4.4-8v-.3q0-4.69-4.35-7.85T254.5,35.8ZM387.8,21.6V75.4h-27V65.8Q350,76.6,333.5,76.6h-.7a35.13,35.13,0,0,1-12.4-2,18.85,18.85,0,0,1-8-5.3,23.94,23.94,0,0,1-4.05-6.7,19.38,19.38,0,0,1-1.3-7v-34h27.3V47.3a13.12,13.12,0,0,0,3,9q3,3.41,9.4,3.4,6.6,0,10.3-3.7a12.73,12.73,0,0,0,3.7-9.4v-25Zm56.6,46.6q-8.2,8.2-25.2,8.2h-1.1q-12.6,0-18.75-5a15.28,15.28,0,0,1-6.15-12.3V57.9q0-7,5.05-10.85T415,42.3L440.9,40c2-.27,3-1.13,3-2.6a3.08,3.08,0,0,0-.65-2c-.44-.53-1.55-1-3.35-1.45a35.09,35.09,0,0,0-7.7-.65h-.4a33.28,33.28,0,0,0-6.65.55,7.14,7.14,0,0,0-3.7,1.65,7,7,0,0,0-1.3,1.65,7.18,7.18,0,0,0-.45,1.65H394.5v-.6a21.6,21.6,0,0,1,.45-4.7,13.21,13.21,0,0,1,2.45-4.7,14.66,14.66,0,0,1,5.45-4.4,41.1,41.1,0,0,1,10.2-2.95A89,89,0,0,1,429,20.2h5.6a103.54,103.54,0,0,1,16.6,1.15,44,44,0,0,1,10.6,2.8,15.69,15.69,0,0,1,5.7,4.2,11.69,11.69,0,0,1,2.55,4.5,20.93,20.93,0,0,1,.45,4.65V57.4a2,2,0,0,0,2.3,2.3h2.9V75.4H453.1Q445.6,75.4,444.4,68.2Zm-.5-15.9V50l-18,3.2a13.77,13.77,0,0,0-5.1,1.6,3.37,3.37,0,0,0-1.5,3v.1a4.88,4.88,0,0,0,1.95,3.9q2,1.61,6.55,1.6,7.2,0,11.65-3.35T443.9,52.3Zm63.5-30.7v9.9a27.2,27.2,0,0,1,3.75-4.35,26.72,26.72,0,0,1,7.45-4.45,27.64,27.64,0,0,1,11.3-2.3h1.2a26.86,26.86,0,0,1,11,2.05,16.11,16.11,0,0,1,7,5.6,25.84,25.84,0,0,1,3.5,7.5,32.3,32.3,0,0,1,1.1,8.65v5.4H527.3V47.7a12.69,12.69,0,0,0-2.35-8q-2.36-3-7.35-3a9,9,0,0,0-7.35,3.2,12.71,12.71,0,0,0-2.65,8.4V75.4H480.4V21.6ZM617.4,1h27.2V75.4H617.5V67.6A18.48,18.48,0,0,1,615,69.85a40.72,40.72,0,0,1-4.6,2.8,30.36,30.36,0,0,1-8,2.7,51.66,51.66,0,0,1-10.8,1.05h-1.7q-16.5,0-24.55-7.7T557.3,49.2V47.1a27.41,27.41,0,0,1,1.75-10,25.19,25.19,0,0,1,5.35-8.35,24.53,24.53,0,0,1,9.9-6,44.83,44.83,0,0,1,14.8-2.2H591q16.1,0,26.4,7.8Zm0,47.5V48q0-4.91-4.45-8.65T600.5,35.6H600q-8.1,0-11.6,3.55A12.09,12.09,0,0,0,584.9,48v.5a12.26,12.26,0,0,0,3.75,8.9q3.75,3.8,11.45,3.8h.4q8.1,0,12.5-3.85T617.4,48.5ZM679.8,1V17.1H652.6V1Zm0,20.6V75.4H652.6V21.6Zm56.6,46.6q-8.21,8.2-25.2,8.2h-1.1q-12.6,0-18.75-5a15.28,15.28,0,0,1-6.15-12.3V57.9q0-7,5-10.85T707,42.3L732.9,40c2-.27,3-1.13,3-2.6a3.08,3.08,0,0,0-.65-2c-.44-.53-1.55-1-3.35-1.45a35.09,35.09,0,0,0-7.7-.65h-.4a33.21,33.21,0,0,0-6.65.55,7.14,7.14,0,0,0-3.7,1.65,7,7,0,0,0-1.3,1.65,7.18,7.18,0,0,0-.45,1.65H686.5v-.6a21.6,21.6,0,0,1,.45-4.7,13.21,13.21,0,0,1,2.45-4.7,14.66,14.66,0,0,1,5.45-4.4,41.1,41.1,0,0,1,10.2-2.95,89,89,0,0,1,16-1.25h5.6a103.54,103.54,0,0,1,16.6,1.15,44,44,0,0,1,10.6,2.8,15.69,15.69,0,0,1,5.7,4.2,11.69,11.69,0,0,1,2.55,4.5,20.93,20.93,0,0,1,.45,4.65V57.4a2,2,0,0,0,2.3,2.3h2.9V75.4H745.1Q737.6,75.4,736.4,68.2Zm-.5-15.9V50l-18,3.2a13.77,13.77,0,0,0-5.1,1.6,3.37,3.37,0,0,0-1.5,3v.1a4.88,4.88,0,0,0,2,3.9q1.95,1.61,6.55,1.6,7.2,0,11.65-3.35T735.9,52.3Z"></path>
+    </symbol>
+</svg>

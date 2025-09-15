@@ -1,0 +1,22 @@
+<div class="middle-block" maximize>
+    <div class="middle-block__content middle-block__content--has-panel">
+        <div class="payments-status" *ngIf="isReady">{{ ('payments.result.' + status + '__message') | translate }}</div>
+    </div>
+</div>
+<div class="payments-panel">
+    <a href="#" class="payments-panel__sign-in" style="display: none;">{{ 'payments_panel.sign_in' | translate }}</a>
+    <div class="lang-switcher" [class.lang-switcher--active]="isLangSwitcherActive" (click)="markLangSwitcherEvent($event)">
+        <button type="button" class="lang-switcher__button" (click)="toggleLangSwitcher()">
+            <span>{{ currentLang }}</span>
+        </button>
+        <div class="lang-switcher__dropdown">
+            <ul>
+                <li class="lang-switcher__lang" *ngFor="let lang of langs" (click)="onLangSwitch(lang)" [class.lang-switcher__lang--active]="lang.locale == currentLang">
+                    <span class="lang-switcher__lang-mark"></span><!--
+                 --><span class="lang-switcher__lang-icon lang-switcher__lang-icon--{{ lang.locale }}"></span><!--
+                 --><span class="lang-switcher__lang-name" [innerHTML]="lang.name"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

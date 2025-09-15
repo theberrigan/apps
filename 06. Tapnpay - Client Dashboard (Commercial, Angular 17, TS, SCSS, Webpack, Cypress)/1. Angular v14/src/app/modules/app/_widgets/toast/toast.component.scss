@@ -1,0 +1,38 @@
+@import '../../../../../assets/css/definitions.scss';
+
+.toast {
+    display: flex;
+    max-width: 320px;
+    min-width: 150px;
+
+    &__message-wrap {
+        padding: 0 10px 10px;
+    }
+
+    &__message {
+        width: 100%;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: $font-weight-medium;
+        line-height: 18px;
+        color: #fff;
+        padding: 10px 15px;
+        background-color: rgba(#000, 0.75);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    html.viewport_mobile & {
+        & {
+            max-width: 100%;
+            min-width: 0;
+
+            &__message-wrap {
+                padding: 0 6px 6px;
+            }
+
+            &__message {
+                padding: 6px 10px;
+            }
+        }
+    }
+}

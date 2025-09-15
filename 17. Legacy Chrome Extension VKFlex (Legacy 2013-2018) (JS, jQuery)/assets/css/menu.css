@@ -1,0 +1,194 @@
+/* --- Common --- */
+
+body {
+	font-family: Arial, Tahoma, Helvetica, sans-serif;
+}
+
+.container {
+	min-width: 176px;
+    -webkit-user-select: none;
+            user-select: none;
+}
+
+.hsep {
+	height: 4px;
+	clear: both;
+	border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.hsep.hidden {
+	display: none;
+}
+
+.message {
+	cursor: default;
+	color: #2B587A;
+	font-size: 13px;
+	line-height: 16px;
+	text-align: center;
+	padding: 15px 10px 20px;
+	width: 180px;
+}
+
+.message.mini {
+	padding: 12px 10px 20px;
+}
+
+@-webkit-keyframes spinning {
+    0% {
+        -webkit-transform: rotate(-360deg);
+    }
+}
+
+@keyframes spinning {
+    0% {
+        transform: rotate(-360deg);
+    }
+}
+
+/* --- Layout --- */
+
+.layout {
+	clear: both;
+	display: none;
+}
+
+.layout.shown {
+	display: block;
+}
+
+
+
+/* --- Layout: Menu --- */
+
+.menu-items {
+	margin-bottom: 8px;
+}
+
+.menu-items li {
+	clear: both;
+	display: none;
+	background: #FFF;
+	border-radius: 2px; 
+}
+
+.menu-items li:hover {
+	background: #55779B;
+}
+
+.menu-items li.shown {
+	display: block;
+}
+
+.menu-items a {
+	display: block;
+	padding: 0 8px;
+	min-width: 160px;
+}
+
+.badge {
+	display: none;
+	float: right;
+	background: #55779B;
+	color: #FFF;
+	height: 14px;
+	line-height: 14px;
+	font-size: 11px;
+	font-weight: bold;	
+	vertical-align: middle;
+	padding: 1px 8px 1px 7px;
+	margin-top: 4px;
+	border-radius: 9px;
+}
+
+.badge.shown {
+	display: block;
+}
+
+.menu-items li:hover .badge {
+	color: #2B587A;
+	background: #FFF;
+}
+
+.label {
+	font-size: 13px;
+	line-height: 16px;
+	display: block;
+	color: #2B587A;
+	white-space: nowrap;
+	padding: 4px 0;
+	height: 16px;
+	vertical-align: middle;
+	padding-right: 30px;
+}
+
+.menu-items li:hover .label {
+	color: #FFF;
+}
+
+
+
+/* --- Settings Button --- */
+
+.button {
+	display: block;
+	cursor: pointer;
+	clear: both;
+	padding: 8px;
+	border-radius: 2px;
+	height: 20px;
+	color: #55779B;
+	background-color: #FFF; 
+}
+
+.button:hover {
+	color: #FFF;
+	background-color: #55779B; 
+}
+
+.button-label {
+	padding-left: 28px;
+	font-family: Arial, Tahoma, Helvetica, sans-serif;
+	line-height: 20px;
+	font-size: 13px;
+	font-weight: bold;
+	vertical-align: middle;
+}
+
+.button-icon {
+	float: left;
+	width: 20px;
+	height: 20px;
+	background: url('../images/menu/ui.png') no-repeat;
+}
+
+.bi-settings {
+	background-position: 0 0;	
+}
+
+.button:hover .bi-settings {
+	background-position: 0 -20px;
+}
+
+.bi-auth {
+	background-position: -20px 0;	
+}
+
+.button:hover .bi-auth {
+	background-position: -20px -20px;
+}
+
+
+
+/* --- Layout: Loading --- */
+
+.spinner {
+	margin: 15px auto 0;
+	width: 80px;
+	height: 80px;
+	clear: both;
+	background: url('../images/menu/ui.png') no-repeat;
+	background-position: -40px 0;
+	-webkit-animation: spinning 0.7s infinite linear;
+			animation: spinning 0.7s infinite linear;
+}

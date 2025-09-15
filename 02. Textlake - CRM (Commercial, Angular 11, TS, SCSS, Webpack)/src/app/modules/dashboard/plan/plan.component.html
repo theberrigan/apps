@@ -1,0 +1,170 @@
+<action-panel *ngIf="isStandalone">
+    <div class="action-panel__primary">
+        <h1 class="action-panel__header">{{ 'subs.choose_plan__header' | translate }}</h1>
+    </div>
+</action-panel>
+
+<fieldset [disabled]="isSubmitting">
+    <ng-container [ngSwitch]="state">
+        <div class="plan__spinner" *ngSwitchCase="'loading'">
+            <spinner class="spinner spinner_blue spinner_small"></spinner>
+        </div>
+        <div class="plan__error" *ngSwitchCase="'error'">
+            {{ 'settings.rates.list.error' | translate }}
+        </div>
+        <div class="plan__plans" *ngSwitchCase="'ready'" [ngSwitch]="viewportBreakpoint === 'desktop'">
+            <div class="plan__matrix" *ngSwitchCase="true">
+                <div class="plan__matrix-top">
+                    <div class="plan__matrix-top-plan" [ngClass]="'plan__matrix-top-plan__' + plan.tier" *ngFor="let plan of plans">
+                        <div class="plan__matrix-top-plan-name">{{ plan.name }}</div>
+                        <div class="plan__matrix-top-plan-price">
+                            ${{ plan.price ? (plan.price / 100 | number : '.2-2') : 0 }}&nbsp;{{ 'subs.per_month__text' | translate }}
+                        </div>
+                        <div class="plan__matrix-top-plan-button">
+                            <button type="button" class="button button_regular button_blue"
+                                [class.button_inverse]="plan.tier === 'BASIC'"
+                                [isProgress]="isSubmitting && !isFundingSourcePopupVisible && activePlan === plan"
+                                (click)="onChoosePlan(plan)"
+                            >
+                                <span class="button__caption">{{ 'subs.choose__button' | translate }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="plan__matrix-features">
+                    <div class="plan__matrix-feature" *ngFor="let feature of features">
+                        <div class="plan__matrix-feature-name">
+                            <div class="plan__matrix-feature-name-text" [innerHTML]="feature.name | translate"></div>
+                            <div class="plan__matrix-feature-hint" *ngIf="!!feature.hint">
+                                <button
+                                    type="button"
+                                    class="plan__matrix-feature-hint-button"
+                                    (click)="toggleHint($event, feature)"
+                                    (mouseenter)="toggleHint($event, feature)"
+                                    (mouseleave)="toggleHint($event)"
+                                ></button>
+                                <div class="plan__matrix-feature-hint-bubble"
+                                    [class.plan__matrix-feature-hint-bubble_visible]="featureHint === feature"
+                                    [innerHTML]="feature.hint | translate"
+                                ></div>
+                            </div>
+                        </div>
+                        <div class="plan__matrix-feature-value" *ngFor="let plan of plans" [ngSwitch]="feature[plan.tier]">
+                            <div class="plan__matrix-feature-check plan__matrix-feature-check_yes" *ngSwitchCase="true"></div>
+                            <div class="plan__matrix-feature-check plan__matrix-feature-check_no" *ngSwitchCase="false"></div>
+                            <span *ngSwitchDefault>{{ feature[plan.tier] | translate }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="plan__matrix-bottom">
+                    <div class="plan__matrix-bottom-tail" *ngFor="let plan of plans"></div>
+                </div>
+            </div>
+            <div class="plan__plans-list" *ngSwitchCase="false">
+                <div class="plan__plans-list-item" [ngClass]="'plan__plans-list-item__' + plan.tier" *ngFor="let plan of plans">
+                    <div class="plan__plans-list-item-name">{{ plan.name }}</div>
+                    <div class="plan__plans-list-item-price">
+                        ${{ plan.price ? (plan.price / 100 | number : '.2-2') : 0 }}&nbsp;{{ 'subs.per_month__text' | translate }}
+                    </div>
+                    <div class="plan__plans-list-item-button">
+                        <button type="button" class="button button_regular button_blue"
+                            [class.button_inverse]="plan.tier === 'BASIC'"
+                            [isProgress]="isSubmitting && !isFundingSourcePopupVisible && activePlan === plan"
+                            (click)="onChoosePlan(plan)"
+                        >
+                            <span class="button__caption">{{ 'subs.choose__button' | translate }}</span>
+                        </button>
+                    </div>
+                    <div class="plan__plans-list-item-features">
+                        <div class="plan__plans-list-item-feature" *ngFor="let feature of featuresSeparate">
+                            <div class="plan__plans-list-item-feature-icon" [ngClass]="'plan__plans-list-item-feature-icon_' + feature[plan.tier][0]"></div>
+                            <span>{{ feature[plan.tier][1] | translate }}</span>
+                            <div class="plan__matrix-feature-hint" *ngIf="!!feature[plan.tier][2]">
+                                <button
+                                    type="button"
+                                    class="plan__matrix-feature-hint-button"
+                                    (click)="toggleHint($event, feature)"
+                                    (mouseenter)="toggleHint($event, feature)"
+                                    (mouseleave)="toggleHint($event)"
+                                ></button>
+                                <div class="plan__matrix-feature-hint-bubble"
+                                     [class.plan__matrix-feature-hint-bubble_visible]="featureHint === feature"
+                                     [innerHTML]="feature[plan.tier][2] | translate"
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <popup-custom #paymentsPopup [options]="{ closeBy: 'manual' }" class="plan__payments-popup" (onCloseRequest)="onHidePaymentsPopup($event)" *ngIf="isFundingSourcePopupVisible">
+            <popup-box>
+                <popup-header>{{ 'subs.payments__header_2' | translate }}</popup-header>
+                <popup-content>
+                    <!-- Content -->
+                    <div class="plan__controls">
+                        <div class="plan__control">
+                            <label class="plan__control-label">
+                                <span class="plan__control-label-text">
+                                    {{ 'subs.plan_selected__label' | translate }}
+                                </span>
+                            </label>
+                            <div class="plan__control-input">{{ activePlan.name }}</div>
+                        </div>
+                        <div class="plan__control">
+                            <label class="plan__control-label">
+                                <span class="plan__control-label-text">
+                                    {{ 'subs.ppu_label' | translate }}
+                                </span>
+                            </label>
+                            <div class="plan__control-input">
+                                <strong>{{ pricePerUser | currency : 'USD' : 'symbol' : '.2-2' }}</strong>&nbsp;/{{ 'subs.month_text' | translate }}
+                            </div>
+                        </div>
+                        <div class="plan__control">
+                            <label class="plan__control-label plan__control-label_has-input">
+                                <span class="plan__control-label-text">
+                                    {{ 'subs.users_count' | translate }}
+                                </span>
+                            </label>
+                            <div class="plan__control-input">
+                                <select class="select select_regular" [(ngModel)]="usersNumber">
+                                    <option *ngFor="let usersOption of usersOptions" [ngValue]="usersOption" [innerHTML]="usersOption"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="plan__control">
+                            <label class="plan__control-label">
+                                <span class="plan__control-label-text">
+                                    {{ 'subs.total_due__label' | translate }}
+                                </span>
+                            </label>
+                            <div class="plan__control-input">
+                                <strong>{{ (pricePerUser * usersNumber) | currency : 'USD' : 'symbol' : '.2-2' }}</strong>&nbsp;/{{ 'subs.month_text' | translate }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="plan__funding-source">
+                        <div class="plan__funding-source-label">{{ 'subs.funding_source__label' | translate }}</div>
+                        <funding-source
+                            #fundingSource
+                            (onResult)="onFundingSourceSubmitted($event)"
+                        ></funding-source>
+                    </div>
+                    <!-- /Content -->
+                </popup-content>
+                <popup-controls>
+                    <div class="popup__controls-buttons">
+                        <button type="button" class="button button_regular button_white" (click)="onHidePaymentsPopup()">
+                            <span class="button__caption">{{ 'subs.payments_cancel__button' | translate }}</span>
+                        </button>
+                        <button type="button" class="button button_regular button_blue" (click)="onSubmitPayments()" [isProgress]="isSubmitting" [isDisabled]="!isCardValid()">
+                            <span class="button__caption">{{ 'subs.payments_ok__button' | translate }}</span>
+                        </button>
+                    </div>
+                </popup-controls>
+            </popup-box>
+        </popup-custom>
+    </ng-container>
+</fieldset>

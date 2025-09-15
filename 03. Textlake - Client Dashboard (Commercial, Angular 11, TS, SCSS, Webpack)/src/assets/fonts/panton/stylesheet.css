@@ -1,0 +1,340 @@
+@font-face {
+    font-family: 'Panton Icons C Fill';
+    src: url('PantonIconsCFill-Bold.woff2') format('woff2'),
+        url('PantonIconsCFill-Bold.woff') format('woff'),
+        url('PantonIconsCFill-Bold.ttf') format('truetype'),
+        url('PantonIconsCFill-Bold.svg#PantonIconsCFill-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton';
+    src: url('Panton-Italic.woff2') format('woff2'),
+        url('Panton-Italic.woff') format('woff'),
+        url('Panton-Italic.ttf') format('truetype'),
+        url('Panton-Italic.svg#Panton-Italic') format('svg');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Panton';
+    src: url('Panton-SemiBold.woff2') format('woff2'),
+        url('Panton-SemiBold.woff') format('woff'),
+        url('Panton-SemiBold.ttf') format('truetype'),
+        url('Panton-SemiBold.svg#Panton-SemiBold') format('svg');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton Icons A Fill';
+    src: url('PantonIconsAFill-Bold.woff2') format('woff2'),
+        url('PantonIconsAFill-Bold.woff') format('woff'),
+        url('PantonIconsAFill-Bold.ttf') format('truetype'),
+        url('PantonIconsAFill-Bold.svg#PantonIconsAFill-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton';
+    src: url('Panton-ExtraLight.woff2') format('woff2'),
+        url('Panton-ExtraLight.woff') format('woff'),
+        url('Panton-ExtraLight.ttf') format('truetype'),
+        url('Panton-ExtraLight.svg#Panton-ExtraLight') format('svg');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton';
+    src: url('Panton-ExtraLightItalic.woff2') format('woff2'),
+        url('Panton-ExtraLightItalic.woff') format('woff'),
+        url('Panton-ExtraLightItalic.ttf') format('truetype'),
+        url('Panton-ExtraLightItalic.svg#Panton-ExtraLightItalic') format('svg');
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Panton';
+    src: url('Panton-Black.woff2') format('woff2'),
+        url('Panton-Black.woff') format('woff'),
+        url('Panton-Black.ttf') format('truetype'),
+        url('Panton-Black.svg#Panton-Black') format('svg');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton Icons C Fill';
+    src: url('PantonIconsCFill-Regular.woff2') format('woff2'),
+        url('PantonIconsCFill-Regular.woff') format('woff'),
+        url('PantonIconsCFill-Regular.ttf') format('truetype'),
+        url('PantonIconsCFill-Regular.svg#PantonIconsCFill-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton Icons C';
+    src: url('PantonIconsC-Bold.woff2') format('woff2'),
+        url('PantonIconsC-Bold.woff') format('woff'),
+        url('PantonIconsC-Bold.ttf') format('truetype'),
+        url('PantonIconsC-Bold.svg#PantonIconsC-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton Icons D Fill';
+    src: url('PantonIconsDFill-Regular.woff2') format('woff2'),
+        url('PantonIconsDFill-Regular.woff') format('woff'),
+        url('PantonIconsDFill-Regular.ttf') format('truetype'),
+        url('PantonIconsDFill-Regular.svg#PantonIconsDFill-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton';
+    src: url('Panton-LightItalic.woff2') format('woff2'),
+        url('Panton-LightItalic.woff') format('woff'),
+        url('Panton-LightItalic.ttf') format('truetype'),
+        url('Panton-LightItalic.svg#Panton-LightItalic') format('svg');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Panton Icons C';
+    src: url('PantonIconsC-Regular.woff2') format('woff2'),
+        url('PantonIconsC-Regular.woff') format('woff'),
+        url('PantonIconsC-Regular.ttf') format('truetype'),
+        url('PantonIconsC-Regular.svg#PantonIconsC-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton ExtraBlack';
+    src: url('Panton-ExtraBlack.woff2') format('woff2'),
+        url('Panton-ExtraBlack.woff') format('woff'),
+        url('Panton-ExtraBlack.ttf') format('truetype'),
+        url('Panton-ExtraBlack.svg#Panton-ExtraBlack') format('svg');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton';
+    src: url('Panton-Thin.woff2') format('woff2'),
+        url('Panton-Thin.woff') format('woff'),
+        url('Panton-Thin.ttf') format('truetype'),
+        url('Panton-Thin.svg#Panton-Thin') format('svg');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton Icons D';
+    src: url('PantonIconsD-Regular.woff2') format('woff2'),
+        url('PantonIconsD-Regular.woff') format('woff'),
+        url('PantonIconsD-Regular.ttf') format('truetype'),
+        url('PantonIconsD-Regular.svg#PantonIconsD-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton';
+    src: url('Panton-SemiBoldItalic.woff2') format('woff2'),
+        url('Panton-SemiBoldItalic.woff') format('woff'),
+        url('Panton-SemiBoldItalic.ttf') format('truetype'),
+        url('Panton-SemiBoldItalic.svg#Panton-SemiBoldItalic') format('svg');
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Panton Icons D';
+    src: url('PantonIconsD-Bold.woff2') format('woff2'),
+        url('PantonIconsD-Bold.woff') format('woff'),
+        url('PantonIconsD-Bold.ttf') format('truetype'),
+        url('PantonIconsD-Bold.svg#PantonIconsD-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton Icons A';
+    src: url('PantonIconsA-Regular.woff2') format('woff2'),
+        url('PantonIconsA-Regular.woff') format('woff'),
+        url('PantonIconsA-Regular.ttf') format('truetype'),
+        url('PantonIconsA-Regular.svg#PantonIconsA-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton';
+    src: url('Panton-ExtraBoldItalic.woff2') format('woff2'),
+        url('Panton-ExtraBoldItalic.woff') format('woff'),
+        url('Panton-ExtraBoldItalic.ttf') format('truetype'),
+        url('Panton-ExtraBoldItalic.svg#Panton-ExtraBoldItalic') format('svg');
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Panton Icons D Fill';
+    src: url('PantonIconsDFill-Bold.woff2') format('woff2'),
+        url('PantonIconsDFill-Bold.woff') format('woff'),
+        url('PantonIconsDFill-Bold.ttf') format('truetype'),
+        url('PantonIconsDFill-Bold.svg#PantonIconsDFill-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton Icons A';
+    src: url('PantonIconsA-Bold.woff2') format('woff2'),
+        url('PantonIconsA-Bold.woff') format('woff'),
+        url('PantonIconsA-Bold.ttf') format('truetype'),
+        url('PantonIconsA-Bold.svg#PantonIconsA-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton';
+    src: url('Panton-Light.woff2') format('woff2'),
+        url('Panton-Light.woff') format('woff'),
+        url('Panton-Light.ttf') format('truetype'),
+        url('Panton-Light.svg#Panton-Light') format('svg');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton';
+    src: url('Panton-ExtraBold.woff2') format('woff2'),
+        url('Panton-ExtraBold.woff') format('woff'),
+        url('Panton-ExtraBold.ttf') format('truetype'),
+        url('Panton-ExtraBold.svg#Panton-ExtraBold') format('svg');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton Icons B';
+    src: url('PantonIconsB-Regular.woff2') format('woff2'),
+        url('PantonIconsB-Regular.woff') format('woff'),
+        url('PantonIconsB-Regular.ttf') format('truetype'),
+        url('PantonIconsB-Regular.svg#PantonIconsB-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton Icons A Fill';
+    src: url('PantonIconsAFill-Regular.woff2') format('woff2'),
+        url('PantonIconsAFill-Regular.woff') format('woff'),
+        url('PantonIconsAFill-Regular.ttf') format('truetype'),
+        url('PantonIconsAFill-Regular.svg#PantonIconsAFill-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton';
+    src: url('Panton-ThinItalic.woff2') format('woff2'),
+        url('Panton-ThinItalic.woff') format('woff'),
+        url('Panton-ThinItalic.ttf') format('truetype'),
+        url('Panton-ThinItalic.svg#Panton-ThinItalic') format('svg');
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Panton';
+    src: url('Panton-BoldItalic.woff2') format('woff2'),
+        url('Panton-BoldItalic.woff') format('woff'),
+        url('Panton-BoldItalic.ttf') format('truetype'),
+        url('Panton-BoldItalic.svg#Panton-BoldItalic') format('svg');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Panton';
+    src: url('Panton-Regular.woff2') format('woff2'),
+        url('Panton-Regular.woff') format('woff'),
+        url('Panton-Regular.ttf') format('truetype'),
+        url('Panton-Regular.svg#Panton-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton';
+    src: url('Panton-Bold.woff2') format('woff2'),
+        url('Panton-Bold.woff') format('woff'),
+        url('Panton-Bold.ttf') format('truetype'),
+        url('Panton-Bold.svg#Panton-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton';
+    src: url('Panton-BlackItalic.woff2') format('woff2'),
+        url('Panton-BlackItalic.woff') format('woff'),
+        url('Panton-BlackItalic.ttf') format('truetype'),
+        url('Panton-BlackItalic.svg#Panton-BlackItalic') format('svg');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Panton Icons B';
+    src: url('PantonIconsB-Bold.woff2') format('woff2'),
+        url('PantonIconsB-Bold.woff') format('woff'),
+        url('PantonIconsB-Bold.ttf') format('truetype'),
+        url('PantonIconsB-Bold.svg#PantonIconsB-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton ExtraBlack';
+    src: url('Panton-ExtraBlackItalic.woff2') format('woff2'),
+        url('Panton-ExtraBlackItalic.woff') format('woff'),
+        url('Panton-ExtraBlackItalic.ttf') format('truetype'),
+        url('Panton-ExtraBlackItalic.svg#Panton-ExtraBlackItalic') format('svg');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Panton Icons B Fill';
+    src: url('PantonIconsBFill-Regular.woff2') format('woff2'),
+        url('PantonIconsBFill-Regular.woff') format('woff'),
+        url('PantonIconsBFill-Regular.ttf') format('truetype'),
+        url('PantonIconsBFill-Regular.svg#PantonIconsBFill-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Panton Icons B Fill';
+    src: url('PantonIconsBFill-Bold.woff2') format('woff2'),
+        url('PantonIconsBFill-Bold.woff') format('woff'),
+        url('PantonIconsBFill-Bold.ttf') format('truetype'),
+        url('PantonIconsBFill-Bold.svg#PantonIconsBFill-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+

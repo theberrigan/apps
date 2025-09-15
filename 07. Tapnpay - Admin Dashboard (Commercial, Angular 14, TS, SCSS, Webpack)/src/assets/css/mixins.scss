@@ -1,0 +1,15 @@
+@mixin clear-fix {
+    &:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+}
+
+@mixin no-scroll {
+    overflow: hidden !important;
+}
+
+@mixin no-select {
+    user-select: none !important;
+}

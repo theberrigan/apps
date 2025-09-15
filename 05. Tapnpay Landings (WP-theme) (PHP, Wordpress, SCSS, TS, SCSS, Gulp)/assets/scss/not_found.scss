@@ -1,0 +1,37 @@
+@use 'sass:math';
+
+@import './sunpass_definitions';
+@import './font_psr';
+@import './reset';
+
+html,
+body {
+    font-family: $font-family;
+    font-weight: $font-weight-medium;
+    font-style: normal;
+    background-color: #fffcfe;
+    color: #514476;
+}
+
+a,
+a:visited {
+    color: $link-color;
+}
+
+a,
+a:link,
+a:hover,
+a:active,
+a:focus,
+a:visited {
+    text-decoration: none;
+}
+
+.message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: calc(100vw / 8);
+    font-weight: bold;
+}

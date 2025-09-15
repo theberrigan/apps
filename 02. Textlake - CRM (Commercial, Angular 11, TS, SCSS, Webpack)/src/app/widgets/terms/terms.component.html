@@ -1,0 +1,30 @@
+<popup-custom
+    #popup
+    [options]="{ closeBy: 'manual', stickyHeader : true, stickyControls : true, showCross: !this.isAcceptRequired }"
+    (onCloseRequest)="onCloseRequest($event)"
+    (onDeactivate)="onDeactivate()"
+>
+    <popup-box>
+        <popup-header>{{ 'terms.title' | translate }}</popup-header>
+        <popup-content>
+            <span class="terms__content" [innerHTML]="text"></span>
+        </popup-content>
+        <popup-controls>
+            <ng-container *ngIf="isAcceptRequired">
+                <div>
+                    <checkbox [(ngModel)]="isAccepted" [disabled]="isAcceptInProgress">{{ 'terms.checkbox__label' | translate }}</checkbox>
+                </div>
+                <div class="popup__controls-buttons">
+                    <button type="button" class="button button_medium button_blue" [isProgress]="isAcceptInProgress" [isDisabled]="!isAccepted" (click)="onAccept()">
+                        <span class="button__caption">{{ 'terms.accept__button' | translate }}</span>
+                    </button>
+                </div>
+            </ng-container>
+            <div class="popup__controls-buttons" *ngIf="!isAcceptRequired">
+                <button type="button" class="button button_medium button_blue" (click)="onCloseRequest()">
+                    <span class="button__caption">{{ 'terms.close__button' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup-custom>

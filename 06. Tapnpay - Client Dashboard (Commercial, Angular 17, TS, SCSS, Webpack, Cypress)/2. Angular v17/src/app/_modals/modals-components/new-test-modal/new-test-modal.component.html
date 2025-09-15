@@ -1,0 +1,22 @@
+<popup-custom>
+    <popup-header>
+        <h2 class="popup__title">{{ modalConfig.titleTranslateKey | translate }}</h2>
+    </popup-header>
+    <popup-content>
+        <ng-template #dynamicContent></ng-template>
+    </popup-content>
+
+    <popup-controls [isStretched]="true">
+        <button type="button"
+                class="button button_regular button_light-blue"
+                (click)="cancel()">
+            <span class="button__caption">{{ modalConfig.cancelButtonTranslateKey | translate }}</span>
+        </button>
+        <button type="button"
+                class="button button_regular button_blue"
+                [isProgress]="isOkButtonProgress"
+                (click)="submit()">
+            <span class="button__caption">{{ modalConfig.okButtonTranslateKey | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>

@@ -1,0 +1,89 @@
+<tabs [isFullWidth]="true" [isCentered]="false">
+    <tab
+        *ngIf="canViewSummary"
+        [isFixedWidth]="true"
+        [canClose]="false"
+        [isActive]="activeTab === 'summary'"
+        (onActivate)="onSwitchTab('summary')"
+    >{{ 'accounts.tabs.summary' | translate }}</tab>
+    <tab
+        *ngIf="canViewInvoices"
+        [isFixedWidth]="true"
+        [canClose]="false"
+        [isActive]="activeTab === 'invoices'"
+        (onActivate)="onSwitchTab('invoices')"
+    >{{ 'accounts.tabs.invoices' | translate }}</tab>
+    <tab
+        *ngIf="canViewTransactions"
+        [isFixedWidth]="true"
+        [canClose]="false"
+        [isActive]="activeTab === 'payments'"
+        (onActivate)="onSwitchTab('payments')"
+    >{{ 'accounts.tabs.transactions' | translate }}</tab>
+    <tab
+        *ngIf="canViewDisputes"
+        [isFixedWidth]="true"
+        [canClose]="false"
+        [isActive]="activeTab === 'disputes'"
+        (onActivate)="onSwitchTab('disputes')"
+    >{{ 'accounts.tabs.disputes' | translate }}</tab>
+    <tab
+        *ngIf="canViewSmsLog"
+        [isFixedWidth]="true"
+        [canClose]="false"
+        [isActive]="activeTab === 'sms_log'"
+        (onActivate)="onSwitchTab('sms_log')"
+    >{{ 'accounts.tabs.sms_log' | translate }}</tab>
+    <tab
+        *ngIf="canViewActions"
+        [isFixedWidth]="true"
+        [canClose]="false"
+        [isActive]="activeTab === 'actions'"
+        (onActivate)="onSwitchTab('actions')"
+    >{{ 'accounts.tabs.actions' | translate }}</tab>
+</tabs>
+
+<div class="account-editor__tab-content" [ngSwitch]="accountData[activeTab].state">
+    <div class="account-editor__loader" *ngSwitchCase="'init'">
+        <loader></loader>
+    </div>
+    <div class="account-editor__message account-editor__message_error" *ngSwitchCase="'error'">
+        {{ 'accounts.common_error' | translate }}
+    </div>
+    <ng-container *ngSwitchCase="'ready'" [ngSwitch]="activeTab">
+        <account-editor-summary
+            *ngSwitchCase="'summary'"
+            [data]="accountData.summary.data"
+        ></account-editor-summary>
+        <account-editor-invoices
+            *ngSwitchCase="'invoices'"
+            [accountId]="accountId"
+            [data]="accountData.invoices.data"
+            (dataChange)="onTabDataChange('invoices', $event)"
+        ></account-editor-invoices>
+        <account-editor-payments
+            *ngSwitchCase="'payments'"
+            [accountId]="accountId"
+            [data]="accountData.payments.data"
+            (dataChange)="onTabDataChange('payments', $event)"
+        ></account-editor-payments>
+        <account-editor-disputes
+            *ngSwitchCase="'disputes'"
+            [accountId]="accountId"
+            [data]="accountData.disputes.data"
+            (dataChange)="onTabDataChange('disputes', $event)"
+        ></account-editor-disputes>
+        <account-editor-sms-log
+            *ngSwitchCase="'sms_log'"
+            [accountId]="accountId"
+            [data]="accountData.sms_log.data"
+            (dataChange)="onTabDataChange('sms_log', $event)"
+        ></account-editor-sms-log>
+        <account-editor-actions
+            *ngSwitchCase="'actions'"
+            [accountId]="accountId"
+            [data]="accountData.actions.data"
+            (dataChange)="onTabDataChange('actions', $event)"
+        ></account-editor-actions>
+    </ng-container>
+</div>

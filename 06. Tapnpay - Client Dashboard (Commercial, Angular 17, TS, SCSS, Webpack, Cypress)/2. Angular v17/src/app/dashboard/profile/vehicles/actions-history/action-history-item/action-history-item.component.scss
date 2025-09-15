@@ -1,0 +1,59 @@
+.action-item__name {
+    display: inline-block;
+    padding-left: 10px;
+    min-width: 132px;
+}
+
+.timeline-icon__line {
+    position: relative;
+
+    &--end {
+        &:before {
+            position: absolute;
+            content: "";
+            display: flex;
+            height: 28px;
+            width: 1px;
+            background-color: gray;
+            margin: 0 auto;
+            align-content: center;
+            justify-content: center;
+        }
+    }
+}
+
+.timeline-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.timeline-icon__point {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: gray;
+    border: 1px solid #000;
+
+    &--start {
+        background-color: #41a741;
+    }
+
+    &--end {
+        background-color: #ec4545;
+    }
+}
+
+.timeline-point-container {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    margin-top: 16px;
+}
+
+.action-item {
+    display: flex;
+}
+
+

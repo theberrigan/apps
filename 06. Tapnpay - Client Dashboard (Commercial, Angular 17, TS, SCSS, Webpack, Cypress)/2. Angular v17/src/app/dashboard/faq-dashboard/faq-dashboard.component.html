@@ -1,0 +1,12 @@
+<!-- Page Header -->
+<ng-container [ngSwitch]="viewportBreakpoint">
+    <page-panel *ngSwitchCase="'desktop'">
+        <h1 class="page-panel__header" [innerHTML]="'faq.page_header' | translate"></h1>
+    </page-panel>
+    <app-bar *ngSwitchDefault></app-bar>
+</ng-container>
+
+<div class="faq-dashboard__content">
+    <h1 class="page-header" *ngIf="viewportBreakpoint !== 'desktop'" [innerHTML]="'faq.page_header' | translate"></h1>
+    <faq-inner></faq-inner>
+</div>

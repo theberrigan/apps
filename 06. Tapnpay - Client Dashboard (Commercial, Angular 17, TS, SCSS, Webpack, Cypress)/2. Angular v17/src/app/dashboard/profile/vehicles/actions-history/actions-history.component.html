@@ -1,0 +1,16 @@
+<h2 class="mb-32">{{'vehicles.status_history_modal_title' | translate}}</h2>
+<div class="timeline-actions-history">
+    <div *ngFor="let item of historyItems" class="timeline-point">
+
+        <app-action-history-item *ngIf="item.end_date"
+                                 [date]="item.end_date"
+                                 type="END"></app-action-history-item>
+
+        <app-action-history-item
+            *ngIf="item.registered"
+            [date]="item.registered"
+            type="START"></app-action-history-item>
+
+
+    </div>
+</div>

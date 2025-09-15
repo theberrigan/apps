@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title data-i18n="title"></title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="/assets/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/settings.css">
+    <script type="text/javascript" src="/assets/js/plugins/jquery.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/jquery.nanoscroller.min.js"></script>    
+    <script type="text/javascript" src="/assets/js/common.js"></script>
+    <script type="text/javascript" src="/assets/js/settings.js"></script>
+</head>
+<body>
+    <div class="bg-rays">
+        <div class="bg-lighting">
+            <div class="container">
+                <div class="logo"></div>
+                <div class="content">
+                    <div class="content-inner">
+                        <div>
+                            <!-- Chaplet -->
+                            <div id="chaplet">
+                                <ul>
+                                    <li id="icon-vk" data-i18n="title:hint_vk"><a data-link="soc_vk" href="#" target="_blank"></a></li>
+                                    <li id="icon-tw" data-i18n="title:hint_twitter"><a data-link="soc_tw" href="#" target="_blank"></a></li>
+                                    <li id="icon-cs" data-i18n="title:hint_chromestore"><a data-link="chromestore" href="#" target="_blank"></a></li>
+                                    <li id="icon-ws" data-i18n="title:hint_website"><a data-link="website" href="#" target="_blank"></a></li>
+                                    <li id="icon-sh" data-i18n="title:hint_share"><a data-link="share_vk" href="#"></a></li>
+                                </ul>
+                            </div>
+                            <!-- /Chaplet -->
+
+                            <div class="default-settings ns" data-i18n="set_default"></div>
+
+                            <!-- SECTION: Common -->
+                            <div class="label section first ns" data-i18n="common_settings"></div>
+
+                            <!-- Language -->
+                            <div class="dropdown ns">
+                                <div class="dropdown-label">&nbsp;</div>
+                                <div class="dropdown-arrow"></div>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-items">
+                                        <ul class="dropdown-list"></ul>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="common--language" data-form-input="true" data-permanent-refresh="true" data-refresh-tabs="true" />
+                            </div>
+
+                            <div class="label label-wide ns" data-i18n="language"></div>
+                            <!-- /Language -->
+                            
+                            <div class="field-space"></div>
+
+                            <!-- Update Delay -->
+                            <div class="range ns">
+                                <input type="hidden" id="common--update_delay" data-form-input="true" />
+                                <div class="range-line"></div>
+                                <div class="range-slider hidden"></div>
+                            </div>
+                            <div class="label ns" data-i18n="update_delay"></div>
+                            <!-- /Update Delay -->
+                            
+                            <div class="field-space"></div>
+
+                            <!-- Show welcome message -->
+                            <input type="checkbox" id="common--show_welcome_msg" data-form-input="true" />
+                            <label for="common--show_welcome_msg" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="show_welcome_msg"></span>
+                            </label>
+                            <!-- /Show welcome message -->
+
+
+
+                            <!-- SECTION: VK -->
+                            <div class="label section ns" data-i18n="vk_settings"></div>
+
+                            <!-- Video Download Link -->
+                            <input type="checkbox" id="vk--video_downlink" data-form-input="true" data-refresh-tabs="true" />
+                            <label for="vk--video_downlink" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="video_downlink"></span>
+                            </label>
+                            <!-- /Video Download Link -->
+                            
+                            <div class="field-space"></div>
+
+                            <!-- Video Size -->
+                            <input type="checkbox" id="vk--video_show_size" data-form-input="true" data-refresh-tabs="true" />
+                            <label for="vk--video_show_size" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="video_show_size"></span>
+                            </label>
+                            <!-- /Video Size -->
+                            
+                            <div class="field-space"></div>
+
+                            <!-- Fix User Menu -->
+                            <input type="checkbox" id="vk--fix_menu" data-form-input="true" data-refresh-tabs="true" />
+                            <label for="vk--fix_menu" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="fix_menu"></span>
+                            </label>
+                            <!-- /Fix User Menu -->
+                            
+                            <div class="field-space"></div>
+
+                            <!-- Change videos link -->
+                            <input type="checkbox" id="vk--change_videos_link" data-form-input="true" data-refresh-tabs="true" />
+                            <label for="vk--change_videos_link" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="change_videos_link"></span>
+                            </label>
+                            <!-- /Change videos link -->
+                            
+                            <div class="field-space"></div>
+
+                            <!-- Hide Advert -->
+                            <input type="checkbox" id="vk--hide_advert" data-form-input="true" data-refresh-tabs="true" />
+                            <label for="vk--hide_advert" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="hide_advert"></span>
+                            </label>
+                            <!-- /Hide Advert -->
+                            
+                            <div class="field-space"></div>
+
+                            <!-- Hide potential friends -->
+                            <input type="checkbox" id="vk--hide_potential_friends" data-form-input="true" data-refresh-tabs="true" />
+                            <label for="vk--hide_potential_friends" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="hide_potential_friends"></span>
+                            </label>
+                            <!-- /Hide potential friends -->
+                            
+                            <div class="field-space"></div>
+
+                            <!-- Hide photo like -->
+                            <input type="checkbox" id="vk--hide_photo_like" data-form-input="true" data-refresh-tabs="true" />
+                            <label for="vk--hide_photo_like" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="hide_photo_like"></span>
+                            </label>
+                            <!-- /Hide photo like -->
+                            
+                            <div class="field-space"></div>
+
+                            <!-- Add Middlename Field -->
+                            <input type="checkbox" id="vk--add_middlename" data-form-input="true" data-refresh-tabs="true" />
+                            <label for="vk--add_middlename" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="add_middlename"></span>
+                            </label>
+                            <!-- /Add Middlename Field -->
+                            
+                            <div class="field-space"></div>
+
+                            <!-- Skip redirect page -->
+                            <input type="checkbox" id="vk--skip_redirect" data-form-input="true" data-refresh-tabs="true" />
+                            <label for="vk--skip_redirect" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="skip_redirect"></span>
+                            </label>
+                            <!-- /Skip redirect page -->
+                            
+                            <div class="field-space"></div>
+
+                            <!-- Show user age -->
+                            <input type="checkbox" id="vk--show_user_age" data-form-input="true" data-refresh-tabs="true" />
+                            <label for="vk--show_user_age" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="show_user_age"></span>
+                            </label>
+                            <!-- /Show user age -->
+                            
+                            <div class="field-space"></div>
+
+                            <!-- Show user zodiac -->
+                            <input type="checkbox" id="vk--show_user_zodiac" data-form-input="true" data-refresh-tabs="true" />
+                            <label for="vk--show_user_zodiac" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="show_user_zodiac"></span>
+                            </label>
+                            <!-- /Show user zodiac -->
+                            
+                            <div class="field-space"></div>
+
+                            <!-- Add calendar -->
+                            <input type="checkbox" id="vk--add_calendar" data-form-input="true" data-refresh-tabs="true" />
+                            <label for="vk--add_calendar" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="add_calendar"></span>
+                            </label>
+                            <!-- /Add calendar -->
+                            
+                            <div class="field-space"></div>
+
+                            <!-- Url shortener -->
+                            <input type="checkbox" id="vk--url_shortener" data-form-input="true" data-refresh-tabs="true" />
+                            <label for="vk--url_shortener" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="url_shortener"></span>
+                            </label>
+                            <!-- /Url shortener -->
+                            
+                            <div class="field-space"></div>
+
+                            <!-- Simplify audio UI -->
+                            <input type="checkbox" id="vk--simplify_audio_ui" data-form-input="true" data-refresh-tabs="true"  style="display: none;"/>
+                            <label for="vk--simplify_audio_ui" class="ns" style="display: none;">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="simplify_audio_ui"></span>
+                            </label>
+                            <!-- /Simplify audio UI -->
+
+
+
+                            <!-- SECTION: Notifications -->
+                            <div class="label section ns" data-i18n="notifications"></div>
+
+                            <!-- Notification Popup -->
+                            <input type="checkbox" id="notifications--popup" data-form-input="true" />
+                            <label for="notifications--popup" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="notifications_popup"></span>
+                            </label>
+                            <!-- /Notification Popup -->
+
+                            <div class="field-space"></div>
+
+                            <!-- Notification Counter -->
+                            <input type="checkbox" id="notifications--counter" data-form-input="true" />
+                            <label for="notifications--counter" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="notifications_counter"></span>
+                            </label>
+                            <!-- /Notification Counter -->
+
+                            <div class="field-space"></div>
+
+                            <!-- Notification Sound -->
+                            <div class="sound-play ns"></div>
+
+                            <div class="dropdown ns">
+                                <div class="dropdown-label">&nbsp;</div>
+                                <div class="dropdown-arrow"></div>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-items">
+                                        <ul class="dropdown-list"></ul>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="notifications--sound" data-form-input="true" />
+                            </div>
+
+                            <div class="label label-wide ns" data-i18n="notifications_sound"></div>
+                            <!-- /Notification Sound -->
+
+                            <div class="field-space"></div>
+
+                            <!-- Notification Event: Friends -->
+                            <input type="checkbox" id="notifications--events--friends" data-form-input="true" />
+                            <label for="notifications--events--friends" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="notifications_events_friends"></span>
+                            </label>
+                            <!-- /Notification Event: Friends -->
+
+                            <div class="field-space"></div>
+
+                            <!-- Notification Event: Messages -->
+                            <input type="checkbox" id="notifications--events--messages" data-form-input="true" />
+                            <label for="notifications--events--messages" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="notifications_events_messages"></span>
+                            </label>
+                            <!-- /Notification Event: Messages -->
+
+                            <div class="field-space"></div>
+
+                            <!-- Notification Event: Mentions -->
+                            <input type="checkbox" id="notifications--events--mentions" data-form-input="true" />
+                            <label for="notifications--events--mentions" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="notifications_events_mentions"></span>
+                            </label>
+                            <!-- /Notification Event: Mentions -->
+
+                            <div class="field-space"></div>
+
+                            <!-- Notification Event: Groups -->
+                            <input type="checkbox" id="notifications--events--groups" data-form-input="true" />
+                            <label for="notifications--events--groups" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="notifications_events_groups"></span>
+                            </label>
+                            <!-- /Notification Event: Groups -->
+
+                            <div class="field-space"></div>
+
+                            <!-- Notification Event: Photos -->
+                            <input type="checkbox" id="notifications--events--photos" data-form-input="true" />
+                            <label for="notifications--events--photos" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="notifications_events_photos"></span>
+                            </label>
+                            <!-- /Notification Event: Photos -->
+
+                            <div class="field-space"></div>
+
+                            <!-- Notification Event: Videos -->
+                            <input type="checkbox" id="notifications--events--videos" data-form-input="true" />
+                            <label for="notifications--events--videos" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="notifications_events_videos"></span>
+                            </label>
+                            <!-- /Notification Event: Videos -->
+
+                            <div class="field-space"></div>
+
+                            <!-- Notification Event: Notes -->
+                            <input type="checkbox" id="notifications--events--notes" data-form-input="true" />
+                            <label for="notifications--events--notes" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="notifications_events_notes"></span>
+                            </label>
+                            <!-- /Notification Event: Notes -->
+
+                            <div class="field-space"></div>
+
+                            <!-- Notification Event: Gifts -->
+                            <input type="checkbox" id="notifications--events--gifts" data-form-input="true" />
+                            <label for="notifications--events--gifts" class="ns">
+                                <span class="cbx"></span>
+                                <span class="cbx-lbl" data-i18n="notifications_events_gifts"></span>
+                            </label>
+                            <!-- /Notification Event: Gifts -->
+                            
+
+
+
+                            <!-- SECTION: Menu -->
+                            <div class="label section ns" data-i18n="user_menu"></div>
+
+                            <!-- Menu List -->
+                            <div class="menu-list ns">
+                                <div class="menu-list-items"></div>
+                                <input type="hidden" id="menu" data-form-input="true" />
+                            </div>
+                            <!-- /Menu List -->
+
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+            <div class="settings-saved ns">
+                <div class="settings-saved-button">
+                    <button type="button" id="reload_vk_tabs" data-i18n="button_update_vk_tabs"></button>
+                </div>
+                <div class="settings-saved-label" data-i18n="warning_update_vk_tabs"></div>
+            </div>
+        </div>
+    </div>  
+</body>
+</html>

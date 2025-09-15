@@ -1,0 +1,29 @@
+@import '../../../assets/css/definitions.scss';
+
+.toast-manager {
+    display: flex;
+    flex-flow: column nowrap;
+    position: fixed;
+    z-index: $z-index-toasts;
+    bottom: 0;
+    left: 0;
+
+    html.viewport_mobile & {
+        & {
+            width: 100%;
+            align-items: center;
+        }
+    }
+
+    html.viewport_desktop &,
+    html.viewport_tablet & {
+        &_nav_collapsed {
+            left: $nav-width-minimized;
+
+        }
+
+        &_nav_expanded {
+            left: $nav-width-default;
+        }
+    }
+}

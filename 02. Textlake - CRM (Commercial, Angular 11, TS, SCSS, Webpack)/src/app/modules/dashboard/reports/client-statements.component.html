@@ -1,0 +1,386 @@
+<ng-template #listOptionsTpl>
+    <ng-container *ngIf="state">
+        <div class="action-panel__item filters__filter">
+            <label class="filters__filter-label">{{ 'sidebar.limit' | translate }}</label>
+            <select class="select select_regular filters__filter-input" [(ngModel)]="state.pagination.size" (ngModelChange)="onLimitChange()">
+                <option *ngFor="let sizeOption of sizeOptions" [ngValue]="sizeOption">{{ sizeOption }}</option>
+            </select>
+        </div>
+    </ng-container>
+</ng-template>
+
+<action-panel>
+    <div class="action-panel__primary">
+        <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ 'billing.client_statements.page_header' | translate }}</h1>
+    </div>
+    <div class="action-panel__secondary" *ngIf="state">
+        <div class="action-panel__item"> <!-- TODO: hide if no changes and make full width on mobile -->
+            <button type="button" class="button button_regular button_blue"
+                [isDisabled]="statementItemsToSave.length === 0"
+                [isProgress]="isSaving"
+                (click)="onSave()"
+            >
+                <span class="button__caption">{{ 'billing.client_statements.save' | translate }}</span>
+            </button>
+        </div>
+        <ng-container *ngIf="viewportBreakpoint === 'desktop'">
+            <ng-container [ngTemplateOutlet]="listOptionsTpl"></ng-container>
+        </ng-container>
+        <div class="action-panel__item">
+            <sidebar-trigger [sidebar]="sidebar" [hasMark]="false" (onClick)="sidebar.toggle()"></sidebar-trigger>
+        </div>
+    </div>
+</action-panel>
+
+<sidebar #sidebar [isDesktopActive]="isDesktopSidebarActive" (isDesktopActiveChange)="onSidebarToggle($event)">
+    <div class="sidebar__title">&nbsp;</div>
+    <ng-container *ngIf="state">
+        <div class="sidebar__section" *ngIf="viewportBreakpoint !== 'desktop'">
+            <div class="sidebar__label" [canCollapse]="true" [isCollapsed]="state.sidebar.collapse.options" (isCollapsedChange)="onSidebarSectionCollapse('options', $event)">{{ 'sidebar.list_options' | translate }}</div>
+            <div class="filters">
+                <ng-container [ngTemplateOutlet]="listOptionsTpl"></ng-container>
+            </div>
+        </div>
+        <div class="sidebar__section">
+            <div class="sidebar__label" [canCollapse]="true" [isCollapsed]="state.sidebar.collapse.filters" (isCollapsedChange)="onSidebarSectionCollapse('filters', $event)">{{ 'sidebar.filters' | translate }}</div>
+            <form [formGroup]="filtersForm" (ngSubmit)="onFiltersSubmit()">
+                <div class="filters">
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.client_statements.filters.name__label' | translate }}</label>
+                        <input type="text" class="input input_regular filters__filter-input" formControlName="name">
+                    </div>
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.client_statements.filters.project_status__label' | translate }}</label>
+                        <select class="select select_regular filters__filter-input" formControlName="status">
+                            <option *ngFor="let statusOption of projectStatusOptions" [ngValue]="statusOption.value" [innerHTML]="statusOption.display | translate"></option>
+                        </select>
+                    </div>
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.client_statements.filters.from__label' | translate }}</label>
+                        <datepicker class="filters__filter-input" [format]="selectDateFormat" formControlName="from"></datepicker>
+                    </div>
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.client_statements.filters.to__label' | translate }}</label>
+                        <datepicker class="filters__filter-input" [format]="selectDateFormat" formControlName="to"></datepicker>
+                    </div>
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.client_statements.filters.completed_from__label' | translate }}</label>
+                        <datepicker class="filters__filter-input" [format]="selectDateFormat" formControlName="closedFrom"></datepicker>
+                    </div>
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.client_statements.filters.completed_to__label' | translate }}</label>
+                        <datepicker class="filters__filter-input" [format]="selectDateFormat" formControlName="closedTo"></datepicker>
+                    </div>
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.client_statements.filters.offer_label' | translate }}</label>
+                        <input type="text" class="input input_regular filters__filter-input" formControlName="key">
+                    </div>
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.client_statements.filters.invoiced__label' | translate }}</label>
+                        <select class="select select_regular filters__filter-input" formControlName="hasInvoice">
+                            <option *ngFor="let invoiceOption of invoiceOptions" [ngValue]="invoiceOption.value" [innerHTML]="invoiceOption.display | translate"></option>
+                        </select>
+                    </div>
+                    <div class="filters__buttons">
+                        <button type="button" class="button button_regular button_white" (click)="onFiltersSubmit(true)">
+                            <span class="button__caption">{{ 'billing.client_statements.filters.reset__button' | translate }}</span>
+                        </button>
+                        <button type="submit" class="button button_regular button_blue">
+                            <span class="button__caption">{{ 'billing.client_statements.filters.search__button' | translate }}</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </ng-container>
+</sidebar>
+
+<div class="clients-statements__spinner" *ngIf="listState === 'init' || listState === 'loading'">
+    <spinner class="spinner spinner_blue spinner_small"></spinner>
+</div>
+<div class="clients-statements__message" *ngIf="listState === 'empty'">
+    {{ 'billing.client_statements.no_statements' | translate }}
+</div>
+<div class="clients-statements__message clients-statements__message_error" *ngIf="listState === 'error'">
+    {{ 'billing.client_statements.error' | translate }}
+</div>
+<ng-container *ngIf="listState === 'list' || listState === 'loading-more'" [ngSwitch]="viewportBreakpoint === 'desktop'">
+    <ng-container *ngSwitchCase="true">
+        <ng-container *ngFor="let statementsPage of statementsPages; let isFirst = first">
+            <div class="clients-statements__list-page" *ngIf="!isFirst">{{ 'pagination.page' | translate }} {{ statementsPage.page + 1 }}</div>
+            <ng-container *ngFor="let statement of statementsPage.items">
+                <div class="clients-statements__table-header">
+                    <button type="button" class="clients-statements__table-header-toggle" [class.clients-statements__table-header-toggle_active]="activeDetailsStatement === statement" (click)="onToggleDetails(statement)"></button>
+                    <ng-container [ngSwitch]="!!statement.clientName">
+                        <ng-container *ngSwitchCase="true">
+                            <strong>{{ statement.clientName }}</strong> {{ statement.legalName }}
+                        </ng-container>
+                        <ng-container *ngSwitchCase="false">
+                            <strong>{{ statement.legalName }}</strong>
+                        </ng-container>
+                    </ng-container>
+                </div>
+                <div class="clients-statements__table-details" *ngIf="activeDetailsStatement === statement">
+                    <div class="clients-statements__list-statement-details">
+                        <table class="clients-statements__list-statement-table">
+                            <tbody>
+                            <tr *ngIf="!!statement.bankAccount">
+                                <th>{{ 'billing.client_statements.contact_bank_account' | translate }}:</th>
+                                <td>{{ statement.bankAccount }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.bankName">
+                                <th>{{ 'billing.client_statements.contact_bank_name' | translate }}:</th>
+                                <td>{{ statement.bankName }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.tin">
+                                <th>{{ 'billing.client_statements.contact_tin' | translate }}:</th>
+                                <td>{{ statement.tin }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.tax">
+                                <th>{{ 'billing.client_statements.contact_tax' | translate }}:</th>
+                                <td>{{ statement.tax }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.address.email">
+                                <th>{{ 'billing.client_statements.contact_email' | translate }}:</th>
+                                <td>{{ statement.address.email }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.address.email2">
+                                <th>{{ 'billing.client_statements.contact_secondary_email' | translate }}:</th>
+                                <td>{{ statement.address.email2 }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.address.phone">
+                                <th>{{ 'billing.client_statements.contact_phone' | translate }}:</th>
+                                <td>{{ statement.address.phone }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.address.phone2">
+                                <th>{{ 'billing.client_statements.contact_home_phone' | translate }}:</th>
+                                <td>{{ statement.address.phone2 }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.address.fax">
+                                <th>{{ 'billing.client_statements.contact_fax' | translate }}:</th>
+                                <td>{{ statement.address.fax }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.address.addressLine || !!statement.address.addressLine2">
+                                <th>{{ 'billing.client_statements.address' | translate }}:</th>
+                                <td>
+                                    <span class="clients-statements__list-statement-address-line" *ngIf="!!statement.address.addressLine">{{ statement.address.addressLine }}</span>
+                                    <span class="clients-statements__list-statement-address-line" *ngIf="!!statement.address.addressLine2">{{ statement.address.addressLine2 }}</span>
+                                    <span class="clients-statements__list-statement-address-line">{{ statement.address.city }} {{ statement.address.state }} {{ statement.address.zip }}</span>
+                                    <span class="clients-statements__list-statement-address-line" *ngIf="!!statement.address.country">{{ statement.address.country }}</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="clients-statements__table-wrap">
+                    <table class="clients-statements__table">
+                        <tbody>
+                            <tr>
+                                <th class="text-nowrap">{{ 'billing.client_statements.status' | translate }}</th>
+                                <th class="text-nowrap">{{ 'billing.client_statements.offer' | translate }}</th>
+                                <th class="text-nowrap">{{ 'billing.client_statements.project' | translate }}</th>
+                                <th class="text-nowrap">{{ 'billing.client_statements.date' | translate }}</th>
+                                <th class="text-nowrap">{{ 'billing.client_statements.completed' | translate }}</th>
+                                <th class="text-nowrap text-right">{{ 'billing.client_statements.net' | translate }}</th>
+                                <th class="text-nowrap text-right">{{ 'billing.client_statements.gross' | translate }}</th>
+                                <th class="text-nowrap">{{ 'billing.client_statements.currency' | translate }}</th>
+                                <th class="text-nowrap">{{ 'billing.client_statements.description' | translate }}</th>
+                                <th class="text-nowrap">{{ 'billing.client_statements.comment' | translate }}</th>
+                                <th class="text-nowrap">{{ 'billing.client_statements.invoice' | translate }}</th>
+                                <th class="text-nowrap">{{ 'billing.client_statements.send' | translate }}</th>
+                                <th class="text-nowrap">{{ 'billing.client_statements.external_id' | translate }}</th>
+                            </tr>
+                            <tr *ngFor="let item of statement.items">
+                                <td>{{ ('projects.statuses.' + item.status) | translate }}</td>
+                                <td class="text-nowrap">{{ item.offer }}</td>
+                                <td class="text-nowrap">{{ item.project }}</td>
+                                <td class="text-nowrap">{{ item.created | datetime : displayDatetimeFormat }}</td>
+                                <td class="text-nowrap">{{ item.completed | datetime : displayDatetimeFormat }}</td>
+                                <td class="text-nowrap text-right">{{ item.net / 100 | number : '.2-2' }}</td>
+                                <td class="text-nowrap text-right">{{ item.gross / 100 | number : '.2-2' }}</td>
+                                <td class="text-nowrap">{{ item.currency }}</td>
+                                <td>{{ item.description }}</td>
+                                <td class="clients-statements__table-cell clients-statements__table-cell_has-input">
+                                    <textarea class="clients-statements__table-textarea" [placeholder]="'billing.client_statements.edit_comment' | translate" #textarea [style.height.px]="textarea.scrollHeight" [(ngModel)]="item.comment" (ngModelChange)="onChangeItem(item)"></textarea>
+                                </td>
+                                <td class="clients-statements__table-cell clients-statements__table-cell_has-input">
+                                    <input type="text" class="clients-statements__table-input" [placeholder]="'billing.client_statements.edit_invoice' | translate" [(ngModel)]="item.invoice" (ngModelChange)="onChangeItem(item)">
+                                </td>
+                                <td>
+                                    <checkbox [(ngModel)]="item.invoiceSent" (ngModelChange)="onChangeItem(item)"></checkbox>
+                                </td>
+                                <td>{{ item.externalId }}</td>
+                            </tr>
+                            <tr *ngFor="let total of statement.total; let isFirst = first" [class.clients-statements__table-total]="isFirst">
+                                <td colspan="4">&nbsp;</td>
+                                <td class="text-right" *ngIf="isFirst" [rowSpan]="isFirst ? statement.total.length : null" style="vertical-align: middle">
+                                    <strong *ngIf="isFirst">{{ 'billing.client_statements.total' | translate }}</strong>
+                                    <ng-container *ngIf="!isFirst">&nbsp;</ng-container>
+                                </td>
+                                <td class="text-right">
+                                    <strong>{{ total.net / 100 | currency : total.currency : 'symbol' : '.2-2' }}</strong>
+                                </td>
+                                <td class="text-right">
+                                    <strong>{{ total.gross / 100 | currency : total.currency : 'symbol' : '.2-2' }}</strong>
+                                </td>
+                                <td colspan="6">&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-container>
+        </ng-container>
+        <pagination
+            [data]="pagination"
+            [isLoading]="listState === 'loading-more'"
+            (onLoad)="onSwitchPage($event)"
+        ></pagination>
+    </ng-container>
+    <div class="clients-statements__list" *ngSwitchCase="false">
+        <ng-container *ngFor="let clientsPage of statementsPages; let isFirst = first">
+            <div class="clients-statements__list-page" *ngIf="!isFirst">{{ 'pagination.page' | translate }} {{ clientsPage.page + 1 }}</div>
+            <div class="clients-statements__list-statement" *ngFor="let statement of clientsPage.items">
+                <div class="clients-statements__list-statement-header" [ngSwitch]="!!statement.clientName">
+                    <ng-container *ngSwitchCase="true">
+                        <div class="clients-statements__list-statement-name1">{{ statement.clientName }}</div>
+                        <div class="clients-statements__list-statement-name2">{{ statement.legalName }}</div>
+                    </ng-container>
+                    <div *ngSwitchCase="false" class="clients-statements__list-statement-name1">{{ statement.legalName }}</div>
+                </div>
+                <div class="clients-statements__list-statement-details">
+                    <table class="clients-statements__list-statement-table">
+                        <tbody>
+                            <tr *ngIf="!!statement.bankAccount">
+                                <th>{{ 'billing.client_statements.contact_bank_account' | translate }}:</th>
+                                <td>{{ statement.bankAccount }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.bankName">
+                                <th>{{ 'billing.client_statements.contact_bank_name' | translate }}:</th>
+                                <td>{{ statement.bankName }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.tin">
+                                <th>{{ 'billing.client_statements.contact_tin' | translate }}:</th>
+                                <td>{{ statement.tin }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.tax">
+                                <th>{{ 'billing.client_statements.contact_tax' | translate }}:</th>
+                                <td>{{ statement.tax }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.address.email">
+                                <th>{{ 'billing.client_statements.contact_email' | translate }}:</th>
+                                <td>{{ statement.address.email }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.address.email2">
+                                <th>{{ 'billing.client_statements.contact_secondary_email' | translate }}:</th>
+                                <td>{{ statement.address.email2 }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.address.phone">
+                                <th>{{ 'billing.client_statements.contact_phone' | translate }}:</th>
+                                <td>{{ statement.address.phone }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.address.phone2">
+                                <th>{{ 'billing.client_statements.contact_home_phone' | translate }}:</th>
+                                <td>{{ statement.address.phone2 }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.address.fax">
+                                <th>{{ 'billing.client_statements.contact_fax' | translate }}:</th>
+                                <td>{{ statement.address.fax }}</td>
+                            </tr>
+                            <tr *ngIf="!!statement.address.addressLine || !!statement.address.addressLine2">
+                                <th>{{ 'billing.client_statements.address' | translate }}:</th>
+                                <td>
+                                    <span class="clients-statements__list-statement-address-line" *ngIf="!!statement.address.addressLine">{{ statement.address.addressLine }}</span>
+                                    <span class="clients-statements__list-statement-address-line" *ngIf="!!statement.address.addressLine2">{{ statement.address.addressLine2 }}</span>
+                                    <span class="clients-statements__list-statement-address-line">{{ statement.address.city }} {{ statement.address.state }} {{ statement.address.zip }}</span>
+                                    <span class="clients-statements__list-statement-address-line" *ngIf="!!statement.address.country">{{ statement.address.country }}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clients-statements__list-statement-item" *ngFor="let item of statement.items">
+                    <table class="clients-statements__list-statement-table">
+                        <tbody>
+                            <tr>
+                                <th>{{ 'billing.client_statements.status' | translate }}:</th>
+                                <td>{{ ('projects.statuses.' + item.status) | translate }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.client_statements.offer' | translate }}:</th>
+                                <td>{{ item.offer }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.client_statements.project' | translate }}:</th>
+                                <td>{{ item.project }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.client_statements.date' | translate }}:</th>
+                                <td>{{ item.created | datetime : displayDatetimeFormat }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.client_statements.completed' | translate }}:</th>
+                                <td>{{ item.completed | datetime : displayDatetimeFormat }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.client_statements.net' | translate }}:</th>
+                                <td>{{ item.net / 100 | number : '.2-2' }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.client_statements.gross' | translate }}:</th>
+                                <td>{{ item.gross / 100 | number : '.2-2' }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.client_statements.currency' | translate }}:</th>
+                                <td>{{ item.currency }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.client_statements.description' | translate }}:</th>
+                                <td>{{ item.description }}</td>
+                            </tr>
+                            <tr>
+                                <th class="clients-statements__list-statement-table-input-label">{{ 'billing.client_statements.comment' | translate }}:</th>
+                                <td><textarea class="textarea clients-statements__list-statement-table-input" [(ngModel)]="item.comment" (ngModelChange)="onChangeItem(item)"></textarea></td>
+                            </tr>
+                            <tr>
+                                <th class="clients-statements__list-statement-table-input-label">{{ 'billing.client_statements.invoice' | translate }}:</th>
+                                <td><input type="text" class="input input_regular clients-statements__list-statement-table-input" [(ngModel)]="item.invoice" (ngModelChange)="onChangeItem(item)"></td>
+                            </tr>
+                            <tr>
+                                <th class="clients-statements__list-statement-table-checkbox-label">{{ 'billing.client_statements.send' | translate }}:</th>
+                                <td><checkbox [(ngModel)]="item.invoiceSent" (ngModelChange)="onChangeItem(item)"></checkbox></td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.client_statements.external_id' | translate }}:</th>
+                                <td>{{ item.externalId }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clients-statements__list-statement-total">
+                    <table class="clients-statements__list-statement-total-table">
+                        <tbody>
+                            <tr>
+                                <th>{{ 'billing.client_statements.total_net' | translate }}</th>
+                                <th>{{ 'billing.client_statements.total_gross' | translate }}</th>
+                            </tr>
+                            <tr *ngFor="let total of statement.total; let isFirst = first" [class.client-statement-total]="isFirst">
+                                <td>
+                                    {{ total.net / 100 | currency : total.currency : 'symbol' : '.2-2' }}
+                                </td>
+                                <td>
+                                    {{ total.gross / 100 | currency : total.currency : 'symbol' : '.2-2' }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </ng-container>
+        <pagination
+            [data]="pagination"
+            [isLoading]="listState === 'loading-more'"
+            (onLoad)="onSwitchPage($event)"
+        ></pagination>
+    </div>
+</ng-container>

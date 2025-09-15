@@ -1,0 +1,309 @@
+<ng-template #listOptionsTpl>
+    <ng-container *ngIf="state">
+        <div class="action-panel__item filters__filter">
+            <label class="filters__filter-label">{{ 'sidebar.order_by' | translate }}</label>
+            <sort-select class="filters__filter-input" [(ngModel)]="state.sort" [options]="sortOptions" (ngModelChange)="onViewOptionChange()"></sort-select>
+        </div>
+        <div class="action-panel__item filters__filter">
+            <label class="filters__filter-label">{{ 'sidebar.limit' | translate }}</label>
+            <select class="select select_regular filters__filter-input" [(ngModel)]="state.pagination.size" (ngModelChange)="onViewOptionChange()">
+                <option *ngFor="let sizeOption of sizeOptions" [ngValue]="sizeOption">{{ sizeOption }}</option>
+            </select>
+        </div>
+        <div class="action-panel__item filters__filter" *ngIf="viewportBreakpoint === 'desktop'">
+            <label class="filters__filter-label">{{ 'sidebar.view' | translate }}</label>
+            <list-view class="filters__filter-input" [(ngModel)]="state.view.desktop" (ngModelChange)="saveState()"></list-view>
+        </div>
+        <div class="action-panel__item filters__filter">
+            <button type="button" class="button button_regular button_white filters__filter-input" (click)="showSettingsPopup()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" class="button__icon">
+                    <use xlink:href="#svg-gear"></use>
+                </svg>
+                <span class="button__caption action-panel_hidden">{{ 'offers.list.settings_button' | translate }}</span>
+            </button>
+        </div>
+    </ng-container>
+</ng-template>
+
+<action-panel>
+    <div class="action-panel__primary">
+        <h1 class="action-panel__header">{{ 'offers.list.offers__header' | translate }}</h1>
+        <button class="button button_regular button_green" routerLink="/dashboard/offer/create" *ngIf="canEdit">
+            <span class="button__caption">{{ 'offers.list.create__button' | translate }}</span>
+        </button>
+    </div>
+    <div class="action-panel__secondary">
+        <ng-container [ngTemplateOutlet]="listOptionsTpl" *ngIf="!isMobile"></ng-container>
+        <div class="action-panel__item">
+            <sidebar-trigger [sidebar]="sidebar" [hasMark]="false" (onClick)="sidebar.toggle()"></sidebar-trigger>
+        </div>
+    </div>
+</action-panel>
+
+<sidebar #sidebar [isDesktopActive]="listState !== 'init' && state && state.sidebar.isActive" (isDesktopActiveChange)="onSidebarToggle($event)">
+    <div class="sidebar__title">&nbsp;</div>
+    <div class="sidebar__section" *ngIf="isMobile">
+        <div class="sidebar__label" [canCollapse]="true" [isCollapsed]="state && state.sidebar.collapse.options" (isCollapsedChange)="onSidebarSectionCollapse('options', $event)">{{ 'sidebar.list_options' | translate }}</div>
+        <div class="filters">
+            <ng-container [ngTemplateOutlet]="listOptionsTpl"></ng-container>
+        </div>
+    </div>
+    <div class="sidebar__section">
+        <div class="sidebar__label" [canCollapse]="true" [isCollapsed]="state && state.sidebar.collapse.filters" (isCollapsedChange)="onSidebarSectionCollapse('filters', $event)">{{ 'sidebar.filters' | translate }}</div>
+        <form *ngIf="filtersForm" [formGroup]="filtersForm" (ngSubmit)="onFiltersSubmit()">
+            <div class="filters">
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'offers.list.filter_status__label' | translate }}</label>
+                    <select class="select select_regular filters__filter-input" formControlName="status">
+                        <option *ngFor="let status of statuses" [ngValue]="status.key" [innerHTML]="status.display | translate"></option>
+                    </select>
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'offers.list.filter_offer__label' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="name">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'offers.list.filter_company__label' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="company">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'offers.list.filter_contact__label' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="contact">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'offers.list.filter_phone__label' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="phone">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'offers.list.filter_email__label' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="email">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'offers.list.filter_coordinator__label' | translate }}</label>
+                    <select class="select select_regular filters__filter-input" formControlName="coordinator">
+                        <option *ngFor="let coordinator of coordinators" [ngValue]="coordinator.id">
+                            {{ coordinator.firstName }} {{ coordinator.lastName }}
+                        </option>
+                    </select>
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'offers.list.filter_from__label' | translate }}</label>
+                    <datepicker type="timestamp" [format]="dateFormat.date.select" formControlName="from"></datepicker>
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'offers.list.filter_to__label' | translate }}</label>
+                    <datepicker type="timestamp" [format]="dateFormat.date.select" formControlName="to"></datepicker>
+                </div>
+                <div class="filters__buttons">
+                    <button type="button" class="button button_regular button_white" (click)="onFiltersReset()">
+                        <span class="button__caption">{{ 'offers.list.filter_clear__button' | translate }}</span>
+                    </button>
+                    <button type="submit" class="button button_regular button_blue">
+                        <span class="button__caption">{{ 'offers.list.filter_search__button' | translate }}</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</sidebar>
+<!-- /// -->
+<!--
+{{ __tmpDateModel }}
+<br>
+<datepicker
+    [(ngModel)]="__tmpDateModel"
+    [firstDayOfWeek]="'sun'"
+    [format]="format"
+    [type]="'date'"
+    [isDisabled]="__tmpDateModel_isDisabled"
+></datepicker>
+<br>
+<br>
+<button class="button button_regular button_blue" (click)="__chLang('en')">En</button>&nbsp;
+<button class="button button_regular button_blue" (click)="__chLang('ru')">Ru</button>&nbsp;
+<button class="button button_regular button_blue" (click)="__chLang('pl')">Pl</button>&nbsp;
+<button class="button button_regular button_blue" (click)="__chLang('es')">Es</button><br>
+Offers list comes here<br>
+Offers list comes here<br>
+<pagination [data]="{
+    first: false,
+    previous: true,
+    last: false,
+    next: true,
+    number: 3,
+    size: 10,
+    totalElements: 38,
+    totalPages: 8
+}" [isLoading]="__paginationLoading" (onLoad)="__onLoadPagination($event)"></pagination>
+-->
+<div class="offers-loading" *ngIf="listState === 'init' || listState === 'loading'">
+    <spinner class="spinner spinner_blue spinner_small"></spinner>
+</div>
+<div class="offers-message" *ngIf="listState === 'empty'">
+    {{ 'offers.list.no_result__message' | translate }}
+    <a routerLink="/dashboard/offer/create" *ngIf="canEdit">{{ 'offers.list.no_result__message_2' | translate }}</a>
+</div>
+<div class="offers-message offers-message_error" *ngIf="listState === 'error'">
+    {{ 'offers.list.error' | translate }}
+</div>
+<div class="list-wrap" *ngIf="listState === 'ready' || listState === 'continue'">
+    <div class="list-wrap__inner" [class.list-wrap__inner_wide]="viewportBreakpoint === 'mobile' || viewportBreakpoint === 'desktop' && state.view.desktop === 'table'">
+        <ng-container *ngIf="viewportBreakpoint === 'mobile' || state.view[viewportBreakpoint] === 'grid'">
+            <ng-container *ngFor="let offersPage of offersPages; let isFirst = first">
+                <div class="list-page" *ngIf="!isFirst">{{ 'pagination.page' | translate }} {{ offersPage.page + 1 }}</div>
+                <div class="list-mobile list-mobile_offers">
+                    <div class="list-mobile__item" *ngFor="let offer of offersPage.items" (click)="goToOffer(offer)">
+                        <div class="list-mobile__item-offer">{{ offer.offerKey }}</div>
+                        <div class="list-mobile__item-status" [style.background-color]="offersSettings.statusesColors[offer.statusKey].bg" [style.color]="offersSettings.statusesColors[offer.statusKey].text">{{ ('offers.statuses.' + offer.statusKey) | translate }}</div>
+                        <div class="list-mobile__item-date">{{ offer.created | datetime : dateFormat.datetime.display }}</div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngIf="viewportBreakpoint === 'tablet' || viewportBreakpoint === 'desktop' && state.view.desktop === 'grid-detailed'">
+            <ng-container *ngFor="let offersPage of offersPages; let isFirst = first">
+                <div class="list-page" *ngIf="!isFirst">{{ 'pagination.page' | translate }} {{ offersPage.page + 1 }}</div>
+                <div class="list list_offers">
+                    <div class="list__item" *ngFor="let offer of offersPage.items">
+                        <div class="list__item-col list__item-col_solid" [style.background-color]="offersSettings.statusesColors[offer.statusKey].bg" [style.color]="offersSettings.statusesColors[offer.statusKey].text">
+                            <div class="list__item-title">{{ offer.offerKey }}</div>
+                            <div class="list__item-status">{{ ('offers.statuses.' + offer.statusKey) | translate }}</div>
+                            <div class="list__item-date">{{ offer.created | datetime : dateFormat.datetime.display }}</div>
+                        </div>
+                        <div class="list__item-col">
+                            <div class="list__item-line" *ngIf="columnsVisibility.client">
+                                <div class="list__item-label">{{ 'offers.columns.company' | translate }}:</div>
+                                <div class="list__item-text">{{ offer.client }}</div>
+                            </div>
+                            <div class="list__item-line" *ngIf="columnsVisibility.contact">
+                                <div class="list__item-label">{{ 'offers.columns.contact' | translate }}:</div>
+                                <div class="list__item-text">{{ offer.contact }}</div>
+                            </div>
+                            <div class="list__item-line" *ngIf="columnsVisibility.phone">
+                                <div class="list__item-label">{{ 'offers.columns.phone' | translate }}:</div>
+                                <div class="list__item-text">{{ offer.phone }}</div>
+                            </div>
+                            <div class="list__item-line" *ngIf="columnsVisibility.email">
+                                <div class="list__item-label">{{ 'offers.columns.email' | translate }}:</div>
+                                <div class="list__item-text">{{ offer.email }}</div>
+                            </div>
+                        </div>
+                        <div class="list__item-col">
+                            <div class="list__item-line" *ngIf="columnsVisibility.coordinator">
+                                <div class="list__item-label">{{ 'offers.columns.coordinator' | translate }}:</div>
+                                <div class="list__item-text">{{ offer.coordinator }}</div>
+                            </div>
+                            <div class="list__item-line" *ngIf="columnsVisibility.net">
+                                <div class="list__item-label">{{ 'offers.columns.net' | translate }}:</div>
+                                <div class="list__item-text">{{ offer.net / 100 | number : '.2-2' }}</div>
+                            </div>
+                            <div class="list__item-line" *ngIf="columnsVisibility.gross">
+                                <div class="list__item-label">{{ 'offers.columns.gross' | translate }}:</div>
+                                <div class="list__item-text">{{ offer.gross / 100 | number : '.2-2' }}</div>
+                            </div>
+                            <div class="list__item-line" *ngIf="columnsVisibility.currencyKey">
+                                <div class="list__item-label">{{ 'offers.columns.currency' | translate }}:</div>
+                                <div class="list__item-text">{{ offer.currencyKey }}</div>
+                            </div>
+                            <div class="list__item-line" *ngIf="columnsVisibility.description">
+                                <div class="list__item-label">{{ 'offers.columns.description' | translate }}:</div>
+                                <div class="list__item-text">{{ offer.description }}</div>
+                            </div>
+                        </div>
+                        <div class="list__item-col list__item-col_buttons">
+                            <button type="button" class="list__item-button" (click)="goToOffer(offer)">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" height="20" width="20">
+                                    <path style="fill: currentColor;" d="M14.58,2.83c0.26,0,0.51,0.1,0.71,0.29l1.59,1.59c0.39,0.39,0.39,1.02,0,1.41l-8.51,8.51c-0.51,0.51-1.15,0.88-1.86,1.05
+	                                                                     l-2.93,0.73l0.73-2.93c0.18-0.7,0.54-1.34,1.05-1.86l8.51-8.51C14.07,2.93,14.33,2.83,14.58,2.83 M14.58,0.83
+	                                                                     c-0.8,0-1.55,0.31-2.12,0.88l-8.51,8.51c-0.77,0.77-1.31,1.73-1.58,2.79l-0.73,2.93l-0.81,3.23l3.23-0.81l2.93-0.73
+	                                                                     c1.05-0.26,2.02-0.81,2.79-1.58l8.51-8.51c1.17-1.17,1.17-3.07,0-4.24L16.7,1.71C16.14,1.14,15.38,0.83,14.58,0.83L14.58,0.83z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngIf="viewportBreakpoint === 'desktop' && state.view[viewportBreakpoint] === 'table'">
+            <ng-container *ngFor="let offersPage of offersPages; let isFirst = first">
+                <div class="list-page" *ngIf="!isFirst">{{ 'pagination.page' | translate }} {{ offersPage.page + 1 }}</div>
+                <div class="items-table-container">
+                    <div class="items-table-wrap" #tableWrap>
+                        <table class="items-table items-table_clickable">
+                            <thead>
+                                <tr>
+                                    <ng-container *ngFor="let column of offersSettings.columns">
+                                        <th *ngIf="column.isVisible">{{ column.display | translate }}</th>
+                                    </ng-container>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let offer of offersPage.items" (click)="goToOffer(offer)">
+                                    <ng-container *ngFor="let column of offersSettings.columns">
+                                        <td *ngIf="column.isVisible" class="items-table__cell items-table__cell_nowrap"
+                                            [class.table-cell-tight]="!offersSettings.colorizeEntireRow && column.key === 'statusKey'"
+                                            [class.items-table__cell_align_right]="column.key === 'net' || column.key === 'gross'"
+                                            [attr.style]="'background-color: ' + (offersSettings.colorizeEntireRow ? (offersSettings.statusesColors[offer.statusKey].bg + ' !important') : '') + '; color: ' + (offersSettings.colorizeEntireRow ? (offersSettings.statusesColors[offer.statusKey].text + ' !important') : '') | safeStyle"
+                                        >
+                                            <ng-container [ngSwitch]="column.key">
+                                                <ng-container *ngSwitchCase="'statusKey'" [ngSwitch]="offersSettings.colorizeEntireRow">
+                                                    <span class="offer-status-table-label" *ngSwitchCase="false" [style.background-color]="offersSettings.statusesColors[offer.statusKey].bg" [style.color]="offersSettings.statusesColors[offer.statusKey].text">
+                                                        {{ ('offers.statuses.' + offer[column.key]) | translate }}
+                                                    </span>
+                                                    <ng-container *ngSwitchCase="true">
+                                                        {{ ('offers.statuses.' + offer[column.key]) | translate }}
+                                                    </ng-container>
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="column.key == 'net' || column.key == 'gross' ? column.key : ''">
+                                                    {{ offer[column.key] / 100 | number : '.2-2' }}
+                                                </ng-container>
+                                                <ng-container *ngSwitchCase="'created'">
+                                                    {{ offer[column.key] | datetime : dateFormat.datetime.display }}
+                                                </ng-container>
+                                                <ng-container *ngSwitchDefault>
+                                                    {{ offer[column.key] }}
+                                                </ng-container>
+                                            </ng-container>
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="h-scroll-hint" *ngIf="shouldShowHorizontalScrollHint()">
+                        <div class="h-scroll-hint__message" [innerHTML]="'offers.list.h_scroll_hint' | translate"></div>
+                        <button type="button" class="h-scroll-hint__close" (click)="onCloseHorizontalScrollHint()"></button>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+
+        <pagination
+            *ngIf="!!paginationData"
+            [data]="paginationData"
+            [isLoading]="listState === 'continue'"
+            (onLoad)="onSwitchPage($event)"
+        ></pagination>
+    </div>
+</div>
+
+<popup-custom #settingsPopup [options]="{ closeBy: 'manual' }" class="offers-settings-popup" (onCloseRequest)="hideSettingsPopup()">
+    <popup-box>
+        <popup-header>{{ 'offers.list.settings_header' | translate }}</popup-header>
+        <popup-content>
+            <ng-container *ngIf="offersSettings">
+                <div class="offers-settings-popup__subtitle">{{ 'offers.list.columns_visibility' | translate }}</div>
+                <div class="offers-settings-popup__visibility_checkbox" *ngFor="let column of settingsPopupColumnsVisibility">
+                    <checkbox [(ngModel)]="column.isVisible">{{ column.display | translate }}</checkbox>
+                </div>
+            </ng-container>
+        </popup-content>
+        <popup-controls>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_regular button_blue" (click)="hideSettingsPopup()">
+                    <span class="button__caption">{{ 'offers.list.settings_ok' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup-custom>

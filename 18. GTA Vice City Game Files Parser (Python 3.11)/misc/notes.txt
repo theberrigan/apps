@@ -1,0 +1,650 @@
+Data to stream:
+- Cutscenes
+- Radio
+- Intro movies
+
+Wasm:
+- math
+- memory
+
+https://rustwasm.github.io/docs/wasm-pack/
+https://rustwasm.github.io/wasm-bindgen/examples/console-log.html
+https://rustwasm.github.io/docs/wasm-bindgen/examples/console-log.html
+https://github.com/rustwasm/wasm_game_of_life
+https://github.com/rustwasm/wasm-bindgen/tree/main/examples
+https://nickb.dev/blog/authoring-a-simd-enhanced-wasm-library-with-rust/
+MDN RenderLoop: https://github.com/mdn/dom-examples/blob/main/webgl-examples/tutorial/sample8/webgl-demo.js#L117
+Mouse:          https://developer.mozilla.org/en-US/docs/Web/API/Pointer_Lock_API
+VSync https://stackoverflow.com/a/11295465/3738245 || https://stackoverflow.com/a/51942991/3738245
+
+Font Rendering:
+- https://github.com/GreenLightning/gpu-font-rendering
+- C:\Projects\_Sources\gpu-font-rendering
+- SF Arborcrest
+
+TODO:
+- Cut silence from taxi.mp3
+- Remove or unpack audio/sfx.(RAW|SDT)
+- Load masks for textures from .txd
+- Check full .txd structure with extensions
+- Check all parsers for correct delimiters and usage of all values in each line
+- To each type add name of original type in comment
+- Trace camera creation (camera->world)
+- Trace CMBlur::MotionBlurOpen / CPostFX::Open
+- Trace rwCOMBINEPRECONCAT
+
+Exts:
++ .txd
++ .img
++ .gxt
+- .dff
+- .col
+- .adf
+~ .mp3
+~ .wav
++ .mpg
+- .dat
+- .scm
+- .cfg
+- .ipl
+- .ide
+- .zon
+- .ifp
+
+
+CFont::DrawFonts() - text rendering?
+
+
+	CTimeCycle::Initialise()
+	CPedStats::Initialise()
+	CSurfaceTable::Initialise("DATA\\SURFACE.DAT")
+	mod_HandlingManager.Initialise()
+	CTempColModels::Initialise()
+	CTimer::Initialise()
+	TheText.Load()
+CGame::InitialiseOnceAfterRW()
+    ScreenDroplets::InitDraw()
+    CustomPipes::CustomPipeInit()  // neo.txd, creating custom vehicle pipes
+	CPlayerSkin::Initialise()
+	CFont::Initialise()
+    CHud::Initialise()
+Camera create and init:
+Create and init world:
+Create and init lights:
+    CGame::InitialiseRenderWare()
+    Initialise3D(void * param)
+    AppEventHandler(RsEvent event, void * param)
+    RsEventHandler(RsEvent event, void * param)
+    WinMain(HINSTANCE__ * instance, HINSTANCE__ * prevInstance, char * cmdLine, int cmdShow)
+    
+------------------------------------------------------------------------------------------------------------------------
+
+Order:
+models/gta3.img
+neo/neo.txd
+TEXT/russian.gxt
+models/fonts_r.txd
+TEXT/american.gxt
+models/coll/peds.col
+models/fonts.txd
+models/x360btns.txd
+models/hud.txd
+neo/carTweakingTable.dat
+neo/worldTweakingTable.dat
+neo/rimTweakingTable.dat
+txd/LOADSC0.TXD
+data/handling.cfg
+data/surface.dat
+data/pedstats.dat
+data/timecyc.dat
+<all mp3/wav/adf here>
+audio/sfx.SDT
+audio/sfx.RAW
+models/fronten1.txd
+models/fronten2.txd
+txd/LOADSC2.TXD
+models/particle.txd
+data/particle.cfg
+anim/cuts.dir
+data/default.ide
+
+------------------------------------------------------------------------------------------------------------------------
+
+стр. 269 - clump/frame/atomic hierarchy
+стр. 136 - 6.3.3 Palettes
+стр. 67  - 2.9 Matrices
+
+game/src/extras/postfx.cpp:155 - additional shaders
+
+Geometry - содержит вертексы, индексы, UV, и тд. Представляет модель или её часть. Именно Geometry рендерится
+Frame - объект, используемый для позиционирования объектов в 3D сцене
+Atomic - связывает Geometry и Frame, а также содержит bounding sphere, по которой определяется видимость Geometry
+
+uniformRegistry хранит список юниформов для шейдера в виде объектов
+В librw/src/matfx.cpp:621 вся инициализация MatFX и шейдера
+
+Для хранения битмапов есть две сущности:
+- Raster - platform-dependent, мало манипуляций, опт. для железа, содержит мипмапы
+- Image  - platform-independent, много манипуляций
+Перед выводом на экран Image должен быть Raster-ирован
+Texture содержит Raster
+Камера имеет два растра - фреймбуфер и z-буфер
+RW использует двойную буферизацию
+View Window камеры - это типа near plane, но отодвинутый немного вперёд,
+именно на прикреплённый к нему фреймбуфер камера рендерит изображение.
+
+Camera raster: C888, GL_RGB, UNSIGNED_BYTE (rasterCreateRaster)
+Camera zraster: GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8 (rasterCreateZbuffer)
+
+CDraw::ms_fAspectRatio = width / height
+CVisibilityPlugins::SetRenderWareCamera - установка LOD distances
+clearCamera - glClear, glDepthMask, glClearColor и прочее
+CFont::RenderFontBuffer - непосредственный рендеринг текста
+
+Frame является родителем даже для Camera
+
+Local Transformation Matrix (LTM) (frame->ltm) - сумма всех трансформаций данного фрейма до корня иерархии,
+    то есть это Model -> World матрица. LTM каждого элемента в иерархии вычисляется прохождением иерархии
+    от корня до этого элемента.
+Frame Modeling Matrix (frame->matrix) - трансформация относительно родительского Frame в иерархии; если его нет, то совпадает с LTM
+
+LoadingScreen -> DoRWStuffStartOfFrame -> RsCameraBeginUpdate -> psCameraBeginUpdate -> RwCameraBeginUpdate -> camera->beginUpdateCB
+
+buildClipPersp - воссоздаёт вершины zNear и zFar из вершин view window
+
+engine->device.zNear/zFar - константы (-1.0, 1.0)
+
+
+Camera {
+    object = ObjectWithFrame {
+        object = Object {
+            parent = Frame
+            privateFlags = 0
+        }
+    }
+}
+
+Frame {
+    privateFlags = 0
+    root = Frame {
+        object = Object {
+            privateFlags = 0
+        }
+    }
+
+    syncHierarchyLTM()  // if (this->root->object.privateFlags & Frame::HIERARCHYSYNCLTM)
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+/*
+ * Synching is a bit complicated. If anything in the hierarchy is not synched,
+ * the root of the hierarchy is marked with the HIERARCHYSYNC flags.
+ * Every unsynched frame is marked with the SUBTREESYNC flags.
+ * If the LTM is not synched, the LTM flags are set.
+ * If attached objects need synching, the OBJ flags are set.
+ */
+
+// The hierarchy has unsynched frames
+HIERARCHYSYNCLTM = 0x01,	// [hier root flag] LTM not synched
+HIERARCHYSYNCOBJ = 0x02,	// [hier root flag] attached objects not synched
+HIERARCHYSYNC    = HIERARCHYSYNCLTM  | HIERARCHYSYNCOBJ,  // [hier root flag]
+// This frame is not synched
+SUBTREESYNCLTM   = 0x04,
+SUBTREESYNCOBJ   = 0x08,
+SUBTREESYNC      = SUBTREESYNCLTM | SUBTREESYNCOBJ,
+SYNCLTM          = HIERARCHYSYNCLTM | SUBTREESYNCLTM,
+SYNCOBJ          = HIERARCHYSYNCOBJ | SUBTREESYNCOBJ
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+
+CPostFX::InitOnce(void) {
+	u_blurcolor = rw::gl3::registerUniform("u_blurcolor");
+	u_contrastAdd = rw::gl3::registerUniform("u_contrastAdd");
+	u_contrastMult = rw::gl3::registerUniform("u_contrastMult");
+}
+
+psInitialize {
+    init cursor pos
+    init save dir
+    InitialiseLanguage {
+        choose locale/language
+        set nasty game
+        TheText.Unload {
+            // CMessages::...
+            BIGMessages[i].m_Stack[j].m_pText = nil;
+            BIGMessages[i].m_Stack[j].m_pString = nil;
+
+            BriefMessages[i].m_pText = nil;
+            BriefMessages[i].m_pString = nil;
+
+            PreviousBriefs[i].m_pText = nil;
+            PreviousBriefs[i].m_pString = nil;
+
+            CHud::GetRidOfAllHudMessages()  // remove ALL other text from screen
+            CUserDisplay::Pager.ClearMessages()
+        }
+        TheText.Load()
+    }
+    gGameState = GS_START_UP
+}
+
+Driver::s_plglist[for i in NUM_PLATFORMS] = new PluginList()
+initMatFX() - добавляет юниформы, создаёт шейдеры........
+CustomPipes::CustomPipeRegister() - добавляет юниформы для кастомных пайп
+RwEngineInit() -> Engine::open() - тут устанавливает render device (GL), все функции рендера GL (gl3::renderdevice),
+    иниц. GLFW, список резолюшенов, присваивает engine->driver рендерные функции null-девайса
+!!! RwEngineStart() - startGLFW, initOpenGL, GLFW_OPENGL_ES_API 3.3,
+    Engine::s_plglist.construct(engine);
+        AnimInterpolatorInfo
+        Texture plugin
+        Raster plugin
+        Image plugin
+        Frame plugin
+    Driver::s_plglist[i].construct(rw::engine->driver[i]);
+        matfxOpen
+            matFXGlobals.pipelines[PLATFORM_GL3] = makeMatFXPipeline();
+                (ObjPipeline.impl.instance/uninstance/render)(ObjPipeline *pipe, Atomic *atomic))
+                    freeInstanceData
+                        glDeleteBuffers(1, &header->ibo);
+                        glDeleteBuffers(1, &header->vbo);
+                        glDeleteBuffers(1, &header->vao);
+                    ^ после этих функций вызывается pipe callback, которые делают всё с vbo/vao
+        skinOpen
+        ...
+        driverOpen
+
+Initialise3D -> RsRwInitialize -> RwEngineStart -> Engine::start() -> X::s_plglist.construct()
+
+RwTextureSetAutoMipmapping(TRUE);
+RwTextureSetMipmapping(FALSE);
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+default shaders
+im2d shaders
+im3d shaders
+matFX shaders
+skin shaders
+
+Перед компиляцией шейдеров создаются пайплайны, а после - устанавливаются юниформы или UBOs
+
+------------------------------------------------------------------------------------------------------------------------
+
+- Engine::s_plglist - platform-independent
+- Driver::s_plglist[platform] - platform-dependent
+
+Initialise3D()
+    RsRwInitialize()
+        RwEngineInit()
+            Engine::init()
+                PluginList::open()
+                    allPlugins.init()
+
+                Driver::s_plglist[PLATFORM_GL3] = PluginList()
+
+                Frame::registerModule()
+                    Engine::registerPlugin(0, ID_FRAMEMODULE, frameOpen, frameClose)
+                        Engine::s_plglist.registerPlugin()
+                            allPlugins.add(Plugin p)
+                Image::registerModule()
+                    Engine::registerPlugin(sizeof(ImageGlobals), ID_IMAGEMODULE, imageOpen, imageClose)
+                        Engine::s_plglist.registerPlugin()
+                            allPlugins.add(Plugin p)
+                Raster::registerModule()
+                    Engine::registerPlugin(sizeof(RasterGlobals), ID_RASTERMODULE, rasterOpen, rasterClose)
+                        Engine::s_plglist.registerPlugin()
+                            allPlugins.add(Plugin p)
+                Texture::registerModule()
+	                Engine::registerPlugin(sizeof(TextureGlobals), ID_TEXTUREMODULE, textureOpen, textureClose)
+                        Engine::s_plglist.registerPlugin()
+                            allPlugins.add(Plugin p)
+                gl3::registerPlatformPlugins()
+                    Driver::registerPlugin(PLATFORM_GL3, 0, PLATFORM_GL3, driverOpen, driverClose)
+                        Driver::s_plglist[PLATFORM_GL3].registerPlugin()
+                            allPlugins.add(Plugin p)
+                    registerNativeRaster()
+                        nativeRasterOffset = Raster::registerPlugin(sizeof(Gl3Raster), ID_RASTERGL3, createNativeRaster, destroyNativeRaster, copyNativeRaster);
+        RsEventHandler(rsPLUGINATTACH)
+            RpWorldPluginAttach()
+            	registerMeshPlugin()
+            	    Geometry::registerPluginStream(ID_MESH, readMesh, writeMesh, getSizeMesh)
+                registerNativeDataPlugin()
+                    Geometry::registerPluginStream(ID_NATIVEDATA, readNativeData, writeNativeData, getSizeNativeData)
+                registerAtomicRightsPlugin()
+                    Atomic::registerPluginStream(ID_RIGHTTORENDER, readAtomicRights, writeAtomicRights, getSizeAtomicRights)
+                registerMaterialRightsPlugin()
+                    Material::registerPluginStream(ID_RIGHTTORENDER, readMaterialRights, writeMaterialRights, getSizeMaterialRights)
+            RpSkinPluginAttach()
+                registerSkinPlugin()
+                    Driver::registerPlugin(PLATFORM_NULL, 0, ID_SKIN, skinOpen, skinClose)
+                    gl3::initSkin()
+                        u_boneMatrices = registerUniform("u_boneMatrices", UNIFORM_MAT4, 64)
+                        Driver::registerPlugin(PLATFORM_GL3, 0, ID_SKIN, skinOpen, skinClose)
+                            Driver::s_plglist[PLATFORM_GL3].registerPlugin()
+                    Geometry::registerPlugin(sizeof(Skin*), ID_SKIN, createSkin, destroySkin, copySkin)
+                    Geometry::registerPluginStream(ID_SKIN, readSkin, writeSkin, getSizeSkin)
+                    Atomic::registerPlugin(sizeof(HAnimHierarchy*),ID_SKIN, createSkinAtm, destroySkinAtm, copySkinAtm)
+                    Atomic::registerPluginStream(ID_SKIN, readSkinLegacy, nil, nil)
+                    Atomic::setStreamRightsCallback(ID_SKIN, skinRights)
+                    Atomic::setStreamAlwaysCallback(ID_SKIN, skinAlways)
+            RpHAnimPluginAttach()
+                registerHAnimPlugin()
+                    Engine::registerPlugin(0, ID_HANIM, hanimOpen, hanimClose)
+                    Frame::registerPlugin(sizeof(HAnimData), ID_HANIM, createHAnim, destroyHAnim, copyHAnim)
+	                Frame::registerPluginStream(ID_HANIM, readHAnim, writeHAnim, getSizeHAnim)
+            NodeNamePluginAttach()
+                Frame::registerPlugin(24, ID_NODENAME, NodeNameConstructor, NodeNameDestructor, NodeNameCopy)
+                Frame::registerPluginStream(ID_NODENAME, NodeNameStreamRead, NodeNameStreamWrite, NodeNameStreamGetSize)
+            CVisibilityPlugins::PluginAttach()
+                ms_atomicPluginOffset = RpAtomicRegisterPlugin(sizeof(AtomicExt), ID_VISIBILITYATOMIC, AtomicConstructor, AtomicDestructor, AtomicCopyConstructor)
+                ms_framePluginOffset = RwFrameRegisterPlugin(sizeof(FrameExt), ID_VISIBILITYFRAME, FrameConstructor, FrameDestructor, FrameCopyConstructor)
+                ms_clumpPluginOffset = RpClumpRegisterPlugin(sizeof(ClumpExt), ID_VISIBILITYCLUMP, ClumpConstructor, ClumpDestructor, ClumpCopyConstructor)
+            RpAnimBlendPluginAttach()
+                Clump::registerPlugin(sizeof(CAnimBlendClumpData*), ID_RPANIMBLEND, AnimBlendClumpCreate, AnimBlendClumpDestroy, AnimBlendClumpCopy)
+            RpMatFXPluginAttach()
+                registerMatFXPlugin()
+                    Driver::registerPlugin(PLATFORM_NULL, 0, ID_MATFX, matfxOpen, matfxClose)
+	                gl3::initMatFX()
+	                    u_texMatrix = registerUniform("u_texMatrix", UNIFORM_MAT4)
+                        u_fxparams = registerUniform("u_fxparams", UNIFORM_VEC4)
+                        u_colorClamp = registerUniform("u_colorClamp", UNIFORM_VEC4)
+                        u_envColor = registerUniform("u_envColor", UNIFORM_VEC4)
+                        Driver::registerPlugin(PLATFORM_GL3, 0, ID_MATFX, matfxOpen, matfxClose)
+                    Atomic::registerPlugin(sizeof(int32), ID_MATFX, createAtomicMatFX, nil, copyAtomicMatFX)
+	                Atomic::registerPluginStream(ID_MATFX, readAtomicMatFX, writeAtomicMatFX, getSizeAtomicMatFX)
+                    Material::registerPlugin(sizeof(MatFX*), ID_MATFX, createMaterialMatFX, destroyMaterialMatFX, copyMaterialMatFX)
+	                Material::registerPluginStream(ID_MATFX, readMaterialMatFX, writeMaterialMatFX, getSizeMaterialMatFX)
+            RpAnisotPluginAttach()
+                registerAnisotropyPlugin()
+                    Texture::registerPlugin(sizeof(int32), ID_ANISOT, createAnisot, nil, copyAnisot)
+	                Texture::registerPluginStream(ID_ANISOT, readAnisot, writeAnisot, getSizeAnisot)
+            CustomPipes::CustomPipeRegister()  // if EXTENDED_PIPELINES
+                CustomPipeRegisterGL()
+                    u_viewVec = rw::gl3::registerUniform("u_viewVec")
+                    u_rampStart = rw::gl3::registerUniform("u_rampStart")
+                    u_rampEnd = rw::gl3::registerUniform("u_rampEnd")
+                    u_rimData = rw::gl3::registerUniform("u_rimData")
+                    u_lightMap = rw::gl3::registerUniform("u_lightMap")
+                    u_eye = rw::gl3::registerUniform("u_eye")
+                    u_reflProps = rw::gl3::registerUniform("u_reflProps")
+                    u_specDir = rw::gl3::registerUniform("u_specDir")
+                    u_specColor = rw::gl3::registerUniform("u_specColor")
+                rw::Material::registerPlugin(sizeof(CustomMatExt), MAKECHUNKID(rwVENDORID_ROCKSTAR, 0x80), CustomMatCtor, nil, CustomMatCopy)
+        RsEventHandler(rsINPUTDEVICEATTACH)
+        RwEngineOpen(openParams)
+            Engine::open(openParams)
+                engine->currentCamera = nil
+                engine->currentWorld = nil
+                engine->device = gl3::renderdevice
+                engine->device.system(DEVICEOPEN, (void*)p, 0)
+                    openGLFW()
+                        glfwInit()
+                        glGlobals.monitor = glfwGetMonitors()[0]
+                        makeVideoModeList()
+                engine->dummyDefaultPipeline = ObjPipeline::create()
+                engine->driver[PLATFORM_GL3]->defaultPipeline = engine->dummyDefaultPipeline
+                engine->driver[PLATFORM_GL3]->rasterCreate = null::rasterCreate
+                engine->driver[PLATFORM_GL3]->rasterLock = null::rasterLock
+                engine->driver[PLATFORM_GL3]->rasterUnlock = null::rasterUnlock
+                engine->driver[PLATFORM_GL3]->rasterLockPalette = null::rasterLockPalette
+                engine->driver[PLATFORM_GL3]->rasterUnlockPalette = null::rasterUnlockPalette
+                engine->driver[PLATFORM_GL3]->rasterNumLevels = null::rasterNumLevels
+                engine->driver[PLATFORM_GL3]->imageFindRasterFormat = null::imageFindRasterFormat
+                engine->driver[PLATFORM_GL3]->rasterFromImage = null::rasterFromImage
+                engine->driver[PLATFORM_GL3]->rasterToImage = null::rasterToImage
+        RsEventHandler(rsSELECTDEVICE, displayID)
+            RsSelectDevice()
+                psSelectDevice()
+                    // select monitor, resolution...
+        RwEngineStart()
+            Engine::start()
+                engine->device.system(DEVICEINIT, nil, 0)
+                    startGLFW()
+                        glfwSetErrorCallback()
+                        glfwWindowHint()........
+                        // MSAA, GLAD init
+                    initOpenGL()
+                        // aniso, shaderDecl, default uniforms (or UBOs), set clear color, gen white texture
+                        resetRenderState()
+                            // set a lot of params to default, fill all textures with white generic (?)
+                        // construct and compile default shader programs, link with predefined uniforms, set samplers
+                        openIm2D()
+                            // same thing with shaders + ibo, vbo
+                        openIm3D()
+                            // same thing with shaders + ibo, vbo
+                Engine::s_plglist.construct(engine)
+                    hanimOpen()
+                        new AnimInterpolatorInfo()
+                    textureOpen()
+                        // create text dicts
+                    rasterOpen()
+                        // some stack
+                    imageOpen()
+                        // something with ImageGlobals
+                    frameOpen()
+                        engine->frameDirtyList.init()
+                Driver::s_plglist[PLATFORM_GL3].construct(rw::engine->driver[PLATFORM_GL3])
+                    matfxOpen()
+                        matFXGlobals.pipelines[PLATFORM_GL3] = makeMatFXPipeline()
+                            pipe = ObjPipeline::create()
+                                pipe = new ObjPipeline()
+                                pipe->init()
+                                    rw::ObjPipeline::init(PLATFORM_GL3)
+                                        Pipeline::init(platform);
+                                        this->impl.instance = nothing;
+                                        this->impl.uninstance = nothing;
+                                        this->impl.render = nothing;
+                                    this->impl.instance = gl3::instance
+                                    this->impl.uninstance = gl3::uninstance
+                                    this->impl.render = gl3::render
+                                return pipe
+                            pipe->instanceCB = defaultInstanceCB
+                            pipe->uninstanceCB = defaultUninstanceCB
+                            pipe->renderCB = matfxRenderCB
+                            return pipe
+                        // doing MatFX shaders stuff.....
+                    skinOpen()
+                        skinGlobals.pipelines[PLATFORM_GL3] = makeSkinPipeline()
+                        // same things like in matfxOpen....
+                    driverOpen()
+                    	engine->driver[PLATFORM_GL3]->defaultPipeline    = makeDefaultPipeline()
+
+                        engine->driver[PLATFORM_GL3]->rasterNativeOffset = nativeRasterOffset
+                        engine->driver[PLATFORM_GL3]->rasterCreate       = rasterCreate
+                        engine->driver[PLATFORM_GL3]->rasterLock         = rasterLock
+                        engine->driver[PLATFORM_GL3]->rasterUnlock       = rasterUnlock
+                        engine->driver[PLATFORM_GL3]->rasterNumLevels    = rasterNumLevels
+                        engine->driver[PLATFORM_GL3]->imageFindRasterFormat = imageFindRasterFormat
+                        engine->driver[PLATFORM_GL3]->rasterFromImage    = rasterFromImage
+                        engine->driver[PLATFORM_GL3]->rasterToImage      = rasterToImage
+        // Both do nothing
+        RwTextureSetAutoMipmapping(TRUE)
+	    RwTextureSetMipmapping(FALSE)
+	CGame::InitialiseRenderWare()
+        CTxdStore::Initialise()
+        CVisibilityPlugins::Initialise()
+        // Add camera and world to the GlobalScene Scene object:
+        Scene.camera = CameraCreate(SCREEN_WIDTH, SCREEN_HEIGHT, TRUE)
+            camera = RwCameraCreate()
+                // Set viewWindow, viewOffset, nearPlane, farPlane, fogPlane, projection and callbacks (no plugins)
+            RwCameraSetFrame(camera, RwFrameCreate())
+            RwCameraSetRaster(camera, RwRasterCreate(0, 0, 0, rwRASTERTYPECAMERA))
+            RwCameraSetZRaster(camera, RwRasterCreate(0, 0, 0, rwRASTERTYPEZBUFFER))
+        RwCameraSetFarClipPlane(Scene.camera, 2000.0f)   // and mark camera hierarchy to sync
+            calczShiftScale(this)  // some strange zScale/zShift calcs
+        RwCameraSetNearClipPlane(Scene.camera, 0.9f)     // and mark camera hierarchy to sync
+            calczShiftScale(this)  // some strange zScale/zShift calcs
+        CameraSize(Scene.camera, nil, DEFAULT_VIEWWINDOW, DEFAULT_ASPECT_RATIO)
+        Scene.world = RpWorldCreate([ -10000, 10000 ])
+            // globalLights, localLights (no plugins)
+        RpWorldAddCamera(Scene.world, Scene.camera)
+            cam->world = world
+            // mark camera hierarchy to sync
+        LightsCreate(Scene.world)
+            // create ambient light
+            // create 1 direct light with frame
+            // create 4 extra dir lights (see pExtraDirectionals)
+            // !!! Ambient and Directional are added to world.globalLights; Point and Spot - to world.localLights !!!
+        // if PS2_STUFF
+        //     rw::MatFX::envMapApplyLight = true;    // def. false
+        //     rw::MatFX::envMapUseMatColor = true;   // def. false
+        //     rw::MatFX::envMapFlipU = true;         // def. false
+        // endif
+        CFont::Initialise()
+            // load fonts from fonts.txd
+        CHud::Initialise()
+            // load icons from hud.txd
+        CPlayerSkin::Initialise()
+        // ifdef EXTENDED_PIPELINES
+            CustomPipes::CustomPipeInit()
+                // load neo.txd
+                EnvMapInit()
+                    // create env map camera and add to the world; fill EnvScreenQuad
+                CreateVehiclePipe()
+                    // load and parse neo/carTweakingTable.dat to global Fresnel, Power, DiffColor, SpecColor
+                CreateWorldPipe()
+                    // parse neo/worldTweakingTable.dat and create neo shaders (global worldPipe)
+                CreateGlossPipe()
+                    // create neoGloss shader (global glossPipe)
+                CreateRimLightPipes()
+                    // parse neo/rimTweakingTable.dat, create shaders (global rimPipe and rimSkinPipe)
+        // endif
+	    ScreenDroplets::InitDraw()
+	        // create drop mask
+	        // load shaders
+psPostRWinit()
+    // some GLFW window, mouse, keyboard init
+LoadingScreen()
+    splash = LoadSplash(splashscreen)
+CGame::InitialiseOnceAfterRW()
+    TheText.Load()
+    CTimer::Initialise()
+    CTempColModels::Initialise()
+        // create collision spheres and boxes
+    CSurfaceTable::Initialise("DATA\\SURFACE.DAT")
+	CPedStats::Initialise()
+	CTimeCycle::Initialise()
+	DMAudio.Initialise()
+while (!doesPlayerWantToLoadGame) {
+    FrontendIdle()
+        CDraw::CalculateAspectRatio()
+        CTimer::Update()
+            // a lot of time-related code
+        CSprite2d::SetRecipNearClip()
+        CSprite2d::InitPerFrame()
+        CFont::InitPerFrame()
+        FrontEndMenuManager.Process()
+            // return if fade
+            if menu.isInteractive:
+                UserInput()  // A LOT of menu control code
+                ProcessFileActions()  // load/delete game (there game starts)
+                DMAudio.Service()
+            SwitchMenuOnAndOff()  // a lot of code, also loading all frontend textures
+        // prepare camera to render
+        RenderMenus()
+            FrontEndMenuManager.DrawFrontEnd()
+                // ...
+                DrawBackground(false)  // draws fonts as well
+        DoFade()  // if any
+        Render2dStuffAfterFade()
+            CHud::DrawAfterFade()  // intro
+            CFont::DrawFonts()
+            CCredits::Render()
+        DoRWStuffEndOfFrame()
+}
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+# slot = CTxdStore::AddTxdSlot("slot_name"):
+#     def = ms_pTxdPool->New()
+#     def.texDict = nil
+#     def.refCount = 0
+#     return def.getJustIndex()
+# CTxdStore::LoadTxd(slot, name)
+#     def = GetSlot(slot)
+#     def.texDict = RwTexDictionaryGtaStreamRead(name)
+# CTxdStore::AddRef(slot)
+#     GetSlot(slot)->refCount++;
+# CTxdStore::PushCurrentTxd()
+#     ms_pStoredTxd = (TextureGlobals*)(engine[textureModuleOffset])->currentTexDict
+# CTxdStore::SetCurrentTxd(slot)
+#     (TextureGlobals*)(engine[textureModuleOffset])->currentTexDict = GetSlot(slot)->texDict
+# RwTextureRead(name, mask)
+#     tex = (TextureGlobals*)(engine[textureModuleOffset])->currentTexDict->find(name)
+#     return tex if tex
+#     # elif: read image of common type from disk (not used)
+#     # else: return dummy texture
+# RwTexDictionaryGetCurrent()
+#     return (TextureGlobals*)(engine[textureModuleOffset])->currentTexDict
+
+# ((TextureGlobals*)((char*)(engine) + (textureModuleOffset)))
+# .push(newTxd)
+# .pop()
+
+# loadLevel:
+# 1. get global current txd or create new one and set as global current
+# 2. open <x>.txd from .dat and copy all textures to global current TO THE END, close <x>.txd
+
+# ! маска не используется при загрузке текстуры из TXD, но присваивается загруженной текстуре
+# ! если какие-то текстуры не найдены, искать в generic
+
+# .dat -> current or new global dict
+
+- *.col contains modelName
+- *.ide contains txdName and modelName
+- *.dff contains textureName and maskName
+- fistfight contains animName and animId
+
+- complete parsers
+- complete col reader (errors)
+- link dffs with textures, cols, params from ide
+- complete fistfight after ifp
+- link vehicles from *.ide with handling by handlingName
+- link peds from *.ide with pedStats by pedStatsName
+- link particle.cfg with textures from particle.txd
+- link surfaces
+
+
+
+# MODELS/FONTS.TXD
+txds.pushCurrent()
+txds.setCurrent()
+# load textures to CFont::Sprite[i]
+txds.popCurrent()
+
+# MODELS/HUD.TXD
+txds.pushCurrent()
+txds.setCurrent()
+# load textures to CHud::Sprites[i]
+txds.popCurrent()
+
+# txd/LOADSC<i>.TXD
+txds.pushCurrent()
+txds.setCurrent()
+# load textures to splash
+txds.popCurrent()
+
+# MODELS/FRONTEN1.TXD
+# MODELS/FRONTEN2.TXD
+txds.pushCurrent()
+txds.setCurrent()
+# load textures to m_aFrontEndSprites
+# !!! set m_aFrontEndSprites[i].SetAddressing(rwTEXTUREADDRESSBORDER);
+txds.popCurrent()
+
+# MODELS/PARTICLE.TXD
+txds.pushCurrent()
+txds.setCurrent("particle")
+# load textures to different sprites in CParticle
+txds.popCurrent()
+
+# TXDs from default.dat and gta_vc.dat files
+load all textures in one global TXD
+
+---------
+
+carcols.dat
+info.zon

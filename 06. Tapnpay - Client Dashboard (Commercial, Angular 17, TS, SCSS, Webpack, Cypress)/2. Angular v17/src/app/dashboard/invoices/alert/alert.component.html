@@ -1,0 +1,16 @@
+<div class="alert alert-warning" role="alert">
+    <span class="alert-icon-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink"
+             width="20px"
+             height="20px"
+             class="alert-icon"
+             viewBox="0 0 20 20"
+             fill="none"
+             version="1.1">
+            <circle cx="10" cy="10" r="10" fill="$figma-green"/>
+            <path d="M10 6.614c-.893 0-1.62-.726-1.62-1.619 0-.893.726-1.62 1.62-1.62.893 0 1.62.727 1.62 1.62 0 .893-.727 1.619-1.62 1.619zm1.396 9.731c0 .154-.125.279-.279.279H8.883a.279.279 0 0 1-.279-.279V8.052c0-.154.125-.279.279-.279h2.234c.154 0 .279.125.279.279v8.293z" fill="#fff"/>
+        </svg>
+    </span>
+    {{ 'invoices.alerts.surcharge' | translate : {surcharge: surchargeSum | currencyFormat} }}
+</div>

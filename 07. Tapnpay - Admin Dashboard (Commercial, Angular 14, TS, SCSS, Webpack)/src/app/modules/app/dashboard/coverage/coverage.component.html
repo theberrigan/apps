@@ -1,0 +1,423 @@
+<div class="coverage__screen" *ngIf="isSaving"></div>
+<div class="coverage__message coverage__message_error" *ngIf="state === 'error'">
+    Failed to load coverage
+</div>
+<div class="coverage__message coverage__message_error" *ngIf="state === 'future-version'">
+    Current map data was created in a newer version of the editor.<br>
+    Ask the developers to deploy the latest version of the console.<br>
+    (Editor version: {{ appVersion }}; Data version: {{ dataVersion }})
+</div>
+<ng-container *ngIf="state !== 'error' && state !== 'future-version'">
+    <div class="coverage__map" #mapEl></div>
+    <div class="coverage__ui" [ngStyle]="{
+        'top.px': uiMargin,
+        'right.px': uiMargin,
+        'bottom.px': uiMargin,
+        'width.px': uiWidth
+    }">
+        <ng-container *ngIf="state === 'ready'">
+            <div class="coverage__ui-heading">
+                <div class="coverage__ui-heading-titles">
+                    <div class="coverage__ui-heading-title"
+                        [class.coverage__ui-heading-title_active]="activeTab === 'routes'"
+                        (click)="onSwitchTab('routes')"
+                    >Routes</div>
+                    <div class="coverage__ui-heading-title"
+                        [class.coverage__ui-heading-title_active]="activeTab === 'groups'"
+                        (click)="onSwitchTab('groups')"
+                    >Groups</div>
+                </div>
+                <div class="coverage__ui-heading-controls">
+                    <button type="button" class="coverage__ui-heading-button"
+                        [title]="'View as end client'"
+                        [class.coverage__ui-heading-button_disabled]="!hasRoutes()"
+                        [disabled]="!hasRoutes()"
+                        (click)="preview()"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M11.62,18.07c-4.53,0-8-4.26-8-6,0-2,3.46-6,8-6,4.38,0,8,4,8,6,0,1.74-3.46,6-8,6m0-14c-5.52,0-10,4.84-10,8s4.58,8,10,8,10-4.91,10-8-4.48-8-10-8m0,10a2,2,0,1,1,2-2,2,2,0,0,1-2,2m0-6a4,4,0,1,0,4,4,4,4,0,0,0-4-4Z"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="coverage__ui-heading-button"
+                        [title]="'Help'"
+                        (click)="onShowHelp()"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M12,21a9,9,0,1,1,9-9A9,9,0,0,1,12,21ZM12,5a7,7,0,1,0,7,7A7,7,0,0,0,12,5ZM8.58,9.68A2.44,2.44,0,0,1,9,8.37a3.14,3.14,0,0,1,1.22-1.11,3.81,3.81,0,0,1,1.86-.43,4,4,0,0,1,1.75.36,2.75,2.75,0,0,1,1.17,1,2.37,2.37,0,0,1,.42,1.36,2.08,2.08,0,0,1-.24,1,3.05,3.05,0,0,1-.56.76c-.21.21-.6.57-1.16,1.07a4.57,4.57,0,0,0-.38.37,2.06,2.06,0,0,0-.21.29,1.48,1.48,0,0,0-.1.27c0,.09-.06.24-.11.47a.77.77,0,0,1-.82.71.88.88,0,0,1-.6-.23.93.93,0,0,1-.24-.69,2.52,2.52,0,0,1,.18-1,2.67,2.67,0,0,1,.47-.74c.2-.21.46-.46.79-.75s.51-.45.64-.58a1.66,1.66,0,0,0,.32-.43,1.07,1.07,0,0,0,.14-.52,1.22,1.22,0,0,0-.41-.93,1.48,1.48,0,0,0-1.05-.37A1.44,1.44,0,0,0,11,8.65a3.17,3.17,0,0,0-.6,1.11c-.15.52-.45.78-.88.78a.85.85,0,0,1-.64-.27A.83.83,0,0,1,8.58,9.68Zm3.34,7.49a1.08,1.08,0,0,1-.73-.27.93.93,0,0,1-.31-.75,1,1,0,0,1,.3-.73,1,1,0,0,1,.74-.29,1,1,0,0,1,1,1,1,1,0,0,1-.31.75A1.05,1.05,0,0,1,11.92,17.17Z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <ng-container [ngSwitch]="activeTab">
+                <ng-container *ngSwitchCase="'routes'" [ngSwitch]="hasRoutes()">
+                    <ng-container *ngSwitchCase="false">
+                        <div class="coverage__ui-empty">
+                            No routes created yet.<br>Click on map to create a new route.
+                        </div>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="true">
+                        <div class="coverage__ui-content">
+                            <div class="coverage__ui-content-scroll" #scrollEl>
+                                <div class="coverage__ui-content-inner">
+                                    <div class="coverage__ui-expands">
+                                        <div class="coverage__ui-expand coverage__ui-expand_grey"
+                                            *ngFor="let route of routes; let routeIndex = index; trackBy: trackRouteBy"
+                                            [class.coverage__ui-expand_active]="checkActiveRoute(route)"
+                                            [attr.data-route-id]="route.id"
+                                        >
+                                            <div class="coverage__ui-expand-heading">
+                                                <div class="coverage__ui-expand-heading-left" (click)="onSwitchRoute(route)">
+                                                    <div class="coverage__ui-expand-triangle">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                                            <path style="fill: currentColor;" d="M13.07,6.67,11.66,5.26,8,8.91,4.34,5.26,2.93,6.67l3.66,3.66h0L8,11.74l1.41-1.41h0Z"></path>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="coverage__ui-expand-title" [style.color]="route.routeColor">
+                                                        {{ route.getName() || ('Unnamed Route #' + (routeIndex + 1)) }}
+                                                    </div>
+                                                </div>
+                                                <div class="coverage__ui-expand-heading-right">
+                                                    <button type="button" class="coverage__ui-expand-remove" (click)="onRemoveRoute(route)">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                                            <path style="fill: currentColor;" d="M9.42,8l3.12,3.12-1.42,1.42L8,9.42,4.88,12.54,3.46,11.12,6.58,8,3.46,4.88,4.88,3.46,8,6.58l3.12-3.12,1.42,1.42Z"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="coverage__ui-expand-content-wrap"
+                                                *ngIf="checkActiveRoute(route)"
+                                                [@expand]
+                                            >
+                                                <div class="coverage__ui-expand-content">
+                                                    <input type="text" class="input input_regular coverage__ui-expand-input"
+                                                        [placeholder]="'Route name'"
+                                                        [(ngModel)]="route.name"
+                                                    >
+                                                    <select class="select select_regular coverage__ui-expand-select" [(ngModel)]="route.groupId">
+                                                        <option [ngValue]="null">Select Group</option>
+                                                        <option *ngFor="let group of groups" [ngValue]="group.id">{{ group.name }}</option>
+                                                    </select>
+                                                    <div class="coverage__ui-expand-colors">
+                                                        <div class="coverage__ui-expand-color"
+                                                            *ngFor="let color of routeColorOptions"
+                                                            [class.coverage__ui-expand-color_active]="route.routeColor === color.code"
+                                                            [style.backgroundColor]="color.code"
+                                                            (click)="route.onColorClick(color)"
+                                                        ></div>
+                                                    </div>
+                                                    <div class="coverage__ui-expand-sliders">
+                                                        <div class="coverage__ui-expand-slider">
+                                                            <div class="coverage__ui-expand-slider-label">
+                                                                Thickness
+                                                            </div>
+                                                            <div class="coverage__ui-expand-slider-widget">
+                                                                <slider
+                                                                    [minValue]="strokeWeightOptions.min"
+                                                                    [maxValue]="strokeWeightOptions.max"
+                                                                    [steps]="strokeWeightOptions.steps"
+                                                                    [isInteger]="true"
+                                                                    [(ngModel)]="route.routeWeight"
+                                                                    (ngModelChange)="route.onWeightChange()"
+                                                                ></slider>
+                                                            </div>
+                                                        </div>
+                                                        <div class="coverage__ui-expand-slider">
+                                                            <div class="coverage__ui-expand-slider-label">
+                                                                Opacity
+                                                            </div>
+                                                            <div class="coverage__ui-expand-slider-widget">
+                                                                <slider
+                                                                    [minValue]="strokeOpacityOptions.min"
+                                                                    [maxValue]="strokeOpacityOptions.max"
+                                                                    [isInteger]="false"
+                                                                    [(ngModel)]="route.routeOpacity"
+                                                                    (ngModelChange)="route.onOpacityChange()"
+                                                                ></slider>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- /// -->
+
+                                                    <div class="coverage__ui-gantries" *ngIf="route.hasGantries()">
+                                                        <div class="coverage__ui-expands">
+                                                            <div class="coverage__ui-expand coverage__ui-expand_white"
+                                                                 *ngFor="let gantry of route.gantries; let gantryIndex = index; trackBy: trackGantryBy"
+                                                                 [class.coverage__ui-expand_active]="route.checkActiveGantry(gantry)"
+                                                                 [attr.data-gantry-id]="gantry.id"
+                                                            >
+                                                                <div class="coverage__ui-expand-heading">
+                                                                    <div class="coverage__ui-expand-heading-left" (click)="route.onSwitchGantry(gantry)">
+                                                                        <div class="coverage__ui-expand-triangle">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                                                                <path style="fill: currentColor;" d="M13.07,6.67,11.66,5.26,8,8.91,4.34,5.26,2.93,6.67l3.66,3.66h0L8,11.74l1.41-1.41h0Z"></path>
+                                                                            </svg>
+                                                                        </div>
+                                                                        <div class="coverage__ui-expand-title">
+                                                                            {{ route.getGantryName(gantry) || ('Unnamed Gantry #' + (gantryIndex + 1)) }}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="coverage__ui-expand-heading-right">
+                                                                        <button type="button" class="coverage__ui-expand-remove" (click)="route.onRemoveGantry(gantry)">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                                                                <path style="fill: currentColor;" d="M9.42,8l3.12,3.12-1.42,1.42L8,9.42,4.88,12.54,3.46,11.12,6.58,8,3.46,4.88,4.88,3.46,8,6.58l3.12-3.12,1.42,1.42Z"></path>
+                                                                            </svg>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="coverage__ui-expand-content-wrap"
+                                                                    *ngIf="route.checkActiveGantry(gantry)"
+                                                                    [@expand]
+                                                                >
+                                                                    <div class="coverage__ui-expand-content">
+                                                                        <input type="text" class="input input_regular coverage__ui-expand-input"
+                                                                            [placeholder]="'Gantry name'"
+                                                                            [(ngModel)]="gantry.name"
+                                                                            (ngModelChange)="route.onGantryNameChange()"
+                                                                        >
+                                                                        <input type="text" class="input input_regular coverage__ui-expand-input"
+                                                                            [placeholder]="'Gantry code'"
+                                                                            [(ngModel)]="gantry.code"
+                                                                        >
+                                                                        <input type="text" class="input input_regular coverage__ui-expand-input"
+                                                                            [placeholder]="'Gantry coordinates'"
+                                                                            [(ngModel)]="route.activeGantryPosition"
+                                                                            (ngModelChange)="route.onGantryPositionChange()"
+                                                                        >
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="coverage__ui-expand-buttons">
+                                                        <button class="button button_regular button_white-blue" (click)="route.onAddGantry()">
+                                                            <span class="button__caption">Add new gantry</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <ng-container *ngSwitchCase="'groups'">
+                    <div class="coverage__ui-content">
+                        <div class="coverage__ui-content-scroll" *ngIf="hasGroups()">
+                            <div class="coverage__ui-content-inner">
+                                <div class="coverage__ui-expands">
+                                    <div class="coverage__ui-expand coverage__ui-expand_grey"
+                                         *ngFor="let group of groups; let groupIndex = index; trackBy: trackGroupBy"
+                                         [class.coverage__ui-expand_active]="activeGroupId === group.id"
+                                         [attr.data-group-id]="group.id"
+                                    >
+                                        <div class="coverage__ui-expand-heading">
+                                            <div class="coverage__ui-expand-heading-left" (click)="onSwitchGroup(group)">
+                                                <div class="coverage__ui-expand-triangle">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                                        <path style="fill: currentColor;" d="M13.07,6.67,11.66,5.26,8,8.91,4.34,5.26,2.93,6.67l3.66,3.66h0L8,11.74l1.41-1.41h0Z"></path>
+                                                    </svg>
+                                                </div>
+                                                <div class="coverage__ui-expand-title">
+                                                    {{ getGroupName(group) || ('Unnamed Group #' + (groupIndex + 1)) }}
+                                                </div>
+                                            </div>
+                                            <div class="coverage__ui-expand-heading-right">
+                                                <button type="button" class="coverage__ui-expand-remove" (click)="onRemoveGroup(group)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                                        <path style="fill: currentColor;" d="M9.42,8l3.12,3.12-1.42,1.42L8,9.42,4.88,12.54,3.46,11.12,6.58,8,3.46,4.88,4.88,3.46,8,6.58l3.12-3.12,1.42,1.42Z"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="coverage__ui-expand-content-wrap"
+                                             *ngIf="activeGroupId === group.id"
+                                             [@expand]
+                                        >
+                                            <div class="coverage__ui-expand-content">
+                                                <input type="text" class="input input_regular coverage__ui-expand-input"
+                                                    [placeholder]="'Group name'"
+                                                    [(ngModel)]="group.name"
+                                                >
+                                                <div class="coverage__ui-expand-flags">
+                                                    <checkbox
+                                                        [(ngModel)]="group.isDeactivated"
+                                                        (ngModelChange)="onGroupDeactivatedChange(group)"
+                                                    >
+                                                        Deactivated
+                                                    </checkbox>
+                                                    <checkbox [(ngModel)]="group.includeToFocus">
+                                                        Focus on the group when page is loaded
+                                                    </checkbox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="coverage__ui-content-sub">
+                            <button class="button button_regular button_light-blue"
+                                (click)="onAddNewGroup()"
+                            >
+                                <span class="button__caption">Add new group</span>
+                            </button>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+            <div class="coverage__ui-controls">
+                <button type="button" class="button button_regular button_blue coverage__ui-control"
+                    [isDisabled]="isSaving"
+                    [isProgress]="isSaving"
+                    (click)="onSave()"
+                >
+                    <span class="button__caption">Save</span>
+                </button>
+            </div>
+        </ng-container>
+        <div  class="coverage__ui-overlay" *ngIf="isHelpVisible">
+            <div class="coverage__ui-overlay-heading">
+                <div class="coverage__ui-overlay-heading-title">Help</div>
+                <button type="button" class="coverage__ui-overlay-heading-button" (click)="onHideHelp()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                        <path style="fill: currentColor;" d="M9.42,8l3.12,3.12-1.42,1.42L8,9.42,4.88,12.54,3.46,11.12,6.58,8,3.46,4.88,4.88,3.46,8,6.58l3.12-3.12,1.42,1.42Z"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="coverage__ui-overlay-content">
+                <div class="coverage__ui-help">
+                    <h3>Basic Usage</h3>
+                    <p>To <strong>create a new route</strong> define at least two waypoint on the map by clicking on it.</p>
+                    <p>
+                        To <strong>create the next route</strong>, you should complete the current one.
+                        Click on the map while holding Ctrl/Cmd key to complete the current route and start the next one.
+                        Or collapse the previous route in the list on the right and then click on the map.
+                    </p>
+                    <p>To <strong>delete a waypoint</strong>, right-click on it.</p>
+                    <p>To <strong>preview all routes</strong>, click on the button with the eye icon.</p>
+                    <p><strong>Note:</strong> when you edit one route, all the others are temporary grayed out.</p>
+
+                    <!-- /// -->
+
+                    <h3>Gantries</h3>
+                    <p>
+                        Any number of gantries can be added to the route.
+                        To do this expand a route in the list and click <strong>Add new gantry</strong>.
+                    </p>
+                    <p>
+                        You can edit the gantry's position in the following ways:
+                    </p>
+                    <ul class="list list_dot">
+                        <li>
+                            Click on "marker" icon to enable position edit mode.
+                            Click on the map to place a marker.
+                            The marker will appear on the map and position edit mode will be disabled automatically.
+                        </li>
+                        <li>
+                            Click on "marker" icon to enable position edit mode.
+                            Enter coordinates of the gantry and click on "mark" button.
+                            The marker will appear on the map.
+                        </li>
+                        <li>Just drag the marker on the map.</li>
+                    </ul>
+
+                    <!-- /// -->
+
+                    <h3>Groups</h3>
+                    <p>You can group routes.</p>
+                    <p>Tapnpay client will see the list of routes as follows:</p>
+                    <p>Group 1:</p>
+                    <ul class="list list_dot">
+                        <li>Route 1</li>
+                        <li>Route 2</li>
+                        <li>Route 3</li>
+                    </ul>
+                    <p>Group 2:</p>
+                    <ul class="list list_dot">
+                        <li>Route 4</li>
+                        <li>Route 5</li>
+                    </ul>
+                    <p>Ungrouped routes:</p>
+                    <ul class="list list_dot">
+                        <li>Route 6</li>
+                        <li>Route 7</li>
+                    </ul>
+                    <br>
+                    <p>
+                        To group some routes go to <strong>Groups</strong> tab and click
+                        <strong>Add new group</strong>. Enter group name and check group options.
+                        Go back to <strong>Routes</strong> tab and assign the group to the routes you want
+                        from the dropdown list <strong>Select Group</strong>.
+                    </p>
+                    <p>Groups have the following options:</p>
+                    <ul class="list list_dot">
+                        <li>
+                            <strong>Deactivate.</strong> When this option is enabled, Tapnpay client will not see
+                            this group and the routes assigned to it in the list. This is useful when you want to
+                            disable some TAs without deleting them.
+                        </li>
+                        <li>
+                            <strong>Focus on the group when page is loaded.</strong> When the map is loaded, it should
+                            focus on some area for the convenience of the Tapnpay client. This option allows you to add
+                            a group to focus.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="coverage__ui-overlay" *ngIf="state === 'loading'">
+            <div class="coverage__ui-overlay-content coverage__ui-overlay-content_center">
+                <loader></loader>
+            </div>
+        </div>
+    </div>
+    <div class="coverage__search" [ngStyle]="{
+        'top.px': uiMargin,
+        'left': searchLeft,
+        'width.px': searchWidth,
+        'height.px': searchHeight
+    }">
+        <div class="coverage__search-wrap">
+            <ng-container [ngSwitch]="isSearchSubmitting">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="coverage__search-icon" *ngSwitchCase="false">
+                    <path fill="currentColor" d="M15.89,14.48a6,6,0,1,0-1.41,1.41L19,20.36,20.36,19ZM11,15a4,4,0,1,1,4-4,3.92,3.92,0,0,1-.56,2A4,4,0,0,1,13,14.44,3.92,3.92,0,0,1,11,15Z"/>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="coverage__search-icon coverage__search-icon_spinning" *ngSwitchCase="true">
+                    <path style="fill: currentColor; opacity: 0.2;" d="M12,20a8,8,0,1,1,8-8A8,8,0,0,1,12,20ZM12,6a6,6,0,1,0,6,6A6,6,0,0,0,12,6Z"/>
+                    <path style="fill: currentColor;" d="M7.43,18.57A8,8,0,0,1,12,4V6A6,6,0,0,0,8.57,16.92Z"/>
+                </svg>
+            </ng-container>
+            <input type="text" class="coverage__search-input"
+                #searchEl
+                [(ngModel)]="searchTerm"
+                [placeholder]="'Search places...'"
+                (focus)="onSearchInputFocus()"
+            >
+            <button type="button" class="coverage__search-clear-button" *ngIf="isSearchClearButtonVisible" (click)="onSearchClearClick()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="coverage__search-clear-button-icon">
+                    <polygon style="fill: currentColor;" points="13.42 12 17.78 16.36 16.36 17.78 12 13.42 7.64 17.78 6.22 16.36 10.58 12 6.22 7.64 7.64 6.22 12 10.58 16.36 6.22 17.78 7.64 13.42 12"/>
+                </svg>
+            </button>
+        </div>
+        <div class="coverage__search-popup" *ngIf="isSearchPopupVisible">
+            <ng-container [ngSwitch]="searchItems">
+                <div class="coverage__search-popup-empty" *ngSwitchCase="null">
+                    {{ 'Nothing found' | translate }}
+                </div>
+                <div class="coverage__search-popup-items" *ngSwitchDefault>
+                    <div class="coverage__search-popup-item"
+                        *ngFor="let searchItem of searchItems"
+                        (click)="onSearchItemClick(searchItem)"
+                    >
+                        <div class="coverage__search-popup-item-text">
+                            {{ searchItem.formatted_address }}
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</ng-container>

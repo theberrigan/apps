@@ -1,0 +1,335 @@
+<!-- Page Header -->
+<ng-container *ngIf="viewportBreakpoint === 'mobile' || viewportBreakpoint === 'tablet'">
+    <app-bar (onBack)="onGoBack()"
+             [showBackButton]="true">
+    </app-bar>
+</ng-container>
+
+<div class="vehicles-page-header">
+    <div class="page-nav-tabs">
+        <div class="nav-tab d-flex justify-between">
+            <div class="nav-tab__item"
+                 [ngClass]="{ 'nav-tab__item--active': activeVehiclesTab === 'active' }"
+                 (click)="onSwitchVehiclesTab('active')">
+                {{ 'vehicles.tabs_titles.active' | translate | uppercase }}
+            </div>
+            <div class="nav-tab__item"
+                 [ngClass]="{ 'nav-tab__item--active': activeVehiclesTab === 'inactive' }"
+                 (click)="onSwitchVehiclesTab('inactive')">
+                {{ 'vehicles.tabs_titles.inactive' | translate | uppercase }}
+            </div>
+        </div>
+    </div>
+
+    <div class="vehicles-header">
+        <div class="vehicles-header__main">
+            <div class="vehicles-header__wrapper d-flex">
+                <h2 class="vehicle-page-title">{{
+                        'vehicles.page_header' | translate : {
+                            active: usedLicensePlatesCount,
+                            max: membershipLicensePlatesLimit
+                        }
+                    }}</h2>
+            </div>
+            <div class="vehicles-limit-info">
+                {{ 'vehicles.membership_limit_message' | translate: {max: membershipLicensePlatesLimit} }}
+            </div>
+        </div>
+        <div class="vehicles-header__controls">
+            <button (click)="onAddVehicle()"
+                    [isDisabled]="activeVehiclesTab=== 'inactive'"
+                    class="button button__secondary"
+                    type="button">
+                <span class="button__caption">{{ 'vehicles.add_vehicle' | translate }}</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Page Content -->
+<div class="vehicles__content" [ngSwitch]="listState">
+
+    <div class="vehicles__loading" *ngSwitchCase="'loading'">
+        <loader></loader>
+    </div>
+
+
+    <div class="vehicles__message vehicles__message_error" *ngSwitchCase="'error'">
+        {{ 'vehicles.vehicles_error' | translate }}
+    </div>
+
+    <ng-container *ngSwitchCase="'list'" [ngSwitch]="viewportBreakpoint">
+
+        <ng-container *ngSwitchDefault>
+            <h2 class="vehicle-list-title">
+                {{ activeVehiclesListTitlesTranslations.usual | translate }}
+            </h2>
+
+            <div class="vehicles__list">
+                <ng-container *ngFor="let vehicle of activeVehiclesList.usual">
+                    <app-lpn-list-card [licensePlate]="vehicle"
+                                       (showLicensePlateStatusHistory)="showLicensePlateStatusHistory($event)"
+                                       (unregisterLicensePlate)="unregisterLicensePlate($event)"></app-lpn-list-card>
+                </ng-container>
+
+                <ng-container *ngIf="activeVehiclesList.usual | isListEmpty">
+                    <app-no-items [messageType]="'usual'"></app-no-items>
+                </ng-container>
+
+            </div>
+
+            <h2 class="vehicle-list-title">
+                {{ activeVehiclesListTitlesTranslations.rental | translate }}
+            </h2>
+
+            <div class="vehicles__list">
+                <ng-container *ngFor="let vehicle of activeVehiclesList.rental">
+                    <app-lpn-list-card [licensePlate]="vehicle"
+                                       (unregisterLicensePlate)="unregisterLicensePlate($event)"
+                                       (extendLicensePlateRentalPeriod)="onExtendLPNRentalPeriod($event)">
+                    </app-lpn-list-card>
+                </ng-container>
+
+                <ng-container *ngIf="activeVehiclesList.rental | isListEmpty">
+                    <app-no-items [messageType]="'rental'"></app-no-items>
+                </ng-container>
+            </div>
+
+        </ng-container>
+
+    </ng-container>
+</div>
+
+<!-- Popups -->
+<popup-custom class="vehicles__unreg-popup"
+              *ngIf="activePopup === 'unregister-confirm'"
+              [isDisabled]="isLoading">
+    <popup-content>
+        <span
+            [innerHTML]="'vehicles.confirm_unreg' | translate : { lps: lpToUnregister.lps, lpn: lpToUnregister.lpn }"></span>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button (click)="onUnregisterCancel()"
+                class="button button_white-green"
+                type="button">
+            <span class="button__caption">{{ 'vehicles.confirm_unreg_cancel' | translate }}</span>
+        </button>
+        <button (click)="onUnregisterConfirm()"
+                [isProgress]="isLoading"
+                class="button button__primary"
+                type="button">
+            <span class="button__caption">{{ 'vehicles.confirm_unreg_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<popup-custom (onClose)="onCloseAddPopup()"
+              *ngIf="activePopup === 'add'"
+              [isDisabled]="isLoading"
+              [isSmall]="true"
+              class="vehicles__add-popup">
+    <popup-content>
+        <div class="vehicles__add-popup-error"
+             *ngIf="addPopupError"
+             [innerHTML]="addPopupError.key | translate : addPopupError.data"></div>
+        <span class="popup-title mb-8">{{ 'vehicles.add_vehicle_popup_title' | translate }}</span>
+        <label class="vehicles__add-popup-label">
+            <span class="vehicles__add-popup-label-text">{{ 'vehicles.add_popup_label' | translate }}</span>
+            <input type="text" class="input input_regular vehicles__add-popup-input"
+                   placeholder="TX 123456"
+                   [(ngModel)]="newLpnName"
+                   (ngModelChange)="validateLpn()">
+        </label>
+        <div *ngIf="isRentalTypeSupported()"
+             class="vehicles__add-popup-is_rental">
+            <checkbox [(ngModel)]="newLpnIsRentalCheckboxModel">
+                {{ 'vehicles.is_rental_license_plate' | translate }}
+            </checkbox>
+        </div>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button (click)="onCloseAddPopup()"
+                class="button button_white-green"
+                type="button">
+            <span class="button__caption">{{ 'vehicles.add_vehicle_cancel' | translate }}</span>
+        </button>
+        <button (click)="submitNewLPNForm()"
+                [isDisabled]="!isLpnValid"
+                [isProgress]="isLoading"
+                class="button button__primary"
+                type="button">
+            <span class="button__caption">{{ 'vehicles.add_vehicle_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<popup-custom class="vehicles__error-popup" *ngIf="activePopup === 'error'">
+    <popup-content>
+        <span [innerHTML]="errorPopupMessage.key | translate : errorPopupMessage.data"></span>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button__primary" (click)="hideErrorPopup()">
+            <span class="button__caption">{{ 'vehicles.error_popup_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<popup-custom class="vehicles__payment-popup" *ngIf="activePopup === 'payment'"
+              [isDisabled]="paymentSubmittingBy !== null">
+    <popup-content>
+        <div [innerHTML]="payByMailConfirmMessageKey | translate : paymentResultMessageData"></div>
+        <input type="text" class="input input_large vehicles__payment-popup-zip"
+               *ngIf="paymentConfig.payment_method_type === 'DCB' && isPaymentZipRequired"
+               [(ngModel)]="zipCode"
+               [placeholder]="'profile.pbm.zip_code' | translate"
+               (ngModelChange)="validatePaymentPopup()"
+        >
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button_white-green"
+                (click)="onSubmitPayment(false)"
+                [isDisabled]="paymentSubmittingBy !== null"
+                [isProgress]="paymentSubmittingBy === 'no'">
+            <span class="button__caption">{{ 'profile.pbm.button_no' | translate }}</span>
+        </button>
+        <button type="button" class="button button__primary"
+                (click)="onSubmitPayment(true)"
+                [isDisabled]="!isPaymentPopupValid || paymentSubmittingBy !== null"
+                [isProgress]="paymentSubmittingBy === 'yes'">
+            <span class="button__caption">{{ 'profile.pbm.button_yes' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<popup-custom class="vehicles__payment-result-popup" *ngIf="activePopup === 'payment-result'">
+    <popup-content>
+        <span [innerHTML]="paymentResultMessageKey | translate : paymentResultMessageData"></span>
+    </popup-content>
+    <popup-controls>
+        <button type="button" class="button button__primary" (click)="hidePaymentResultMessage()">
+            <span class="button__caption">{{ 'profile.pbm.button_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<!-- /// -->
+
+
+<popup-custom class="vehicles__fleet-lpn-zip-popup" *ngIf="activePopup === 'fleet-lpn-zip'"
+              [isDisabled]="isFleetZipSubmitting">
+    <popup-content>
+        <input type="text" class="input input_large vehicles__fleet-lpn-zip-popup-zip"
+               [(ngModel)]="zipCode"
+               [placeholder]="'profile.fleet.zip_code' | translate"
+               (ngModelChange)="validateFleetZipPopup()"
+        >
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button__primary"
+                (click)="submitFleetZipPayment()"
+                [isDisabled]="!isFleetZipValid"
+                [isProgress]="isFleetZipSubmitting"
+        >
+            <span class="button__caption">{{ 'profile.fleet.zip_pay' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<popup-custom class="vehicles__fleet-lpn-wallet-popup"
+              *ngIf="activePopup === 'fleet-wallet-payment-confirm'"
+              [isDisabled]="isFleetWalletSubmitting"
+>
+    <popup-content>
+        <span
+            [innerHTML]="'profile.fleet.wallet_confirm_message' | translate : { amount: walletFleetPaymentAttrs.amountFormatted, wallet: walletFleetPaymentAttrs.wallet }"></span>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button__primary" [isProgress]="isFleetWalletSubmitting"
+                (click)="onConfirmFleetWalletPayment()">
+            <span class="button__caption">{{ 'profile.fleet.wallet_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<!-- /// -->
+
+<popup-custom class="extend-rental-popup"
+              *ngIf="activePopup === 'extend-rental-lpn-period'">
+    <popup-content>
+        <h3 class="mb-16 popup-title">
+            {{ 'vehicles.rental_period_extend_modal_title' | translate }}
+            <br>
+            {{ selectedLPNForExtend.lps }} {{ selectedLPNForExtend.lpn }}
+        </h3>
+        <div class="rental-car-period-select" [formGroup]="extendLPNPeriodForm">
+            <div class="mb-16">
+                <label class="period-select mb-8 d-block">
+                    <span class="period-select__label">{{ 'dashboard.period_select_date' | translate }}</span>
+                    <datepicker class="period-select__picker"
+                                formControlName="end_date"
+                                [minDate]="selectedLPNForExtend.end_date"
+                                [maxDate]="MAX_RENTAL_CAR_PERIOD_DATE"
+                                [format]="'input.date'"
+                                [type]="'iso'"></datepicker>
+                </label>
+                <app-validation-errors class="d-block"
+                                       messageTextAlign="left"
+                                       [requiredErrorMessage]="'vehicles.rental_period_extend.validation_error.date_required'"
+                                       [validatedFormControl]="getControl('end_date')">
+                </app-validation-errors>
+            </div>
+            <div class="mb-16">
+                <label class="period-select mb-8 d-block">
+                    <span class="period-select__label">{{ 'dashboard.period_select_time' | translate }}</span>
+                    <app-timepicker formControlName="end_time"></app-timepicker>
+                </label>
+                <app-validation-errors class="d-block"
+                                       messageTextAlign="left"
+                                       [requiredErrorMessage]="'vehicles.rental_period_extend.validation_error.time_required'"
+                                       [validatedFormControl]="getControl('end_time')">
+                </app-validation-errors>
+            </div>
+        </div>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button"
+                class="button button_white-green"
+                (click)="onCancelExtendRentalPeriodPopup()">
+            <span class="button__caption">{{ 'vehicles.add_vehicle_cancel' | translate }}</span>
+        </button>
+        <button type="button"
+                class="button button__primary"
+                (click)="onSubmitExtendRentalPeriodPopup()">
+            <span class="button__caption">{{ 'profile.deactivate_account_result_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+
+<app-subscription-limit
+    *ngIf="activePopup === 'subscription-limit'"
+    (cancel)="onSubscriptionLimitCancel($event)"
+    (update)="onSubscriptionLimitUpdate($event)"
+></app-subscription-limit>
+
+
+<payment-method
+    *ngIf="activePopup === 'payment-method'"
+    [mode]="'change'"
+    [isSilentInit]="true"
+    (onDone)="onPaymentMethodSelected($event)"
+></payment-method>
+
+<popup-custom *ngIf="historyItems?.length > 0">
+    <popup-content>
+        <app-actions-history [historyItems]="historyItems"></app-actions-history>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button"
+                class="button button__primary"
+                (click)="onHistoryClose()">
+            <span class="button__caption">{{ 'profile.deactivate_account_result_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+

@@ -1,0 +1,42 @@
+@import '../../../../../assets/css/definitions.scss';
+
+.pagination {
+    display: block;
+    position: relative;
+    user-select: none;
+
+    &__buttons {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-end;
+
+        .button {
+            $padding: 18px;
+
+            padding-left: $padding;
+            padding-right: $padding;
+        }
+
+        .button:first-child:not(:last-child) {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .button:last-child:not(:first-child) {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .button:not(:first-child):not(:last-child) {
+            border-radius: 0;
+        }
+
+        .button + .button {
+            margin-left: -1px;
+        }
+
+        .button_blue {
+            z-index: 1;
+        }
+    }
+}

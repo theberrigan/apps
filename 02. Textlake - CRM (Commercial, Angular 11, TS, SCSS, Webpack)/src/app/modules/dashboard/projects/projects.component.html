@@ -1,0 +1,467 @@
+<ng-template #listOptionsTpl>
+    <div class="action-panel__item filters__filter">
+        <label class="filters__filter-label">{{ 'sidebar.order_by' | translate }}</label>
+        <sort-select class="filters__filter-input" [(ngModel)]="state.sort" [options]="sortOptions" (ngModelChange)="onReload()" [isDisabled]="listState === 'init'"></sort-select>
+    </div>
+    <div class="action-panel__item filters__filter">
+        <label class="filters__filter-label">{{ 'sidebar.limit' | translate }}</label>
+        <select class="select select_regular filters__filter-input" [(ngModel)]="state.pagination.size" (ngModelChange)="onReload()" [disabled]="listState === 'init'">
+            <option *ngFor="let sizeOption of sizeOptions" [ngValue]="sizeOption">{{ sizeOption }}</option>
+        </select>
+    </div>
+    <div class="action-panel__item filters__filter" *ngIf="viewportBreakpoint === 'desktop'">
+        <label class="filters__filter-label">{{ 'sidebar.view' | translate }}</label>
+        <list-view class="filters__filter-input" [(ngModel)]="state.view.desktop" (ngModelChange)="onViewChange()" [isDisabled]="listState === 'init'"></list-view>
+    </div>
+    <div class="action-panel__item filters__filter">
+        <button type="button" class="button button_regular button_white filters__filter-input" (click)="showSettingsPopup()" [isDisabled]="listState === 'init'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" class="button__icon">
+                <use xlink:href="#svg-gear"></use>
+            </svg>
+            <span class="button__caption action-panel_hidden">{{ 'projects.list.settings_header' | translate }}</span>
+        </button>
+    </div>
+</ng-template>
+
+<action-panel>
+    <div class="action-panel__primary">
+        <h1 class="action-panel__header">{{ 'projects.list.projects__header' | translate }}</h1>
+    </div>
+    <div class="action-panel__secondary">
+        <ng-container *ngIf="this.viewportBreakpoint === 'desktop'" [ngTemplateOutlet]="listOptionsTpl"></ng-container>
+        <div class="action-panel__item">
+            <sidebar-trigger [sidebar]="sidebarEl" [hasMark]="false" (onClick)="sidebarEl.toggle()"></sidebar-trigger>
+        </div>
+    </div>
+</action-panel>
+
+<sidebar #sidebar [isDesktopActive]="state.sidebar.isActive" (isDesktopActiveChange)="onSidebarActivityChange($event)">
+    <div class="sidebar__title">&nbsp;</div>
+    <div class="sidebar__section" *ngIf="viewportBreakpoint !== 'desktop'">
+        <div class="sidebar__label" [canCollapse]="true" [isCollapsed]="state.sidebar.collapse.options" (isCollapsedChange)="onSidebarSectionCollapse('options', $event)">{{ 'sidebar.list_options' | translate }}</div>
+        <div class="filters">
+            <ng-container [ngTemplateOutlet]="listOptionsTpl"></ng-container>
+        </div>
+    </div>
+    <div class="sidebar__section">
+        <div class="sidebar__label" [canCollapse]="true" [isCollapsed]="state.sidebar.collapse.filters" (isCollapsedChange)="onSidebarSectionCollapse('filters', $event)">{{ 'sidebar.filters' | translate }}</div>
+        <form [formGroup]="filtersForm" (ngSubmit)="onFiltersSubmit()">
+            <div class="filters">
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'projects.list.filter_offer__label' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="key">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'projects.list.filter_status__label' | translate }}</label>
+                    <select class="select select_regular filters__filter-input" formControlName="status">
+                        <option *ngFor="let statusOption of projectStatusOptions" [ngValue]="statusOption.key" [innerHTML]="statusOption.display | translate"></option>
+                    </select>
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'projects.list.filter_company__label' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="company">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'projects.list.filter_contact__label' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="contact">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'projects.list.filter_internal_id__label' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="external">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'projects.list.filter_coordinator__label' | translate }}</label>
+                    <select class="select select_regular filters__filter-input" formControlName="coordinator">
+                        <option *ngFor="let coordinatorsOption of coordinatorsOptions" [ngValue]="coordinatorsOption.value" [innerHTML]="coordinatorsOption.display"></option>
+                    </select>
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'projects.list.filter_translator__label' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="translator">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'projects.list.filter_email__label' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="email">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'projects.list.filter_phone__label' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="phone">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'projects.list.filter_description__label' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="description">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'projects.list.filter_from__label' | translate }}</label>
+                    <select class="select select_regular filters__filter-input" formControlName="languageFrom">
+                        <option *ngFor="let langOption of langOptions" [ngValue]="langOption.value" [innerHTML]="langOption.display | translate"></option>
+                    </select>
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'projects.list.filter_to__label' | translate }}</label>
+                    <select class="select select_regular filters__filter-input" formControlName="languageTo">
+                        <option *ngFor="let langOption of langOptions" [ngValue]="langOption.value" [innerHTML]="langOption.display | translate"></option>
+                    </select>
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'projects.list.filter_deadline__label' | translate }}</label>
+                    <datepicker class="filters__filter-input" type="timestamp" [format]="dateFormats.date.select" formControlName="deadline"></datepicker>
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'projects.list.filter_pbm__label' | translate }}</label>
+                    <div class="filters__filter-input projects__filter-input_doubled">
+                        <select class="select select_regular" formControlName="year">
+                            <option *ngFor="let yearOption of yearOptions" [ngValue]="yearOption.value" [innerHTML]="yearOption.display | translate"></option>
+                        </select>
+                        <select class="select select_regular" formControlName="month">
+                            <option *ngFor="let monthOption of monthOptions" [ngValue]="monthOption.value" [innerHTML]="monthOption.display | translate"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'projects.list.filter_invoice__label' | translate }}</label>
+                    <div class="filters__filter-input projects__filter-input_doubled">
+                        <select class="select select_regular" formControlName="invoice">
+                            <option *ngFor="let invoiceOption of invoiceOptions" [ngValue]="invoiceOption.value">
+                                {{ invoiceOption.display ?  (invoiceOption.display | translate) : ' ' }}
+                            </option>
+                        </select>
+                        <input type="text" class="input input_regular" formControlName="invoiceNumber">
+                    </div>
+                </div>
+                <div class="filters__buttons">
+                    <button type="button" class="button button_regular button_white" (click)="onFiltersSubmit(true)" [isDisabled]="filtersForm.disabled">
+                        <span class="button__caption">{{ 'projects.list.filters_clear__button' | translate }}</span>
+                    </button>
+                    <button type="submit" class="button button_regular button_blue" [isDisabled]="filtersForm.disabled">
+                        <span class="button__caption">{{ 'projects.list.filters_search__button' | translate }}</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</sidebar>
+
+<div class="projects__spinner" *ngIf="listState === 'init' || listState === 'loading'">
+    <spinner class="spinner spinner_blue spinner_small"></spinner>
+</div>
+<div class="projects__message" *ngIf="listState === 'empty'" [innerHTML]="'projects.list.no_projects__message' | translate"></div>
+<div class="projects__message projects__message_error" *ngIf="listState === 'error'">
+    {{ 'projects.list.error__message' | translate }}
+</div>
+<div class="projects__list-wrap" [ngClass]="'projects__list-wrap_' + viewType" *ngIf="listState === 'list' || listState === 'loading-more'">
+    <ng-container *ngFor="let projectPage of projects; let isFirst = first">
+        <div class="list-page" *ngIf="!isFirst">{{ 'pagination.page' | translate }} {{ projectPage.page + 1 }}</div>
+        <div class="projects__table-wrap" *ngIf="viewType === 'table'" #tableWrap>
+            <table class="projects__table">
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th *ngIf="columnsVisibility.statusKey">{{ 'projects.list.statusColumn' | translate }}</th>
+                        <th *ngIf="columnsVisibility.projectKey">{{ 'projects.list.projectColumn' | translate }}</th>
+                        <th *ngIf="columnsVisibility.offerKey">{{ 'projects.list.offerColumn' | translate }}</th>
+                        <th *ngIf="columnsVisibility.company">{{ 'projects.list.companyColumn' | translate }}</th>
+                        <th *ngIf="columnsVisibility.revenue" class="text-right">{{ 'projects.list.revenueColumn' | translate }}</th>
+                        <th *ngIf="columnsVisibility.expenses" class="text-right">{{ 'projects.list.expensesColumn' | translate }}</th>
+                        <th *ngIf="columnsVisibility.profit" class="text-right">{{ 'projects.list.profitColumn' | translate }}</th>
+                        <th *ngIf="columnsVisibility.currency">{{ 'projects.list.currencyColumn' | translate }}</th>
+                        <th *ngIf="columnsVisibility.margin" class="text-right">{{ 'projects.list.marginColumn' | translate }}</th>
+                        <th *ngIf="columnsVisibility.deadline">{{ 'projects.list.deadlineColumn' | translate }}</th>
+                        <th *ngIf="columnsVisibility.description">{{ 'projects.list.descriptionColumn' | translate }}</th>
+                        <th *ngIf="columnsVisibility.externalNumber">{{ 'projects.list.externalNumberColumn' | translate }}</th>
+                        <th *ngIf="columnsVisibility.contact">{{ 'projects.list.contactColumn' | translate }}</th>
+                        <th *ngIf="columnsVisibility.phone">{{ 'projects.list.phoneColumn' | translate }}</th>
+                        <th *ngIf="columnsVisibility.email">{{ 'projects.list.emailColumn' | translate }}</th>
+                        <th *ngIf="columnsVisibility.invoice">{{ 'projects.list.invoiceColumn' | translate }}</th>
+                        <th *ngIf="columnsVisibility.coordinator">{{ 'projects.list.coordinatorColumn' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let project of projectPage.items" class="projects__table-body" [class.projects__table-body_has-summary]="activeSummary === project.projectKey">
+                    <tr (click)="goToProject(project.projectKey)">
+                        <td class="projects__table-cell projects__table-cell_no-padding" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">
+                            <button class="projects__table-button" type="button" (click)="onToggleSummary(project.projectKey, $event)" [title]="(activeSummary === project.projectKey ? 'projects.list.summary.hide' : 'projects.list.summary.show') | translate">
+                                <span class="projects__table-button-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="9" viewBox="0 0 14 9">
+                                        <path style="fill: currentColor;" d="M7,8.41,1.29,2.71A1,1,0,0,1,2.71,1.29L7,5.59l4.29-4.3a1,1,0,1,1,1.42,1.42Z"></path>
+                                    </svg>
+                                </span>
+                            </button>
+                        </td>
+                        <td *ngIf="columnsVisibility.statusKey" class="text-nowrap table-cell-tight"
+                            [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle"
+                            [ngSwitch]="projectsSettings.colorizeEntireRow"
+                        >
+                            <span class="projects__table-cell_status" *ngSwitchCase="false" [style.background-color]="projectsSettings.statusesColors[project.statusKey].bg" [style.color]="projectsSettings.statusesColors[project.statusKey].text">
+                                {{ ('projects.statuses.' + project.statusKey) | translate }}
+                            </span>
+                            <ng-container *ngSwitchCase="true">
+                                {{ ('projects.statuses.' + project.statusKey) | translate }}
+                            </ng-container>
+                        </td>
+                        <td *ngIf="columnsVisibility.projectKey" class="text-nowrap" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">{{ project.projectKey }}</td>
+                        <td *ngIf="columnsVisibility.offerKey" class="text-nowrap" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">{{ project.offerKey }}</td>
+                        <td *ngIf="columnsVisibility.company" class="text-nowrap" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">{{ project.company }}</td>
+                        <td *ngIf="columnsVisibility.revenue" class="text-nowrap text-right" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">{{ project.revenue / 100 | number : '1.2-2' }}</td>
+                        <td *ngIf="columnsVisibility.expenses" class="text-nowrap text-right" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">{{ project.expenses / 100 | number : '1.2-2' }}</td>
+                        <td *ngIf="columnsVisibility.profit" class="text-nowrap text-right" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">{{ project.profit / 100 | number : '1.2-2' }}</td>
+                        <td *ngIf="columnsVisibility.currency" class="text-nowrap" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">{{ project.currency }}</td>
+                        <td *ngIf="columnsVisibility.margin" class="text-nowrap text-right" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">{{ project.margin / 100 }}%</td>
+                        <td *ngIf="columnsVisibility.deadline" class="text-nowrap" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">{{ project.deadline | datetime : dateFormats.datetime.display }}</td>
+                        <td *ngIf="columnsVisibility.description" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">
+                            <span class="projects__table-description">{{ project.description }}</span>
+                        </td>
+                        <td *ngIf="columnsVisibility.externalNumber" class="text-nowrap" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">
+                            <span class="projects__table-description">{{ project.externalNumber }}</span>
+                        </td>
+                        <td *ngIf="columnsVisibility.contact" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">{{ project.contact }}</td>
+                        <td *ngIf="columnsVisibility.phone" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">{{ project.phone }}</td>
+                        <td *ngIf="columnsVisibility.email" class="text-nowrap" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">{{ project.email }}</td>
+                        <td *ngIf="columnsVisibility.invoice" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">{{ project.invoice }}</td>
+                        <td *ngIf="columnsVisibility.coordinator" [attr.style]="'background-color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].bg + ' !important') : '') + '; color: ' + (projectsSettings.colorizeEntireRow ? (projectsSettings.statusesColors[project.statusKey].text + ' !important') : '') | safeStyle">{{ project.coordinator }}</td>
+                    </tr>
+                    <tr *ngIf="activeSummary === project.projectKey">
+                        <td [colSpan]="20">
+                            <ng-container [ngSwitch]="summary[project.projectKey].state">
+                                <div class="projects__grid-item-summary-message" *ngSwitchCase="'loading'">{{ 'projects.list.summary.loading' | translate }}</div>
+                                <div class="projects__grid-item-summary-message" *ngSwitchCase="'empty'">{{ 'projects.list.summary.empty' | translate }}</div>
+                                <div class="projects__grid-item-summary-message projects__grid-item-summary-message_error" *ngSwitchCase="'error'">{{ 'projects.list.summary.error' | translate }}</div>
+                                <table class="projects__grid-item-summary-table" *ngSwitchCase="'list'" [style.maxWidth.px]="maxSummaryWidth">
+                                    <thead>
+                                        <tr>
+                                            <th *ngIf="infoColumnsVisibility.name">{{ 'projects.list.summary.service_name' | translate }}</th>
+                                            <th *ngIf="infoColumnsVisibility.language">{{ 'projects.list.summary.direction' | translate }}</th>
+                                            <th *ngIf="infoColumnsVisibility.lastName">{{ 'projects.list.summary.last_name' | translate }}</th>
+                                            <th *ngIf="infoColumnsVisibility.firstName">{{ 'projects.list.summary.first_name' | translate }}</th>
+                                            <th *ngIf="infoColumnsVisibility.legalName">{{ 'projects.list.summary.legal_name' | translate }}</th>
+                                            <th *ngIf="infoColumnsVisibility.phone">{{ 'projects.list.summary.phone' | translate }}</th>
+                                            <th *ngIf="infoColumnsVisibility.email">{{ 'projects.list.summary.email' | translate }}</th>
+                                            <th *ngIf="infoColumnsVisibility.accepted">{{ 'projects.list.summary.accepted' | translate }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let summary of activeSummaryItems">
+                                            <td *ngIf="infoColumnsVisibility.name">{{ summary.name }}</td>
+                                            <td *ngIf="infoColumnsVisibility.language">{{ langs[summary.languageFrom] | translate }} → {{ langs[summary.languageTo] | translate }}</td>
+                                            <td *ngIf="infoColumnsVisibility.lastName">{{ summary.lastName }}</td>
+                                            <td *ngIf="infoColumnsVisibility.firstName">{{ summary.firstName }}</td>
+                                            <td *ngIf="infoColumnsVisibility.legalName">{{ summary.legalName }}</td>
+                                            <td *ngIf="infoColumnsVisibility.phone">{{ summary.phone }}</td>
+                                            <td *ngIf="infoColumnsVisibility.email"><a [href]="'mailto:' + summary.email">{{ summary.email }}</a></td>
+                                            <td *ngIf="infoColumnsVisibility.accepted">{{ summary.accepted | datetime : dateFormats.datetime.display }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </ng-container>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="projects__grid projects__grid_detailed" *ngIf="viewType === 'grid-detailed'">
+            <div class="projects__grid-item" *ngFor="let project of projectPage.items">
+                <div class="projects__grid-item-primary">
+                    <div class="projects__grid-item-solid"
+                        (click)="onToggleSummary(project.projectKey)"
+                        [ngStyle]="{
+                            backgroundColor: projectsSettings.statusesColors[project.statusKey].bg,
+                            color: projectsSettings.statusesColors[project.statusKey].text
+                        }"
+                    >
+                        <div class="projects__grid-item-key">{{ project.projectKey }}</div>
+                        <div class="projects__grid-item-status">{{ ('projects.statuses.' + project.statusKey) | translate }}</div>
+                        <div class="projects__grid-item-arrow" [class.projects__grid-item-arrow_active]="activeSummary === project.projectKey" [title]="(activeSummary === project.projectKey ? 'projects.list.summary.hide' : 'projects.list.summary.show') | translate"></div>
+                    </div>
+                    <div class="projects__grid-item-cols">
+                        <div class="projects__grid-item-lines">
+                            <div class="projects__grid-item-line">
+                                <div class="projects__grid-item-line-header">{{ 'projects.list.offerColumn' | translate }}:</div>
+                                <div class="projects__grid-item-line-value">{{ project.offerKey }}</div>
+                            </div>
+                            <div class="projects__grid-item-line">
+                                <div class="projects__grid-item-line-header">{{ 'projects.list.companyColumn' | translate }}:</div>
+                                <div class="projects__grid-item-line-value">{{ project.company }}</div>
+                            </div>
+                            <div class="projects__grid-item-line">
+                                <div class="projects__grid-item-line-header">{{ 'projects.list.revenueColumn' | translate }}:</div>
+                                <div class="projects__grid-item-line-value">{{ project.revenue / 100 | number : '1.2-2' }}</div>
+                            </div>
+                            <div class="projects__grid-item-line">
+                                <div class="projects__grid-item-line-header">{{ 'projects.list.expensesColumn' | translate }}:</div>
+                                <div class="projects__grid-item-line-value">{{ project.expenses / 100 | number : '1.2-2' }}</div>
+                            </div>
+                            <div class="projects__grid-item-line">
+                                <div class="projects__grid-item-line-header">{{ 'projects.list.profitColumn' | translate }}:</div>
+                                <div class="projects__grid-item-line-value">{{ project.profit / 100 | number : '1.2-2' }}</div>
+                            </div>
+                            <div class="projects__grid-item-line">
+                                <div class="projects__grid-item-line-header">{{ 'projects.list.currencyColumn' | translate }}:</div>
+                                <div class="projects__grid-item-line-value">{{ project.currency }}</div>
+                            </div>
+                            <div class="projects__grid-item-line">
+                                <div class="projects__grid-item-line-header">{{ 'projects.list.marginColumn' | translate }}:</div>
+                                <div class="projects__grid-item-line-value">{{ project.margin / 100 }}%</div>
+                            </div>
+                            <div class="projects__grid-item-line">
+                                <div class="projects__grid-item-line-header">{{ 'projects.list.deadlineColumn' | translate }}:</div>
+                                <div class="projects__grid-item-line-value">{{ project.deadline | datetime : dateFormats.datetime.display }}</div>
+                            </div>
+                            <div class="projects__grid-item-line">
+                                <div class="projects__grid-item-line-header">{{ 'projects.list.descriptionColumn' | translate }}:</div>
+                                <div class="projects__grid-item-line-value">{{ project.description }}</div>
+                            </div>
+                            <div class="projects__grid-item-line">
+                                <div class="projects__grid-item-line-header">{{ 'projects.list.externalNumberColumn' | translate }}:</div>
+                                <div class="projects__grid-item-line-value">{{ project.externalNumber }}</div>
+                            </div>
+                            <div class="projects__grid-item-line">
+                                <div class="projects__grid-item-line-header">{{ 'projects.list.contactColumn' | translate }}:</div>
+                                <div class="projects__grid-item-line-value">{{ project.contact }}</div>
+                            </div>
+                            <div class="projects__grid-item-line">
+                                <div class="projects__grid-item-line-header">{{ 'projects.list.phoneColumn' | translate }}:</div>
+                                <div class="projects__grid-item-line-value">{{ project.phone }}</div>
+                            </div>
+                            <div class="projects__grid-item-line">
+                                <div class="projects__grid-item-line-header">{{ 'projects.list.emailColumn' | translate }}:</div>
+                                <div class="projects__grid-item-line-value">{{ project.email }}</div>
+                            </div>
+                            <div class="projects__grid-item-line">
+                                <div class="projects__grid-item-line-header">{{ 'projects.list.invoiceColumn' | translate }}:</div>
+                                <div class="projects__grid-item-line-value">{{ project.invoice }}</div>
+                            </div>
+                            <div class="projects__grid-item-line">
+                                <div class="projects__grid-item-line-header">{{ 'projects.list.coordinatorColumn' | translate }}:</div>
+                                <div class="projects__grid-item-line-value">{{ project.coordinator }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="projects__grid-item-buttons">
+                        <button type="button" class="projects__grid-item-button" [routerLink]="'/dashboard/project/' + project.projectKey">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" height="20" width="20">
+                                <path style="fill: currentColor;" d="M14.58,2.83c0.26,0,0.51,0.1,0.71,0.29l1.59,1.59c0.39,0.39,0.39,1.02,0,1.41l-8.51,8.51c-0.51,0.51-1.15,0.88-1.86,1.05
+                                    l-2.93,0.73l0.73-2.93c0.18-0.7,0.54-1.34,1.05-1.86l8.51-8.51C14.07,2.93,14.33,2.83,14.58,2.83 M14.58,0.83
+                                    c-0.8,0-1.55,0.31-2.12,0.88l-8.51,8.51c-0.77,0.77-1.31,1.73-1.58,2.79l-0.73,2.93l-0.81,3.23l3.23-0.81l2.93-0.73
+                                    c1.05-0.26,2.02-0.81,2.79-1.58l8.51-8.51c1.17-1.17,1.17-3.07,0-4.24L16.7,1.71C16.14,1.14,15.38,0.83,14.58,0.83L14.58,0.83z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="projects__grid-item-summary" *ngIf="activeSummary === project.projectKey">
+                    <ng-container [ngSwitch]="summary[project.projectKey].state">
+                        <div class="projects__grid-item-summary-message" *ngSwitchCase="'loading'">{{ 'projects.list.summary.loading' | translate }}</div>
+                        <div class="projects__grid-item-summary-message" *ngSwitchCase="'empty'">{{ 'projects.list.summary.empty' | translate }}</div>
+                        <div class="projects__grid-item-summary-message projects__grid-item-summary-message_error" *ngSwitchCase="'error'">{{ 'projects.list.summary.error' | translate }}</div>
+                        <ng-container *ngSwitchCase="'list'">
+                            <table class="projects__grid-item-summary-table" *ngIf="viewportBreakpoint === 'desktop'">
+                                <thead>
+                                    <tr>
+                                        <th *ngIf="infoColumnsVisibility.name">{{ 'projects.list.summary.service_name' | translate }}</th>
+                                        <th *ngIf="infoColumnsVisibility.language">{{ 'projects.list.summary.direction' | translate }}</th>
+                                        <th *ngIf="infoColumnsVisibility.lastName">{{ 'projects.list.summary.last_name' | translate }}</th>
+                                        <th *ngIf="infoColumnsVisibility.firstName">{{ 'projects.list.summary.first_name' | translate }}</th>
+                                        <th *ngIf="infoColumnsVisibility.legalName">{{ 'projects.list.summary.legal_name' | translate }}</th>
+                                        <th *ngIf="infoColumnsVisibility.phone">{{ 'projects.list.summary.phone' | translate }}</th>
+                                        <th *ngIf="infoColumnsVisibility.email">{{ 'projects.list.summary.email' | translate }}</th>
+                                        <th *ngIf="infoColumnsVisibility.accepted">{{ 'projects.list.summary.accepted' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let summary of activeSummaryItems">
+                                        <td *ngIf="infoColumnsVisibility.name">{{ summary.name }}</td>
+                                        <td *ngIf="infoColumnsVisibility.language">{{ langs[summary.languageFrom] | translate }} → {{ langs[summary.languageTo] | translate }}</td>
+                                        <td *ngIf="infoColumnsVisibility.lastName">{{ summary.lastName }}</td>
+                                        <td *ngIf="infoColumnsVisibility.firstName">{{ summary.firstName }}</td>
+                                        <td *ngIf="infoColumnsVisibility.legalName">{{ summary.legalName }}</td>
+                                        <td *ngIf="infoColumnsVisibility.phone">{{ summary.phone }}</td>
+                                        <td *ngIf="infoColumnsVisibility.email"><a [href]="'mailto:' + summary.email">{{ summary.email }}</a></td>
+                                        <td *ngIf="infoColumnsVisibility.accepted">{{ summary.accepted | datetime : dateFormats.datetime.display }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="projects__grid-item-summary-items" *ngIf="viewportBreakpoint !== 'desktop'">
+                                <div class="projects__grid-item-summary-item" *ngFor="let summary of activeSummaryItems">
+                                    <div class="projects__grid-item-summary-item-name">{{ summary.name }}</div>
+                                    <table class="projects__grid-item-summary-item-vtable">
+                                        <tbody>
+                                            <tr>
+                                                <th>{{ 'projects.list.summary.direction' | translate }}</th>
+                                                <td>{{ langs[summary.languageFrom] | translate }} → {{ langs[summary.languageTo] | translate }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ 'projects.list.summary.last_name' | translate }}</th>
+                                                <td>{{ summary.lastName }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ 'projects.list.summary.first_name' | translate }}</th>
+                                                <td>{{ summary.firstName }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ 'projects.list.summary.legal_name' | translate }}</th>
+                                                <td>{{ summary.legalName }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ 'projects.list.summary.phone' | translate }}</th>
+                                                <td>{{ summary.phone }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ 'projects.list.summary.email' | translate }}</th>
+                                                <td><a [href]="'mailto:' + summary.email">{{ summary.email }}</a></td>
+                                            </tr>
+                                            <tr>
+                                                <th>{{ 'projects.list.summary.accepted' | translate }}</th>
+                                                <td>{{ summary.accepted | datetime : dateFormats.datetime.display }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <div class="projects__grid projects__grid_simple" *ngIf="viewType === 'grid'">
+            <a class="projects__grid-item" *ngFor="let project of projectPage.items" [routerLink]="'/dashboard/project/' + project.projectKey">
+                <div class="projects__grid-item-key">{{ project.projectKey }}</div>
+                <div class="projects__grid-item-status"
+                    [ngStyle]="{
+                        backgroundColor: projectsSettings.statusesColors[project.statusKey].bg,
+                        color: projectsSettings.statusesColors[project.statusKey].text
+                    }"
+                >{{ ('projects.statuses.' + project.statusKey) | translate }}</div>
+            </a>
+        </div>
+    </ng-container>
+    <pagination
+        *ngIf="pagination"
+        [data]="pagination"
+        [isLoading]="listState === 'loading-more'"
+        (onLoad)="onSwitchPage($event)"
+    ></pagination>
+</div>
+
+<popup-custom #settingsPopup [options]="{ closeBy: 'manual' }" class="projects__settings-editor" (onCloseRequest)="hideSettingsPopup($event)">
+    <popup-box>
+        <popup-header>{{ 'projects.list.projects_settings' | translate }}</popup-header>
+        <popup-content>
+            <ng-container *ngIf="projectsSettingsToEdit">
+                <div class="projects__settings-editor-subtitle">{{ 'projects.list.columns_visibility' | translate }}</div>
+                <div class="projects__settings-editor-checkbox" *ngFor="let column of projectsSettingsToEdit.columns">
+                    <checkbox [(ngModel)]="column.isVisible">{{ column.display | translate }}</checkbox>
+                </div>
+                <br><br>
+                <div class="projects__settings-editor-subtitle">{{ 'projects.list.summary_columns_visibility' | translate }}</div>
+                <div class="projects__settings-editor-checkbox" *ngFor="let column of projectsSettingsToEdit.infoColumns">
+                    <checkbox [(ngModel)]="column.isVisible">{{ column.display | translate }}</checkbox>
+                </div>
+            </ng-container>
+        </popup-content>
+        <popup-controls>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_regular button_blue" (click)="hideSettingsPopup()">
+                    <span class="button__caption">{{ 'projects.list.settings_ok' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup-custom>

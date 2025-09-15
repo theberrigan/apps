@@ -1,0 +1,21 @@
+<ng-container [ngSwitch]="layout">
+    <app-invoices-list
+        #listComponent
+        *ngSwitchCase="'invoice-list'"
+        [allInvoices]="commonListOfInvoices"
+        [surchargeSum]="surchargeSum"
+        (invoicesListInited)="setInvoicesAndCoverageDataToParentComponent($event)"
+        (showInvoiceDetails)="switchToInvoiceDetailsView($event)"
+    ></app-invoices-list>
+
+    <app-invoice-detail
+        #detailComponent
+        *ngSwitchCase="'invoice-detail'"
+         [allInvoices]="commonListOfInvoices"
+        [invoiceItems]="openedInDetailsInvoice"
+        [coverageLocations]="coverageLocations"
+        [surchargeSum]="surchargeSum"
+        (onClose)="onCloseInvoicePayment()"
+        (onDone)="onPaymentSuccess($event)"
+    ></app-invoice-detail>
+</ng-container>

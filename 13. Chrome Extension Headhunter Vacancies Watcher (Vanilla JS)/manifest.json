@@ -1,0 +1,39 @@
+{
+    "manifest_version": 3,
+    "name": "Вакансии на hh.ru",
+    "short_name": "Вакансии на hh.ru",
+    "description": "Отслеживает вакансии на hh.ru по заданным фильтрам",
+    "version": "1.0.0",
+    "author": "Berrigan",
+    "minimum_chrome_version": "109",
+    "offline_enabled": false,
+    "icons": {
+        "16": "images/icon_16.png",
+        "24": "images/icon_24.png",
+        "32": "images/icon_32.png",
+        "48": "images/icon_48.png",
+        "64": "images/icon_64.png",
+        "128": "images/icon_128.png"
+    },
+    "action": {
+        "default_title": ""
+    },
+    "background": {
+        "type": "module",
+        "service_worker": "js/background.js"
+    },
+    "permissions": [
+        "tabs",
+        "alarms",
+        "storage",
+        "scripting",
+        "offscreen",
+        "notifications",
+        "contextMenus"
+    ],
+    "host_permissions": [
+        "http://*/*",
+        "https://*/*"
+    ]
+}
+

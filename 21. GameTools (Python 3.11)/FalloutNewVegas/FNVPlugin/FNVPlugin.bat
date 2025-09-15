@@ -1,0 +1,1 @@
+javaw.exe -Xmx1024m -DFallout.plugin.path="G:\Steam\steamapps\common\Fallout New Vegas enplczru\steam_eng\Data" -jar FNVPlugin.jar

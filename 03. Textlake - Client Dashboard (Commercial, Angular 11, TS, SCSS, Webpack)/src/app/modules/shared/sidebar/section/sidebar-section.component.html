@@ -1,0 +1,4 @@
+<ng-content select=".sidebar__label"></ng-content>
+<ng-container *ngIf="!label || !label.isCollapsed">
+    <ng-content></ng-content>
+</ng-container>

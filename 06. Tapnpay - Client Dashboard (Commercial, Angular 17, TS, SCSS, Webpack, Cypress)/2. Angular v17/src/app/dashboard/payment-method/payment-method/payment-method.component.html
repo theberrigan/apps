@@ -1,0 +1,456 @@
+<ng-container [ngSwitch]="activePopup">
+    <popup-custom class="payment-method__method-popup"
+                  [isDisabled]="isMethodPopupSubmitting || isCheckingDCBEligibility || isVenmoUpdating"
+                  *ngSwitchCase="'method'">
+
+        <popup-content [ngSwitch]="methodSelectDialogStates">
+
+            <div *ngSwitchCase="'init'"
+                 class="payment-method__method-popup-loading">
+                <loader></loader>
+            </div>
+
+            <div *ngSwitchCase="'error'"
+                 class="payment-method__method-popup-fatal">
+                {{ 'stripe.error.common.generic' | translate }}
+            </div>
+
+            <ng-container *ngSwitchCase="'ready'">
+
+                <ng-container *ngIf="subscriptionPaymentError">
+                    <div class="payment-method__method-popup-error">
+                        {{ 'subscription_payments.declined_error' | translate }}
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="!subscriptionPaymentError">
+                    <div *ngIf="!!methodHeader && !isShowDCBMessage()"
+                         class="payment-method__method-popup-header">
+                        {{ methodHeader.key | translate : methodHeader.data }}
+                    </div>
+                    <h2 *ngIf="isShowDCBMessage()"
+                        class="mb-24">Update your payment method</h2>
+                    <div *ngIf="!!methodPopupError"
+                         class="payment-method__method-popup-error">
+                        {{ methodPopupError.key | translate : methodPopupError.data }}
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="mode === 'change' && isShowDCBMessage()">
+                    <div class="help-contact">
+                        Verizon has discontinued Direct Carrier Billing payments. Please select a new default payment
+                        method.
+                    </div>
+                </ng-container>
+
+                <div class="payment-method__method-popup-methods">
+
+                    <div class="payment-method-card"
+                         *ngIf="(paymentOptions.WALLET.enabled && wallets && wallets.GOOGLEPAY) || paymentConfig.payment_method_type === 'GOOGLEPAY'"
+                         [ngClass]="{
+                            'payment-method-card_active': isSelectedPaymentMethod('GOOGLEPAY'),
+                            'payment-method-card_unavailable': !paymentOptions.WALLET.enabled || !wallets || !wallets.GOOGLEPAY
+                        }"
+                         (click)="setSelectedPaymentMethod('GOOGLEPAY')">
+                        <div class="payment-method-card-text">
+                            Google Pay
+                            <div class="payment-method-card-subtext"
+                                 *ngIf="!paymentOptions.WALLET.enabled || !wallets || !wallets.GOOGLEPAY">
+                                {{ 'payment_method.method_unavailable' | translate }}
+                            </div>
+                        </div>
+                        <div class="payment-method-card-logos">
+                            <app-payment-icon-logo-google-play></app-payment-icon-logo-google-play>
+                        </div>
+                        <div class="payment-method-card-checkbox">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                                <polygon fill="currentColor"
+                                         points="9 14.07 4.93 10 6.34 8.59 9 11.24 13.66 6.59 15.07 8 9 14.07"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- END: Google Pay -->
+
+                    <!-- BEGIN: Apple Pay -->
+                    <div class="payment-method-card"
+                         *ngIf="(paymentOptions.WALLET.enabled && wallets && wallets.APPLEPAY) || paymentConfig.payment_method_type === 'APPLEPAY'"
+                         [ngClass]="{
+                           'payment-method-card_active': isSelectedPaymentMethod('APPLEPAY') ,
+                           'payment-method-card_unavailable': !paymentOptions.WALLET.enabled || !wallets || !wallets.APPLEPAY
+                        }"
+                         (click)="setSelectedPaymentMethod('APPLEPAY')">
+                        <div class="payment-method-card-text">
+                            Apple Pay
+                            <div *ngIf="!paymentOptions.WALLET.enabled || !wallets || !wallets.APPLEPAY"
+                                 class="payment-method-card-subtext">
+                                {{ 'payment_method.method_unavailable' | translate }}
+                            </div>
+                        </div>
+                        <div class="payment-method-card-logos">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="50"
+                                 height="22"
+                                 viewBox="0 0 50 22"
+                                 class="payment-method-card-logo payment-method-card-logo_apple-pay">
+                                <path fill="#000"
+                                      d="M9.56,3.57a3,3,0,0,1-2.4,1.14A3.41,3.41,0,0,1,8,2.23,3.63,3.63,0,0,1,10.4,1a3.54,3.54,0,0,1-.84,2.57m.82,1.34c-1.32-.08-2.45.74-3,.74s-1.63-.74-2.68-.74A3.92,3.92,0,0,0,1.35,7C-.08,9.41,1,13.05,2.35,15c.67,1,1.52,2.08,2.54,2s1.42-.66,2.63-.66,1.52.66,2.65.64,1.79-1,2.46-2a8.17,8.17,0,0,0,1.11-2.28,3.56,3.56,0,0,1-2.16-3.25,3.64,3.64,0,0,1,1.75-3.12,3.73,3.73,0,0,0-2.95-1.52M18,2.14V17h2.29V11.89h3.2a4.7,4.7,0,0,0,4.94-4.45,3.38,3.38,0,0,0,0-.45A4.64,4.64,0,0,0,24,2.13H18Zm2.29,1.95H23a2.76,2.76,0,0,1,3.11,2.37,2.63,2.63,0,0,1,0,.56,2.77,2.77,0,0,1-2.59,3,2.65,2.65,0,0,1-.56,0H20.31Zm12.32,13A3.83,3.83,0,0,0,36,15.19h0V17h2.12V9.58c0-2.15-1.71-3.52-4.35-3.52s-4.13,1.39-4.21,3.32h2.09a2,2,0,0,1,2.17-1.52c1.4,0,2.19.65,2.19,1.87v.82l-2.86.17C30.47,10.87,29,12,29,13.87a3.26,3.26,0,0,0,3.28,3.22Zm.61-1.75c-1.21,0-2-.6-2-1.52s.76-1.52,2.19-1.52L36,12.13V13a2.5,2.5,0,0,1-2.64,2.34h0ZM41,21c2.24,0,3.3-.85,4.22-3.45L49.33,6.2H47L44.28,15h0L41.53,6.2h-2.4L43,17l-.21.67a1.8,1.8,0,0,1-1.93,1.52,4,4,0,0,1-.69,0V21a4.42,4.42,0,0,0,.89,0Z"/>
+                            </svg>
+                        </div>
+                        <div class="payment-method-card-checkbox">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                                <polygon fill="currentColor"
+                                         points="9 14.07 4.93 10 6.34 8.59 9 11.24 13.66 6.59 15.07 8 9 14.07"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- BEGIN: DCB -->
+
+
+                    <!-- END: DCB -->
+                    <!-- BEGIN: PayPal -->
+
+
+                    <!-- END: PayPal -->
+                    <!-- BEGIN: Venmo -->
+
+                    <div class="payment-method-card"
+                         *ngIf="paymentOptions.VENMO.enabled"
+                         [class.payment-method-card_active]="isSelectedPaymentMethod('VENMO')"
+                         (click)="setSelectedPaymentMethod('VENMO')">
+                        <div class="payment-method-card-text"
+                             [ngSwitch]="!!paymentOptions.VENMO.description">
+                            <ng-container *ngSwitchCase="true">
+                                Venmo: {{ paymentOptions.VENMO.description }}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="false">
+                                Venmo
+                            </ng-container>
+                        </div>
+                        <ng-container [ngSwitch]="!!paymentOptions.VENMO.payment_method_token">
+                            <div class="payment-method-card-logos" *ngSwitchCase="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="32" viewBox="0 0 48 32"
+                                     class="payment-method-card-logo payment-method-card-logo_venmo">
+                                    <path
+                                        d="M44.8,0H3.2A3.21,3.21,0,0,0,0,3.2V28.8A3.2,3.2,0,0,0,3.2,32H44.8A3.2,3.2,0,0,0,48,28.8V3.2A3.21,3.21,0,0,0,44.8,0ZM26.36,25.6H19L16,7.45l6.48-.63,1.57,12.92c1.46-2.44,3.28-6.28,3.28-8.9a7.36,7.36,0,0,0-.62-3.21l5.9-1.23a7.16,7.16,0,0,1,1,3.84C33.6,15,29.6,21.24,26.36,25.6Z"
+                                        style="fill: #3d95ce;"/>
+                                </svg>
+                            </div>
+                            <ng-container *ngSwitchCase="true"
+                                          [ngSwitch]="paymentConfig.payment_method_type === 'VENMO'">
+                                <button
+                                    class="payment-method-card-delete payment-method-card-delete_venmo"
+                                    *ngSwitchCase="false"
+                                    [title]="'Detach Venmo account'"
+                                    (click)="onDetachVenmo($event)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                                        <polygon fill="currentColor"
+                                                 points="15.95 14.54 14.54 15.95 10 11.41 5.46 15.95 4.05 14.54 8.59 10 4.05 5.46 5.46 4.05 10 8.59 14.54 4.05 15.95 5.46 11.41 10 15.95 14.54"/>
+                                    </svg>
+                                </button>
+                                <button
+                                    class="payment-method-card-delete payment-method-card-delete_venmo"
+                                    *ngSwitchCase="true"
+                                    [class.payment-method-card-delete_spinning]="isVenmoUpdating"
+                                    [title]="'Attach another Venmo account'"
+                                    (click)="onReplaceVenmo($event)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+                                        <path fill="currentColor"
+                                              d="M4,14H6A8,8,0,0,1,19.29,8H16v2h7V3H21V6.86A10,10,0,0,0,4,14Zm8,4v2H8.72A8,8,0,0,0,22,14h2A10,10,0,0,1,7,21.14V25H5V18Z"/>
+                                    </svg>
+                                </button>
+                            </ng-container>
+                        </ng-container>
+                        <div class="payment-method-card-checkbox">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                                <polygon fill="currentColor"
+                                         points="9 14.07 4.93 10 6.34 8.59 9 11.24 13.66 6.59 15.07 8 9 14.07"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- END: Venmo -->
+                    <!-- BEGIN: wallets -->
+
+                    <!-- BEGIN: Google Pay -->
+
+                    <!-- END: Apple Pay -->
+
+                    <!-- END: wallets -->
+                    <!-- BEGIN: cards -->
+
+                    <div class="payment-method-card" *ngIf="isAnyCardEnabled && !hasCards"
+                         (click)="onNewCardClick()">
+                        <div class="payment-method-card-text">
+                            {{ cardOptionLabelKey | translate }}
+                        </div>
+                        <div class="payment-method-card-logos">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="38" height="24" viewBox="0 0 50 24" class="payment-method__card-logo payment-method__card-logo_cards">
+                                <rect x="26" width="24" height="16" rx="2" fill="#016fd0"/>
+                                <polygon points="49.91 2.63 49.91 9.28 48.74 10.53 49.91 11.79 49.91 13.4 48.04 13.4 47.04 12.3 46.06 13.41 39.76 13.39 39.76 8.33 37.73 8.33 40.24 2.63 42.68 2.63 43.54 4.58 43.54 2.63 46.56 2.63 47.08 4.09 47.61 2.63 49.91 2.63" fill="#fff" fill-rule="evenodd"/>
+                                <path d="M40.44,12.77V8.32h3.77v1H41.66V10h2.49v1H41.66v.68h2.55v1Zm3.76,0,2.08-2.23L44.2,8.32h1.61l1.28,1.41,1.28-1.41h1.54l-2,2.18,2,2.17v.06H48.35l-1.3-1.43-1.28,1.43ZM40.7,3.25l-2,4.45h1.35l.37-.89h2l.37.89h1.39l-2-4.45Zm.17,2.56.59-1.42.59,1.42ZM44.21,7.7V3.25h1.91l1,2.73,1-2.74H50V7.7H48.73v-3L47.62,7.7H46.54L45.41,4.64V7.7Z" fill="#016fd0" fill-rule="evenodd"/>
+                                <rect x="14" y="4" width="24" height="16" rx="2" fill="#252525"/>
+                                <circle cx="23" cy="12" r="5" fill="#eb001b"/>
+                                <circle cx="29" cy="12" r="5" fill="#f79e1b"/>
+                                <path d="M26,8a5,5,0,0,1,1,7,4.74,4.74,0,0,1-1,1,5,5,0,0,1-1-7A4.74,4.74,0,0,1,26,8Z" fill="#ff5f00" fill-rule="evenodd"/>
+                                <rect x="0.5" y="8.5" width="23" height="15" rx="1.75" fill="#fff"/>
+                                <path d="M2.79,13.91A7.74,7.74,0,0,0,1,13.24v-.13H3.76a.68.68,0,0,1,.77.52l.6,2.84.18.85L7,13.11H8.8L6.1,19.28H4.3Zm7.31,5.37H8.4l1.06-6.17h1.7Zm6.17-6L16,14.6l-.16-.07a3.06,3.06,0,0,0-1.27-.24c-.67,0-1,.27-1,.54s.37.47,1,.76c1,.44,1.44,1,1.43,1.68,0,1.28-1.17,2.11-3,2.11a5.59,5.59,0,0,1-1.9-.33l.24-1.39.23.1a3.63,3.63,0,0,0,1.59.33c.49,0,1-.19,1-.61,0-.26-.22-.46-.88-.76A2,2,0,0,1,11.87,15c0-1.2,1.19-2,2.87-2a4.68,4.68,0,0,1,1.53.26Zm2.26,3.82h1.41c-.07-.31-.39-1.79-.39-1.79l-.12-.53c-.08.23-.23.6-.22.59Zm2.1-4L22,19.28H20.42s-.15-.71-.2-.92H18c-.07.16-.36.92-.36.92H15.9l2.52-5.66a.85.85,0,0,1,.89-.51Z" fill="#171e6c"/>
+                            </svg>
+                        </div>
+                        <div class="payment-method-card-checkbox">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                                <polygon fill="currentColor"
+                                         points="9 14.07 4.93 10 6.34 8.59 9 11.24 13.66 6.59 15.07 8 9 14.07"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="payment-method-card payment-method-card_card"
+                         *ngFor="let cardItem of cards"
+                         [ngClass]="{
+                            'payment-method-card_active': selectedPaymentMethod && selectedPaymentMethod.type === cardItem.type && selectedPaymentMethod.id === cardItem.card.id,
+                            'payment-method-card_unavailable': !cardItem.isAvailable
+                        }"
+                         (click)="setSelectedPaymentMethod(cardItem.type, cardItem.card.id, $event)">
+                        <div class="payment-method-card-text">
+                            {{ cardTypes[cardItem.card.funding] | translate }} {{ cardBrands[cardItem.card.brand] }} *{{ cardItem.card.last4 }}
+                            <div class="payment-method-card-subtext" *ngIf="!cardItem.isAvailable">
+                                {{ 'payment_method.method_unacceptable' | translate }}
+                            </div>
+                        </div>
+                        <div class="payment-method-card-logos">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="38" height="24" viewBox="0 0 50 24" class="payment-method__card-logo payment-method__card-logo_cards">
+                                <rect x="26" width="24" height="16" rx="2" fill="#016fd0"/>
+                                <polygon points="49.91 2.63 49.91 9.28 48.74 10.53 49.91 11.79 49.91 13.4 48.04 13.4 47.04 12.3 46.06 13.41 39.76 13.39 39.76 8.33 37.73 8.33 40.24 2.63 42.68 2.63 43.54 4.58 43.54 2.63 46.56 2.63 47.08 4.09 47.61 2.63 49.91 2.63" fill="#fff" fill-rule="evenodd"/>
+                                <path d="M40.44,12.77V8.32h3.77v1H41.66V10h2.49v1H41.66v.68h2.55v1Zm3.76,0,2.08-2.23L44.2,8.32h1.61l1.28,1.41,1.28-1.41h1.54l-2,2.18,2,2.17v.06H48.35l-1.3-1.43-1.28,1.43ZM40.7,3.25l-2,4.45h1.35l.37-.89h2l.37.89h1.39l-2-4.45Zm.17,2.56.59-1.42.59,1.42ZM44.21,7.7V3.25h1.91l1,2.73,1-2.74H50V7.7H48.73v-3L47.62,7.7H46.54L45.41,4.64V7.7Z" fill="#016fd0" fill-rule="evenodd"/>
+                                <rect x="14" y="4" width="24" height="16" rx="2" fill="#252525"/>
+                                <circle cx="23" cy="12" r="5" fill="#eb001b"/>
+                                <circle cx="29" cy="12" r="5" fill="#f79e1b"/>
+                                <path d="M26,8a5,5,0,0,1,1,7,4.74,4.74,0,0,1-1,1,5,5,0,0,1-1-7A4.74,4.74,0,0,1,26,8Z" fill="#ff5f00" fill-rule="evenodd"/>
+                                <rect x="0.5" y="8.5" width="23" height="15" rx="1.75" fill="#fff"/>
+                                <path d="M2.79,13.91A7.74,7.74,0,0,0,1,13.24v-.13H3.76a.68.68,0,0,1,.77.52l.6,2.84.18.85L7,13.11H8.8L6.1,19.28H4.3Zm7.31,5.37H8.4l1.06-6.17h1.7Zm6.17-6L16,14.6l-.16-.07a3.06,3.06,0,0,0-1.27-.24c-.67,0-1,.27-1,.54s.37.47,1,.76c1,.44,1.44,1,1.43,1.68,0,1.28-1.17,2.11-3,2.11a5.59,5.59,0,0,1-1.9-.33l.24-1.39.23.1a3.63,3.63,0,0,0,1.59.33c.49,0,1-.19,1-.61,0-.26-.22-.46-.88-.76A2,2,0,0,1,11.87,15c0-1.2,1.19-2,2.87-2a4.68,4.68,0,0,1,1.53.26Zm2.26,3.82h1.41c-.07-.31-.39-1.79-.39-1.79l-.12-.53c-.08.23-.23.6-.22.59Zm2.1-4L22,19.28H20.42s-.15-.71-.2-.92H18c-.07.16-.36.92-.36.92H15.9l2.52-5.66a.85.85,0,0,1,.89-.51Z" fill="#171e6c"/>
+                            </svg>
+                            <button class="payment-method-card-delete"
+                                    *ngIf="selectedPaymentMethod.id !== cardItem.card.id && paymentConfig.payment_method_id !== cardItem.card.id"
+                                    (click)="onDeleteCardClick(cardItem.card, $event)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                                    <polygon fill="currentColor"
+                                             points="15.95 14.54 14.54 15.95 10 11.41 5.46 15.95 4.05 14.54 8.59 10 4.05 5.46 5.46 4.05 10 8.59 14.54 4.05 15.95 5.46 11.41 10 15.95 14.54"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="payment-method-card-checkbox">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                                <polygon fill="currentColor"
+                                         points="9 14.07 4.93 10 6.34 8.59 9 11.24 13.66 6.59 15.07 8 9 14.07"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <button class="button button_regular button_add-card-blue payment-method__method-popup-add-card"
+                            *ngIf="isAnyCardEnabled && hasCards"
+                            (click)="onNewCardClick()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                             class="button_icon">
+                            <path d="M12,6v6h0V6m1-1H11v6H5v2h6v6h2V13h6V11H13V5Z" fill="currentColor"/>
+                        </svg>
+                        <span class="button__caption">{{ addCardButtonCaptionKey | translate }}</span>
+                    </button>
+                    <!-- END: cards -->
+
+                    <div class="payment-method-card"
+                         *ngIf="paymentOptions.PAYPAL.enabled"
+                         [class.payment-method-card_active]="isSelectedPaymentMethod('PAYPAL')"
+                         (click)="setSelectedPaymentMethod('PAYPAL')">
+                        <div class="payment-method-card-text">PayPal</div>
+                        <div class="payment-method-card-logos">
+                            <app-payment-icon-logo-paypal></app-payment-icon-logo-paypal>
+                        </div>
+                        <div class="payment-method-card-checkbox">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="20"
+                                 height="20"
+                                 viewBox="0 0 20 20">
+                                <polygon fill="currentColor"
+                                         points="9 14.07 4.93 10 6.34 8.59 9 11.24 13.66 6.59 15.07 8 9 14.07"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="payment-method-message mt-16" *ngIf="isShowAutoPaymentNotSupportMessage()">
+                        {{ 'invoices_auto_payment.paypal_warning_message' | translate }}
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="mode === 'change' && isShowDCBMessage()">
+                <div class="help-contact">
+                    If you need help, please contact customer care team on
+                    <a class="help-contact__phone" href="tel:(512)569-8622">(512)569-8622</a>
+                </div>
+            </ng-container>
+        </popup-content>
+        <ng-container [ngSwitch]="methodSelectDialogStates">
+            <popup-controls *ngSwitchCase="'error'" [isStretched]="true">
+                <button (click)="onCancelMethod()"
+                        class="button button_regular button_light-blue"
+                        type="button">
+                    <span class="button__caption">{{ 'payment_method.error_cancel' | translate }}</span>
+                </button>
+            </popup-controls>
+            <popup-controls *ngSwitchCase="'ready'" [isStretched]="true">
+
+                <div class="select-payment-button-box">
+                    <div *ngIf="isShowAutoPaymentCheckBox()"
+                         class="autopayment-checkbox">
+                        <checkbox [(ngModel)]="isAutoPaymentEnabledFormValue"
+                                  class="autopayment-checkbox__checkbox">
+                        <span class="autopayment-checkbox__caption">
+                            {{ 'invoices_auto_payment.checkbox_label' | translate }}
+                        </span>
+                        </checkbox>
+                    </div>
+                    <div class="w-100 d-flex justify-between">
+                        <button (click)="onCancelMethod()"
+                                *ngIf="!hideCancelButton && mode !== 'setup'"
+                                [ngSwitch]="mode"
+                                class="button button_regular button_light-blue"
+                                type="button">
+                            <span *ngSwitchCase="'edit'"
+                                  class="button__caption">
+                                {{ 'payment_method.setup_close' | translate }}
+                            </span>
+                            <span *ngSwitchDefault
+                                  class="button__caption">
+                                {{ 'payment_method.setup_cancel' | translate }}
+                            </span>
+                        </button>
+                        <button (click)="onSubmitMethod()"
+                                [isDisabled]="!canSubmitMethod()"
+                                [isProgress]="isMethodPopupSubmitting"
+                                [ngSwitch]="mode"
+                                class="button button_regular button_figma-green w-100"
+                                type="button">
+                    <span class="button__caption"
+                          *ngSwitchCase="'setup'">{{ 'payment_method.setup_use_as_method' | translate }}</span>
+                            <span class="button__caption"
+                                  *ngSwitchDefault>{{ 'payment_method.setup_ok' | translate }}</span>
+                        </button>
+                    </div>
+                </div>
+            </popup-controls>
+        </ng-container>
+    </popup-custom>
+
+    <!-------------------------------------------------------->
+
+    <popup-custom class="payment-method__card-popup"
+                  [isDisabled]="isCardPopupSubmitting"
+                  *ngSwitchCase="'card'">
+        <popup-content>
+            <div class="payment-method__card-popup-fatal" *ngIf="cardPopupState === 'error'">
+                {{ 'stripe.error.common.generic' | translate }}
+            </div>
+            <ng-container *ngIf="cardPopupState !== 'error'">
+                <div class="payment-method__card-popup-header">{{ cardPopupHeaderKey | translate }}</div>
+                <div class="payment-method__card-popup-error" *ngIf="cardPopupError">
+                    {{ cardPopupError.key | translate : cardPopupError.data }}
+                </div>
+                <div #cardNumberNest
+                     class="payment-method__card-popup-input payment-method__card-popup-input_card"></div>
+                <div class="payment-method__card-popup-secondary-inputs">
+                    <div #cardExpireNest
+                         class="payment-method__card-popup-input payment-method__card-popup-input_expire"></div>
+                    <div #cardCVCNest
+                         class="payment-method__card-popup-input payment-method__card-popup-input_cvc"></div>
+                </div>
+                <div class="payment-method__card-popup-secured">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                         class="payment-method__card-popup-secured-lock">
+                        <path fill="currentColor"
+                              d="M12.24,6.52V5.24a4.24,4.24,0,0,0-8.48,0V6.52a1.7,1.7,0,0,0-1.7,1.69V13.3A1.7,1.7,0,0,0,3.76,15h8.48a1.7,1.7,0,0,0,1.7-1.7V8.21A1.7,1.7,0,0,0,12.24,6.52ZM8.85,11.38v1.26a.66.66,0,0,1-.66.66H7.81a.66.66,0,0,1-.66-.66V11.38a1.7,1.7,0,1,1,1.7,0Zm1.7-4.86H5.45V5.24a2.55,2.55,0,0,1,5.1,0Z"/>
+                    </svg>
+                    <span>{{ 'payment_method.card.secured' | translate }}</span>
+                    <a target="_blank" rel="nofollow noopener" href="https://stripe.com/"
+                       class="payment-method__card-popup-secured-link">
+                        <app-payment-icon-secured-stripe></app-payment-icon-secured-stripe>
+                    </a>
+                </div>
+                <checkbox [(ngModel)]="cardForm.isAccepted" class="payment-method__card-popup-agreement">
+                    <span
+                        class="payment-method__card-popup-agreement-caption">{{ 'payment_method.card.agreement_checkbox' | translate }}</span>
+                </checkbox>
+            </ng-container>
+        </popup-content>
+        <ng-container [ngSwitch]="cardPopupState">
+            <popup-controls *ngSwitchCase="'error'" [isStretched]="true">
+                <button type="button" class="button button_regular button_light-blue" (click)="onCancelCard()">
+                    <span class="button__caption">{{ 'payment_method.card.error_cancel' | translate }}</span>
+                </button>
+            </popup-controls>
+            <popup-controls *ngSwitchDefault [isStretched]="true">
+                <button type="button" class="button button_regular button_white-green" (click)="onCancelCard()">
+                    <span class="button__caption">{{ 'payment_method.card.submit_cancel' | translate }}</span>
+                </button>
+                <button type="button" class="button button_regular button_figma-green"
+                        [isDisabled]="isCardPopupSubmitting || !isCardValid()"
+                        [isProgress]="isCardPopupSubmitting"
+                        (click)="onSubmitCard()"
+                >
+                    <span class="button__caption">{{ 'payment_method.card.submit_ok' | translate }}</span>
+                </button>
+            </popup-controls>
+        </ng-container>
+        <div class="payment-method__card-popup-loading" *ngIf="cardPopupState === 'init'">
+            <loader></loader>
+        </div>
+    </popup-custom>
+
+    <!-------------------------------------------------------->
+
+    <popup-custom class="payment-method__card-delete-popup"
+                  [isDisabled]="isCardDeletePopupSubmitting"
+                  *ngSwitchCase="'card-delete'">
+        <popup-content>
+            <span
+                [innerHTML]="'payment_method.card_delete.message' | translate : { card: (cardBrands[cardToDelete.brand] + ' *' + cardToDelete.last4) }"></span>
+        </popup-content>
+        <popup-controls [isStretched]="true">
+            <button type="button"
+                    class="button button_regular button_light-blue"
+                    (click)="onCancelDeleteCard()">
+                <span class="button__caption">{{ 'payment_method.card_delete.cancel' | translate }}</span>
+            </button>
+            <button type="button"
+                    class="button button_regular button_figma-green"
+                    [isDisabled]="isCardDeletePopupSubmitting"
+                    [isProgress]="isCardDeletePopupSubmitting"
+                    (click)="onSubmitDeleteCard()"
+            >
+                <span class="button__caption">{{ 'payment_method.card_delete.ok' | translate }}</span>
+            </button>
+        </popup-controls>
+    </popup-custom>
+
+    <!-------------------------------------------------------->
+
+    <popup-custom class="payment-method__venmo-delete-popup"
+                  [isDisabled]="isVenmoDeletePopupSubmitting"
+                  *ngSwitchCase="'venmo-delete'">
+        <popup-content>
+            <span
+                [innerHTML]="'payment_method.venmo_delete.message' | translate : { venmoAccount: venmoAccountToDetach }"></span>
+        </popup-content>
+        <popup-controls [isStretched]="true">
+            <button type="button"
+                    class="button button_regular button_light-blue"
+                    (click)="onCancelDeleteVenmo()">
+                <span class="button__caption">{{ 'payment_method.venmo_delete.cancel' | translate }}</span>
+            </button>
+            <button type="button"
+                    class="button button_regular button_figma-green"
+                    [isProgress]="isVenmoDeletePopupSubmitting"
+                    (click)="onSubmitDeleteVenmo()">
+                <span class="button__caption">{{ 'payment_method.venmo_delete.ok' | translate }}</span>
+            </button>
+        </popup-controls>
+    </popup-custom>
+</ng-container>

@@ -1,0 +1,37 @@
+<a class="nav__link" *ngIf="isAccountsVisible" routerLink="/dashboard/accounts" routerLinkActive="nav__link_active">
+    {{ 'nav.accounts' | translate }}
+</a>
+<a class="nav__link" *ngIf="isAccountsVisible" routerLink="/dashboard/disputes" routerLinkActive="nav__link_active">
+    {{ 'nav.disputes' | translate }}
+</a>
+<a class="nav__link" *ngIf="isFAQVisible" routerLink="/dashboard/faq" routerLinkActive="nav__link_active">
+    {{ 'nav.faq' | translate }}
+</a>
+<a class="nav__link" *ngIf="isCoverageVisible" routerLink="/dashboard/coverage" routerLinkActive="nav__link_active">
+    {{ 'nav.coverage' | translate }}
+</a>
+<a class="nav__link" *ngIf="isTAsVisible" routerLink="/dashboard/toll-authorities" routerLinkActive="nav__link_active">
+    {{ 'nav.toll_authorities' | translate }}
+</a>
+<div class="nav__item" *ngIf="isContractsVisible">
+    <button type="button" class="nav__link nav__link_has-arrow"
+        #contractsTrigger
+        [ngClass]="{
+            'nav__link_focus': contractsMenu.isActive,
+            'nav__link_active': isContractsActive
+        }"
+    >
+        {{ 'nav.contracts' | translate }}
+        <svg width="16" height="16" viewBox="0 0 16 16" class="nav__link-arrow">
+            <path fill="currentColor" d="M8,11.41,3.29,6.71,4.71,5.29,8,8.59l3.29-3.3,1.42,1.42Z"/>
+        </svg>
+    </button>
+    <dropdown-menu class="nav__menu" #contractsMenu [trigger]="contractsTrigger">
+        <a class="dropdown-menu__item" *ngIf="isCarrierContractsVisible" routerLink="/dashboard/contracts/carriers" routerLinkActive="dropdown-menu__item_active">Carrier Contracts</a>
+        <a class="dropdown-menu__item" *ngIf="isTAContractsVisible" routerLink="/dashboard/contracts/toll-authorities" routerLinkActive="dropdown-menu__item_active">Toll Authority Contracts</a>
+        <a class="dropdown-menu__item" *ngIf="isPGContractsVisible" routerLink="/dashboard/contracts/payment-gateways" routerLinkActive="dropdown-menu__item_active">Payment Gateway Contracts</a>
+    </dropdown-menu>
+</div>
+<a class="nav__link" target="_blank" rel="noopener nofollow" href="https://www.tidio.com/panel/conversations">
+    {{ 'nav.chat' | translate }}
+</a>

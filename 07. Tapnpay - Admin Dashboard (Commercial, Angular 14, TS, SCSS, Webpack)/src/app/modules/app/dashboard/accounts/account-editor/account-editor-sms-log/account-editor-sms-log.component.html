@@ -1,0 +1,118 @@
+<fieldset class="account-editor-sms-log__filters" [disabled]="!!submitBy">
+    <div class="account-editor-sms-log__filters-item">
+        <div class="account-editor-sms-log__datepicker">
+            <datepicker
+                [type]="'iso'"
+                [format]="'input.date'"
+                [placeholder]="'accounts.sms_log.date_from'"
+                [(ngModel)]="filters.from"
+                (ngModelChange)="onDateChange()"
+            ></datepicker>
+        </div>
+    </div>
+    <div class="account-editor-sms-log__filters-item account-editor-sms-log__filters-item_dash">—</div>
+    <div class="account-editor-sms-log__filters-item">
+        <div class="account-editor-sms-log__datepicker">
+            <datepicker
+                [type]="'iso'"
+                [format]="'input.date'"
+                [placeholder]="'accounts.sms_log.date_to'"
+                [(ngModel)]="filters.to"
+                (ngModelChange)="onDateChange()"
+            ></datepicker>
+        </div>
+    </div>
+    <div class="account-editor-sms-log__filters-item account-editor-sms-log__filters-item_buttons">
+        <button type="button" class="button button_regular button_light-blue"
+            (click)="onSubmitFilters()"
+            [isProgress]="submitBy === 'submit'"
+        >
+            <span class="button__caption">{{ 'accounts.sms_log.apply' | translate }}</span>
+        </button>
+        <button type="button" class="button button_regular button_light-blue"
+            (click)="onResetFilters()"
+            [isProgress]="submitBy === 'reset'"
+        >
+            <span class="button__caption">{{ 'accounts.sms_log.reset' | translate }}</span>
+        </button>
+    </div>
+</fieldset>
+
+<ng-container [ngSwitch]="listState">
+    <div class="account-editor-sms-log__loader" *ngSwitchCase="'loading'">
+        <loader></loader>
+    </div>
+    <div class="account-editor-sms-log__message" *ngSwitchCase="'empty'">
+        {{ 'accounts.sms_log.no_items' | translate }}
+    </div>
+    <div class="account-editor-sms-log__message account-editor-sms-log__message_error" *ngSwitchCase="'error'">
+        {{ 'accounts.sms_log.error' | translate }}
+    </div>
+    <div class="account-editor-sms-log__content" *ngSwitchCase="'list'">
+        <div class="table table_top table_striped table_white table_nowrap account-editor-sms-log__table">
+            <div class="table__header">
+                <div class="table__row">
+                    <div class="table__cell">
+                        {{ 'accounts.sms_log.datetime_sent' | translate }}
+                    </div>
+                    <div class="table__cell account-editor-sms-log__table-cell-sender">
+                        {{ 'accounts.sms_log.sender' | translate }}
+                    </div>
+                    <div class="table__cell account-editor-sms-log__table-cell-arrow">
+                        &nbsp;
+                    </div>
+                    <div class="table__cell account-editor-sms-log__table-cell-recipient">
+                        {{ 'accounts.sms_log.recipient' | translate }}
+                    </div>
+                    <div class="table__cell">
+                        {{ 'accounts.sms_log.message_text' | translate }}
+                    </div>
+                    <div class="table__cell account-editor-sms-log__table-cell-buttons">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+            <div class="table__body">
+                <div class="table__row" *ngFor="let item of items" [@smsItemAppear] [@.disabled]="!isLoadedMore">
+                    <div class="table__cell">
+                        {{ item.date | datetime : 'display.datetime' }}
+                    </div>
+                    <div class="table__cell account-editor-sms-log__table-cell-sender">
+                        {{ item.sender }}
+                    </div>
+                    <div class="table__cell account-editor-sms-log__table-cell-arrow">
+                        &#10230;
+                    </div>
+                    <div class="table__cell account-editor-sms-log__table-cell-recipient">
+                        {{ item.recipient }}
+                    </div>
+                    <div class="table__cell account-editor-sms-log__table-cell-text">
+                        <span class="account-editor-sms-log__sms-text">
+                            {{ item.text }}
+                        </span>
+                    </div>
+                    <div class="table__cell account-editor-sms-log__table-cell-buttons">
+                        <button type="button" class="account-editor-sms-log__copy-button" (click)="onCopyItem(item)" [title]="'accounts.sms_log.copy' | translate">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="22" viewBox="0 0 18 22">
+                                <path style="fill: currentColor;" d="M16,4H14V2a2,2,0,0,0-2-2H2A2,2,0,0,0,0,2V16a2,2,0,0,0,2,2H4v2a2,2,0,0,0,2,2H16a2,2,0,0,0,2-2V6A2,2,0,0,0,16,4ZM2,16V2H12V4H6A2,2,0,0,0,4,6V16Zm14,4H6V6H16Z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="account-editor-sms-log__pagination">
+            <button type="button" class="button button_large button_white"
+                [isDisabled]="!!(submitBy || !nextPageKey)"
+                [isProgress]="submitBy === 'page'"
+                (click)="onNextPage()"
+            >
+                <span class="button__caption">
+                    {{ 'accounts.sms_log.load_more' | translate }}
+                </span>
+            </button>
+        </div>
+    </div>
+</ng-container>
+
+

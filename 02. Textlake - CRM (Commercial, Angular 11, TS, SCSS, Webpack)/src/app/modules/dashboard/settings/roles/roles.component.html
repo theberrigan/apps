@@ -1,0 +1,68 @@
+<action-panel>
+    <div class="action-panel__primary">
+        <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ 'settings.roles.page_title' | translate }}</h1>
+    </div>
+</action-panel>
+
+<ng-container [ngSwitch]="state">
+    <div class="roles-editor__spinner" *ngSwitchCase="'loading'">
+        <spinner class="spinner spinner_blue spinner_small"></spinner>
+    </div>
+    <div class="roles-editor__message" *ngSwitchCase="'empty'">
+        {{ 'settings.roles.no_users__message' | translate }}
+    </div>
+    <div class="roles-editor__message roles-editor__message_error" *ngSwitchCase="'error'">
+        {{ 'settings.roles.init_error__message' | translate }}
+    </div>
+    <div class="roles-editor__users" *ngSwitchCase="'list'">
+        <span class="roles-editor__hint">{{ 'settings.roles.users_help__text' | translate }}</span>
+        <div class="roles-editor__list">
+            <div class="roles-editor__list-item"
+                 *ngFor="let userWithRoles of usersWithRoles"
+                 [class.roles-editor__list-item_deactivated]="!userWithRoles.user.active"
+                 (click)="onUserClick(userWithRoles, $event)"
+            >
+                <div class="roles-editor__list-item-username">
+                    {{ userWithRoles.user.firstName }} {{ userWithRoles.user.lastName }}
+                    <span class="roles-editor__list-item-you" *ngIf="userWithRoles.isMe">
+                    ({{ 'settings.roles.you__text' | translate }})
+                </span>
+                </div>
+                <div class="roles-editor__list-item-switcher"
+                     *ngIf="!userWithRoles.isMe"
+                     (click)="onSwitchActivity(userWithRoles, $event)"
+                >
+                    <div class="roles-editor__list-item-switcher-bg"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<popup-custom #editor [options]="{ closeBy: 'manual', stickyControls: true }" class="roles-editor__editor" (onCloseRequest)="onHideEditor($event)" *ngIf="userWithRolesToEdit">
+    <popup-box>
+        <popup-header>{{ 'settings.roles.roles__header' | translate }}</popup-header>
+        <popup-content>
+            <!-- Content -->
+            <div class="roles-editor__editor-user">
+                {{ 'settings.roles.assigned_to__text' | translate }} {{ userWithRolesToEdit.user.firstName }} {{ userWithRolesToEdit.user.lastName }}
+            </div>
+            <div class="roles-editor__editor-roles">
+                <checkbox *ngFor="let role of userWithRolesToEdit.roles" [(ngModel)]="role.isActive" [disabled]="userWithRolesToEdit.isMe && role.key === 'ROLE_EDIT'">
+                    {{ role.display | translate }}
+                </checkbox>
+            </div>
+            <!-- /Content -->
+        </popup-content>
+        <popup-controls>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_regular button_white" (click)="onHideEditor()">
+                    <span class="button__caption">{{ 'settings.roles.editor_cancel' | translate }}</span>
+                </button>
+                <button type="button" class="button button_regular button_blue" (click)="onSave()" [isDisabled]="isSaving" [isProgress]="isSaving">
+                    <span class="button__caption">{{ 'settings.roles.editor_ok' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup-custom>

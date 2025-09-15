@@ -1,0 +1,18 @@
+<ng-container [ngSwitch]="layout">
+    <invoices-list
+        #listComponent
+        *ngSwitchCase="'invoice-list'"
+        [invoiceItems]="invoiceItems"
+        (onInvoicesListInited)="onInvoicesListInited($event)"
+        (onShowInvoiceDetails)="onShowInvoiceDetails($event)"
+    ></invoices-list>
+
+    <invoice-detail
+        #detailComponent
+        *ngSwitchCase="'invoice-detail'"
+        [invoiceItems]="invoiceItemsForPayment"
+        [coverageLocations]="coverageLocations"
+        (onClose)="onCloseInvoicePayment()"
+        (onDone)="onPaymentSuccess($event)"
+    ></invoice-detail>
+</ng-container>

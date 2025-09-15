@@ -1,0 +1,60 @@
+<fieldset [disabled]="isSaving">
+    <action-panel>
+        <div class="action-panel__primary">
+            <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ 'settings.calc_rules.page_header' | translate }}</h1>
+        </div>
+        <div class="action-panel__secondary">
+            <div class="action-panel__item">
+                <button type="button" class="button button_regular button_blue" [isProgress]="isSaving" (click)="onSave()">
+                    <span class="button__caption">{{ 'settings.calc_rules.save__button' | translate }}</span>
+                </button>
+            </div>
+        </div>
+    </action-panel>
+
+    <ng-container [ngSwitch]="state">
+        <div class="calculation-rules__spinner" *ngSwitchCase="'loading'">
+            <spinner class="spinner spinner_blue spinner_small"></spinner>
+        </div>
+        <div class="calculation-rules__message calculation-rules__message_error" *ngSwitchCase="'error'">
+            {{ 'settings.calc_rules.error' | translate }}
+        </div>
+        <div class="calculation-rules__editor" *ngSwitchCase="'editor'" [formGroup]="form">
+            <div class="calculation-rules__editor-inner">
+                <div class="calculation-rules__controls" [formGroup]="form">
+                    <div class="calculation-rules__control">
+                        <label class="calculation-rules__control-label">
+                            <span class="calculation-rules__control-label-text">
+                                {{ 'settings.calc_rules.rounding_rule__label' | translate }}
+                            </span>
+                        </label>
+                        <select class="select select_regular calculation-rules__control-input" formControlName="calcRule">
+                            <option *ngFor="let ruleOption of ruleOptions" [ngValue]="ruleOption.value">
+                                {{ ruleOption.display | translate }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="calculation-rules__examples-label">
+                    {{ 'settings.calc_rules.rounding_examples__label' | translate }}
+                </div>
+                <div class="calculation-rules__table-wrap">
+                    <table class="calculation-rules__table">
+                        <tbody>
+                        <tr *ngFor="let row of exampleValues; let isFirstRow = first">
+                            <td class="calculation-rules__table-cell" *ngFor="let cell of row" [ngClass]="{
+                                'calculation-rules__table-cell_bold': cell.isBold,
+                                'calculation-rules__table-cell_text-right': cell.isNumber,
+                                'calculation-rules__table-cell_in-first-row': isFirstRow,
+                                'calculation-rules__table-cell_current': currentRule === cell.rule
+                            }">
+                                {{ cell.i18n ? (cell.value | translate) : cell.value }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</fieldset>

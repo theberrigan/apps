@@ -1,0 +1,52 @@
+@import '../../../../assets/css/definitions';
+@import '../popup.definitions';
+
+.popup {
+    &__header {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: space-between;
+        height: 60px;
+
+        &-title {
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: $font-weight-semi-bold;
+            padding: 0 0 0 $content-padding-x;
+        }
+
+        &-close {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            height: 100%;
+            width: 60px;
+            background-color: transparent;
+            user-select: none;
+            cursor: pointer;
+            color: $color-text-primary;
+            opacity: 0.5;
+
+            &:hover {
+                opacity: 1;
+            }
+
+            &,
+            &:hover {
+                transition: opacity 0.15s ease;
+            }
+
+            &[disabled],
+            &[disabled]:hover,
+            fieldset[disabled] &,
+            fieldset[disabled] &:hover {
+                opacity: 0.5;
+                cursor: default;
+                pointer-events: none;
+            }
+        }
+    }
+}

@@ -1,0 +1,226 @@
+@import './definitions.scss';
+
+/*
+
+.button
+
+.button_regular  // normal size
+.button_medium
+.button_large
+
+.button_white
+.button_blue
+.button_red
+.button_green
+.button_orange
+
+.button_inverse  // inverse colors
+
+.button_affected-by-fieldset  // used with <a/> buttons to allow disable such buttons when it contained in the fieldset[disabled]
+.button_has-progress  // don't use direct, use [isProgress]="boolean" instead
+.button_disabled  // don't use direct, use [isDisabled]="boolean" instead
+
+.button_block  // fill-width block button, acts like "display: block;"
+
+// Examples:
+// ----------------------------
+
+// Button boilerplate:
+<button type="button" class="button button_SIZE button_COLOR" [isDisabled] [isProgress]>
+    <span class="button__caption">Button Caption</span>
+</button>
+
+// With icon:
+<button type="button" class="button button_SIZE button_COLOR" [isDisabled] [isProgress]>
+    <svg class="button__icon">...</svg>
+    <span class="button__caption">Button Caption</span>
+</button>
+
+// Link-button, can be disabled by ancestor fieldset[disabled]
+<a href="#" class="button button_SIZE button_COLOR button_affected-by-fieldset" [isDisabled] [isProgress]>
+    <svg class="button__icon">...</svg>
+    <span class="button__caption">Button Caption</span>
+</a>
+
+*/
+
+
+$button-root-selector: '.button';
+$button-border-width: 1px;
+
+a#{$button-root-selector},
+a#{$button-root-selector}:hover,
+a#{$button-root-selector}:active,
+a#{$button-root-selector}:focus,
+a#{$button-root-selector}:visited {
+    text-decoration: none;
+}
+
+#{$button-root-selector} {
+    display: inline-flex;
+    align-items: center;
+    flex-flow: row nowrap;
+    justify-content: center;
+    vertical-align: top;
+    position: relative;
+    // z-index: inherit;
+    overflow: hidden;
+    cursor: pointer;
+    border: $button-border-width solid transparent;
+    border-radius: $control-primary-radius;
+    text-align: center;
+    white-space: nowrap;
+    box-shadow: $control-box-shadow;
+    color: #000;
+    background-color: #eee;
+    //transform-origin: 50% 50%;
+    //transition: transform 0.03s linear;
+    //transform: scale(1);
+    transform: translateY(0);
+    @extend .no-select;
+
+    //
+    // ----------------------
+
+    &_block {
+        display: flex;
+        width: 100%;
+    }
+
+    // Icon, caption, spinner
+    // ----------------------
+
+    &__icon {
+        display: block;
+        transform-origin: 50% 50%;
+    }
+
+    &__caption {
+        display: block;
+        vertical-align: middle;
+    }
+
+    &__spinner {
+        content: '';
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform-origin: 50% 50%;
+        animation: spinning 0.6s linear infinite;
+
+        &-svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &_has-progress &__spinner {
+        display: block;
+    }
+
+    &_has-progress &__icon,
+    &_has-progress &__caption {
+        visibility: hidden;
+    }
+
+    // Sizes
+    // -----------------------
+
+    $sizes: (
+        //           1     2  3     4     5                    6     7    8
+        'regular':  (34px, 0, 16px, 14px, $font-weight-medium, 18px, 6px, 22px),
+        'medium':   (40px, 0, 20px, 15px, $font-weight-medium, 20px, 7px, 26px),
+        'large':    (46px, 0, 24px, 16px, $font-weight-medium, 22px, 8px, 30px)
+    );
+
+    @each $size, $value in $sizes {
+        &_#{$size} {
+            padding: nth($value, 2) nth($value, 3);
+            height: nth($value, 1);
+            line-height: (nth($value, 4) + 4px);
+            font-size: nth($value, 4);
+            font-weight: nth($value, 5);
+
+            &:active {
+                // transform: scale(((nth($value, 1) - 2px) / nth($value, 1)));
+                transform: translateY(1px);
+                box-shadow: none;
+            }
+
+            #{$button-root-selector}__icon {
+                max-width: nth($value, 6);
+                max-height: nth($value, 6);
+            }
+
+            #{$button-root-selector}__icon + #{$button-root-selector}__caption,
+            #{$button-root-selector}__caption + #{$button-root-selector}__icon {
+                margin-left: nth($value, 7);
+            }
+
+            #{$button-root-selector}__spinner {
+                $margin-side: (nth($value, 8) / 2 * -1);
+
+                width: nth($value, 8);
+                height: nth($value, 8);
+                margin: $margin-side 0 0 $margin-side;
+            }
+        }
+    }
+
+    // Colors
+    // -----------------------
+
+    $colors: (
+        'white':  (#fff,                  $color-text-primary, $color-input-deco-color),
+        'blue':   ($color-primary-blue,   #fff,                transparent            ),
+        'red':    ($color-primary-red,    #fff,                transparent            ),
+        'green':  ($color-primary-green,  #fff,                transparent            ),
+        'orange': ($color-primary-orange, #fff,                transparent            )
+    );
+
+    $colors-inverse: (
+        'white':  ($color-text-primary, #fff,                  transparent          ),
+        'blue':   (#fff,                $color-primary-blue,   $color-primary-blue  ),
+        'red':    (#fff,                $color-primary-red,    $color-primary-red   ),
+        'green':  (#fff,                $color-primary-green,  $color-primary-green ),
+        'orange': (#fff,                $color-primary-orange, $color-primary-orange)
+    );
+
+    @each $color, $value in $colors {
+        &_#{$color} {
+            background-color: nth($value, 1);
+            color: nth($value, 2);
+            border-color: nth($value, 3);
+        }
+    }
+
+    @each $color, $value in $colors-inverse {
+        &_#{$color}#{&}_inverse {
+            background-color: nth($value, 1);
+            color: nth($value, 2);
+            border-color: nth($value, 3);
+        }
+    }
+}
+
+// Disabled state
+// -----------------------
+
+#{$button-root-selector}:disabled,
+#{$button-root-selector}:active:disabled,
+#{$button-root-selector}#{$button-root-selector}_disabled,
+#{$button-root-selector}:active#{$button-root-selector}_disabled,
+fieldset:disabled button#{$button-root-selector},
+fieldset:disabled button#{$button-root-selector}:active,
+fieldset:disabled input#{$button-root-selector},
+fieldset:disabled input#{$button-root-selector}:active,
+fieldset:disabled a#{$button-root-selector}_affected-by-fieldset#{$button-root-selector},
+fieldset:disabled a#{$button-root-selector}_affected-by-fieldset#{$button-root-selector}:active {
+    box-shadow: none;
+    transform: none;
+    pointer-events: none;
+    opacity: 0.7;
+    cursor: default;
+}
+

@@ -1,0 +1,113 @@
+<popup-custom class="subscription-select" *ngIf="isLoaded">
+    <popup-content>
+        <div class="registration-form">
+            <img [src]="NEO_RIDE_LOGO_URL" alt="NeoRide Logo" style="display:block; margin: 0 auto 20px; max-width: 180px;">
+            <!-- <h2>{{ 'registration.page_header' | translate }}</h2>
+            <p class="intro-text">{{ 'registration.intro' | translate }}</p> -->
+            
+            <form [formGroup]="registrationForm" class="form-content">
+                <div class="form-field">
+                    <label class="contact-us-inner__label contact-us-inner__label_required" for="firstName">
+                        <span class="contact-us-inner__label-text">{{ 'registration.first_name' | translate }}</span>
+                    </label>
+                    <input 
+                        id="firstName"
+                        type="text"
+                        formControlName="firstName"
+                        [placeholder]="'registration.first_name_placeholder' | translate"
+                        [class.ng-invalid]="showError('firstName')"
+                    >
+                    <div class="error-message" *ngIf="showError('firstName')">
+                        <i class="fas fa-exclamation-circle"></i>
+                        {{ getFirstNameErrorMessage() }}
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label class="contact-us-inner__label contact-us-inner__label_required" for="lastName">
+                        <span class="contact-us-inner__label-text">{{ 'registration.last_name' | translate }}</span>
+                    </label>
+                    <input 
+                        id="lastName"
+                        type="text"
+                        formControlName="lastName"
+                        [placeholder]="'registration.last_name_placeholder' | translate"
+                        [class.ng-invalid]="showError('lastName')"
+                    >
+                    <div class="error-message" *ngIf="showError('lastName')">
+                        <i class="fas fa-exclamation-circle"></i>
+                        {{ getLastNameErrorMessage() }}
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label class="contact-us-inner__label contact-us-inner__label_required" for="email">
+                        <span class="contact-us-inner__label-text">{{ 'registration.email' | translate }}</span>
+                    </label>
+                    <input 
+                        id="email"
+                        type="email"
+                        formControlName="email"
+                        placeholder="Enter your email"
+                        [class.ng-invalid]="showError('email')"
+                    >
+                    <div class="error-message" *ngIf="showError('email')">
+                        <i class="fas fa-exclamation-circle"></i>
+                        {{ getEmailErrorMessage() }}
+                    </div>
+                </div>
+
+                <div class="language-selection">
+                    <label>{{ 'registration.select_language' | translate }}</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" formControlName="language" value="en">
+                            {{ 'registration.english' | translate }}
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" formControlName="language" value="es">
+                            {{ 'registration.spanish' | translate }}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="terms-checkbox" [class.ng-invalid]="showError('termsAccepted')">
+                    <label>
+                        <input type="checkbox" formControlName="termsAccepted">
+                        <span>
+                            I agree to the 
+                            <a href="https://www.neoride.com/termsandconditions" target="_blank" rel="noopener noreferrer" class="terms-link-with-icon">    
+                                Terms and Conditions
+                                <img src="assets/images/terms-icon-2.png" alt="Open in new tab" class="terms-icon" />
+                            </a>
+                        </span>
+                    </label>
+                    <div class="error-message" *ngIf="showError('termsAccepted')">
+                        <i class="fas fa-exclamation-circle"></i>
+                        {{ getTermsErrorMessage() }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </popup-content>
+    <popup-controls>
+        <div class="buttons-panel" 
+            style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 24px; margin-top: 40px; flex-wrap: wrap; width: 100%;">
+            <button 
+                mat-stroked-button
+                color="primary"
+                style="flex: 1 1 140px; min-width: 140px; max-width: 220px; height: 46px; font-size: 14px; font-weight: 600; border: 1.5px solid #00C08B; color: #00C08B; background: #fff; margin-bottom: 16px;"
+                (click)="onCancel()">
+                {{ 'registration.cancel' | translate }}
+            </button>
+            <button 
+                mat-raised-button 
+                color="primary"
+                [disabled]="isSubmitting"
+                style="flex: 1 1 140px; min-width: 140px; max-width: 220px; height: 46px; font-size: 14px; font-weight: 600; background: #43C59E; color: #fff; border: none; margin-bottom: 16px;"
+                (click)="onContinue()">
+                {{ 'registration.ok' | translate }}
+            </button>
+        </div>
+    </popup-controls>
+</popup-custom> 

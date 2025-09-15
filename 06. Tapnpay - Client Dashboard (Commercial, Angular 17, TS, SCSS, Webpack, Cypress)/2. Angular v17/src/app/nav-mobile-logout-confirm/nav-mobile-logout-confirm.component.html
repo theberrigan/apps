@@ -1,0 +1,9 @@
+<div class="logout-confirm__container">
+  <img src="assets/images/logout.png" alt="Logout" class="logout-confirm__logo" />
+  <h2 class="logout-confirm__title">{{ 'logout.title' | translate }}</h2>
+  <p class="logout-confirm__subtitle">{{ 'logout.confirm_message' | translate }}</p>
+  <div class="logout-confirm__actions">
+    <button class="logout-confirm__btn logout-confirm__btn--no" (click)="onNo()">{{ 'logout.no' | translate }}</button>
+    <button class="logout-confirm__btn logout-confirm__btn--yes" (click)="onYes()">{{ 'logout.yes' | translate }}</button>
+  </div>
+</div>

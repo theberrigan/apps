@@ -1,0 +1,20 @@
+<ng-container [ngSwitch]="showBackButton">
+    <button type="button" class="app-bar__nav-trigger" *ngSwitchCase="false" [class.app-bar__nav-trigger_has-dot]="hasTermsDot" (click)="onTriggerClick()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 18 18">
+            <path style="fill: currentColor;" d="M0,13 L0,13 L18,13 L18,15 L0,15 ZM0,8 L18,8 L18,10 L0,10 L0,8 ZM0,3 L18,3 L18,5 L0,5 L0,3 Z"></path>
+        </svg>
+    </button>
+    <button type="button" class="app-bar__nav-trigger" *ngSwitchCase="true" (click)="onBackClick()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="19px" height="16px" viewBox="0 0 19 16">
+            <polygon style="fill: currentColor;" points="18.4 8.7 3.8 8.7 9.1 14 7.7 15.4 0 7.7 7.7 0 9.1 1.4 3.8 6.7 18.4 6.7 18.4 8.7"></polygon>
+        </svg>
+    </button>
+</ng-container>
+<div class="app-bar__logo">
+    <svg xmlns="http://www.w3.org/2000/svg" class="app-bar__logo-svg" preserveAspectRatio="xMidYMid meet">
+        <use xlink:href="#svg-logo"></use>
+    </svg>
+</div>
+<div class="app-bar__controls">
+    <ng-content></ng-content>
+</div>

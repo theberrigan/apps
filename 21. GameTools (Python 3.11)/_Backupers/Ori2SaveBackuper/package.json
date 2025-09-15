@@ -1,0 +1,9 @@
+{
+    "name": "ori2sb",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "node ./backuper.js"
+    },
+    "license": "ISC",
+    "dependencies": {}
+}

@@ -1,0 +1,74 @@
+@import '../../../../../assets/css/definitions.scss';
+
+.checkbox {
+    $size: 22px;
+    $checkbox-border-color: #abb4bf;
+
+    display: block;
+    cursor: default;
+    user-select: none;
+    min-height: $size;
+    line-height: $size;
+    font-size: 14px;
+    font-weight: $font-weight-medium;
+    vertical-align: middle;
+    position: relative;
+    padding-left: ($size + 8px);
+    color: #59606b;
+
+    &_disabled,
+    fieldset[disabled] & {
+        opacity: 0.6;
+    }
+
+    &:before,
+    &:after {
+        content: '';
+        display: block;
+        width: $size;
+        height: $size;
+        top: 0;
+        left: 0;
+        border-radius: $control-primary-radius;
+        position: absolute;
+    }
+
+    &:before {
+        background-color: rgba($color-primary-blue, 0);
+        border: 2px solid $checkbox-border-color;
+        will-change: background-color, border-color;
+    }
+
+    &_active:before {
+        background-color: $color-primary-blue;
+        border-color: rgba($checkbox-border-color, 0);
+    }
+
+    &:after {
+        transform-origin: 10px 15px;
+        background: transparent url('../../../../../assets/images/checkbox_mark.svg') no-repeat 4px 6px;
+        opacity: 0;
+        transform: scale(0);
+        will-change: opacity, transform;
+    }
+
+    &_active:after {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    &:before,
+    &:after,
+    &_active:before,
+    &_active:after {
+        transition: all 0.1s ease-out;
+    }
+
+    &_without-caption {
+        padding-left: $size;
+    }
+
+    &__caption {
+        display: block;
+    }
+}

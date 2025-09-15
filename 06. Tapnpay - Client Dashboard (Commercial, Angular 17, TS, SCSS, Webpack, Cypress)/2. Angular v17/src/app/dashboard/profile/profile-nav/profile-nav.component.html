@@ -1,0 +1,24 @@
+<div class="profile__items" *ngIf="isLoaded">
+    <a class="profile__item" routerLink="/dashboard/profile/vehicles">
+        <span class="profile__item-header" [innerHTML]="'profile.unregister_vehicles_header' | translate"></span>
+        <span class="profile__item-text" [innerHTML]="'profile.unregister_vehicles_text' | translate"></span>
+    </a>
+    <div class="profile__item" (click)="emmitShowPaymentMethodPopup()">
+        <span class="profile__item-header" [innerHTML]="'profile.payment_method_header' | translate"></span>
+        <span class="profile__item-text" [innerHTML]="'profile.payment_method_text' | translate"></span>
+    </div>
+    <div class="profile__item mb-8" *ngIf="isShowSubscription" routerLink="/dashboard/profile/subscription">
+        <span class="profile__item-header" [innerHTML]="'profile.subscription_header' | translate"></span>
+        <span class="profile__item-text" [innerHTML]="'profile.subscription_text' | translate"></span>
+    </div>
+    <ng-container *ngIf="false">
+        <app-auto-payment-card></app-auto-payment-card>
+    </ng-container>
+    <ng-container *ngIf="isShowDeactivateAccountBtn()">
+        <div class="profile__item" *ngIf="!isDebtLock" (click)="emmitDeactivateAccount()">
+            <span class="profile__item-header profile__item-header_red"
+                  [innerHTML]="'profile.deactivate_account_header' | translate"></span>
+            <span class="profile__item-text" [innerHTML]="'profile.deactivate_account_text' | translate"></span>
+        </div>
+    </ng-container>
+</div>

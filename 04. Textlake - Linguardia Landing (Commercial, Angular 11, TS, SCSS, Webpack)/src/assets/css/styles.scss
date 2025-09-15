@@ -1,0 +1,14 @@
+// NOTE: order is important
+@import '../fonts/ProximaNova/font.css';
+@import './definitions.scss';  // variables
+@import './animations.scss';
+@import './mixins.scss';
+@import './reset.scss';
+@import './common.scss';  // common styles & classes
+
+html,
+body {
+    font-family: 'Proxima-Nova', 'Helvetica Neue', Arial, Tahoma, sans-serif;
+    color: #000;
+    background-color: $color-bg-primary;
+}

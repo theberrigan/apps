@@ -1,0 +1,144 @@
+<!--<div [appCollapseAnimated]="!isOpened"
+     [listItems]="dateInvoices.invoices.length"
+     class="history-invoice-card">
+    <div class="history-invoice-card__body">
+        <div [ngClass]="{'align-center': !isOpened, 'opened' : isOpened}"
+             class="invoice-date-col">
+
+        </div>
+        <div class="invoices-list-col">
+            <ng-container *ngIf="!isOpened">
+                <div class="invoice-item align-center">
+                    <div class="invoice-item__name mb-0">
+                        <ng-container *ngIf="dateInvoices.invoices.length === 1">
+                            <span (click)="goToInvoice(firstInvoice.invoice_id)">
+                                {{ firstInvoice.invoice_name }}
+                            </span>
+                        </ng-container>
+                        <ng-container *ngIf="dateInvoices.invoices.length > 1">
+                            <span (click)="toggleCollapse()">
+                                {{ dateInvoices.invoices.length }} {{ 'history.invoices_multiple' | translate }}
+                            </span>
+                        </ng-container>
+                    </div>
+                    <div class="invoice-item__payment-method-type">
+                        {{ paymentMethodNames[firstInvoice.payment_method_type] | translate }}
+                    </div>
+                    <div class="invoice-item__amount invoice-item__amount&#45;&#45;only-desktop">
+                        <ng-container *ngTemplateOutlet="invoiceAmount"></ng-container>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="isOpened">
+                <ng-container *ngFor="let invoice of dateInvoices.invoices">
+                    <div class="invoice-item">
+                        <div class="invoice-item__name"
+                             (click)="goToInvoice(invoice.invoice_id)">
+                            {{ invoice.invoice_name }}
+                        </div>
+                        <div class="invoice-item__payment-method-type">
+                            {{ paymentMethodNames[invoice.payment_method_type] | translate }}
+                        </div>
+                        <div class="invoice-item__amount">
+                            {{ invoice.invoice_amount | currencyFormat }}
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
+        <div *ngIf="!isOpened" class="total-mobile-closed">
+            <ng-container *ngTemplateOutlet="invoiceAmount"></ng-container>
+        </div>
+    </div>
+    <ng-container *ngIf="isOpened">
+        <div class="history-invoice-card__separate-line"></div>
+        <div class="history-invoice-card__footer">
+            <ng-container *ngTemplateOutlet="invoiceAmount"></ng-container>
+        </div>
+    </ng-container>
+</div>-->
+
+<ng-template #invoiceAmount>
+    <div class="invoice-amount">
+        <div class="processing-fee">
+            <span class="processing-fee__label">{{ 'history.invoice_amount_processing_fee' | translate }}</span>
+            <span
+                class="processing-fee__amount">{{ processingFee | currencyFormat }}</span>
+        </div>
+        <div class="total-fee">
+            <span class="total-fee__label">{{ 'history.invoice_total_amount' | translate }}</span>
+            <span
+                class="total-fee__amount">{{ totalFee | currencyFormat }}</span>
+        </div>
+    </div>
+</ng-template>
+
+<div class="invoice-history-card-n" [class.open]="isOpened">
+    <div class="collapse-icon">
+        <ng-container *ngIf="dateInvoices.invoices.length > 1">
+            <button
+                [ngClass]="{'collapse-icon__btn--open': !isOpened, 'collapse-icon__btn--close': isOpened}"
+                class="collapse-icon__btn"
+                (click)="toggleCollapse()">
+            </button>
+        </ng-container>
+    </div>
+    <div class="payment-date">
+        <span class="payment-date__date">{{ dateInvoices.date | date: 'MMM dd, yyyy' }}</span>
+        <span class="payment-date__time">{{ dateInvoices.date | date: 'hh:mm a' }}</span>
+    </div>
+    <div class="invoices-col">
+        <ng-container *ngIf="!isOpened">
+            <div class="invoice-item align-center">
+                <div class="invoice-item__name mb-0">
+                    <ng-container *ngIf="dateInvoices.invoices.length === 1">
+                            <span (click)="goToInvoice(firstInvoice.invoice_id)">
+                                {{ firstInvoice.invoice_name }}
+                            </span>
+                    </ng-container>
+                    <ng-container *ngIf="dateInvoices.invoices.length > 1">
+                            <span (click)="toggleCollapse()">
+                                {{ dateInvoices.invoices.length }} {{ 'history.invoices_multiple' | translate }}
+                            </span>
+                    </ng-container>
+                </div>
+                <div class="invoice-item__payment-method-type">
+                    {{ paymentMethodNames[firstInvoice.payment_method_type] | translate }}
+                </div>
+                <div class="invoice-item__amount invoice-item__amount--only-desktop">
+                    <ng-container *ngTemplateOutlet="invoiceAmount"></ng-container>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="isOpened">
+            <ng-container *ngFor="let invoice of dateInvoices.invoices">
+                <div class="invoice-item invoice-item--list">
+                    <div class="invoice-item__name"
+                         (click)="goToInvoice(invoice.invoice_id)">
+                        {{ invoice.invoice_name }}
+                    </div>
+                    <div class="invoice-item__payment-method-type">
+                        {{ paymentMethodNames[invoice.payment_method_type] | translate }}
+                    </div>
+                    <div class="invoice-item__amount">
+                        {{ invoice.invoice_amount | currencyFormat }}
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+    <div class="mobile-only-fee-col">
+        <ng-container *ngTemplateOutlet="invoiceAmount"></ng-container>
+    </div>
+    <div class="invoice-history-card-n__footer" *ngIf="isOpened">
+        <ng-container>
+            <div class="history-invoice-card__separate-line"></div>
+            <div class="history-invoice-card__footer">
+                <ng-container *ngTemplateOutlet="invoiceAmount"></ng-container>
+            </div>
+        </ng-container>
+    </div>
+
+
+</div>
+

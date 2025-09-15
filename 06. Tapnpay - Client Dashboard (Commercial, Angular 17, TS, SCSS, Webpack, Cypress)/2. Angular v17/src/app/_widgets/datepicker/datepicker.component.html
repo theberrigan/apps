@@ -1,0 +1,307 @@
+<input class="input input_regular input_no-border_tr input_no-border_br datepicker__input"
+       [placeholder]="placeholder | translate"
+       [(ngModel)]="inputModel"
+       [disabled]="isDisabled"
+       (focus)="onInputFocus()"
+       (blur)="onInputBlur()"
+       (input)="onInputType()"
+>
+<button class="button button_regular button_white datepicker__trigger"
+        [isDisabled]="isDisabled"
+        type="button"
+        (click)="clickOnPickerInputBtn($event)" #datePickerBtn>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="16" width="16" class="button__icon">
+        <path style="fill: currentColor;"
+              d="M15 16H1a1 1 0 0 1-1-1V1a1 1 0 0 1 1-1h.938L2 3h4l.063-3H10v3h4V0h1a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1zM14 5H2v9h12V5zM6 9H4V7h2v2zm0 3H4v-2h2v2zm3-3H7V7h2v2zm0 3H7v-2h2v2zm3-3h-2V7h2v2zm0 3h-2v-2h2v2zM11 0h2v2h-2V0zM3 0h2v2H3V0z"></path>
+    </svg>
+</button>
+
+<div class="datepicker-bubble"
+     [ngClass]="{
+        'datepicker-bubble_bottom-right': bubblePosition === 1,
+        'datepicker-bubble_bottom-left': bubblePosition === 2,
+        'datepicker-bubble_top-right': bubblePosition === 3,
+        'datepicker-bubble_top-left': bubblePosition === 4
+    }"
+     *ngIf="activePicker === 'bubble'"
+     (click)="onBubbleClick($event)"
+     (mousedown)="onBubbleMouseDown($event)"
+>
+    <i class="datepicker-bubble__tongue"></i>
+    <div class="datepicker-bubble__sections">
+        <div class="datepicker-bubble__section" *ngIf="isShowDatePicker">
+            <app-today-date-select
+                (onSelectCurrentDate)="onSelectCurrentDate()"
+                [nowDate]="nowDateForSelect"></app-today-date-select>
+
+
+            <div class="datepicker-bubble__grid-switcher">
+
+                <button type="button" class="datepicker-bubble__grid-switcher-prev" (click)="onGridSlide(-1)"
+                        *ngIf="activeDateSelectLayout !== 'months'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="8px" height="12px">
+                        <path style="fill: currentColor;"
+                              d="M.5859,6,5.293,1.293A1,1,0,0,1,6.707,2.707L3.4141,6,6.707,9.293a1,1,0,1,1-1.414,1.414Z"></path>
+                    </svg>
+                </button>
+
+                <div class="datepicker-bubble__grid-switcher-center" [ngSwitch]="activeDateSelectLayout">
+                    <ng-container *ngSwitchCase="'calendar'">
+                        <button class="datepicker-bubble__grid-switcher-month"
+                                (click)="switchToMonths()"
+                                type="button">
+                            {{ calendarMonthName }}
+                        </button>
+                        <button class="datepicker-bubble__grid-switcher-year"
+                                (click)="switchToYears()"
+                                type="button">
+                            {{ calendarYear }}
+                        </button>
+                    </ng-container>
+                    <button class="datepicker-bubble__grid-switcher-back"
+                            (click)="switchToCalendar()"
+                            type="button"
+                            *ngSwitchDefault>
+                        {{ 'datetime.back__button' | translate }}
+                    </button>
+                </div>
+
+                <button type="button" class="datepicker-bubble__grid-switcher-next"
+                        (click)="onGridSlide(1)"
+                        *ngIf="activeDateSelectLayout !== 'months'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="8px" height="12px">
+                        <path style="fill: currentColor;"
+                              d="M7.4141,6,2.707,10.707A1,1,0,0,1,1.293,9.293L4.5859,6,1.293,2.707A1,1,0,0,1,2.707,1.293Z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="datepicker-bubble__grid" [ngSwitch]="activeDateSelectLayout">
+
+                <div class="datepicker-bubble__months" *ngSwitchCase="'months'">
+                    <button *ngFor="let month of renderedMonthsSelectGrid"
+                            class="datepicker-bubble__months-month" type="button"
+                            [class.datepicker-bubble__months-month_active]="month.month === calendarMonth"
+                            (click)="activateMonth(month.month)"
+                    >{{ month.name }}</button>
+                </div>
+
+                <div class="datepicker-bubble__years" *ngSwitchCase="'years'">
+                    <button class="datepicker-bubble__years-year" type="button"
+                            [class.datepicker-bubble__years-year_active]="year === calendarYear"
+                            (click)="activateYear(year)"
+                            *ngFor="let year of renderedYearsSelectGrid"
+                    >{{ year }}</button>
+                </div>
+
+                <div class="datepicker-bubble__calendar" *ngSwitchCase="'calendar'">
+
+                    <div class="datepicker-bubble__calendar-dow">
+                        <i *ngFor="let weekday of renderedShotWeekDayNamesList">{{ weekday }}</i>
+                    </div>
+
+                    <div class="datepicker-bubble__calendar-days">
+                        <button type="button" class="datepicker-bubble__calendar-day"
+                                *ngFor="let date of renderedDaysSelectGrid"
+                                (click)="activateDate(date)"
+                                [ngClass]="{
+                                'datepicker-bubble__calendar-day_weekend': date.isWeekend,
+                                'datepicker-bubble__calendar-day_holiday': date.isHoliday,
+                                'datepicker-bubble__calendar-day_today': date.isToday,
+                                'datepicker-bubble__calendar-day_tail': date.isTail,
+                                'datepicker-bubble__calendar-day_head': date.isHead,
+                                'datepicker-bubble__calendar-day_active': date.isActive,
+                                'datepicker-bubble__calendar-day_disabled': date.isDisabled
+                                }"
+                                [disabled]="date.isDisabled">
+                            <span>{{ date.date }}</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="datepicker-bubble__section" *ngIf="hasTimePicker">
+            <button type="button" class="datepicker-bubble__now datepicker-bubble__now_time"
+                    (click)="onSelectCurrentTime()">
+                <span>{{ nowDateForSelect.hours }}</span>
+                <span class="datepicker-bubble__now-dots">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="16px" width="4px">
+                        <path style="fill: currentColor;"
+                              d="M2 4A2 2 0 1 1 1.999.001 2 2 0 0 1 2 4zm0 8a2 2 0 1 1 .001 3.999A2 2 0 0 1 2 12z"></path>
+                    </svg>
+                </span>
+                <span>{{ nowDateForSelect.minutes }}</span>
+                <span class="datepicker-bubble__now-suffix"
+                      *ngIf="nowDateForSelect.timeSuffix">{{ nowDateForSelect.timeSuffix }}</span>
+            </button>
+            <div class="datepicker-bubble__time">
+                <div class="datepicker-bubble__time-inputs">
+                    <input type="text" class="input datepicker-bubble__time-input" placeholder="00"
+                           [(ngModel)]="hoursInputModel"
+                           (focus)="onTimeInputFocus('h')"
+                           (blur)="onTimeInputBlur()"
+                           (ngModelChange)="onTimeInputChange($event, true)"
+                    >
+                    <div class="datepicker-bubble__time-dots">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="16px" width="4px">
+                            <path style="fill: currentColor;"
+                                  d="M2 4A2 2 0 1 1 1.999.001 2 2 0 0 1 2 4zm0 8a2 2 0 1 1 .001 3.999A2 2 0 0 1 2 12z"></path>
+                        </svg>
+                    </div>
+                    <input type="text" class="input datepicker-bubble__time-input" placeholder="00"
+                           [(ngModel)]="minutesInputModel"
+                           (focus)="onTimeInputFocus('m')"
+                           (blur)="onTimeInputBlur()"
+                           (ngModelChange)="onTimeInputChange($event, false)"
+                    >
+                </div>
+                <div class="datepicker-bubble__time-suffix" *ngIf="isTwelveHoursFormat">
+                    <button type="button" class="datepicker-bubble__time-suffix-switch"
+                            [class.datepicker-bubble__time-suffix-switch_active]="timeFormatSuffix === 'am'"
+                            (click)="setTimeFormatSuffix('am')">AM
+                    </button>
+                    <button type="button" class="datepicker-bubble__time-suffix-switch"
+                            [class.datepicker-bubble__time-suffix-switch_active]="timeFormatSuffix === 'pm'"
+                            (click)="setTimeFormatSuffix('pm')">PM
+                    </button>
+                </div>
+                <div class="datepicker-bubble__sliders">
+                    <div class="datepicker-bubble__slider">
+                        <div class="datepicker-bubble__slider-title">
+                            {{ 'datetime.hours__text' | translate }}
+                        </div>
+                        <div class="datepicker-bubble__slider-wrap" #hoursSlider>
+                            <div class="datepicker-bubble__slider-track">
+                                <div class="datepicker-bubble__slider-fill" [style.width.%]="hoursSliderValue">
+                                    <div class="datepicker-bubble__slider-handle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="datepicker-bubble__slider">
+                        <div class="datepicker-bubble__slider-title">
+                            {{ 'datetime.minutes__text' | translate }}
+                        </div>
+                        <div class="datepicker-bubble__slider-wrap" #minutesSlider>
+                            <div class="datepicker-bubble__slider-track">
+                                <div class="datepicker-bubble__slider-fill" [style.width.%]="minutesSliderValue">
+                                    <div class="datepicker-bubble__slider-handle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="datepicker-popup"
+     [class.datepicker-popup_active]="isPopupVisible"
+     *ngIf="isTouch"
+     #popup
+     (click)="markDatepickerClick($event)">
+    <div class="datepicker-popup__displays">
+
+        <div class="datepicker-popup__display" *ngIf="isShowDatePicker">
+
+            <div class="datepicker-popup__control">
+                <div class="datepicker-popup__control-items"
+                     [class.datepicker-popup__control-items_animated]="mobilePickerState.touchedItemType !== 'date'"
+                     [style.transform]="'translateY(' + mobilePickerState.mobilePickerRenderedItems.date.offset + 'px)'"
+                >
+                    <div class="datepicker-popup__control-item"
+                         *ngFor="let item of mobilePickerState.mobilePickerRenderedItems.date.items"
+                         [class.datepicker-popup__control-item_active]="item.isActive"
+                    >
+                        {{ item.value }}
+                    </div>
+                </div>
+                <div class="datepicker-popup__control-screen"
+                     (touchstart)="onPopupTouchStart($event, 'date')"></div>
+            </div>
+
+            <div class="datepicker-popup__control">
+                <div class="datepicker-popup__control-items"
+                     [class.datepicker-popup__control-items_animated]="mobilePickerState.touchedItemType !== 'month'"
+                     [style.transform]="'translateY(' + mobilePickerState.mobilePickerRenderedItems.month.offset + 'px)'"
+                >
+                    <div class="datepicker-popup__control-item"
+                         *ngFor="let item of mobilePickerState.mobilePickerRenderedItems.month.items"
+                         [class.datepicker-popup__control-item_active]="item.isActive"
+                    >{{ item.value }}</div>
+                </div>
+                <div class="datepicker-popup__control-screen"
+                     (touchstart)="onPopupTouchStart($event, 'month')"></div>
+            </div>
+
+            <div class="datepicker-popup__control">
+                <div class="datepicker-popup__control-items"
+                     [class.datepicker-popup__control-items_animated]="mobilePickerState.touchedItemType !== 'year'"
+                     [style.transform]="'translateY(' + mobilePickerState.mobilePickerRenderedItems.year.offset + 'px)'"
+                >
+                    <div class="datepicker-popup__control-item"
+                         *ngFor="let item of mobilePickerState.mobilePickerRenderedItems.year.items"
+                         [class.datepicker-popup__control-item_active]="item.isActive"
+                    >{{ item.value }}</div>
+                </div>
+                <div class="datepicker-popup__control-screen"
+                     (touchstart)="onPopupTouchStart($event, 'year')"></div>
+            </div>
+        </div>
+
+
+        <div class="datepicker-popup__display" *ngIf="hasTimePicker">
+            <div class="datepicker-popup__control">
+                <div class="datepicker-popup__control-items"
+                     [class.datepicker-popup__control-items_animated]="mobilePickerState.touchedItemType !== 'hours'"
+                     [style.transform]="'translateY(' + mobilePickerState.mobilePickerRenderedItems.hours.offset + 'px)'"
+                >
+                    <div class="datepicker-popup__control-item"
+                         *ngFor="let hour of mobilePickerState.mobilePickerRenderedItems.hours.items"
+                         [class.datepicker-popup__control-item_active]="hour.isActive"
+                    >{{ hour.value }}</div>
+                </div>
+                <div class="datepicker-popup__control-screen"
+                     (touchstart)="onPopupTouchStart($event, 'hours')"></div>
+            </div>
+            <div class="datepicker-popup__control">
+                <div class="datepicker-popup__control-items"
+                     [class.datepicker-popup__control-items_animated]="mobilePickerState.touchedItemType !== 'minutes'"
+                     [style.transform]="'translateY(' + mobilePickerState.mobilePickerRenderedItems.minutes.offset + 'px)'"
+                >
+                    <div class="datepicker-popup__control-item"
+                         *ngFor="let minute of mobilePickerState.mobilePickerRenderedItems.minutes.items"
+                         [class.datepicker-popup__control-item_active]="minute.isActive"
+                    >{{ minute.value }}</div>
+                </div>
+                <div class="datepicker-popup__control-screen"
+                     (touchstart)="onPopupTouchStart($event, 'minutes')"></div>
+            </div>
+            <div class="datepicker-popup__control" *ngIf="isTwelveHoursFormat">
+                <div class="datepicker-popup__control-items"
+                     [class.datepicker-popup__control-items_animated]="mobilePickerState.touchedItemType !== 'timeSuffix'"
+                     [style.transform]="'translateY(' + mobilePickerState.mobilePickerRenderedItems.timeSuffix.offset + 'px)'"
+                >
+                    <div class="datepicker-popup__control-item"
+                         [class.datepicker-popup__control-item_active]="item.isActive"
+                         *ngFor="let item of mobilePickerState.mobilePickerRenderedItems.timeSuffix.items"
+                    >{{ item.value }}</div>
+                </div>
+                <div class="datepicker-popup__control-screen"
+                     (touchstart)="onPopupTouchStart($event, 'timeSuffix')"></div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="datepicker-popup__buttons">
+        <button type="button" class="button button_large button_white"
+                (click)="onPopupClose(false)">{{ 'datetime.cancel__button' | translate }}</button>
+        <button type="button" class="button button_large button_blue"
+                (click)="onPopupClose(true)">{{ 'datetime.ok__button' | translate }}</button>
+    </div>
+</div>

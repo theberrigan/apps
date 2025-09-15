@@ -1,0 +1,58 @@
+<popup-custom class="dashboard__fleet-lpn-popup"
+              [isSmall]="true"
+              [isDisabled]="isInProgress">
+    <popup-content>
+        <span class="popup-title mb-8">{{ 'vehicles.add_vehicle_popup_title' | translate }}</span>
+        <ng-container *ngIf="isPayByCarPaymentModel">
+            <div class="dashboard__fleet-lpn-popup-header" [innerHTML]="'dashboard.fleet.header_message' | translate">
+            </div>
+        </ng-container>
+        <ng-container *ngIf="isPayByBundlePaymentModel">
+            <div class="dashboard__fleet-lpn-popup-header"> {{ 'dashboard.fleet.header_message_ppb' | translate }}
+            </div>
+        </ng-container>
+        <ng-container *ngIf="!isLoading" [formGroup]="pendingLPNsForm">
+            <ng-container *ngFor="let plate of pendingLPNResponse.plates">
+                <app-lpn-card [formGroupName]="plate.id"
+                              [pendingLPNsFee]="pendingLPNResponse.fee"
+                              [plate]="plate"
+                              [isShowFee]="isPayByCarPaymentModel"
+                              [maxDateForRentalCarPeriod]="MAX_DATE_FOR_RENTAL_CAR_PERIOD"
+                              [maxDurationInDaysForRentalCarPeriod]="MAX_DURATION_IN_DAYS_FOR_RENTAL_CAR_PERIOD"
+                              [listOfLPNTypesIPASS]="lpnTypesByLps[plate.lps]">
+                </app-lpn-card>
+            </ng-container>
+        </ng-container>
+    </popup-content>
+    <popup-controls>
+        <ng-container *ngIf="isPayByCarPaymentModel">
+            <button type="button" class="button button_regular button_blue"
+                    [isProgress]="isInProgress"
+                    [isDisabled]="isInProgress"
+                    (click)="onConfirmPendingPLNsToPay()">
+            <span *ngIf="selectedForPaymentPendingLPNsCount < 1"
+                  class="button__caption">
+                {{ 'vehicles.add_vehicle_cancel' | translate }}
+            </span>
+                <span *ngIf="selectedForPaymentPendingLPNsCount > 0"
+                      class="button__caption">
+                {{ 'dashboard.fleet.pay_button' | translate : {amount: (selectedForPaymentPendingLPNsTotalSum | currencyFormat : 'USD')} }}
+            </span>
+            </button>
+        </ng-container>
+
+        <ng-container *ngIf="isPayByBundlePaymentModel">
+            <button type="button" class="button button_regular button_light-blue"
+                    [isProgress]="isInProgress"
+                    [isDisabled]="isInProgress"
+                    (click)="onCancel()">{{ 'vehicles.add_vehicle_cancel' | translate }}
+            </button>
+            <button type="button" class="button button_regular button_blue"
+                    [isProgress]="isInProgress"
+                    [isDisabled]="isInProgress"
+                    (click)="onSubmitPayPerBundleMode()">{{ 'vehicles.add_vehicle' | translate }}
+            </button>
+
+        </ng-container>
+    </popup-controls>
+</popup-custom>

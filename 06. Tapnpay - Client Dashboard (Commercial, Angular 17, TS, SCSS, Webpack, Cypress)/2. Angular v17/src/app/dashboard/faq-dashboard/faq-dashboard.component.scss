@@ -1,0 +1,40 @@
+@import '../../../assets/css/definitions';
+
+.faq-dashboard {
+    display: block;
+    width: 100%;
+
+    &__content {
+        width: 100%;
+        max-width: 720px;
+        padding: 0 60px 100px;
+
+        & > .page-header {
+            padding: 25px 0;
+            margin: 0;
+        }
+    }
+
+    html.viewport_tablet &,
+    html.viewport_mobile & {
+        &__content {
+            max-width: 640px;
+            padding: 0 20px 100px;
+        }
+    }
+
+    html.viewport_tablet & {
+        &__content {
+            margin: 0 auto;
+        }
+    }
+
+    html.viewport_mobile & {
+        &__content {
+            & > .page-header {
+                padding: 16px 0;
+                margin: 0;
+            }
+        }
+    }
+}

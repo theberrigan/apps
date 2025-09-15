@@ -1,0 +1,27 @@
+@import "../../../../../assets/css/responsive";
+
+.no-items {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #FFFFFF;
+    border-radius: 6px;
+    width: 100%;
+    padding: 16px 32px;
+
+    @include desktop {
+        max-width: 600px;
+    }
+
+    &__icon {
+        margin-bottom: 4px;
+    }
+
+    &__title {
+        font-size: 14px;
+        line-height: 28px;
+        font-weight: 600;
+        color: #767676;
+    }
+}

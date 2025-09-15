@@ -1,0 +1,12 @@
+@import './font_psr_definitions';
+
+$body-color: #F6F8FF;
+$link-color: #6e52ba;
+
+$font-family: 'PSR', Montserrat, Roboto, 'Open Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, Tahoma, sans-serif;
+
+$panel-color-normal: #fff;
+$panel-color-inversed: $link-color;
+
+$z-index-panel:        100;
+$z-index-panel-mobile: 100000;

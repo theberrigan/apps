@@ -1,0 +1,72 @@
+.period-select-wrp {
+    display: block;
+    margin-bottom: 12px;
+}
+
+.period-select {
+    $date-picker-width: 140px;
+    display: grid;
+    grid-template-columns: 1fr $date-picker-width;
+    align-items: center;
+    margin-bottom: 12px;
+    justify-content: flex-end;
+
+
+    &__label {
+        display: inline-block;
+        margin-right: 12px;
+        line-height: 1.2;
+        font-size: 12px;
+        text-align: right;
+    }
+}
+
+.rental-car-period-select {
+    display: grid;
+    flex-direction: column;
+    margin-top: 12px;
+}
+
+:host {
+    display: block;
+    margin-bottom: 12px;
+
+    &:last-of-type {
+        margin-bottom: 0;
+    }
+}
+
+.lpn-card {
+    border-radius: 8px;
+    padding: 15px 18px;
+    box-shadow: 0 0 0 1px #e9f1f7;
+    color: #656e7d;
+    background-color: #EAF6F3;
+
+    &__row {
+        display: grid;
+        grid-template-columns: 36px minmax(max-content, 188px) minmax(max-content, 92px);
+        justify-content: space-between;
+        width: 100%;
+
+        &--rental {
+            padding-bottom: 15px;
+            margin-bottom: 8px;
+        }
+    }
+
+
+    &__title {
+        color: #656e7d !important;
+        font-weight: 600;
+        padding-left: 20px;
+        width: 100%;
+    }
+
+    &__fee {
+        color: #656e7d !important;
+        font-weight: 600;
+        padding-left: 14px;
+        text-align: center;
+    }
+}

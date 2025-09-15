@@ -1,0 +1,111 @@
+@import '../../assets/css/definitions';
+
+.app-bar {
+    $nav-trigger-width: 58px;
+
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: $app-bar-height;
+    background-color: #fff;
+    z-index: $z-index-app-bar;
+    color: #6f7174;
+    user-select: none;
+
+    &_has-border {
+        box-shadow: 0 1px 0 0 #dde3eb;
+    }
+
+    &__nav-trigger {
+        flex: 0 0 $nav-trigger-width;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: $nav-trigger-width;
+        color: inherit;
+        background-color: transparent;
+        position: relative;
+
+        &_has-dot:after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            height: 6px;
+            width: 6px;
+            background-color: #ff0000;
+            top: 15px;
+            left: 39px;
+        }
+    }
+
+    &__logo {
+        flex: 1 0;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+
+        .slogan {
+            margin: 0 8px;
+        }
+
+        #neoride-logo-svg {
+            height: 28px;
+            width: auto;
+        }
+
+        &-svg {
+            $logo-width: 112px;
+
+            width: $logo-width;
+            height: round($logo-width * $logo-ratio);
+            margin-top: -8px;
+        }
+    }
+
+    &__controls {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: stretch;
+        min-width: $nav-trigger-width;
+        height: 100%;
+    }
+
+    &__button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: $nav-trigger-width;
+        height: 100%;
+        background-color: transparent;
+        color: #6f7174;
+    }
+}
+
+@supports ((-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px))) {
+    html.viewport_tablet .app-bar,
+    html.viewport_mobile .app-bar {
+        background-color: rgba(#fff, 0.8);
+        -webkit-backdrop-filter: blur(8px);
+                backdrop-filter: blur(8px);
+    }
+}
+
+@media print {
+    .app-bar {
+        display: none !important;
+    }
+}
+
+html.viewport_desktop .app-bar {
+    margin-top: 60px;
+}
+
+

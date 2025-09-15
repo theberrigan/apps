@@ -1,0 +1,78 @@
+@import '../../../assets/css/definitions';
+@import './popup.definitions';
+
+.popup {
+    &__header {
+        display: block;
+        position: relative;
+        z-index: 2;
+        min-height: ($header-height + 1px);
+        border-bottom: 1px solid $border-color;
+        padding-right: $close-button-width;
+        cursor: default;
+        user-select: none;
+        line-height: 18px;
+        font-size: 16px;
+    }
+
+    &_fix-header &__header {
+        position: fixed;
+        top: 0;
+        background-color: #fff;
+    }
+
+    &:not(#{&}_has-cross) &__header {
+        padding-right: 0;
+    }
+
+    &__title {
+        $line-height: 20px;
+        $v-padding: ((($header-height - $line-height) / 2) - 1px);  // 1px - just in case
+
+        display: table-cell;
+        vertical-align: middle;
+        height: $header-height;
+        font-size: 16px;
+        line-height: $line-height;
+        font-weight: $font-weight-medium;
+        word-break: break-word;
+        padding: $v-padding 5px $v-padding $primary-padding;
+        pointer-events: none;
+    }
+
+    &:not(#{&}_has-cross) &__title {
+        padding-right: $primary-padding;
+    }
+
+    &__close-button {
+        display: none;
+        width: $close-button-width;
+        float: right;
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        opacity: 0.25;
+        background-image: url('../../../assets/images/popup_close.svg');
+        background-color: transparent;
+        background-repeat: no-repeat;
+        background-position: center (($header-height - 16px) / 2);
+        transition: opacity 0.1s linear;
+
+        &:hover {
+            opacity: 0.4;
+        }
+    }
+
+    &_has-cross &__close-button {
+        display: block;
+    }
+
+    &:not(#{&}_closable) &__close-button,
+    &:not(#{&}_closable) &__close-button:hover {
+        opacity: 0.2;
+        cursor: default;
+        pointer-events: none;
+    }
+}

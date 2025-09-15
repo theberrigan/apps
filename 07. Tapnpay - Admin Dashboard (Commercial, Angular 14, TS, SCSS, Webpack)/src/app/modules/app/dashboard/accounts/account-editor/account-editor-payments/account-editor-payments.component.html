@@ -1,0 +1,81 @@
+<div class="account-editor-payments__filters">
+    <div class="account-editor-sms-log__filters-item">
+        <select class="select select_regular" [(ngModel)]="filters.visibility" (ngModelChange)="onVisibilityChange()">
+            <option [ngValue]="0">{{ 'accounts.transactions.show_filter.all' | translate }}</option>
+            <option [ngValue]="1">{{ 'accounts.transactions.show_filter.success' | translate }}</option>
+            <option [ngValue]="2">{{ 'accounts.transactions.show_filter.failures' | translate }}</option>
+        </select>
+    </div>
+</div>
+
+<ng-container [ngSwitch]="listState">
+    <div class="account-editor-payments__loader" *ngSwitchCase="'loading'">
+        <loader></loader>
+    </div>
+    <div class="account-editor-payments__message" *ngSwitchCase="'empty'">
+        {{ 'accounts.transactions.no_transactions' | translate }}
+    </div>
+    <div class="account-editor-payments__message account-editor-payments__message_error" *ngSwitchCase="'error'">
+        {{ 'accounts.transactions.error' | translate }}
+    </div>
+    <div class="account-editor-payments__content" *ngSwitchCase="'list'">
+        <div class="table table_middle table_striped table_clickable table_nowrap account-editor-payments__table">
+            <div class="table__header">
+                <div class="table__row">
+                    <div class="table__cell account-editor-payments__table-cell-invoice">
+                       {{ 'accounts.transactions.invoices' | translate }}
+                    </div>
+                    <div class="table__cell">
+                        {{ 'accounts.transactions.date' | translate }}
+                    </div>
+                    <div class="table__cell account-editor-payments__table-cell-amount">
+                        {{ 'accounts.transactions.invoice_amount' | translate }}
+                    </div>
+                    <div class="table__cell">
+                        {{ 'accounts.transactions.payment_method' | translate }}
+                    </div>
+                    <div class="table__cell">
+                        {{ 'accounts.transactions.payment_status' | translate }}
+                    </div>
+                </div>
+            </div>
+            <div class="table__body">
+                <div class="table__row" *ngFor="let transaction of transactions" (click)="onTransactionClick(transaction)">
+                    <div class="table__cell account-editor-payments__table-cell-invoice" [ngSwitch]="transaction.invoices.length">
+                        <ng-container *ngSwitchCase="1">{{ transaction.invoices[0].invoice_name }}</ng-container>
+                        <ng-container *ngSwitchDefault>
+                            {{ 'accounts.transactions.invoice_count' | translate : { invoiceCount: transaction.invoices.length } }}
+                        </ng-container>
+                    </div>
+                    <div class="table__cell">
+                        {{ transaction.date | datetime : 'display.datetime' }}
+                    </div>
+                    <div class="table__cell account-editor-payments__table-cell-amount">
+                        {{ transaction.amount | currency : transaction.currency }}
+                    </div>
+                    <div class="table__cell">
+                        {{ transaction.payment_channel }}
+                    </div>
+                    <div class="table__cell">
+                        {{ transaction.status }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="account-editor-payments__pagination">
+            <pagination
+                [data]="paginationData"
+                [isLoading]="listState === 'loading'"
+                (onLoad)="onSwitchPage($event)"
+            ></pagination>
+        </div>
+    </div>
+</ng-container>
+
+<account-editor-invoice-details
+    *ngIf="invoicesToInspect"
+    [popupTitle]="'accounts.transactions.details_popup_title'"
+    [accountId]="accountId"
+    [invoicesToLoad]="invoicesToInspect"
+    (onClose)="onCloseInvoicePopup()"
+></account-editor-invoice-details>

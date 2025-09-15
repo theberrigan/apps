@@ -1,0 +1,78 @@
+@at-root {
+    @-ms-viewport {
+        width: device-width;
+    }
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 1.15;
+}
+
+html,
+body {
+    height: 100%;
+    text-align: left;
+    color: #000;
+    text-rendering: optimizeLegibility;
+    font-family: -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Arial, Tahoma, sans-serif;
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+    padding: 0;
+    margin: 0;
+    background-color: #EEF1FF;
+}
+
+body {
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: normal;
+}
+
+h1 {
+    margin: 0;
+}
+
+#root {
+    padding: 40px;
+}
+
+#content {
+    padding: 25px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    border-radius: 15px;
+    border: 1px solid #D0D7F7;
+    background-color: #FFF;
+}
+
+.vacancies {
+    margin-top: 20px;
+}
+
+.vacancies__group {
+    padding-left: 18px;
+    margin: 0;
+}
+
+.vacancies__group + .vacancies__group {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #D0D7F7;
+}
+
+.vacancies__group-item {
+
+}
+
+.vacancies__group-item + .vacancies__group-item {
+    margin-top: 10px;
+}

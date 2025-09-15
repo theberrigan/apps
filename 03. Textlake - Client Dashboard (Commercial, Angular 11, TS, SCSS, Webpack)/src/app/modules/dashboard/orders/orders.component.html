@@ -1,0 +1,190 @@
+<action-panel>
+    <div class="action-panel__primary">
+        <h1 class="action-panel__header">{{ 'orders.page_header' | translate }}</h1>
+        <a routerLink="/dashboard/order/create" type="button" class="button button_regular button_green">
+            <span class="button__caption">{{ 'orders.create' | translate }}</span>
+        </a>
+    </div>
+    <div class="action-panel__secondary">
+        <div class="action-panel__item">
+            <sort-select class="filters__filter-input" [options]="sortOptions" [ngModel]="{ by: 'id', direction: 1 }"></sort-select>
+        </div>
+        <div class="action-panel__item">
+            <select class="select select_regular filters__filter-input">
+                <option *ngFor="let sizeOption of sizeOptions" [ngValue]="sizeOption">{{ sizeOption }}</option>
+            </select>
+        </div>
+        <div class="action-panel__item" *ngIf="viewportBreakpoint === 'desktop'">
+            <list-view class="filters__filter-input" [(ngModel)]="view"></list-view>
+        </div>
+        <div class="action-panel__item">
+            <sidebar-trigger [sidebar]="sidebarEl" [hasMark]="false" (onClick)="sidebarEl.toggle()"></sidebar-trigger>
+        </div>
+    </div>
+</action-panel>
+
+<sidebar #sidebarEl>
+    <div class="sidebar__title">&nbsp;</div>
+    <div class="sidebar__section">
+        <div class="sidebar__label">{{ 'orders.filters.filters' | translate }}</div>
+        <form>
+            <div class="filters">
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'orders.filters.status' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'orders.filters.order' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'orders.filters.company' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'orders.filters.internal_id' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'orders.filters.translator' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'orders.filters.deadline' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'orders.filters.description' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input">
+                </div>
+                <div class="filters__buttons">
+                    <button type="button" class="button button_regular button_white">
+                        <span class="button__caption">{{ 'orders.filters.clear' | translate }}</span>
+                    </button>
+                    <button type="submit" class="button button_regular button_blue">
+                        <span class="button__caption">{{ 'orders.filters.submit' | translate }}</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</sidebar>
+
+<ng-container *ngIf="viewportBreakpoint === 'desktop' && view === 'table'">
+    <div class="items-table-wrap">
+        <table class="items-table items-table_clickable">
+            <thead>
+                <tr>
+                    <th>{{ 'orders.columns.status' | translate }}</th>
+                    <th>{{ 'orders.columns.offer' | translate }}</th>
+                    <th>{{ 'orders.columns.company' | translate }}</th>
+                    <th>{{ 'orders.columns.contact' | translate }}</th>
+                    <th>{{ 'orders.columns.phone' | translate }}</th>
+                    <th>{{ 'orders.columns.email' | translate }}</th>
+                    <th>{{ 'orders.columns.net' | translate }}</th>
+                    <th>{{ 'orders.columns.gross' | translate }}</th>
+                    <th>{{ 'orders.columns.currency' | translate }}</th>
+                    <th>{{ 'orders.columns.coordinator' | translate }}</th>
+                    <th>{{ 'orders.columns.date' | translate }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of orders" [routerLink]="'/dashboard/order/' + order.offerKey">
+                    <td class="items-table__cell items-table__cell_nowrap table-cell-tight">{{ ('orders.statuses.' + order.statusKey) | translate }}</td>
+                    <td class="items-table__cell items-table__cell_nowrap">{{ order.offerKey }}</td>
+                    <td class="items-table__cell items-table__cell_nowrap">{{ order.client }}</td>
+                    <td class="items-table__cell items-table__cell_nowrap">{{ order.contact }}</td>
+                    <td class="items-table__cell items-table__cell_nowrap">{{ order.phone }}</td>
+                    <td class="items-table__cell items-table__cell_nowrap">{{ order.email }}</td>
+                    <td class="items-table__cell items-table__cell_nowrap items-table__cell_align_right">{{ order.net / 100 | number : '.2-2' }}</td>
+                    <td class="items-table__cell items-table__cell_nowrap items-table__cell_align_right">{{ order.gross / 100 | number : '.2-2' }}</td>
+                    <td class="items-table__cell items-table__cell_nowrap">{{ order.currencyKey }}</td>
+                    <td class="items-table__cell items-table__cell_nowrap">{{ order.coordinator }}</td>
+                    <td class="items-table__cell items-table__cell_nowrap">{{ order.created | datetime : 'D MMM YY HH:mm' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <pagination
+        *ngIf="!!pagination"
+        [data]="pagination"
+    ></pagination>
+</ng-container>
+<div class="list-wrap" *ngIf="viewportBreakpoint === 'tablet' || viewportBreakpoint === 'desktop' && view === 'grid-detailed'">
+    <div class="list-wrap__inner">
+        <div class="list list_orders">
+            <div class="list__item" *ngFor="let order of orders">
+                <div class="list__item-col list__item-col_solid">
+                    <div class="list__item-title">{{ order.offerKey }}</div>
+                    <div class="list__item-status">{{ ('orders.statuses.' + order.statusKey) | translate }}</div>
+                    <div class="list__item-date">{{ order.created | datetime : 'D MMM YY HH:mm' }}</div>
+                </div>
+                <div class="list__item-col">
+                    <div class="list__item-line">
+                        <div class="list__item-label">{{ 'orders.columns.company' | translate }}:</div>
+                        <div class="list__item-text">{{ order.client }}</div>
+                    </div>
+                    <div class="list__item-line">
+                        <div class="list__item-label">{{ 'orders.columns.contact' | translate }}:</div>
+                        <div class="list__item-text">{{ order.contact }}</div>
+                    </div>
+                    <div class="list__item-line">
+                        <div class="list__item-label">{{ 'orders.columns.phone' | translate }}:</div>
+                        <div class="list__item-text">{{ order.phone }}</div>
+                    </div>
+                    <div class="list__item-line">
+                        <div class="list__item-label">{{ 'orders.columns.email' | translate }}:</div>
+                        <div class="list__item-text">{{ order.email }}</div>
+                    </div>
+                </div>
+                <div class="list__item-col">
+                    <div class="list__item-line">
+                        <div class="list__item-label">{{ 'orders.columns.net' | translate }}:</div>
+                        <div class="list__item-text">{{ order.net / 100 | number : '.2-2' }}</div>
+                    </div>
+                    <div class="list__item-line">
+                        <div class="list__item-label">{{ 'orders.columns.gross' | translate }}:</div>
+                        <div class="list__item-text">{{ order.gross / 100 | number : '.2-2' }}</div>
+                    </div>
+                    <div class="list__item-line">
+                        <div class="list__item-label">{{ 'orders.columns.currency' | translate }}:</div>
+                        <div class="list__item-text">{{ order.currencyKey }}</div>
+                    </div>
+                    <div class="list__item-line">
+                        <div class="list__item-label">{{ 'orders.columns.coordinator' | translate }}:</div>
+                        <div class="list__item-text">{{ order.coordinator }}</div>
+                    </div>
+                </div>
+                <div class="list__item-col list__item-col_buttons">
+                    <button type="button" class="list__item-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" height="20" width="20">
+                            <path style="fill: currentColor;" d="M14.58,2.83c0.26,0,0.51,0.1,0.71,0.29l1.59,1.59c0.39,0.39,0.39,1.02,0,1.41l-8.51,8.51c-0.51,0.51-1.15,0.88-1.86,1.05
+                                                                             l-2.93,0.73l0.73-2.93c0.18-0.7,0.54-1.34,1.05-1.86l8.51-8.51C14.07,2.93,14.33,2.83,14.58,2.83 M14.58,0.83
+                                                                             c-0.8,0-1.55,0.31-2.12,0.88l-8.51,8.51c-0.77,0.77-1.31,1.73-1.58,2.79l-0.73,2.93l-0.81,3.23l3.23-0.81l2.93-0.73
+                                                                             c1.05-0.26,2.02-0.81,2.79-1.58l8.51-8.51c1.17-1.17,1.17-3.07,0-4.24L16.7,1.71C16.14,1.14,15.38,0.83,14.58,0.83L14.58,0.83z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <pagination
+            *ngIf="!!pagination"
+            [data]="pagination"
+        ></pagination>
+    </div>
+</div>
+<div class="list-wrap" *ngIf="viewportBreakpoint === 'mobile' || viewportBreakpoint === 'desktop' && view === 'grid'">
+    <div class="list-wrap__inner" [class.list-wrap__inner_wide]="viewportBreakpoint === 'mobile'">
+        <div class="list-mobile list-mobile_orders">
+            <div class="list-mobile__item" *ngFor="let order of orders">
+                <div class="list-mobile__item-order">{{ order.offerKey }}</div>
+                <div class="list-mobile__item-status">{{ ('orders.statuses.' + order.statusKey) | translate }}</div>
+                <div class="list-mobile__item-date">{{ order.created | datetime : 'D MMM YY HH:mm' }}</div>
+            </div>
+        </div>
+        <pagination
+            *ngIf="!!pagination"
+            [data]="pagination"
+        ></pagination>
+    </div>
+</div>

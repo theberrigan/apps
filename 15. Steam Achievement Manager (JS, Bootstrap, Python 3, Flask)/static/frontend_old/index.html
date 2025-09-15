@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <title>Steam Achievements</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">    
+    <link href="favicon.ico?1" rel="shortcut icon">
+</head>
+<body>
+    <div class="container page-content">
+        <form class="url-form" autocomplete="off">
+            <fieldset class="url-form__fieldset">                
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control url-form__input" placeholder="https://steamcommunity.com/id/<profile>/stats/appid/<appid>/achievements" value="http://x.com/profiles/0/stats/612880/achievements/?xml=2" required>
+                    <button class="btn btn-primary url-form__button" type="submit" disabled>Submit</button>
+                </div>
+                <div class="text-danger url-form__error" hidden></div>
+            </fieldset>
+        </form>
+        <div class="achievements" hidden>
+            <div class="achievements__meta">
+                <div class="achievements__meta-left">
+                    <table class="table table-bordered achievements__info-table">
+                        <tbody>
+                            <tr>
+                                <th>Profile</th>
+                                <td id="player_profile"></td>
+                            </tr>
+                            <tr>
+                                <th>Steam ID</th>
+                                <td id="player_steam_id"></td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <th>App name</th>
+                                <td>
+                                    <a href="" target="_blank" rel="nofollow noopener" id="app_name"></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>App ID</th>
+                                <td id="app_id"></td>
+                            </tr>
+                            <tr>
+                                <th>App slug</th>
+                                <td id="app_slug"></td>
+                            </tr>
+                            <tr>
+                                <th>Hours played last two weeks</th>
+                                <td id="hours_played"></td>
+                            </tr>
+                            <tr>
+                                <th>Multiplayer</th>
+                                <td id="has_mp"></td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <th>Guides</th>
+                                <td>
+                                    <a href="" target="_blank" rel="nofollow noopener" id="guides_google">Google</a> | 
+                                    <a href="" target="_blank" rel="nofollow noopener" id="guides_steam">Steam</a> | 
+                                    <a href="" target="_blank" rel="nofollow noopener" id="guides_sh">SteamHunters</a> | 
+                                    <a href="" target="_blank" rel="nofollow noopener" id="guides_pcgw">PCGamingWiki</a>
+                                </td>
+                            </tr>
+                            <tr id="hltb">
+                                <th>
+                                    <a href="" target="_blank" rel="nofollow noopener" id="hltb_link">How long to beat</a>
+                                </th>
+                                <td id="hltb_stats"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="achievements__meta-right">
+                    <div class="achievements__meta-image">
+                        <img id="header_image" src="">
+                    </div>
+                    <div class="achievements__meta-title"></div>
+                    <div class="achievements__meta-description"></div>
+                </div>
+            </div>
+            <div class="achievements__filters">
+                <select class="form-select achievements__filter-achieve">
+                    <option value="all" selected>Show All</option>
+                    <option value="achieved">Achieved</option>
+                    <option value="unachieved">Unachieved</option>
+                </select>
+                <div class="input-group achievements__filter-sort">
+                    <select class="form-select achievements__filter-sort-dropdown" data-order="1">
+                        <option value="id">ID</option>
+                        <option value="name" selected>Name</option>
+                        <option value="achieveDate">Achieve Date</option>
+                        <option value="globalPercent">Global Percent</option>
+                    </select>
+                    <button class="btn btn-outline-secondary achievements__filter-sort-button" type="button" data-order="1">↓</button>
+                    <button class="btn btn-outline-secondary achievements__filter-sort-button" type="button" data-order="-1">↑</button>
+                </div>
+                <button type="button" class="btn btn-outline-primary achievements__filters-copy">Copy</button>
+                <button type="button" class="btn btn-outline-primary achievements__filters-download">Download</button>
+            </div>
+            <div class="achievements__stats">
+                Achieved: <span id="unlocked_achievements" class="text-success"></span>/<span id="total_achievements"></span> (<span id="percent_achievements"></span>%)
+            </div>
+            <table class="table table-bordered achievements__table"></table>
+            <table class="table table-bordered achievements__stats-table"></table>
+        </div>
+    </div>
+</body>
+</html>

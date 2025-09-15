@@ -1,0 +1,36 @@
+<div class="pay-panel">
+    <div class="pay-panel__sum-info">
+        <div class="pay-panel__fee-info">
+            <span [class]=""
+                  [innerHTML]="'invoices.invoices_list.processing_fee' | translate : { amount: surchargeSum | currencyFormat}"></span>
+        </div>
+        <div class="pay-panel__label"
+             [innerHTML]="'invoices.invoices_list.total_amount' | translate : { amount: (checkedInvoiceAmountSum | currencyFormat) }">
+        </div>
+    </div>
+
+    <ng-container *ngIf="isShowDetailsLink">
+        <button type="button" class="button button--link button--link--white button--invoice-details"
+                [isDisabled]="isLoading"
+                (click)="emmitShowDetails()">
+        <span class="button__caption"
+              [innerHTML]="'invoices.invoices_list.show_details' | translate"></span>
+        </button>
+    </ng-container>
+    <div class="pay-panel__main-button-box">
+        <div class="autopayment-checkbox" *ngIf="isShowAutopayControl()">
+            <checkbox [(ngModel)]="isAutopayControlModel">
+            <span class="autopayment-checkbox__label">
+                {{ 'invoices_auto_payment.checkbox_label' | translate }}
+            </span>
+            </checkbox>
+        </div>
+        <button type="button" class="button button--main-pay button_blue"
+                [isDisabled]="isLoading"
+                [isProgress]="isLoading"
+                (click)="emmitMakePayment()">
+        <span class="button__caption"
+              [innerHTML]="'invoices.invoices_list.tap_to_pay_with_fee_sum' | translate : { amount: (checkedInvoiceAmountSum | currencyFormat) }"></span>
+        </button>
+    </div>
+</div>

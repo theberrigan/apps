@@ -1,0 +1,85 @@
+:host {
+    --accordion-header-height: 50px;
+    --accordion-header-bg: #fff;
+    --accordion-disabled: hsl(0, 0%, 60%);
+    --accordion-border-radius: 6px;
+    --border-color: #ced6de;
+    --accordion-content-bg: #fff;
+    width: 100%;
+}
+
+.accordion {
+    border: 1px solid var(--border-color);
+    border-radius: var(--accordion-border-radius);
+}
+
+.accordion__item:first-child .accordion__header {
+    border-radius: var(--accordion-border-radius) var(--accordion-border-radius) 0 0;
+}
+
+.accordion__item:last-child .accordion__header {
+    border-radius: 0 0 var(--accordion-border-radius) var(--accordion-border-radius);
+}
+
+/* Accordion default header styles */
+.accordion__header {
+    display: flex;
+    padding: 0 1rem;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--accordion-header-height);
+    cursor: pointer;
+    background: var(--accordion-header-bg);
+    transition: background-color 0.3s ease-in-out;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.accordion__header:hover {
+    background-color: #f6f6f6;
+}
+
+.accordion__content {
+    background-color: var(--accordion-content-bg);
+}
+
+.accordion__item.active > .accordion__header {
+    border-bottom: 1px solid transparent;
+    border-radius: 0;
+}
+
+
+/* Default toggle button styles */
+.accordion__toggle-btn {
+    border: none;
+    transition: transform 0.3s ease-in;
+    background: none;
+}
+
+/* Manage disabled state of the Accordion item */
+.accordion__item.disabled .accordion__header {
+    color: var(--accordion-disabled);
+    cursor: not-allowed;
+}
+
+.accordion__toggle-btn:disabled {
+    cursor: not-allowed;
+}
+
+.accordion__toggle-btn:disabled svg path:nth-child(2) {
+    fill: var(--accordion-disabled);
+}
+
+.accordion__item.active .accordion__toggle-btn {
+    transform: rotate(180deg);
+}
+
+/* Highlight the header when focus is on the toggle button */
+.accordion__item .accordion__header:focus-within {
+    border-color: var(--border-color);
+    border-radius: var(--accordion-border-radius);
+}
+
+.accordion__toggle-btn:focus {
+    outline: none;
+}
+

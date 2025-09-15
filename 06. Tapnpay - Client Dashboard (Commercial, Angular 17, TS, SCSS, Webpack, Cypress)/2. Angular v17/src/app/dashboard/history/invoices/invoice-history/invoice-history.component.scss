@@ -1,0 +1,191 @@
+@import '../../../../../assets/css/definitions';
+
+.invoice-history {
+    display: block;
+    width: 100%;
+
+    &__content {
+        width: 100%;
+    }
+
+    &__print-content {
+        display: none;
+    }
+
+    &__loading {
+        margin-top: 15vh;
+    }
+
+    &__message {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: $font-weight-semi-bold;
+        color: $color-sys-message-on-blue-bg;
+        text-align: center;
+        margin-top: 15vh;
+
+        &_error {
+            color: $color-sys-message-error-on-blue-bg;
+        }
+    }
+
+    &__status {
+        &_red {
+            color: #da7d7d;
+        }
+    }
+
+    &__table {
+        & + & {
+            margin-top: 20px;
+        }
+    }
+
+    &__table > .table__header > .table__row > .table__cell + .table__cell,
+    &__table > .table__body > .table__row > .table__cell + .table__cell {
+        padding-left: 30px;
+    }
+
+    &__table > .table__header > .table__row > .table__cell:last-child,
+    &__table > .table__body > .table__row > .table__cell:last-child {
+        //padding-right: 30px;
+    }
+
+    &__list {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: stretch;
+        justify-content: flex-start;
+        width: 100%;
+
+        &-item {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: stretch;
+            width: 100%;
+            padding: 10px 16px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px 0 rgba(#0e0e0e, 0.1);
+
+            & + & {
+                margin-top: 8px;
+            }
+
+            &-primary {
+                display: flex;
+                flex-flow: column nowrap;
+                justify-content: center;
+                align-items: flex-start;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: $font-weight-semi-bold;
+                color: $color-text-primary;
+                flex: 1;
+
+                &-item {
+                    & + & {
+                        margin-top: 3px;
+                    }
+
+                    &_light {
+                        color: #9399a3;
+                    }
+
+                    &_red {
+                        color: #da7d7d;
+                    }
+                }
+            }
+
+            &-secondary {
+                display: flex;
+                flex-flow: column nowrap;
+                justify-content: center;
+                align-items: flex-end;
+
+                &-item {
+                    & + & {
+                        margin-top: 3px;
+                    }
+
+                    &_currency {
+                        font-size: 20px;
+                        line-height: 26px;
+                        font-weight: normal;
+                    }
+                }
+            }
+        }
+    }
+
+    html.viewport_desktop & {
+        &__content {
+            padding: 0 60px 200px;
+            max-width: 1000px;
+        }
+    }
+
+    html.viewport_tablet &,
+    html.viewport_mobile & {
+        &__content {
+            padding: 18px 20px 100px;
+        }
+    }
+}
+
+@media print {
+    .invoice-history {
+        &__content {
+            display: none !important;
+        }
+
+        &__print-content {
+            display: block;
+            padding: 2cm 1.91cm;
+            width: 100%;
+            font-size: 12px;
+            line-height: 18px;
+            color: #000;
+            font-weight: $font-weight-medium;
+            pointer-events: none;
+
+            &-header {
+                width: 100%;
+                text-align: center;
+                font-size: 22px;
+                line-height: 28px;
+            }
+
+            &-subheader {
+                width: 100%;
+                text-align: center;
+                font-size: 14px;
+                line-height: 22px;
+                margin: 5px 0 50px;
+            }
+
+            &-table {
+                width: 100%;
+
+                & + & {
+                    margin-top: 30px;
+                }
+
+                th {
+                    font-weight: bold;
+                }
+
+                th, td {
+                    border: 1px solid #000;
+                    padding: 3px 8px 2px;
+                }
+            }
+        }
+    }
+}
+
+@page {
+    size: A4;
+    margin: 0;
+}

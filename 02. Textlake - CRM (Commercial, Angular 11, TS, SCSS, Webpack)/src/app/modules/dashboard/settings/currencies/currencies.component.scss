@@ -1,0 +1,193 @@
+@import '../../../../../assets/css/definitions.scss';
+
+.currencies-editor {
+    display: block;
+
+    &__spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 50px 0;
+    }
+
+    &__message {
+        font-size: 14px;
+        line-height: 16px;
+        font-weight: $font-weight-medium;
+        text-align: center;
+        padding: 75px 20px;
+        color: $color-empty-message;
+
+        &_error {
+            color: $color-empty-message-error;
+        }
+    }
+
+    &__table-wrap {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+    }
+
+    &__table {
+        $cell-padding-x: 20px;
+
+        td {
+            background-color: #fff;
+            border: 1px solid $color-input-deco-color;
+            vertical-align: middle;
+        }
+
+        tr:hover > td {
+            background-color: #f5f5f5;
+        }
+
+        &-currency {
+            font-size: 16px;
+            line-height: 20px;
+            font-weight: $font-weight-medium;
+            white-space: nowrap;
+            padding: 10px $cell-padding-x;
+        }
+
+        &-primary {
+            font-size: 14px;
+            line-height: 16px;
+            white-space: nowrap;
+            padding: 0 $cell-padding-x;
+        }
+
+        &-details {
+            font-size: 14px;
+            line-height: 18px;
+            padding: 5px 5px 5px $cell-padding-x;
+
+            &-wrap {
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+            }
+
+            &-checkbox {
+                margin-right: 25px;
+            }
+
+            &-input {
+                margin: 0 10px;
+                width: 110px;
+            }
+
+            &-buttons {
+                padding-left: 25px;
+                margin-left: auto;
+
+                .button + .button {
+                    margin-left: 5px;
+                }
+            }
+        }
+    }
+
+    &__list {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+
+        &-item {
+            display: flex;
+            flex-flow: column nowrap;
+            border-radius: 4px;
+            border: 1px solid #DDE3EB;
+            background-color: #fff;
+            padding: 16px 18px;
+
+            & + & {
+                margin-top: 10px;
+            }
+
+            &-checkbox-caption {
+                font-size: 16px;
+                line-height: 20px;
+                font-weight: $font-weight-medium;
+                color: $color-text-primary;
+            }
+
+            &-primary {
+                margin-top: 12px;
+                font-size: 14px;
+                line-height: 18px;
+            }
+
+            &-cost {
+                display: flex;
+                flex-flow: row wrap;
+                align-items: center;
+                margin-top: 15px;
+                font-size: 14px;
+                line-height: 18px;
+            }
+
+            &-input {
+                width: 110px;
+                margin: 0 10px;
+            }
+
+            &-buttons {
+                display: flex;
+                flex-flow: row wrap;
+                margin-top: 15px;
+
+                .button + .button {
+                    margin-left: 10px;
+                }
+
+                html.viewport_mobile & .button {
+                    flex: 1;
+                }
+            }
+        }
+    }
+
+    &__history {
+        .popup__box {
+            max-width: 600px;
+        }
+
+        html.viewport_tablet &,
+        html.viewport_mobile & {
+            .popup__scroll-area {
+                padding: 0;
+            }
+
+            .popup__box {
+                width: 100%;
+                max-width: none;
+                min-height: 100%;
+                border-radius: 0;
+            }
+        }
+
+        &-table {
+            width: 100%;
+            font-size: 14px;
+            line-height: 18px;
+
+            th,
+            td {
+                padding: 8px;
+            }
+
+            th {
+                font-weight: $font-weight-medium;
+            }
+
+            td {
+                border-top: 1px solid #e6e6e6;
+            }
+
+            tbody > tr:nth-child(odd) > td {
+                background-color: #f5f5f5;
+            }
+        }
+    }
+}

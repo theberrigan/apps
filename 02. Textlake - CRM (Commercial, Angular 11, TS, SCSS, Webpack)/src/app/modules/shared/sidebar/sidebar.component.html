@@ -1,0 +1,16 @@
+<div class="sidebar__overlay" (click)="deactivate()"></div>
+<div class="sidebar__nest">
+    <div class="sidebar__header" *ngIf="!isDesktop">
+        <ng-content select=".sidebar__title"></ng-content>
+        <button type="button" class="sidebar__button-deactivate" (click)="deactivate()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="19px" height="16px" viewBox="0 0 19 16" class="sidebar__button-deactivate-arrow">
+                <polygon style="fill: currentColor;" points="0,8.7 14.6,8.7 9.3,14 10.7,15.4 18.4,7.7 10.7,0 9.3,1.4 14.6,6.7 0,6.7"></polygon>
+            </svg>
+        </button>
+    </div>
+    <div class="sidebar__scroll-area" [scrollbar]="useCustomScrollbar">
+        <div class="sidebar__content">
+            <ng-content></ng-content>
+        </div>
+    </div>
+</div>

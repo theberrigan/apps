@@ -1,0 +1,122 @@
+@import '../../../../../../../assets/css/definitions';
+
+.account-editor-actions {
+    display: block;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+
+    &__message {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 600;
+        color: $color-sys-message-on-blue-bg;
+        text-align: center;
+        margin-top: 15vh;
+    }
+
+    &__items {
+        width: 100%;
+    }
+
+    &__item {
+        display: block;
+        color: $color-text-primary;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 1px 3px 0 rgba(#0e0e0e, 0.1);
+        user-select: none;
+        cursor: pointer;
+        padding: 16px 24px;
+
+        &,
+        &:link,
+        &:active,
+        &:visited,
+        &:focus {
+            text-decoration: none;
+        }
+
+        & + & {
+            margin-top: 8px;
+        }
+
+        &-header {
+            display: block;
+            width: 100%;
+            font-size: 16px;
+            line-height: 22px;
+            font-weight: $font-weight-semi-bold;
+            color: #656e7d;
+
+            &_green {
+                color: $color-primary-green;
+            }
+
+            &_red {
+                color: #ec4545;
+            }
+        }
+
+        &-text {
+            display: block;
+            width: 100%;
+            font-size: 14px;
+            line-height: 21px;
+            font-weight: $font-weight-medium;
+            color: #7c828d;
+            margin-top: 4px;
+        }
+    }
+
+    &__reinstate-popup,
+    &__sms-popup,
+    &__pin-popup,
+    &__close-account-popup,
+    &__block-account-popup {
+        .popup__box {
+            max-width: 420px;
+        }
+    }
+
+    &__reinstate-popup,
+    &__sms-popup {
+        .popup__content {
+            padding: 30px;
+        }
+
+        .popup__controls {
+            padding: 0 30px 30px;
+        }
+
+        &-label {
+            display: block;
+            width: 100%;
+
+            &-text {
+                display: block;
+                width: 100%;
+                font-size: 14px;
+                font-weight: $font-weight-semi-bold;
+                line-height: 20px;
+                color: #73777f;
+                cursor: default;
+                user-select: none;
+                margin-bottom: 8px;
+            }
+        }
+
+        &-text {
+            width: 100%;
+            min-height: 100px;
+        }
+    }
+
+    &__reinstate-popup-text,
+    &__sms-popup-text {
+        display: block;
+        width: 100%;
+        min-height: 80px;
+        resize: vertical;
+    }
+}

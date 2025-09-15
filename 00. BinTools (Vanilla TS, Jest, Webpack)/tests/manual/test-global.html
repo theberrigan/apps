@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Test globalThis.BinTools</title>
+    <script type="text/javascript" src="../../dist/lib.js"></script>
+    <script type="text/javascript">
+        window.onload = () => {
+            const div = document.createElement('div');
+
+            div.style.fontSize = '100px';
+            div.style.fontFamily = 'sans-serif';
+
+            if (window.BinTools && BinTools.BinBuffer) {
+                div.style.color = 'green';
+                div.textContent = 'globalThis.BinTools is OK';
+            } else {
+                div.style.color = 'red';
+                div.textContent = 'globalThis.BinTools is not found';
+            }
+
+            document.body.appendChild(div);
+        };
+    </script>
+</head>
+<body></body>
+</html>

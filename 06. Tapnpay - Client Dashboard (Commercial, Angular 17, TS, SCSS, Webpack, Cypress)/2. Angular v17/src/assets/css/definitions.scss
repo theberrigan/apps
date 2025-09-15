@@ -1,0 +1,81 @@
+@use "sass:math";
+
+$color-link-primary: #4875e7;
+$color-primary-green: #41a741;
+$color-primary-red: #ED3B3B;
+$color-primary-orange: #f7944d;
+$color-info-yellow: #f9f2d9;
+$color-primary-blue: #4875e7;
+$color-checkbox-label: #8e9194;
+$color-empty-message: #88929c;
+$color-empty-message-error: #ce6666;
+$color-primary-bg: #F5FBFF;
+$color-primary-border: #dde3eb;
+$color-text-primary: #59606b;
+$color-input-placeholder: lighten($color-text-primary, 25%);
+$color-sys-message-on-blue-bg: #898c90;
+$color-sys-message-error-on-blue-bg: #f06767;
+$color-widget-border: #e2e5e8;
+$color-widget-border-darken: darken($color-widget-border, 4%);
+$color-input-deco-color: #ced6de;
+$color-input-deco-color-light: #d7dee4;
+$color-input-error-borders: #e67070;
+$color-input-error-background: #fff4f4;
+$color-input: #3f444e;
+
+$control-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.06);
+$control-primary-radius: 6px;
+$control-height-regular: 38px; // TODO: add medium, large; Add to buttons
+$control-height-large: 40px;
+$control-border-size: 1px; // TODO: add to buttons
+
+$font-default-family: 'TNP-Montserrat', Montserrat, 'Roboto', 'Open Sans', -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, Tahoma, sans-serif;
+$font-weight-extra-light: 200;
+$font-weight-light: 300;
+$font-weight-medium: 500;
+$font-weight-semi-bold: 600;
+$font-weight-extra-bold: 800;
+$font-weight-black: 900;
+
+$app-bar-height: 56px;
+$content-max-width: 1000px;
+
+$z-index-control-active: 7;
+$z-index-app-bar: 3000;
+$z-index-panel: 4000;
+$z-index-context-panel: 5000;
+$z-index-bottom-page-controls: 6000;
+$z-index-tidio: 6500;
+$z-index-mobile-nav: 7000;
+$z-index-drawer: 7500;
+$z-index-popup: 8000;
+$z-index-google-map: 8500;
+$z-index-paypal: 8750;
+$z-index-toasts: 9000;
+$z-index-user-menu: 10000;
+$z-index-datepicker: 11000;
+
+// --------------------------------------
+
+$logo-width: 1442px;
+$logo-height: 420px;
+$logo-ratio: math.div($logo-height, $logo-width);
+
+$table-striped-reversed-row-bg: #f0f6fa;
+$table-striped-reversed-row-border-color: #e9f1f7;
+$table-striped-reversed-row-border-radius: 8px;
+
+// Figma Colors
+$figma-green: #00C08B;
+$figma-white: #FFFFFF;
+$figma-dark-gray: #4B5563;
+$figma-darker-gray: #1F2937;
+$figma-light-gray: #D1D5DB;
+
+// Figma Typography
+$figma-font-roboto: 'Roboto', Arial, sans-serif;
+$figma-font-montserrat: 'Montserrat', Arial, sans-serif;
+$figma-font-size-base: 14px;
+$figma-font-weight-semibold: 600;
+
+

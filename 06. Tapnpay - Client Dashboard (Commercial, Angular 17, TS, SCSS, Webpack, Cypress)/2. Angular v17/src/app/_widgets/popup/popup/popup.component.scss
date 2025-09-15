@@ -1,0 +1,90 @@
+@import '../../../../assets/css/definitions';
+@import '../popup.definitions';
+
+.popup {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: $z-index-popup;
+    background-color: rgba(#000, 0.75);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: none;
+
+    &__scroll-content {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 100%;
+        padding: 40px 0;
+    }
+
+    &__box {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: stretch;
+        border-radius: 10px;
+        background-color: #fff;
+        width: 100%;
+        max-width: 600px;
+    }
+
+    &_size_small {
+        .popup__box {
+            max-width: $size-small-max-width !important;
+        }
+
+        .popup__content {
+            padding-bottom: 20px;
+        }
+
+        .popup__controls {
+            padding: 0 20px 40px;
+        }
+    }
+
+    &__fieldset {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+    }
+
+    html.viewport_mobile & {
+        &__scroll-content {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    }
+}
+
+.popup-custom {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1050;
+    display: block;
+
+    .modal-content {
+        background-color: #fff;
+        border-radius: 0.3rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
+        padding: 1.5rem;
+    }
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index: 1040;
+}

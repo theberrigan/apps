@@ -1,0 +1,880 @@
+<ng-container [ngSwitch]="layout">
+    <action-panel *ngSwitchCase="'editor'">
+        <div class="action-panel__primary">
+            <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ 'projects.editor.page_title' | translate : { projectKey: projectKey } }}</h1>
+        </div>
+        <div class="action-panel__secondary">
+            <div class="action-panel__item" *ngIf="state === 'ready' && canEdit">
+                <button type="button" class="button button_regular button_blue"
+                    [isProgress]="isSaving"
+                    [isDisabled]="isSaving"
+                    (click)="onSave()"
+                >
+                    <span class="button__caption">{{ 'projects.editor.save__button' | translate }}</span>
+                </button>
+            </div>
+            <div class="action-panel__item" *ngIf="state === 'ready'">
+                <a class="button button_regular button_white"
+                    [isDisabled]="isSaving"
+                    [routerLink]="'/dashboard/offer/' + project.offerKey"
+                >
+                    <span class="button__caption">{{ 'projects.editor.view' | translate }} <strong>{{ project.offerKey }}</strong></span>
+                </a>
+            </div>
+        </div>
+    </action-panel>
+    <action-panel *ngSwitchCase="'assignment-editor'">
+        <div class="action-panel__primary">
+            <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ (assignmentEditorMode === 'edit' ? 'projects.editor.edit_assignment__header' : 'projects.editor.add_assignment__header') | translate }}</h1>
+        </div>
+        <div class="action-panel__secondary">
+            <div class="action-panel__item">
+                <button type="button" class="button button_regular button_blue" (click)="onCloseAssignmentEditor(true)" [isDisabled]="!assignmentToEdit.serviceProvider">
+                    <span class="button__caption">{{ 'projects.editor.assignment_ok__button' | translate }}</span>
+                </button>
+            </div>
+        </div>
+    </action-panel>
+</ng-container>
+
+<ng-container [ngSwitch]="state">
+    <div class="project-editor__spinner" *ngSwitchCase="'loading'">
+        <spinner class="spinner spinner_blue spinner_small"></spinner>
+    </div>
+    <div class="project-editor__message project-editor__message_error" *ngSwitchCase="'error'">
+        {{ 'projects.editor.loading_error__message' | translate }}
+    </div>
+    <ng-container *ngSwitchCase="'ready'" [ngSwitch]="layout">
+        <ng-container *ngSwitchCase="'editor'">
+            <div class="tabs">
+                <div class="tabs__tab" [class.tabs__tab_active]="activeTab === 'details'" (click)="switchTab('details')">
+                    <span class="tabs__tab-caption">{{ 'projects.editor.details__tab' | translate }}</span>
+                    <svg class="tabs__tab-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path style="fill: currentColor;" d="M9,0a8.74,8.74,0,0,1,4.5,1.22A9,9,0,0,1,16.78,4.5,8.74,8.74,0,0,1,18,9a8.74,8.74,0,0,1-1.22,4.5,9,9,0,0,1-3.28,3.28A8.74,8.74,0,0,1,9,18a8.74,8.74,0,0,1-4.5-1.22A9,9,0,0,1,1.22,13.5,8.74,8.74,0,0,1,0,9,8.74,8.74,0,0,1,1.22,4.5,9,9,0,0,1,4.5,1.22,8.74,8.74,0,0,1,9,0ZM9,16.26a7.06,7.06,0,0,0,3.63-1,7.32,7.32,0,0,0,2.65-2.65,7.21,7.21,0,0,0,0-7.26,7.4,7.4,0,0,0-2.65-2.65,7.21,7.21,0,0,0-7.26,0A7.48,7.48,0,0,0,2.72,5.37a7.21,7.21,0,0,0,0,7.26,7.4,7.4,0,0,0,2.65,2.65A7.06,7.06,0,0,0,9,16.26Zm2-3.05v-.87a.43.43,0,0,0-.12-.31.46.46,0,0,0-.31-.13h-.44V8.27a.44.44,0,0,0-.43-.43H7.4A.42.42,0,0,0,7.09,8a.41.41,0,0,0-.12.3v.88a.41.41,0,0,0,.12.3.42.42,0,0,0,.31.13h.44V11.9H7.4a.46.46,0,0,0-.31.13.43.43,0,0,0-.12.31v.87a.45.45,0,0,0,.12.31.46.46,0,0,0,.31.13h3.2a.46.46,0,0,0,.31-.13A.45.45,0,0,0,11,13.21ZM9,4a1.44,1.44,0,0,0-1.07.46,1.45,1.45,0,0,0-.45,1.07,1.48,1.48,0,0,0,.45,1.07,1.5,1.5,0,0,0,2.14,0,1.48,1.48,0,0,0,.45-1.07,1.45,1.45,0,0,0-.45-1.07A1.44,1.44,0,0,0,9,4Z"></path>
+                    </svg>
+                </div>
+                <div class="tabs__tab" [class.tabs__tab_active]="activeTab === 'documents'" (click)="switchTab('documents')">
+                    <span class="tabs__tab-caption">{{ 'projects.editor.documents__tab' | translate }}</span>
+                    <svg class="tabs__tab-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path style="fill: currentColor;" d="M16,16.31a1.61,1.61,0,0,1-.51,1.2,1.7,1.7,0,0,1-1.24.49H3.75a1.7,1.7,0,0,1-1.24-.49A1.61,1.61,0,0,1,2,16.31V1.69A1.61,1.61,0,0,1,2.51.49,1.7,1.7,0,0,1,3.75,0h7.44a1.72,1.72,0,0,1,1.24.49l3.06,3A1.57,1.57,0,0,1,16,4.64ZM14.25,6.19H10.46a.84.84,0,0,1-.62-.25.79.79,0,0,1-.26-.6V1.69H3.75V16.31h10.5ZM12.5,9.7a.38.38,0,0,1-.13.3.44.44,0,0,1-.31.13H5.94A.44.44,0,0,1,5.63,10a.38.38,0,0,1-.13-.3v-1a.38.38,0,0,1,.13-.3.43.43,0,0,1,.31-.12h6.12a.43.43,0,0,1,.31.12.38.38,0,0,1,.13.3ZM5.94,11.25a.43.43,0,0,0-.31.12.41.41,0,0,0-.13.3v1a.41.41,0,0,0,.13.3.43.43,0,0,0,.31.12h6.12a.43.43,0,0,0,.31-.12.41.41,0,0,0,.13-.3v-1a.41.41,0,0,0-.13-.3.43.43,0,0,0-.31-.12ZM11.33,4.5H14.1L11.33,1.83Z"></path>
+                    </svg>
+                </div>
+                <div class="tabs__tab" [class.tabs__tab_active]="activeTab === 'shipping'" (click)="switchTab('shipping')">
+                    <span class="tabs__tab-caption">{{ 'projects.editor.shipping__tab' | translate }}</span>
+                    <svg class="tabs__tab-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path style="fill: currentColor;" d="M8.75,0a6.51,6.51,0,0,1,3.37.91,6.9,6.9,0,0,1,2.46,2.46,6.52,6.52,0,0,1,.91,3.38,6.32,6.32,0,0,1-.24,1.82,10.83,10.83,0,0,1-.95,2c-.33.56-1,1.67-2,3.31l-2.07,3.26a1.64,1.64,0,0,1-.88.72,1.69,1.69,0,0,1-1.13,0,1.62,1.62,0,0,1-.87-.72L5.23,13.92q-1.55-2.46-2-3.27a11.73,11.73,0,0,1-.94-2.08A6,6,0,0,1,2,6.75a6.52,6.52,0,0,1,.91-3.38A6.9,6.9,0,0,1,5.37.91,6.52,6.52,0,0,1,8.75,0Zm0,16.3L11,12.79c.94-1.5,1.56-2.49,1.86-3a9.56,9.56,0,0,0,.79-1.65,4.5,4.5,0,0,0,.2-1.4,4.83,4.83,0,0,0-.69-2.53,5.18,5.18,0,0,0-1.84-1.85,5,5,0,0,0-2.53-.68,4.92,4.92,0,0,0-2.53.68A5.13,5.13,0,0,0,4.37,4.22a4.92,4.92,0,0,0-.68,2.53,4.69,4.69,0,0,0,.19,1.42,8.13,8.13,0,0,0,.83,1.67c.28.49.89,1.49,1.82,3S8.16,15.37,8.75,16.3ZM5.94,6.75A2.82,2.82,0,0,0,8.75,9.56a2.71,2.71,0,0,0,2-.83,2.71,2.71,0,0,0,.83-2,2.71,2.71,0,0,0-.83-2,2.7,2.7,0,0,0-2-.82A2.8,2.8,0,0,0,5.94,6.75Z"></path>
+                    </svg>
+                </div>
+                <div class="tabs__tab" [class.tabs__tab_active]="activeTab === 'transactions'" (click)="switchTab('transactions')">
+                    <span class="tabs__tab-caption">{{ 'projects.editor.transactions__tab' | translate }}</span>
+                    <svg class="tabs__tab-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path style="fill: currentColor;" d="M9,0a8.74,8.74,0,0,1,4.5,1.22A9,9,0,0,1,16.78,4.5,8.74,8.74,0,0,1,18,9a8.74,8.74,0,0,1-1.22,4.5,9,9,0,0,1-3.28,3.28A8.74,8.74,0,0,1,9,18a8.74,8.74,0,0,1-4.5-1.22A9,9,0,0,1,1.22,13.5,8.74,8.74,0,0,1,0,9,8.74,8.74,0,0,1,1.22,4.5,9,9,0,0,1,4.5,1.22,8.74,8.74,0,0,1,9,0ZM9,16.26a7.06,7.06,0,0,0,3.63-1,7.32,7.32,0,0,0,2.65-2.65,7.21,7.21,0,0,0,0-7.26,7.32,7.32,0,0,0-2.65-2.65,7.21,7.21,0,0,0-7.26,0A7.32,7.32,0,0,0,2.72,5.37a7.21,7.21,0,0,0,0,7.26,7.32,7.32,0,0,0,2.65,2.65A7.06,7.06,0,0,0,9,16.26Zm-.76-1.74V13.46a4.09,4.09,0,0,1-1.71-.65c-.26-.19-.48-.36-.65-.51a.25.25,0,0,1,0-.36l.83-1.09a.31.31,0,0,1,.19-.13.25.25,0,0,1,.21.09c.2.15.4.3.62.44a2.76,2.76,0,0,0,1.34.4,1.19,1.19,0,0,0,.69-.2.66.66,0,0,0,.29-.6q0-.26-.36-.51a6.32,6.32,0,0,0-1-.47A5.87,5.87,0,0,1,6.9,9,2.25,2.25,0,0,1,6,7.11a2.32,2.32,0,0,1,.62-1.63,3,3,0,0,1,1.63-.91V3.45a.2.2,0,0,1,.09-.18.32.32,0,0,1,.2-.08H9.58a.25.25,0,0,1,.18.08.22.22,0,0,1,.08.18V4.54a4.13,4.13,0,0,1,1.52.5,3.16,3.16,0,0,1,.53.39.26.26,0,0,1,0,.34L11.29,7a.19.19,0,0,1-.17.12.28.28,0,0,1-.23,0c-.17-.12-.37-.24-.58-.36a2,2,0,0,0-1.13-.29,1.67,1.67,0,0,0-.76.16.54.54,0,0,0-.33.51.74.74,0,0,0,.4.6,6.78,6.78,0,0,0,1.09.47v0A6.72,6.72,0,0,1,11.29,9a2.11,2.11,0,0,1,.9,1.74,2.59,2.59,0,0,1-.67,1.8,2.92,2.92,0,0,1-1.68.92v1.06a.27.27,0,0,1-.08.21.25.25,0,0,1-.18.08H8.53a.32.32,0,0,1-.2-.08A.25.25,0,0,1,8.24,14.52Z"></path>
+                    </svg>
+                </div>
+                <div class="tabs__tab"
+                     [class.tabs__tab_active]="activeTab === 'history'"
+                     [class.tabs__tab_disabled]="!canReadHistory"
+                     (click)="switchTab('history')"
+                     (mouseenter)="onHistoryTabMouseEvent(true)"
+                     (mouseleave)="onHistoryTabMouseEvent(false)"
+                >
+                    <span class="tabs__tab-caption">{{ 'projects.editor.changes__tab' | translate }}</span>
+                    <span class="tabs__tab-hint" [class.tabs__tab-hint_visible]="isHistoryTabHintVisible">{{ 'log.history_tab_hint__message' | translate }}</span>
+                    <svg class="tabs__tab-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path style="fill: currentColor;" d="M.73.73A.39.39,0,0,0,.27.65a.41.41,0,0,0-.27.4V6.24a.4.4,0,0,0,.13.31.42.42,0,0,0,.31.13H5.62A.39.39,0,0,0,6,6.41.38.38,0,0,0,6,6L4,4a7.23,7.23,0,0,1,2.3-1.53A7,7,0,0,1,9,1.89a6.92,6.92,0,0,1,3.56,1,7.15,7.15,0,0,1,2.59,2.59,7.08,7.08,0,0,1,0,7.12,7.15,7.15,0,0,1-2.59,2.59,6.92,6.92,0,0,1-3.56,1,6.92,6.92,0,0,1-2.56-.47A6.7,6.7,0,0,1,4.28,14.3.45.45,0,0,0,4,14.21a.44.44,0,0,0-.3.13l-.72.72a.43.43,0,0,0-.11.31.36.36,0,0,0,.15.31A9,9,0,0,0,9,18a8.74,8.74,0,0,0,4.5-1.22,9.07,9.07,0,0,0,3.28-3.26A8.69,8.69,0,0,0,18,9,8.76,8.76,0,0,0,16.78,4.5,9,9,0,0,0,13.5,1.22,8.74,8.74,0,0,0,9,0,8.92,8.92,0,0,0,5.53.69a8.52,8.52,0,0,0-2.88,2Z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <form [formGroup]="editorForm">
+                <div class="tab-content" [class.tab-content_active]="activeTab === 'details'" formGroupName="details">
+                    <div class="tab-content-header tab-content-header_tablet tab-content-header_mobile">{{ 'projects.editor.details__tab' | translate }}</div>
+                    <div class="project-editor__controls">
+                        <div class="project-editor__control">
+                            <label class="project-editor__control-label">{{ 'projects.editor.project__label' | translate }}</label>
+                            <div class="project-editor__control-value">
+                                {{ roFields.projectKey }}
+                            </div>
+                        </div>
+                        <div class="project-editor__control project-editor__control_has-input">
+                            <label class="project-editor__control-label">{{ 'projects.editor.status__label' | translate }}</label>
+                            <select class="select select_regular project-editor__control-input" formControlName="status">
+                                <option
+                                    *ngFor="let statusOption of statusOptions"
+                                    [ngValue]="statusOption.id"
+                                    [innerHTML]="statusOption.display | translate"
+                                ></option>
+                            </select>
+                        </div>
+                        <div class="project-editor__control project-editor__control_has-input">
+                            <label class="project-editor__control-label">{{ 'projects.editor.coordinator__label' | translate }}</label>
+                            <select class="select select_regular project-editor__control-input" formControlName="coordinator">
+                                <option
+                                    *ngFor="let coordinatorOption of coordinatorOptions"
+                                    [ngValue]="coordinatorOption.value"
+                                    [innerHTML]="coordinatorOption.display"
+                                ></option>
+                            </select>
+                        </div>
+                        <div class="project-editor__control">
+                            <label class="project-editor__control-label">{{ 'projects.editor.created__label' | translate }}</label>
+                            <div class="project-editor__control-value">
+                                {{ roFields.created | datetime : datetimeFormats.display }}
+                            </div>
+                        </div>
+                        <div class="project-editor__control">
+                            <label class="project-editor__control-label">{{ 'projects.editor.company_name__text' | translate }}</label>
+                            <div class="project-editor__control-value">{{ roFields.client }}</div>
+                        </div>
+                        <div class="project-editor__control">
+                            <label class="project-editor__control-label">{{ 'projects.editor.contact__text' | translate }}</label>
+                            <div class="project-editor__control-value">{{ roFields.contact }}</div>
+                        </div>
+                        <div class="project-editor__control">
+                            <label class="project-editor__control-label">{{ 'projects.editor.email__text' | translate }}</label>
+                            <div class="project-editor__control-value">
+                                {{ roFields.email }}
+                                <button type="button" class="project-editor__copy-email" *ngIf="!!roFields.email" [title]="'projects.editor.copy_to_clipboard' | translate" (click)="onCopy(roFields.email)"></button>
+                            </div>
+                        </div>
+                        <div class="project-editor__control">
+                            <label class="project-editor__control-label">{{ 'projects.editor.phone__text' | translate }}</label>
+                            <div class="project-editor__control-value">{{ roFields.phone }}</div>
+                        </div>
+                        <div class="project-editor__control">
+                            <label class="project-editor__control-label">{{ 'projects.editor.fax__text' | translate }}</label>
+                            <div class="project-editor__control-value">{{ roFields.fax }}</div>
+                        </div>
+                        <div class="project-editor__control">
+                            <label class="project-editor__control-label">{{ 'projects.editor.priority__text' | translate }}</label>
+                            <div class="project-editor__control-value">{{ roFields.priority | translate }}</div>
+                        </div>
+                        <div class="project-editor__control">
+                            <label class="project-editor__control-label">{{ 'projects.editor.delivery_type__text' | translate }}</label>
+                            <div class="project-editor__control-value">{{ roFields.deliveryType | translate }}</div>
+                        </div>
+                        <div class="project-editor__control project-editor__control_has-input">
+                            <label class="project-editor__control-label">{{ 'projects.editor.deadline__text' | translate }}</label>
+                            <div class="project-editor__control-input">
+                                <datepicker [formControl]="getDeadlineControl()" [format]="datetimeFormats.select" type="iso"></datepicker>
+                            </div>
+                        </div>
+                        <div class="project-editor__control">
+                            <label class="project-editor__control-label">{{ 'projects.editor.external_id__text' | translate }}</label>
+                            <div class="project-editor__control-value">{{ roFields.externalId }}</div>
+                        </div>
+                        <div class="project-editor__control">
+                            <label class="project-editor__control-label">{{ 'projects.editor.subject_area__text' | translate }}</label>
+                            <div class="project-editor__control-value">{{ roFields.field | translate }}</div>
+                        </div>
+                        <div class="project-editor__control">
+                            <label class="project-editor__control-label">{{ 'projects.editor.translation__text' | translate }}</label>
+                            <div class="project-editor__control-value">{{ roFields.translationType | translate }}</div>
+                        </div>
+                        <div class="project-editor__control">
+                            <label class="project-editor__control-label">{{ 'projects.editor.notary__text' | translate }}</label>
+                            <div class="project-editor__control-value">{{ (roFields.notary ? 'projects.editor.notary_yes__text' : 'projects.editor.notary_no__text') | translate }}</div>
+                        </div>
+                        <div class="project-editor__control">
+                            <label class="project-editor__control-label">{{ 'projects.editor.description__text' | translate }}</label>
+                            <div class="project-editor__control-value">{{ roFields.description }}</div>
+                        </div>
+                    </div>
+
+                    <!-- SERVICES -->
+                    <br><br><br>
+
+                    <input type="file" class="hidden" #uploaderInput ng2FileSelect [uploader]="uploader">
+                    <!-- /// -->
+                    <ng-container [ngSwitch]="viewportBreakpoint === 'desktop'">
+                        <ng-container *ngSwitchCase="true">
+                            <!-- +++ -->
+                            <div class="project-editor__services-table-wrap" *ngFor="let service of project.services">
+                                <table class="project-editor__services-table">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ 'projects.editor.name__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.from__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.to__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.unit__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.cpu__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.in__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.out_rounded__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.ratio__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.price__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.discount__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.net__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.gross__table_th' | translate }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="project-editor__services-table-name">{{ service.name }}</span></td>
+                                            <td>{{ getLanguageName(service.from) | translate }}</td>
+                                            <td>{{ getLanguageName(service.to) | translate }}</td>
+                                            <td>{{ service.unit }}</td>
+                                            <td>{{ service.basePrice / 100 | number : '.2-2' }}</td>
+                                            <td>{{ service.in / 100 | number : '.2-2' }}</td>
+                                            <td>{{ service.outRounded / 100 | number : '.2-2' }}</td>
+                                            <td [class.project-editor__services-table-cell_grey]="!service.billable">{{ service.ratio / 10000 | number : '.4-4' }}</td>
+                                            <td [class.project-editor__services-table-cell_grey]="!service.billable">{{ service.price / 100 | number : '.2-2' }}</td>
+                                            <td [class.project-editor__services-table-cell_grey]="!service.billable">{{ service.discount / 100 | number : '.2-2' }}</td>
+                                            <td [class.project-editor__services-table-cell_grey]="!service.billable">{{ service.net / 100 | number : '.2-2' }}</td>
+                                            <td [class.project-editor__services-table-cell_grey]="!service.billable">{{ service.gross / 100 | number : '.2-2' }}</td>
+                                    </tbody>
+                                </table>
+                                <table class="project-editor__services-table">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="5">
+                                                <span class="project-editor__services-table-inline-items">
+                                                    <span class="project-editor__services-table-label">{{ 'projects.editor.service_assignments__table_th' | translate }}</span>
+                                                    <button type="button" class="project-editor__services-table-text-button" (click)="addAssignment(service)">
+                                                        {{ 'projects.editor.assign_to_service__button' | translate }}
+                                                    </button>
+                                                </span>
+                                            </th>
+                                            <th>{{ 'projects.editor.cost' | translate }}: {{ calcServiceCost(service) / 100 | number : '.2-2' }}</th>
+                                            <th>{{ 'projects.editor.profit' | translate }}: {{ calcServiceProfit(service) / 100 | number : '.2-2' }}</th>
+                                            <th colspan="2">
+                                                {{ 'projects.editor.margin_service__table_th' | translate }}: {{ calcServiceMargin(service) }}%
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ 'projects.editor.translator__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.units__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.cpu__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.status_accepted__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.deadline__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.begin__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.end__table_th' | translate }}</th>
+                                            <th>{{ 'projects.editor.margin_translator__table_th' | translate }}</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngFor="let assignmentWrap of assignments">
+                                            <tr *ngIf="service === assignmentWrap.service && !assignmentWrap.assignment.attachmentId">
+                                                <td>{{ assignmentWrap.serviceProvider.firstName }} {{ assignmentWrap.serviceProvider.middleName }} {{ assignmentWrap.serviceProvider.lastName }}</td>
+                                                <td>{{ assignmentWrap.assignment.units / 100 }}</td>
+                                                <td [class.project-editor__services-table-cell_red]="assignmentWrap.assignment.reclaimedAmount !== 0">{{ assignmentWrap.assignment.pricePerUnit / 100 | number : '.2-2' }}</td>
+                                                <td>
+                                                    <ng-container *ngIf="assignmentWrap.assignment.accepted">{{ assignmentWrap.assignment.accepted | datetime : datetimeFormats.display }}</ng-container>
+                                                    <ng-container *ngIf="!assignmentWrap.assignment.accepted"><em>{{ 'projects.editor.not_accepted__text' | translate }}</em></ng-container>
+                                                </td>
+                                                <td>{{ assignmentWrap.assignment.internalDeadline | datetime : datetimeFormats.display }}</td>
+                                                <td>{{ assignmentWrap.assignment.begin }}</td>
+                                                <td>{{ assignmentWrap.assignment.end }}</td>
+                                                <td>{{ calcTranslatorMargin(assignmentWrap) }}%</td>
+                                                <td class="project-editor__services-table-actions-cell">
+                                                    <span class="project-editor__services-table-actions">
+                                                        <button type="button" class="project-editor__services-table-action project-editor__services-table-action_download" (click)="onFileDownload(assignmentWrap.assignment.outcomeUuid)" *ngIf="!!assignmentWrap.assignment.outcomeUuid"></button>
+                                                        <button type="button" class="project-editor__services-table-action project-editor__services-table-action_upload" (click)="showOutcomeUploadDialog(assignmentWrap)" *ngIf="canEdit && !!assignmentWrap.assignment.id" [disabled]="assignmentWrap.isUploading"></button>
+                                                        <button type="button" class="project-editor__services-table-action project-editor__services-table-action_edit" (click)="editAssignment(service, assignmentWrap)" *ngIf="canEdit"></button>
+                                                        <button type="button" class="project-editor__services-table-action project-editor__services-table-action_delete" (click)="onDeleteAssignment(assignmentWrap)" *ngIf="canEdit"></button>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                    <ng-container *ngIf="service.attachments && service.attachments.length">
+                                        <tbody *ngFor="let attachment of service.attachments" class="project-translator-assignments-group">
+                                            <tr>
+                                                <td colspan="9">
+                                                    <span class="project-editor__services-table-inline-items">
+                                                        <button type="button" class="project-editor__services-table-attachment" (click)="onFileDownload(attachment)">
+                                                            {{ getAttachmentName(attachment) }}
+                                                        </button>
+                                                        <button type="button" class="project-editor__services-table-text-button" (click)="addAssignment(service, attachment)">
+                                                            {{ 'projects.editor.assign_translator_attachment__button' | translate }}
+                                                        </button>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <ng-container *ngFor="let assignmentWrap of assignments">
+                                                <tr *ngIf="service === assignmentWrap.service && assignmentWrap.assignment.attachmentId === attachment">
+                                                    <td>{{ assignmentWrap.serviceProvider.firstName }} {{ assignmentWrap.serviceProvider.middleName }} {{ assignmentWrap.serviceProvider.lastName }}</td>
+                                                    <td>{{ assignmentWrap.assignment.units / 100 }}</td>
+                                                    <td [class.project-editor__services-table-cell_red]="assignmentWrap.assignment.reclaimedAmount !== 0">{{ assignmentWrap.assignment.pricePerUnit / 100 | number : '.2-2' }}</td>
+                                                    <td>
+                                                        <ng-container *ngIf="assignmentWrap.assignment.accepted">{{ assignmentWrap.assignment.accepted | datetime : datetimeFormats.display }}</ng-container>
+                                                        <ng-container *ngIf="!assignmentWrap.assignment.accepted"><em>{{ 'projects.editor.not_accepted__text' | translate }}</em></ng-container>
+                                                    </td>
+                                                    <td>{{ assignmentWrap.assignment.internalDeadline | datetime : datetimeFormats.display }}</td>
+                                                    <td>{{ assignmentWrap.assignment.begin }}</td>
+                                                    <td>{{ assignmentWrap.assignment.end }}</td>
+                                                    <td>{{ calcTranslatorMargin(assignmentWrap) }}%</td>
+                                                    <td class="project-editor__services-table-actions-cell">
+                                                        <span class="project-editor__services-table-actions">
+                                                            <button type="button" class="project-editor__services-table-action project-editor__services-table-action_download" (click)="onFileDownload(assignmentWrap.assignment.outcomeUuid)" *ngIf="!!assignmentWrap.assignment.outcomeUuid"></button>
+                                                            <button type="button" class="project-editor__services-table-action project-editor__services-table-action_upload" (click)="showOutcomeUploadDialog(assignmentWrap)" *ngIf="canEdit && !!assignmentWrap.assignment.id" [disabled]="assignmentWrap.isUploading"></button>
+                                                            <button type="button" class="project-editor__services-table-action project-editor__services-table-action_edit" (click)="editAssignment(service, assignmentWrap)" *ngIf="canEdit"></button>
+                                                            <button type="button" class="project-editor__services-table-action project-editor__services-table-action_delete" (click)="onDeleteAssignment(assignmentWrap)" *ngIf="canEdit"></button>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </tbody>
+                                    </ng-container>
+                                </table>
+                            </div>
+                            <!-- +++ -->
+                        </ng-container>
+                        <div class="project-editor__assignments" *ngSwitchCase="false">
+                            <div class="project-editor__assignments-list">
+                                <div class="project-editor__assignments-list-item" *ngFor="let service of project.services; let serviceIndex = index">
+                                    <div class="project-editor__assignments-list-item-info">
+                                        <div class="project-editor__assignments-list-item-primary">
+                                            <div class="project-editor__assignments-list-item-service"><strong>{{ serviceIndex + 1 }}.</strong> {{ service.name }}</div>
+                                            <div class="project-editor__assignments-list-item-service-values">
+                                                <div class="project-editor__assignments-list-item-service-value">
+                                                    <strong>{{ 'projects.editor.cost' | translate }}:</strong> {{ calcServiceCost(service) / 100 | number : '.2-2' }}
+                                                </div>
+                                                <div class="project-editor__assignments-list-item-service-value">
+                                                    <strong>{{ 'projects.editor.profit' | translate }}:</strong> {{ calcServiceProfit(service) / 100 | number : '.2-2'  }}
+                                                </div>
+                                                <div class="project-editor__assignments-list-item-service-value">
+                                                    <strong>{{ 'projects.editor.margin_service__table_th' | translate }}:</strong> {{ calcServiceMargin(service) }}%
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="project-editor__assignments-list-item-service-details">
+                                        <div class="project-editor__assignments-list-item-service-details-header">
+                                            {{ 'projects.editor.service_details' | translate }}
+                                        </div>
+                                        <table class="project-editor__assignments-list-item-service-details-table">
+                                            <tbody>
+                                                <tr>
+                                                    <th>{{ 'projects.editor.direction' | translate }}:</th>
+                                                    <td>{{ getLanguageName(service.from) | translate }} &rarr; {{ getLanguageName(service.to) | translate }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>{{ 'projects.editor.unit__table_th' | translate }}:</th>
+                                                    <td>{{ service.unit }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>{{ 'projects.editor.cpu__table_th' | translate }}:</th>
+                                                    <td>{{ service.basePrice / 100 | number : '.2-2' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>{{ 'projects.editor.in__table_th' | translate }}:</th>
+                                                    <td>{{ service.in / 100 | number : '.2-2' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>{{ 'projects.editor.out_rounded__table_th' | translate }}:</th>
+                                                    <td>{{ service.outRounded / 100 | number : '.2-2' }}</td>
+                                                </tr>
+                                                <tr [class.non-billable]="!service.billable">
+                                                    <th>{{ 'projects.editor.ratio__table_th' | translate }}:</th>
+                                                    <td>{{ service.ratio / 10000 | number : '.4-4' }}</td>
+                                                </tr>
+                                                <tr [class.non-billable]="!service.billable">
+                                                    <th>{{ 'projects.editor.price__table_th' | translate }}:</th>
+                                                    <td>{{ service.price / 100 | number : '.2-2' }}</td>
+                                                </tr>
+                                                <tr [class.non-billable]="!service.billable">
+                                                    <th>{{ 'projects.editor.discount__table_th' | translate }}:</th>
+                                                    <td>{{ service.discount / 100 | number : '.2-2' }}</td>
+                                                </tr>
+                                                <tr [class.non-billable]="!service.billable">
+                                                    <th>{{ 'projects.editor.net__table_th' | translate }}:</th>
+                                                    <td>{{ service.net / 100 | number : '.2-2' }}</td>
+                                                </tr>
+                                                <tr [class.non-billable]="!service.billable">
+                                                    <th>{{ 'projects.editor.gross__table_th' | translate }}:</th>
+                                                    <td>{{ service.gross / 100 | number : '.2-2' }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="project-editor__assignments-list-item-section">
+                                        <div class="project-editor__assignments-list-item-section-header">
+                                            {{ 'projects.editor.service_assignments__table_th' | translate }}
+                                            <button type="button" class="button button_regular button_blue" (click)="addAssignment(service)">
+                                                <span class="button__caption">{{ 'projects.editor.assign_to_service__button' | translate }}</span>
+                                            </button>
+                                        </div>
+                                        <ng-container *ngFor="let assignmentWrap of assignments">
+                                            <div class="project-editor__assignments-list-item-assignment" *ngIf="service.id === assignmentWrap.service.id && !assignmentWrap.assignment.attachmentId">
+                                                <div class="project-editor__assignments-list-item-assignment-header">
+                                                    <span class="project-editor__assignments-list-item-assignment-header-text">{{ assignmentWrap.serviceProvider.firstName }} {{ assignmentWrap.serviceProvider.middleName }} {{ assignmentWrap.serviceProvider.lastName }}</span>
+                                                    <button type="button" class="button button_regular button_white" (click)="onFileDownload(assignmentWrap.assignment.outcomeUuid)" *ngIf="!!assignmentWrap.assignment.outcomeUuid">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="button__icon">
+                                                            <path style="fill: currentColor;" d="M17,16a1,1,0,0,1-1,1H2a1,1,0,0,1,0-2H8.59l-4.3-4.29A1,1,0,0,1,5.71,9.29L8,11.59V2a1,1,0,0,1,2,0v9.59l2.29-2.3a1,1,0,0,1,1.42,1.42L9.41,15H16A1,1,0,0,1,17,16Z"></path>
+                                                        </svg>
+                                                    </button>
+                                                    <button type="button" class="button button_regular button_green" (click)="showOutcomeUploadDialog(assignmentWrap)" *ngIf="canEdit && !!assignmentWrap.assignment.id" [isDisabled]="assignmentWrap.isUploading" [isProgress]="assignmentWrap.isUploading">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="button__icon">
+                                                            <path style="fill: currentColor;" d="M17,2a1,1,0,0,0-1-1H2A1,1,0,0,0,2,3H8.59L4.29,7.29A1,1,0,0,0,5.71,8.71L8,6.41V16a1,1,0,0,0,2,0V6.41l2.29,2.3a1,1,0,0,0,1.42-1.42L9.41,3H16A1,1,0,0,0,17,2Z"></path>
+                                                        </svg>
+                                                    </button>
+                                                    <button type="button" class="button button_regular button_blue" (click)="editAssignment(service, assignmentWrap)" *ngIf="canEdit">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="button__icon">
+                                                            <path style="fill: currentColor;" d="M16.5,1.5h0a2.12,2.12,0,0,1,0,3L5,16,1,17l1-4L13.5,1.5A2.12,2.12,0,0,1,16.5,1.5Z"></path>
+                                                        </svg>
+                                                    </button>
+                                                    <button type="button" class="button button_regular button_red" (click)="onDeleteAssignment(assignmentWrap)" *ngIf="canEdit">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" class="button__icon">
+                                                            <path style="fill: currentColor;" d="M14.364,0.222 L15.778,1.636 L9.414,8.000 L15.778,14.364 L14.364,15.778 L8.000,9.414 L1.636,15.778 L0.222,14.364 L6.586,8.000 L0.222,1.636 L1.636,0.222 L8.000,6.586 L14.364,0.222 Z"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <table class="project-editor__assignments-list-item-assignment-table">
+                                                    <tbody>
+                                                    <tr>
+                                                        <th>{{ 'projects.editor.units__table_th' | translate }}:</th>
+                                                        <td>{{ assignmentWrap.assignment.units / 100 }}</td>
+                                                    </tr>
+                                                    <tr [class.has-reclaim]="assignmentWrap.assignment.reclaimedAmount !== 0">
+                                                        <th>{{ 'projects.editor.cpu__table_th' | translate }}:</th>
+                                                        <td>{{ assignmentWrap.assignment.pricePerUnit / 100 | number : '.2-2' }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{ 'projects.editor.status_accepted__table_th' | translate }}:</th>
+                                                        <td [ngSwitch]="!!assignmentWrap.assignment.accepted">
+                                                            <ng-container *ngSwitchCase="true">{{ assignmentWrap.assignment.accepted | datetime : datetimeFormats.display }}</ng-container>
+                                                            <ng-container *ngSwitchCase="false"><em>{{ 'projects.editor.not_accepted__text' | translate }}</em></ng-container>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{ 'projects.editor.deadline__table_th' | translate }}:</th>
+                                                        <td>{{ assignmentWrap.assignment.internalDeadline | datetime : datetimeFormats.display }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{ 'projects.editor.begin__table_th' | translate }}:</th>
+                                                        <td>{{ assignmentWrap.assignment.begin }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{ 'projects.editor.end__table_th' | translate }}:</th>
+                                                        <td>{{ assignmentWrap.assignment.end }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{ 'projects.editor.margin_translator__table_th' | translate }}:</th>
+                                                        <td>{{ calcTranslatorMargin(assignmentWrap) }}%</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                    <ng-container *ngIf="service.attachments && service.attachments.length">
+                                        <div class="project-editor__assignments-list-item-section" *ngFor="let attachmentId of service.attachments">
+                                            <div class="project-editor__assignments-list-item-section-header">
+                                                <button type="button" class="project-editor__assignments-list-item-section-header-attachment" (click)="onFileDownload(attachmentId)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="13px" height="16px" viewBox="0 0 13 16">
+                                                        <path style="fill: currentColor;" d="M11.000,16.000 L2.000,16.000 C0.895,16.000 -0.000,15.105 -0.000,14.000 L-0.000,2.000 C-0.000,0.895 0.895,-0.000 2.000,-0.000 L6.000,-0.000 L6.000,7.000 L13.000,7.000 L13.000,14.000 C13.000,15.105 12.105,16.000 11.000,16.000 ZM8.000,-0.000 L13.000,5.000 L8.000,5.000 L8.000,-0.000 Z"></path>
+                                                    </svg>
+                                                    <span>{{ getAttachmentName(attachmentId) }}</span>
+                                                </button>
+                                                <button type="button" class="button button_regular button_blue" (click)="addAssignment(service, attachmentId)">
+                                                    <span class="button__caption">{{ 'projects.editor.assign_translator_attachment__button' | translate }}</span>
+                                                </button>
+                                            </div>
+                                            <ng-container *ngFor="let assignmentWrap of assignments">
+                                                <div class="project-editor__assignments-list-item-assignment" *ngIf="service.id === assignmentWrap.service.id && assignmentWrap.assignment.attachmentId === attachmentId">
+                                                    <div class="project-editor__assignments-list-item-assignment-header">
+                                                        <span class="project-editor__assignments-list-item-assignment-header-text">{{ assignmentWrap.serviceProvider.firstName }} {{ assignmentWrap.serviceProvider.middleName }} {{ assignmentWrap.serviceProvider.lastName }}</span>
+                                                        <button type="button" class="button button_regular button_white" (click)="onFileDownload(assignmentWrap.assignment.outcomeUuid)" *ngIf="!!assignmentWrap.assignment.outcomeUuid">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="button__icon">
+                                                                <path style="fill: currentColor;" d="M17,16a1,1,0,0,1-1,1H2a1,1,0,0,1,0-2H8.59l-4.3-4.29A1,1,0,0,1,5.71,9.29L8,11.59V2a1,1,0,0,1,2,0v9.59l2.29-2.3a1,1,0,0,1,1.42,1.42L9.41,15H16A1,1,0,0,1,17,16Z"></path>
+                                                            </svg>
+                                                        </button>
+                                                        <button type="button" class="button button_regular button_green" (click)="showOutcomeUploadDialog(assignmentWrap)" *ngIf="canEdit && !!assignmentWrap.assignment.id" [isDisabled]="assignmentWrap.isUploading" [isProgress]="assignmentWrap.isUploading">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="button__icon">
+                                                                <path style="fill: currentColor;" d="M17,2a1,1,0,0,0-1-1H2A1,1,0,0,0,2,3H8.59L4.29,7.29A1,1,0,0,0,5.71,8.71L8,6.41V16a1,1,0,0,0,2,0V6.41l2.29,2.3a1,1,0,0,0,1.42-1.42L9.41,3H16A1,1,0,0,0,17,2Z"></path>
+                                                            </svg>
+                                                        </button>
+                                                        <button type="button" class="button button_regular button_blue" (click)="editAssignment(service, assignmentWrap)" *ngIf="canEdit">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="button__icon">
+                                                                <path style="fill: currentColor;" d="M16.5,1.5h0a2.12,2.12,0,0,1,0,3L5,16,1,17l1-4L13.5,1.5A2.12,2.12,0,0,1,16.5,1.5Z"></path>
+                                                            </svg>
+                                                        </button>
+                                                        <button type="button" class="button button_regular button_red" (click)="onDeleteAssignment(assignmentWrap)" *ngIf="canEdit">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" class="button__icon">
+                                                                <path style="fill: currentColor;" d="M14.364,0.222 L15.778,1.636 L9.414,8.000 L15.778,14.364 L14.364,15.778 L8.000,9.414 L1.636,15.778 L0.222,14.364 L6.586,8.000 L0.222,1.636 L1.636,0.222 L8.000,6.586 L14.364,0.222 Z"></path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    <table class="project-editor__assignments-list-item-assignment-table">
+                                                        <tbody>
+                                                        <tr>
+                                                            <th>{{ 'projects.editor.units__table_th' | translate }}:</th>
+                                                            <td>{{ assignmentWrap.assignment.units / 100 }}</td>
+                                                        </tr>
+                                                        <tr [class.has-reclaim]="assignmentWrap.assignment.reclaimedAmount !== 0">
+                                                            <th>{{ 'projects.editor.cpu__table_th' | translate }}:</th>
+                                                            <td>{{ assignmentWrap.assignment.pricePerUnit / 100 | number : '.2-2' }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>{{ 'projects.editor.status_accepted__table_th' | translate }}:</th>
+                                                            <td [ngSwitch]="!!assignmentWrap.assignment.accepted">
+                                                                <ng-container *ngSwitchCase="true">{{ assignmentWrap.assignment.accepted | datetime : datetimeFormats.display }}</ng-container>
+                                                                <ng-container *ngSwitchCase="false"><em>{{ 'projects.editor.not_accepted__text' | translate }}</em></ng-container>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>{{ 'projects.editor.deadline__table_th' | translate }}:</th>
+                                                            <td>{{ assignmentWrap.assignment.internalDeadline | datetime : datetimeFormats.display }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>{{ 'projects.editor.begin__table_th' | translate }}:</th>
+                                                            <td>{{ assignmentWrap.assignment.begin }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>{{ 'projects.editor.end__table_th' | translate }}:</th>
+                                                            <td>{{ assignmentWrap.assignment.end }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>{{ 'projects.editor.margin_translator__table_th' | translate }}:</th>
+                                                            <td>{{ calcTranslatorMargin(assignmentWrap) }}%</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [class.tab-content_active]="activeTab === 'documents'" formGroupName="documents">
+                    <div class="tab-content-header tab-content-header_tablet tab-content-header_mobile">{{ 'projects.editor.documents__tab' | translate }}</div>
+                    <div class="project-editor__documents">
+                        <div class="project-editor__documents-header">
+                            <div class="project-editor__documents-header-text">{{ 'offers.editor.doc_instructions' | translate }}</div>
+                        </div>
+                        <div class="project-editor__instruction" [class.project-editor__instruction_editable]="canEdit && !isSaving" [ngSwitch]="isInstructionEditorEnabled">
+                            <div class="project-editor__instruction-text"
+                                *ngSwitchCase="false"
+                                #instructionText
+                                [class.project-editor__instruction-text_empty]="!getInstructionText()"
+                                [innerHTML]="getInstructionText() || (canEdit ? ('offers.editor.doc_edit_instructions' | translate) : '&nbsp;')"
+                                [title]="canEdit ? ('offers.editor.doc_instructions_edit' | translate) : ''"
+                                (click)="enableInstructionEditor()"
+                            ></div>
+                            <div class="project-editor__instruction-editor" *ngSwitchCase="true">
+                                <textarea class="textarea"
+                                    #instructionEditor
+                                    formControlName="instruction"
+                                    [style.height.px]="instructionEditorHeight"
+                                    (keyup)="onInstructionEditorKeyUp($event)"
+                                    (blur)="disableInstructionEditor()"
+                                ></textarea>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="hasAttachments()">
+                            <div class="project-editor__documents-header">
+                                <div class="project-editor__documents-header-text">{{ 'offers.editor.documents' | translate }}</div>
+                            </div>
+                            <ul class="project-editor__documents-list">
+                                <li class="project-editor__document" [class.project-editor__document_editable]="canEdit && !isSaving" formGroupName="items" *ngFor="let attachment of project.attachments; let i = index">
+                                    <div class="project-editor__document-icon">
+                                        <button type="button" class="project-editor__document-icon-circle" (click)="onFileDownload(attachment.uuid)"></button>
+                                    </div>
+                                    <div class="project-editor__document-details">
+                                        <div class="project-editor__document-name">{{ i + 1 }}.&nbsp;{{ attachment.name }}</div>
+                                        <div class="project-editor__document-comments" [formGroupName]="attachment.uuid">
+                                            <div class="project-editor__document-comment" [ngSwitch]="attachmentCommentToEdit && attachmentCommentToEdit.uuid === attachment.uuid && attachmentCommentToEdit.commentField === 'publicComment' || false">
+                                            <textarea class="project-editor__document-comment-input"
+                                                *ngSwitchCase="true"
+                                                #documentCommentEditor
+                                                formControlName="publicComment"
+                                                (keyup)="onDocumentCommentKeyUp($event)"
+                                                (blur)="deactivateDocumentCommentEditor()"
+                                            ></textarea>
+                                                <div class="project-editor__document-comment-text"
+                                                     *ngSwitchCase="false"
+                                                     [class.project-editor__document-comment-text_empty]="!getDocumentCommentText(attachment.uuid, 'publicComment')"
+                                                     [innerHTML]="getDocumentCommentText(attachment.uuid, 'publicComment') || (canEdit ? ('offers.editor.doc_edit_public_comment' | translate) : '&nbsp;')"
+                                                     (click)="activateDocumentCommentEditor(attachment, 'publicComment')"
+                                                ></div>
+                                            </div>
+                                            <div class="project-editor__document-comment" [ngSwitch]="attachmentCommentToEdit && attachmentCommentToEdit.uuid === attachment.uuid && attachmentCommentToEdit.commentField === 'privateComment' || false">
+                                            <textarea class="project-editor__document-comment-input"
+                                                *ngSwitchCase="true"
+                                                #documentCommentEditor
+                                                formControlName="privateComment"
+                                                (keyup)="onDocumentCommentKeyUp($event)"
+                                                (blur)="deactivateDocumentCommentEditor()"
+                                            ></textarea>
+                                                <div class="project-editor__document-comment-text"
+                                                     *ngSwitchCase="false"
+                                                     [class.project-editor__document-comment-text_empty]="!getDocumentCommentText(attachment.uuid, 'privateComment')"
+                                                     [innerHTML]="getDocumentCommentText(attachment.uuid, 'privateComment') || (canEdit ? ('offers.editor.doc_edit_private_comment' | translate) : '&nbsp;')"
+                                                     (click)="activateDocumentCommentEditor(attachment, 'privateComment')"
+                                                ></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="tab-content" [class.tab-content_active]="activeTab === 'shipping'" formGroupName="shipping">
+                    <div class="tab-content-header tab-content-header_tablet tab-content-header_mobile">{{ 'projects.editor.shipping__tab' | translate }}</div>
+                    <div class="project-editor__controls">
+                        <div class="project-editor__control project-editor__control_has-input">
+                            <label class="project-editor__control-label">{{ 'projects.editor.company_name__label' | translate }}</label>
+                            <div class="project-editor__control-input">
+                                <input type="text" class="input input_regular" formControlName="companyName">
+                            </div>
+                        </div>
+                        <div class="project-editor__control project-editor__control_has-input">
+                            <label class="project-editor__control-label">{{ 'projects.editor.first_name__label' | translate }}</label>
+                            <div class="project-editor__control-input">
+                                <input type="text" class="input input_regular" formControlName="firstName">
+                            </div>
+                        </div>
+                        <div class="project-editor__control project-editor__control_has-input">
+                            <label class="project-editor__control-label">{{ 'projects.editor.last_name__label' | translate }}</label>
+                            <div class="project-editor__control-input">
+                                <input type="text" class="input input_regular" formControlName="lastName">
+                            </div>
+                        </div>
+                        <div class="project-editor__control project-editor__control_has-input">
+                            <label class="project-editor__control-label">{{ 'projects.editor.street__label' | translate }}</label>
+                            <div class="project-editor__control-input">
+                                <input type="text" class="input input_regular" formControlName="street">
+                            </div>
+                        </div>
+                        <div class="project-editor__control project-editor__control_has-input">
+                            <label class="project-editor__control-label">{{ 'projects.editor.apt__label' | translate }}</label>
+                            <div class="project-editor__control-input">
+                                <input type="text" class="input input_regular" formControlName="suite">
+                            </div>
+                        </div>
+                        <div class="project-editor__control project-editor__control_has-input">
+                            <label class="project-editor__control-label">{{ 'projects.editor.city__label' | translate }}</label>
+                            <div class="project-editor__control-input">
+                                <input type="text" class="input input_regular" formControlName="city">
+                            </div>
+                        </div>
+                        <div class="project-editor__control project-editor__control_has-input">
+                            <label class="project-editor__control-label">{{ 'projects.editor.state__label' | translate }}</label>
+                            <div class="project-editor__control-input">
+                                <input type="text" class="input input_regular" formControlName="state">
+                            </div>
+                        </div>
+                        <div class="project-editor__control project-editor__control_has-input">
+                            <label class="project-editor__control-label">{{ 'projects.editor.zip__label' | translate }}</label>
+                            <div class="project-editor__control-input">
+                                <input type="text" class="input input_regular" formControlName="zipCode">
+                            </div>
+                        </div>
+                        <div class="project-editor__control project-editor__control_has-input">
+                            <label class="project-editor__control-label">{{ 'projects.editor.country__label' | translate }}</label>
+                            <div class="project-editor__control-input">
+                                <input type="text" class="input input_regular" formControlName="country">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content" [class.tab-content_active]="activeTab === 'transactions'" [ngSwitch]="transactionsState">
+                    <div class="tab-content-header tab-content-header_tablet tab-content-header_mobile">{{ 'projects.editor.transactions__tab' | translate }}</div>
+                    <div class="project-editor__spinner" *ngSwitchCase="'loading'">
+                        <spinner class="spinner spinner_blue spinner_small"></spinner>
+                    </div>
+                    <div *ngSwitchCase="'empty'" class="project-editor__message">{{ 'projects.editor.no_transactions__message' | translate }}</div>
+                    <div *ngSwitchCase="'error'" class="project-editor__message project-editor__message_error">{{ 'projects.editor.unknown_error__message' | translate }}</div>
+                    <ng-container *ngSwitchCase="'ready'">
+                        <div class="items-table-wrap">
+                            <table class="items-table">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'projects.editor.transactions_id__table_th' | translate }}</th>
+                                        <th>{{ 'projects.editor.transactions_updated__table_th' | translate }}</th>
+                                        <th class="text-right">{{ 'projects.editor.transactions_amount__table_th' | translate }}</th>
+                                        <th>{{ 'projects.editor.transactions_status__table_th' | translate }}</th>
+                                        <th>{{ 'projects.editor.transactions_payment__table_th' | translate }}</th>
+                                        <th>{{ 'projects.editor.transactions_comment__table_th' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let transaction of transactions.transactions">
+                                        <td>{{ transaction.transactionId }}</td>
+                                        <td>{{ transaction.updated | datetime : datetimeFormats.display }}</td>
+                                        <td class="text-right">{{ transaction.amount / 100 | currency : transaction.currency : 'symbol' : '.2-2' }}</td>
+                                        <td>{{ transaction.status }}</td>
+                                        <td>{{ transaction.paymentProvider }}</td>
+                                        <td>{{ transaction.comment }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="project-editor__transactions-total" *ngIf="transactions.totalAmount !== null && transactions.currency !== null">
+                            <strong>{{ 'projects.editor.total_amount' | translate }}:</strong> {{ transactions.totalAmount / 100 | currency : transactions.currency : 'symbol' : '.2-2' }}
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="tab-content" [class.tab-content_active]="activeTab === 'history'" [ngSwitch]="historyState">
+                    <div class="tab-content-header tab-content-header_tablet tab-content-header_mobile">{{ 'projects.editor.changes__tab' | translate }}</div>
+                    <div class="project-editor__spinner" *ngSwitchCase="'loading'">
+                        <spinner class="spinner spinner_blue spinner_small"></spinner>
+                    </div>
+                    <div *ngSwitchCase="'empty'" class="project-editor__message">{{ 'projects.editor.empty_history__message' | translate }}</div>
+                    <div *ngSwitchCase="'error'" class="project-editor__message project-editor__message_error">{{ 'projects.editor.unknown_error__message' | translate }}</div>
+                    <div *ngSwitchCase="'ready'" class="items-table-wrap">
+                        <table class="project-editor__history-table">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'log.person__table_th' | translate }}</th>
+                                    <th>{{ 'log.time__table_th' | translate }}</th>
+                                    <th>{{ 'log.action__table_th' | translate }}</th>
+                                    <th>{{ 'log.item__table_th' | translate }}</th>
+                                    <th>{{ 'log.old_value__table_th' | translate }}</th>
+                                    <th>{{ 'log.new_value__table_th' | translate }}</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let record of history; let isFirstRecord = first">
+                                <tr *ngFor="let item of record.items; let i = index" class="project-editor__history-table-row" [class.project-editor__history-table-row_even]="item.isEven">
+                                    <td>{{ i === 0 ? record.updatedBy : ' ' }}</td>
+                                    <td>
+                                        <ng-container *ngIf="i === 0">{{ record.timestamp | datetime : datetimeFormats.display }}</ng-container>
+                                    </td>
+                                    <td>{{ item.action | translate }}</td>
+                                    <td>{{ item.item }}</td>
+                                    <td>{{ item.oldValue | translate }}</td>
+                                    <td>{{ item.newValue | translate }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </ng-container>
+        <ng-container *ngSwitchCase="'assignment-editor'">
+            <div class="project-editor__controls">
+                <div class="project-editor__control" *ngIf="assignmentToEdit.assignment.attachmentId">
+                    <label class="project-editor__control-label">{{ 'projects.editor.attachment__label' | translate }}</label>
+                    <div class="project-editor__control-value">
+                        <a href="#" (click)="onFileDownload(assignmentToEdit.assignment.attachmentId, $event)">
+                            {{ getAttachmentName(assignmentToEdit.assignment.attachmentId) }}
+                        </a>
+                    </div>
+                </div>
+                <div class="project-editor__control project-editor__control_has-input">
+                    <label class="project-editor__control-label">{{ 'projects.editor.begin__label' | translate }}</label>
+                    <div class="project-editor__control-input">
+                        <input type="text" class="input input_regular" [(ngModel)]="assignmentToEdit.assignment.begin">
+                    </div>
+                </div>
+                <div class="project-editor__control project-editor__control_has-input">
+                    <label class="project-editor__control-label">{{ 'projects.editor.end__label' | translate }}</label>
+                    <div class="project-editor__control-input">
+                        <input type="text" class="input input_regular" [(ngModel)]="assignmentToEdit.assignment.end">
+                    </div>
+                </div>
+                <div class="project-editor__control project-editor__control_has-input">
+                    <label class="project-editor__control-label">{{ 'projects.editor.units__label' | translate }}</label>
+                    <div class="project-editor__control-input">
+                        <input type="text" maxlength="255" class="input input_regular"
+                            number-mask
+                            [(numberModel)]="assignmentToEdit.assignment.units"
+                            [numberModelOptions]="{
+                                type: 'number',
+                                viewFraction: 100
+                            }"
+                        >
+                    </div>
+                </div>
+                <div class="project-editor__control project-editor__control_has-input">
+                    <label class="project-editor__control-label">{{ 'projects.editor.reclaimed_amount' | translate }}</label>
+                    <div class="project-editor__control-input">
+                        <input type="text" maxlength="255" class="input input_regular"
+                            number-mask
+                            [(numberModel)]="assignmentToEdit.assignment.reclaimedAmount"
+                            [numberModelOptions]="{
+                                type: 'number',
+                                viewFraction: 100,
+                                defaultValue: 0
+                            }"
+                        >
+                    </div>
+                </div>
+                <div class="project-editor__control project-editor__control_has-input">
+                    <label class="project-editor__control-label">{{ 'projects.editor.reclamation_comment' | translate }}</label>
+                    <div class="project-editor__control-input">
+                        <textarea class="textarea" [(ngModel)]="assignmentToEdit.assignment.reclamationComment"></textarea>
+                    </div>
+                </div>
+                <div class="project-editor__control project-editor__control_has-input">
+                    <label class="project-editor__control-label">{{ 'projects.editor.deadline' | translate }}</label>
+                    <div class="project-editor__control-input">
+                        <datepicker [format]="datetimeFormats.select" [(ngModel)]="assignmentToEdit.assignment.internalDeadline"></datepicker>
+                    </div>
+                </div>
+                <div class="project-editor__control project-editor__control_has-input">
+                    <label class="project-editor__control-label">{{ 'projects.editor.accepted' | translate }}</label>
+                    <div class="project-editor__control-input">
+                        <datepicker [format]="datetimeFormats.select" [(ngModel)]="assignmentToEdit.assignment.accepted"></datepicker>
+                    </div>
+                </div>
+                <div class="project-editor__control project-editor__control_has-input">
+                    <label class="project-editor__control-label">{{ 'projects.editor.comment' | translate }}</label>
+                    <div class="project-editor__control-input">
+                        <textarea class="textarea" [(ngModel)]="assignmentToEdit.assignment.comment"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="project-editor__providers">
+                <div class="project-editor__providers-controls" *ngIf="assignmentEditorServices.length > 0">
+                    <input type="text" placeholder="Filter by name" class="input input_regular project-editor__providers-filter" [(ngModel)]="assignmentEditorFilterText" (ngModelChange)="onAssignmentEditorFilterKeyUp()">
+                    <div class="project-editor__providers-order">
+                        <sort-select [(ngModel)]="assignmentEditorServicesOrder" [options]="assignmentEditorSortOptions" (ngModelChange)="onAssignmentEditorOrderChange()"></sort-select>
+                    </div>
+                    <button class="project-editor__providers-toggle"
+                        *ngIf="assignmentEditorFilteredServices.length > 0"
+                        [class.project-editor__providers-toggle_has-opened]="hasOpenedProviders()"
+                        (click)="toggleAssignmentEditorAllServices()"
+                    ></button>
+                </div>
+                <div class="project-editor__providers-list" [ngSwitch]="assignmentEditorFilteredServices.length > 0">
+                    <div class="project-editor__message" *ngSwitchCase="false">
+                        {{ 'projects.editor.no_providers' | translate }}
+                    </div>
+                    <ng-container *ngSwitchCase="true">
+                        <div class="project-editor__providers-list-item"
+                             *ngFor="let provider of assignmentEditorFilteredServices; let i = index"
+                             [class.project-editor__providers-list-item_opened]="assignmentEditorOpenedServices[i]"
+                             [style.boxShadow]="'inset 5px 0 0 #' + (provider.color || 'fff')"
+                        >
+                            <div class="project-editor__providers-list-item-main">
+                                <div class="project-editor__providers-list-item-name" (click)="assignmentEditorProviderChange(provider)">
+                                    <div class="project-editor__providers-list-item-radio"
+                                        [class.project-editor__providers-list-item-radio_active]="assignmentToEdit.assignment.translator?.id === provider.translatorId && assignmentToEdit.assignment.translatorServiceId === provider.translatorServiceId"
+                                    ></div>
+                                    {{ provider.lastName }} {{ provider.firstName }} {{ provider.middleName }}
+                                </div>
+                                <button type="button" class="project-editor__providers-list-item-toggle" (click)="toggleAssignmentEditorService(i)"></button>
+                            </div>
+                            <table class="project-editor__providers-list-item-details">
+                                <tbody>
+                                    <tr>
+                                        <th>{{ 'projects.editor.translator_cpu__table_th' | translate }}</th>
+                                        <td>{{ provider.feePerUnit / 100 | number : '.2-2'  }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ 'projects.editor.translator_email__table_th' | translate }}</th>
+                                        <td><a *ngIf="!!provider.email" [href]="'mailto:' + provider.email">{{ provider.email }}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ 'projects.editor.translator_phone__table_th' | translate }}</th>
+                                        <td>{{ provider.phone }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ 'projects.editor.translator_extra__table_th' | translate }}</th>
+                                        <td>{{ (provider.extraService ? 'projects.editor.extra_yes__text' : 'projects.editor.extra_no__text') | translate }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+</ng-container>

@@ -1,0 +1,142 @@
+<div class="app-header">
+   <div class="app-banner">
+        <span class="app-banner_top-left">
+            {{ 'neoride_banner.description' | translate }}
+        </span>
+        <button
+        (click)="onDownloadNeorideClick()"
+        class="button button_white-green btn-get-started app-banner_top-right"
+        type="button">
+            <!-- <span class="btn-icon"> + </span> -->
+            <span class="button__caption">{{ 'neoride_banner.download_app' | translate }}</span>
+            <!-- {{ 'vehicles.add_vehicle' | translate }} -->
+        </button>
+    </div>
+</div>
+<div class="dashboard__sidebar-nest" *ngIf="viewportBreakpoint === 'desktop'">
+    <app-dashboard-sidebar
+        [isCoverageVisible]="isCoverageVisible"></app-dashboard-sidebar>
+</div>
+<div class="dashboard__content">
+    <router-outlet></router-outlet>
+</div>
+<!-- Popups -->
+<popup-custom *ngIf="isActiveModal('payment')"
+              [isDisabled]="paymentSubmittingBy !== null"
+              class="dashboard__payment-popup">
+    <popup-content>
+        <div [innerHTML]="payByMailConfirmMessageKey | translate : welcomeMessageData"></div>
+
+        <input (ngModelChange)="validatePaymentPopup()"
+               *ngIf="paymentConfig.payment_method_type === 'DCB' && isPaymentZipRequired"
+               [(ngModel)]="zipCode"
+               [placeholder]="'dashboard.payment.zip_code' | translate"
+               class="input input_large dashboard__payment-popup-zip"
+               type="text"
+        >
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button (click)="onSubmitPayment(false)"
+                [isDisabled]="paymentSubmittingBy !== null"
+                [isProgress]="paymentSubmittingBy === 'no'"
+                class="button button_regular button_light-blue"
+                type="button"
+        >
+            <span class="button__caption">{{ 'dashboard.payment.no' | translate }}</span>
+        </button>
+        <button (click)="onSubmitPayment(true)"
+                [isDisabled]="!isPaymentPopupValid || paymentSubmittingBy !== null"
+                [isProgress]="paymentSubmittingBy === 'yes'"
+                class="button button_regular button_blue"
+                type="button">
+            <span class="button__caption">{{ 'dashboard.payment.yes' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<popup-custom *ngIf="isActiveModal('welcome')"
+              [isSmall]="true"
+              class="dashboard__welcome-popup">
+    <img class="congrats-popup__combined" src="assets/images/congratulation_combined.png" alt="Congratulations" />
+    <popup-content>
+        <div class="congrats-popup__body">
+            <h2 class="congrats-popup__title">Congratulations!</h2>
+            <div class="congrats-popup__text">
+                <span [innerHTML]="welcomeMessageKey | translate : welcomeMessageData"></span>
+            </div>
+        </div>
+    </popup-content>
+    <popup-controls>
+        <button (click)="hideWelcomeMessage()"
+                class="congrats-popup__ok"
+                type="button">
+            OK
+        </button>
+    </popup-controls>
+</popup-custom>
+
+
+<popup-custom class="dashboard__fleet-lpn-zip-popup"
+              *ngIf="isActiveModal('fleet-lpn-zip')"
+              [isDisabled]="fleetPaymentState.zipSubmitting">
+    <popup-content>
+        <input (ngModelChange)="validateFleetZipPopup()"
+               [(ngModel)]="zipCode"
+               [placeholder]="'dashboard.fleet.zip_code' | translate"
+               class="input input_large dashboard__fleet-lpn-zip-popup-zip"
+               type="text">
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button (click)="submitFleetZipPayment()"
+                [isDisabled]="!fleetPaymentState.zipValid"
+                [isProgress]="fleetPaymentState.zipSubmitting"
+                class="button button_regular button_blue"
+                type="button">
+            <span class="button__caption">
+                {{ 'dashboard.fleet.zip_pay' | translate }}
+            </span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+
+<app-fleet-wallet-payment-confirm
+    *ngIf="isActiveModal('fleet-wallet-payment-confirm')"
+    [isProgress]="fleetPaymentState.walletSubmitting"
+    [walletFleetPaymentAttrs]="walletFleetPaymentAttrs"
+    (confirm)="onConfirmFleetWalletPayment()"
+></app-fleet-wallet-payment-confirm>
+
+<ng-container *ngIf="isActiveModal('account-debt-lock')">
+    <app-account-notification-popup
+        [modalType]="'account-debt-lock'"
+        (confirm)="onPayDebt()"
+    ></app-account-notification-popup>
+</ng-container>
+
+<ng-container *ngIf="isActiveModal('account-soft-lock')">
+    <app-account-notification-popup
+        [modalType]="'account-soft-lock'"
+        (confirm)="onPayDebt()"
+    ></app-account-notification-popup>
+</ng-container>
+
+
+<ng-container *ngIf="isActiveModal('subscription-expired')">
+    <app-account-notification-popup
+        [modalType]="'account_subscription_invoice_expired'"
+        (confirm)="onPayDebt()"
+    ></app-account-notification-popup>
+</ng-container>
+
+
+<payment-method
+    (onDone)="onPaymentMethodSelected($event)"
+    *ngIf="isActiveModal('payment-method')"
+    [hideCancelButton]="isHidePaymentMethodSelectCancelButton"
+    [isSilentInit]="true"
+    [mode]="paymentMethodPopupMode"
+    [subscriptionPaymentError]="subscriptionPaymentError"
+></payment-method>
+
+

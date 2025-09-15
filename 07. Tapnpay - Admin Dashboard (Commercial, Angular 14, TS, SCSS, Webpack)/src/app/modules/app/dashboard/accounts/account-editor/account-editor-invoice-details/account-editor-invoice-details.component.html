@@ -1,0 +1,57 @@
+<popup-custom class="account-editor-invoice-details__popup" (onClose)="onClose.emit()" [ngSwitch]="!!invoices">
+    <div class="account-editor-invoice-details__loader" *ngSwitchCase="false">
+        <loader></loader>
+    </div>
+    <ng-container *ngSwitchCase="true">
+        <popup-header>
+            <span *ngIf="!!popupTitle" [innerHTML]="popupTitle | translate"></span>
+        </popup-header>
+        <popup-content>
+            <div class="account-editor-invoice-details__invoice" *ngFor="let invoice of invoices">
+                <div class="account-editor-invoice-details__invoice-top">
+                    <h2 class="account-editor-invoice-details__invoice-header">{{ invoice.invoice_name }}</h2>
+                    <div class="account-editor-invoice-details__invoice-amount" [innerHTML]="invoice.invoice_amount | currency"></div>
+                </div>
+                <div class="table table_middle table_striped table_reversed table_nowrap account-editor-invoice-details__table">
+                    <div class="table__header">
+                        <div class="table__row">
+                            <div class="table__cell account-editor-invoice-details__table-cell-license-plate">
+                                {{ 'accounts.invoices.details.license_plate' | translate }}
+                            </div>
+                            <div class="table__cell account-editor-invoice-details__table-cell-location">
+                                {{ 'accounts.invoices.details.location' | translate }}
+                            </div>
+                            <div class="table__cell account-editor-invoice-details__table-cell-amount">
+                                {{ 'accounts.invoices.details.amount' | translate }}
+                            </div>
+                            <div class="table__cell account-editor-invoice-details__table-cell-date">
+                                {{ 'accounts.invoices.details.date' | translate }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table__body">
+                        <div class="table__row" *ngFor="let transaction of invoice.items">
+                            <div class="table__cell account-editor-invoice-details__table-cell-license-plate">
+                                {{ transaction.lps }} {{ transaction.lpn }}
+                            </div>
+                            <div class="table__cell account-editor-invoice-details__table-cell-location">
+                                {{ transaction.toll_location || transaction.description }}
+                            </div>
+                            <div class="table__cell account-editor-invoice-details__table-cell-amount">
+                                {{ (transaction.amount || transaction.invoice_amount) | currency }}
+                            </div>
+                            <div class="table__cell account-editor-invoice-details__table-cell-date">
+                                {{ (transaction.toll_date || transaction.date) | datetime : 'display.datetime' }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </popup-content>
+        <popup-controls>
+            <button type="button" class="button button_regular button_blue" (click)="onClose.emit()">
+                <span class="button__caption">{{ 'accounts.invoices.details.close' | translate }}</span>
+            </button>
+        </popup-controls>
+    </ng-container>
+</popup-custom>

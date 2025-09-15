@@ -1,0 +1,259 @@
+import {
+    cloneView,
+    copyAnyArrayBuffer,
+    getAnyArrayBufferMaxSize,
+    isAnyArrayBufferResizable,
+    isSharedArrayBufferGlobal,
+    makeSharedArrayBufferGlobal,
+    resizeAnyArrayBuffer, unshareArrayBuffer,
+} from '../../../src/main';
+import { sliceArrayBuffer } from '../../../src/bin/buffers';
+
+
+test('Test isSharedArrayBufferGlobal() and makeSharedArrayBufferGlobal()', () => {
+    const _SAB = globalThis.SharedArrayBuffer;
+
+    globalThis.SharedArrayBuffer = undefined;
+
+    expect(isSharedArrayBufferGlobal()).toBe(false);
+
+    makeSharedArrayBufferGlobal()
+
+    expect(isSharedArrayBufferGlobal()).toBe(true);
+
+    globalThis.SharedArrayBuffer = _SAB;
+});
+
+test('Test isAnyArrayBufferResizable()', () => {
+    expect(isAnyArrayBufferResizable(new ArrayBuffer(10))).toBe(false);
+    expect(isAnyArrayBufferResizable(new ArrayBuffer(10), 11)).toBe(false);
+    expect(isAnyArrayBufferResizable(new ArrayBuffer(10), 9)).toBe(false);
+    expect(isAnyArrayBufferResizable(new (<any>ArrayBuffer)(10, { maxByteLength: 10 }))).toBe(true);
+    expect(isAnyArrayBufferResizable(new (<any>ArrayBuffer)(10, { maxByteLength: 10 }), 11)).toBe(false);
+    expect(isAnyArrayBufferResizable(new (<any>ArrayBuffer)(10, { maxByteLength: 10 }), 9)).toBe(true);
+
+    expect(isAnyArrayBufferResizable(new SharedArrayBuffer(10))).toBe(false);
+    expect(isAnyArrayBufferResizable(new SharedArrayBuffer(10), 11)).toBe(false);
+    expect(isAnyArrayBufferResizable(new SharedArrayBuffer(10), 9)).toBe(false);
+    expect(isAnyArrayBufferResizable(new (<any>SharedArrayBuffer)(10, { maxByteLength: 10 }))).toBe(true);
+    expect(isAnyArrayBufferResizable(new (<any>SharedArrayBuffer)(10, { maxByteLength: 10 }), 11)).toBe(false);  // can't overgrow
+    expect(isAnyArrayBufferResizable(new (<any>SharedArrayBuffer)(10, { maxByteLength: 10 }), 9)).toBe(false);   // can't shrink
+
+    expect(() => isAnyArrayBufferResizable(<any>[])).toThrow(/Expected type of argument 'buffer' is ArrayBuffer/);
+
+    expect(() => isAnyArrayBufferResizable(new ArrayBuffer(10), -1)).toThrow(/Expected type of argument 'targetSize' is safe/);
+    expect(isAnyArrayBufferResizable(new ArrayBuffer(10), 0)).toBe(false);
+    expect(() => isAnyArrayBufferResizable(new ArrayBuffer(10), <any>[])).toThrow(/Expected type of argument 'targetSize' is safe/);
+    expect(() => isAnyArrayBufferResizable(new ArrayBuffer(10), 1e64)).toThrow(/Expected type of argument 'targetSize' is safe/);
+});
+
+test('Test resizeAnyArrayBuffer()', () => {
+    expect(resizeAnyArrayBuffer(new ArrayBuffer(10), 9)).toBe(false);
+    expect(resizeAnyArrayBuffer(new ArrayBuffer(10), 10)).toBe(false);
+    expect(resizeAnyArrayBuffer(new ArrayBuffer(10), 11)).toBe(false);
+
+    const ab = new (<any>ArrayBuffer)(8, { maxByteLength: 10 });
+
+    expect(resizeAnyArrayBuffer(ab, 7)).toBe(true);
+    expect(ab.byteLength).toBe(7);
+    expect(resizeAnyArrayBuffer(ab, 9)).toBe(true);
+    expect(ab.byteLength).toBe(9);
+    expect(resizeAnyArrayBuffer(ab, 11)).toBe(false);
+    expect(ab.byteLength).toBe(9);
+
+    const sab = new (<any>SharedArrayBuffer)(8, { maxByteLength: 10 });
+
+    expect(resizeAnyArrayBuffer(sab, 7)).toBe(false);
+    expect(sab.byteLength).toBe(8);
+    expect(resizeAnyArrayBuffer(sab, 9)).toBe(true);
+    expect(sab.byteLength).toBe(9);
+    expect(resizeAnyArrayBuffer(sab, 11)).toBe(false);
+    expect(sab.byteLength).toBe(9);
+});
+
+test('Test getAnyArrayBufferMaxSize()', () => {
+    const ab1  = new (<any>ArrayBuffer)(8);
+    const ab2  = new (<any>ArrayBuffer)(8, { maxByteLength: 10 });
+    const sab1 = new (<any>SharedArrayBuffer)(8);
+    const sab2 = new (<any>SharedArrayBuffer)(8, { maxByteLength: 10 });
+
+    expect(getAnyArrayBufferMaxSize(ab1)).toBe(8);
+    expect(getAnyArrayBufferMaxSize(ab2)).toBe(10);
+    expect(getAnyArrayBufferMaxSize(sab1)).toBe(8);
+    expect(getAnyArrayBufferMaxSize(sab2)).toBe(10);
+});
+
+test('Test unshareArrayBuffer()', () => {
+    const ab  = new ArrayBuffer(8);
+    const sab1 = new SharedArrayBuffer(0);
+
+    expect(unshareArrayBuffer(ab) === ab).toBe(true);
+    expect(unshareArrayBuffer(ab, true) === ab).toBe(false);
+    expect(unshareArrayBuffer(ab, true)).toBeInstanceOf(ArrayBuffer);
+
+    expect(unshareArrayBuffer(sab1).byteLength).toBe(0);
+
+    expect(unshareArrayBuffer(sab1)).toBeInstanceOf(ArrayBuffer);
+
+    const u8a1 = new Uint8Array(3);
+    const sab2 = new SharedArrayBuffer(3);
+    const u8a2 = new Uint8Array(sab2);
+
+    u8a1[0] = u8a2[0] = 3;
+    u8a1[1] = u8a2[1] = 6;
+    u8a1[2] = u8a2[2] = 9;
+
+    expect(u8a1.buffer).toBeInstanceOf(ArrayBuffer);
+    expect(u8a2.buffer).toBeInstanceOf(SharedArrayBuffer);
+    expect(unshareArrayBuffer(u8a2.buffer)).toBeInstanceOf(ArrayBuffer);
+    expect(new Uint8Array(unshareArrayBuffer(u8a2.buffer))).toEqual(u8a1);
+});
+
+// TODO: test OOB
+test('Test copyAnyArrayBuffer()', () => {
+    // Positive tests generated by /misc/scripts/test_gen.py
+    // -----------------------------------------------------------------------------------------------------------------
+    const u8aAB     = new Uint8Array([ 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 ]);
+    const sourceAB  = u8aAB.buffer;
+    const sourceSAB = new SharedArrayBuffer(u8aAB.byteLength);
+    const u8aSAB    = new Uint8Array(sourceSAB);
+    u8aSAB.set(u8aAB);
+
+    let result : ArrayBuffer | SharedArrayBuffer;
+    let resultU8A : Uint8Array;
+
+    result = copyAnyArrayBuffer(sourceSAB, 0, 8, 4, 6, true);
+    resultU8A = new Uint8Array(result);
+    expect(result).toBeInstanceOf(ArrayBuffer);
+    expect(resultU8A).toEqual(new Uint8Array([ 14, 15, 16, 17, 18, 19, 0, 0 ]));
+
+    result = copyAnyArrayBuffer(sourceSAB, 0, 8, 4, 6, false);
+    resultU8A = new Uint8Array(result);
+    expect(result).toBeInstanceOf(SharedArrayBuffer);
+    expect(resultU8A).toEqual(new Uint8Array([ 14, 15, 16, 17, 18, 19, 0, 0 ]));
+
+    result = copyAnyArrayBuffer(sourceSAB, 0, 12, 4, 6, true);
+    resultU8A = new Uint8Array(result);
+    expect(result).toBeInstanceOf(ArrayBuffer);
+    expect(resultU8A).toEqual(new Uint8Array([ 14, 15, 16, 17, 18, 19, 0, 0, 0, 0, 0, 0 ]));
+
+    result = copyAnyArrayBuffer(sourceSAB, 0, 12, 4, 6, false);
+    resultU8A = new Uint8Array(result);
+    expect(result).toBeInstanceOf(SharedArrayBuffer);
+    expect(resultU8A).toEqual(new Uint8Array([ 14, 15, 16, 17, 18, 19, 0, 0, 0, 0, 0, 0 ]));
+
+    result = copyAnyArrayBuffer(sourceSAB, 2, 8, 4, 6, true);
+    resultU8A = new Uint8Array(result);
+    expect(result).toBeInstanceOf(ArrayBuffer);
+    expect(resultU8A).toEqual(new Uint8Array([ 0, 0, 14, 15, 16, 17, 18, 19 ]));
+
+    result = copyAnyArrayBuffer(sourceSAB, 2, 8, 4, 6, false);
+    resultU8A = new Uint8Array(result);
+    expect(result).toBeInstanceOf(SharedArrayBuffer);
+    expect(resultU8A).toEqual(new Uint8Array([ 0, 0, 14, 15, 16, 17, 18, 19 ]));
+
+    result = copyAnyArrayBuffer(sourceSAB, 2, 12, 4, 6, true);
+    resultU8A = new Uint8Array(result);
+    expect(result).toBeInstanceOf(ArrayBuffer);
+    expect(resultU8A).toEqual(new Uint8Array([ 0, 0, 14, 15, 16, 17, 18, 19, 0, 0, 0, 0 ]));
+
+    result = copyAnyArrayBuffer(sourceSAB, 2, 12, 4, 6, false);
+    resultU8A = new Uint8Array(result);
+    expect(result).toBeInstanceOf(SharedArrayBuffer);
+    expect(resultU8A).toEqual(new Uint8Array([ 0, 0, 14, 15, 16, 17, 18, 19, 0, 0, 0, 0 ]));
+
+    result = copyAnyArrayBuffer(sourceAB, 0, 8, 4, 6, true);
+    resultU8A = new Uint8Array(result);
+    expect(result).toBeInstanceOf(ArrayBuffer);
+    expect(resultU8A).toEqual(new Uint8Array([ 14, 15, 16, 17, 18, 19, 0, 0 ]));
+
+    result = copyAnyArrayBuffer(sourceAB, 0, 8, 4, 6, false);
+    resultU8A = new Uint8Array(result);
+    expect(result).toBeInstanceOf(ArrayBuffer);
+    expect(resultU8A).toEqual(new Uint8Array([ 14, 15, 16, 17, 18, 19, 0, 0 ]));
+
+    result = copyAnyArrayBuffer(sourceAB, 0, 12, 4, 6, true);
+    resultU8A = new Uint8Array(result);
+    expect(result).toBeInstanceOf(ArrayBuffer);
+    expect(resultU8A).toEqual(new Uint8Array([ 14, 15, 16, 17, 18, 19, 0, 0, 0, 0, 0, 0 ]));
+
+    result = copyAnyArrayBuffer(sourceAB, 0, 12, 4, 6, false);
+    resultU8A = new Uint8Array(result);
+    expect(result).toBeInstanceOf(ArrayBuffer);
+    expect(resultU8A).toEqual(new Uint8Array([ 14, 15, 16, 17, 18, 19, 0, 0, 0, 0, 0, 0 ]));
+
+    result = copyAnyArrayBuffer(sourceAB, 2, 8, 4, 6, true);
+    resultU8A = new Uint8Array(result);
+    expect(result).toBeInstanceOf(ArrayBuffer);
+    expect(resultU8A).toEqual(new Uint8Array([ 0, 0, 14, 15, 16, 17, 18, 19 ]));
+
+    result = copyAnyArrayBuffer(sourceAB, 2, 8, 4, 6, false);
+    resultU8A = new Uint8Array(result);
+    expect(result).toBeInstanceOf(ArrayBuffer);
+    expect(resultU8A).toEqual(new Uint8Array([ 0, 0, 14, 15, 16, 17, 18, 19 ]));
+
+    result = copyAnyArrayBuffer(sourceAB, 2, 12, 4, 6, true);
+    resultU8A = new Uint8Array(result);
+    expect(result).toBeInstanceOf(ArrayBuffer);
+    expect(resultU8A).toEqual(new Uint8Array([ 0, 0, 14, 15, 16, 17, 18, 19, 0, 0, 0, 0 ]));
+
+    result = copyAnyArrayBuffer(sourceAB, 2, 12, 4, 6, false);
+    resultU8A = new Uint8Array(result);
+    expect(result).toBeInstanceOf(ArrayBuffer);
+    expect(resultU8A).toEqual(new Uint8Array([ 0, 0, 14, 15, 16, 17, 18, 19, 0, 0, 0, 0 ]));
+});
+
+test('Test cloneView()', () => {
+    const ab   = new ArrayBuffer(4);
+    const view = new DataView(ab);
+    const u16a = new Uint16Array(ab);
+
+    expect(view.buffer === u16a.buffer).toBe(true);
+
+    expect(cloneView(view)).toBeInstanceOf(DataView);
+    expect(cloneView(view) !== view).toBe(true);
+    expect(cloneView(view).buffer === view.buffer).toBe(true);
+    expect(cloneView(view).byteLength).toBe(4);
+
+    expect(cloneView(view, true)).toBeInstanceOf(DataView);
+    expect(cloneView(view, true) !== view).toBe(true);
+    expect(cloneView(view, true).buffer !== view.buffer).toBe(true);
+    expect(cloneView(view, true).byteLength).toBe(4);
+
+    expect(cloneView(u16a)).toBeInstanceOf(Uint16Array);
+    expect(cloneView(u16a) !== u16a).toBe(true);
+    expect(cloneView(u16a).buffer === u16a.buffer).toBe(true);
+    expect(cloneView(u16a).length).toBe(2);
+    expect(cloneView(u16a).byteLength).toBe(4);
+
+    expect(cloneView(u16a, true)).toBeInstanceOf(Uint16Array);
+    expect(cloneView(u16a, true) !== u16a).toBe(true);
+    expect(cloneView(u16a, true).buffer !== u16a.buffer).toBe(true);
+    expect(cloneView(u16a, true).length).toBe(2);
+    expect(cloneView(u16a, true).byteLength).toBe(4);
+
+    expect(() => cloneView(<any>[])).toThrow(/Expected type of argument 'view' is DataView/);
+});
+
+test('Test sliceArrayBuffer()', () => {
+    const a = new ArrayBuffer(0);
+    const b = new ArrayBuffer(8);
+    const c = new SharedArrayBuffer(0);
+    const d = new SharedArrayBuffer(8);
+
+    expect(sliceArrayBuffer(a) !== a).toBe(true);
+    expect(sliceArrayBuffer(a).byteLength).toBe(a.byteLength);
+    expect(sliceArrayBuffer(a)).toBeInstanceOf(ArrayBuffer);
+
+    expect(sliceArrayBuffer(b) !== b).toBe(true);
+    expect(sliceArrayBuffer(b).byteLength).toBe(b.byteLength);
+    expect(sliceArrayBuffer(b)).toBeInstanceOf(ArrayBuffer);
+
+    expect(sliceArrayBuffer(c) !== c).toBe(true);
+    expect(sliceArrayBuffer(c).byteLength).toBe(c.byteLength);
+    expect(sliceArrayBuffer(c)).toBeInstanceOf(SharedArrayBuffer);
+
+    expect(sliceArrayBuffer(d) !== d).toBe(true);
+    expect(sliceArrayBuffer(d).byteLength).toBe(d.byteLength);
+    expect(sliceArrayBuffer(d)).toBeInstanceOf(SharedArrayBuffer);
+});

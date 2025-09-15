@@ -1,0 +1,12 @@
+<!-- Page Header -->
+<ng-container [ngSwitch]="viewportBreakpoint">
+    <page-panel *ngSwitchCase="'desktop'">
+        <h1 class="page-panel__header" [innerHTML]="'contact_us.page_header' | translate"></h1>
+    </page-panel>
+    <app-bar *ngSwitchDefault></app-bar>
+</ng-container>
+
+<div class="contact-us-dashboard__content">
+    <h1 class="page-header" *ngIf="viewportBreakpoint !== 'desktop'" [innerHTML]="'contact_us.page_header' | translate"></h1>
+    <contact-us-inner></contact-us-inner>
+</div>

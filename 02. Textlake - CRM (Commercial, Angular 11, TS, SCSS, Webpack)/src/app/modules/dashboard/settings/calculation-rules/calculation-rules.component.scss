@@ -1,0 +1,134 @@
+@import '../../../../../assets/css/definitions.scss';
+
+.calculation-rules {
+    display: block;
+    font-size: 14px;
+    line-height: 18px;
+
+    &__spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 50px 0;
+    }
+
+    &__message {
+        font-size: 14px;
+        line-height: 16px;
+        font-weight: $font-weight-medium;
+        text-align: center;
+        padding: 75px 20px;
+        color: $color-empty-message;
+
+        &_error {
+            color: $color-empty-message-error;
+        }
+    }
+
+    &__editor {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        width: 100%;
+
+        &-inner {
+            max-width: 100%;
+        }
+    }
+
+    &__examples-label {
+        font-weight: $font-weight-medium;
+        margin: 35px 0 15px;
+    }
+
+    &__table {
+        &-wrap {
+            width: 100%;
+            max-width: 100%;
+            overflow-y: visible;
+            overflow-x: auto;
+        }
+
+        &-cell {
+            border: 1px solid #ced6de;
+            background-color: #fff;
+            vertical-align: top;
+            padding: 6px 8px;
+
+            &_bold {
+                font-weight: $font-weight-medium;
+            }
+
+            &_in-first-row {
+                border-bottom-width: 2px;
+            }
+
+            &_text-right {
+                text-align: right;
+            }
+
+            &_current {
+                color: $color-primary-blue;
+            }
+        }
+    }
+
+    &__controls {
+        width: 100%;
+    }
+
+    &__control {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: flex-start;
+        justify-content: flex-end;
+        width: 100%;
+
+        & + & {
+            margin-top: 20px;
+        }
+
+        &-label {
+            width: 35%;
+            font-size: 14px;
+            line-height: 18px;
+            font-weight: $font-weight-medium;
+            padding-right: 20px;
+            min-height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        &-input {
+            width: 65%;
+        }
+    }
+
+    html.viewport_tablet &,
+    html.viewport_mobile & {
+        &__controls {
+            max-width: 400px;
+        }
+
+        &__control {
+            flex-flow: column nowrap;
+
+            &-label {
+                width: 100%;
+                min-height: 0;
+                padding-right: 0;
+                margin-bottom: 6px;
+                text-transform: uppercase;
+                font-size: 12px;
+                opacity: 0.85;
+                align-items: flex-start;
+                justify-content: flex-start;
+            }
+
+            &-input {
+                width: 100%;
+            }
+        }
+    }
+}

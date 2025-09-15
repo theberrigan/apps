@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="151.5px" height="174.5px">
+    <defs>
+        <linearGradient id="PSgrad_0" x1="70.711%" x2="0%" y1="0%" y2="70.711%">
+            <stop offset="0%" stop-color="rgb(241,85,19)" stop-opacity="1" />
+            <stop offset="100%" stop-color="rgb(250,163,35)" stop-opacity="1" />
+        </linearGradient>
+        <filter filterUnits="userSpaceOnUse" id="Filter_0" x="46px" y="60px" width="58px" height="58px"  >
+            <feOffset in="SourceAlpha" dx="0" dy="3" />
+            <feGaussianBlur result="blurOut" stdDeviation="3.162" />
+            <feFlood flood-color="rgb(42, 25, 15)" result="floodOut" />
+            <feComposite operator="atop" in="floodOut" in2="blurOut" />
+            <feComponentTransfer><feFuncA type="linear" slope="0.25"/></feComponentTransfer>
+            <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+    <path fill-rule="evenodd"  stroke="rgb(0, 0, 0)" stroke-width="2px" stroke-linecap="butt" stroke-linejoin="miter" opacity="0.02" fill="none" d="M147.500,128.186 L147.500,44.811 L75.000,3.124 L2.500,44.811 L2.500,128.186 L75.000,169.873 L147.500,128.186 Z"/>
+    <path fill-rule="evenodd"  stroke="rgb(0, 0, 0)" stroke-width="2px" stroke-linecap="butt" stroke-linejoin="miter" opacity="0.031" fill="none" d="M140.000,123.873 L140.000,49.123 L75.000,11.749 L10.000,49.123 L10.000,123.873 L75.000,161.248 L140.000,123.873 Z"/>
+    <path fill-rule="evenodd"  stroke="rgb(0, 0, 0)" stroke-width="2px" stroke-linecap="butt" stroke-linejoin="miter" opacity="0.039" fill="none" d="M132.500,119.561 L132.500,53.436 L75.000,20.374 L17.500,53.436 L17.500,119.561 L75.000,152.624 L132.500,119.561 Z"/>
+    <path fill="url(#PSgrad_0)" d="M125.000,115.249 L125.000,57.749 L75.000,28.999 L25.000,57.749 L25.000,115.249 L75.000,143.999 L125.000,115.249 Z"/>
+    <path fill-rule="evenodd"  stroke="rgb(255, 255, 255)" stroke-width="3px" stroke-linecap="butt" stroke-linejoin="miter" fill-opacity="0" fill="rgb(255, 0, 0)" d="M118.000,110.999 L118.000,61.999 L75.000,36.999 L32.000,61.999 L32.000,110.999 L75.000,135.999 L118.000,110.999 Z"/>
+    <path fill-rule="evenodd"  opacity="0.122" fill="rgb(255, 255, 255)" d="M75.000,86.249 L75.000,28.749 L25.000,57.999 L25.000,114.999 L75.000,86.249 Z"/>
+    <path fill-rule="evenodd"  opacity="0.039" fill="rgb(255, 255, 255)" d="M75.000,143.999 L25.000,114.999 L75.000,85.999 L125.000,114.999 L75.000,143.999 Z"/>
+    <g filter="url(#Filter_0)">
+        <path fill-rule="evenodd"  fill="rgb(255, 255, 255)" d="M81.559,90.592 C74.415,90.592 70.908,88.551 64.897,88.533 C59.215,88.533 56.000,90.820 56.000,90.820 C56.000,90.820 56.805,81.412 68.679,81.412 C76.169,81.461 78.215,83.447 85.400,83.469 C90.492,83.447 94.000,81.177 94.000,81.177 C94.000,81.177 93.086,90.592 81.559,90.592 ZM81.559,76.413 C74.415,76.413 70.908,74.372 64.897,74.354 C59.215,74.354 56.000,76.641 56.000,76.641 C56.000,76.641 56.805,67.233 68.679,67.233 C76.169,67.282 78.215,69.268 85.400,69.290 C90.492,69.268 94.000,66.999 94.000,66.999 C94.000,66.999 93.086,76.413 81.559,76.413 ZM68.679,95.591 C76.169,95.641 78.215,97.626 85.400,97.648 C90.492,97.626 94.000,95.357 94.000,95.357 C94.000,95.357 93.086,104.771 81.559,104.771 C74.415,104.771 70.908,102.730 64.897,102.713 C59.215,102.713 56.000,104.999 56.000,104.999 C56.000,104.999 56.805,95.591 68.679,95.591 Z"/>
+    </g>
+</svg>

@@ -1,0 +1,124 @@
+<fieldset [disabled]="isSaving || isDeleting">
+    <action-panel>
+        <div class="action-panel__primary">
+            <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ 'settings.invitations.list.page_header' | translate }}</h1>
+            <button class="button button_regular button_green" (click)="onCreate()" [disabled]="listState === 'loading' || listState === 'error'">
+                <span class="button__caption">{{ 'settings.invitations.list.add' | translate }}</span>
+            </button>
+        </div>
+        <div class="action-panel__secondary">
+            <div class="action-panel__item">
+                <sort-select [(ngModel)]="state.sort" [options]="sortOptions" (ngModelChange)="onOrderChange()" [isDisabled]="listState === 'loading' || listState === 'error'"></sort-select>
+            </div>
+        </div>
+    </action-panel>
+
+    <ng-container [ngSwitch]="listState">
+        <div class="invitations-editor__spinner" *ngSwitchCase="'loading'">
+            <spinner class="spinner spinner_blue spinner_small"></spinner>
+        </div>
+        <div class="invitations-editor__message" *ngSwitchCase="'empty'">
+            {{ 'settings.invitations.list.no_invitations' | translate }}
+            <span class="pseudo-link" (click)="onCreate()">{{ 'settings.invitations.list.no_invitations_2' | translate }}</span>
+        </div>
+        <div class="invitations-editor__message invitations-editor__message_error" *ngSwitchCase="'error'">
+            {{ 'settings.invitations.editor.unknown_error' | translate }}
+        </div>
+        <ng-container *ngSwitchCase="'list'" [ngSwitch]="viewportBreakpoint">
+            <div class="items-table-wrap invitations-editor__table-wrap" *ngSwitchCase="'desktop'">
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th>{{ 'settings.invitations.list.email' | translate }}</th>
+                            <th>{{ 'settings.invitations.list.date' | translate }}</th>
+                            <th>{{ 'settings.invitations.list.roles' | translate }}</th>
+                            <th class="table-cell-tight">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let invitation of invitations">
+                            <td>{{ invitation.email }}</td>
+                            <td>{{ invitation.created | datetime : datetimeDisplayFormat }}</td>
+                            <td>{{ invitation.roles.length }} {{ 'settings.invitations.list.roles_quantity' | translate }}</td>
+                            <td class="table-cell-no-padding">
+                                <span class="invitations-editor__table-buttons">
+                                    <button type="button" class="invitations-editor__table-button invitations-editor__table-button_edit" (click)="onEdit(invitation)"></button>
+                                    <button type="button" class="invitations-editor__table-button invitations-editor__table-button_delete" (click)="onDelete(invitation)"></button>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="invitations-editor__list" *ngSwitchDefault>
+                <div class="invitations-editor__list-item" *ngFor="let invitation of invitations">
+                    <div class="invitations-editor__list-item-header">
+                        <div class="invitations-editor__list-item-name">{{ invitation.email }}</div>
+                        <div class="invitations-editor__list-item-buttons">
+                            <button type="button" class="invitations-editor__list-item-button invitations-editor__list-item-button_edit" (click)="onEdit(invitation)"></button>
+                            <button type="button" class="invitations-editor__list-item-button invitations-editor__list-item-button_delete" (click)="onDelete(invitation)"></button>
+                        </div>
+                    </div>
+                    <div class="invitations-editor__list-item-info">
+                        <table class="invitations-editor__list-item-info-table">
+                            <tbody>
+                                <tr>
+                                    <th>{{ 'settings.invitations.list.date' | translate }}:</th>
+                                    <td>{{ invitation.created | datetime : datetimeDisplayFormat }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'settings.invitations.list.roles' | translate }}:</th>
+                                    <td>{{ invitation.roles.length }} {{ 'settings.invitations.list.roles_quantity' | translate }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+
+    <popup-custom #editor [options]="{ closeBy: 'manual' }" class="invitations-editor__editor" (onCloseRequest)="onHideEditor($event)" *ngIf="invitationToEdit">
+        <popup-box>
+            <popup-header>{{ (editorMode === 'create' ? 'settings.invitations.editor.page_header_create' : 'settings.invitations.editor.page_header_edit') | translate }}</popup-header>
+            <popup-content>
+                <!-- Content -->
+                <div class="invitations-editor__editor-content">
+                    <div class="invitations-editor__controls">
+                        <div class="invitations-editor__control">
+                            <label class="invitations-editor__control-label">
+                                <span class="invitations-editor__control-label-text">
+                                    {{ 'settings.invitations.editor.email' | translate }}
+                                </span>
+                            </label>
+                            <input type="text" class="input input_regular invitations-editor__control-input" [class.input_invalid]="!isEmailValid" [(ngModel)]="invitationToEdit.email" (ngModelChange)="validate()" [disabled]="editorMode === 'edit'" required>
+                        </div>
+                        <div class="invitations-editor__control">
+                            <label class="invitations-editor__control-label">
+                                <span class="invitations-editor__control-label-text">
+                                    {{ 'settings.invitations.editor.roles' | translate }}
+                                </span>
+                            </label>
+                            <div class="invitations-editor__control-input">
+                                <div class="invitations-editor__control-checkbox" *ngFor="let role of editorRoles">
+                                    <checkbox [(ngModel)]="role.isActive" (ngModelChange)="validate()">{{ role.displayKey | translate }}</checkbox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Content -->
+            </popup-content>
+            <popup-controls>
+                <div class="popup__controls-buttons">
+                    <button type="button" class="button button_regular button_white" (click)="onHideEditor()">
+                        <span class="button__caption">{{ 'settings.invitations.editor.back' | translate }}</span>
+                    </button>
+                    <button type="button" class="button button_regular button_blue" (click)="onSave()" [isDisabled]="!isEditorFormValid" [isProgress]="isSaving">
+                        <span class="button__caption">{{ 'settings.invitations.editor.save' | translate }}</span>
+                    </button>
+                </div>
+            </popup-controls>
+        </popup-box>
+    </popup-custom>
+</fieldset>

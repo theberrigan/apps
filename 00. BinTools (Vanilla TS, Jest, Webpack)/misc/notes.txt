@@ -1,0 +1,64 @@
+https://docs.npmjs.com/creating-and-publishing-scoped-public-packages
+https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository
+
+TODOs:
+- Exports
+- Tests
+- Docs
+- Target ES in tsconfig.json
+
+Checklist:
+- Check _ensure*()s
+- Check nulls with strictNullChecks
+- Check semicolons
+- Check all methods are =>
+- Check exports
+- All methods and fns have return type
+- All methods whose return types are irrelevant must return this
+- All write methods return size of the data written
+- All read methods return size of the data read
+- All '_' methods and props are 'private'
+- All error messages have type inherited from BTError
+- All error messages should be normalized
+- this._buffer = <buffer>; only in _updateView()
+- Use is*() instead of 'typeof'
+- Use TypedArray aliases instead of full name (use ((Big)?U?int|Float)(8|16|32|64)(Clamped)?Array)
+- Each binBuffer public method:
+  - this._ensureOpen()
+- binBuffer.read/peek...() methods:
+  - Check enough data to read
+  - Update _lastReadSize
+- binBuffer.write...() methods:
+  - this._ensureWritable()
+  - this._ensureEnoughSpace()
+  - Update _lastWriteSize
+- Exports
+- Tests
+- Docs
+
+Roadmap:
+- Add and tune linter
+- Tune defaultGrowSizeFn and BinBuffer.DEFAULT_OPT_MAX_PAGE_SIZE
+- Sliced blob reader (for large File-s)
+- Support for more encodings for reading and especially writing strings
+- Support for byte-order arg for typed array read/peek methods
+- Add methods and fns for [i|u][24|40|48] and according arrays
+- Add support of F16, when it becomes more widely supported
+- Check buffer detached before every operation with it (?)
+- Implement bin<->base64 without intermediate string conversion (use U8A.toBase64() when available)
+- Use .transfer() and structuredClone()
+
+Questions to consider:
+- Should most public methods and fns return ArrayBuffer instead of U8A where it possible?
+  Currently: Prefer to return U8A.
+- In swapBytes() and sized string read methods: what to do with (size % itemSize) bytes
+  when 'size' is not a multiple of 'itemSize'?
+  Options: Ignore; Throw error; Process the tail partially.
+  Currently: ignore these tail bytes.
+- Should peek*() methods affect _lastReadSize?
+  Currently: No.
+- Should any resizing done by public methods be restricted by _readOnly?
+  Options: Yes; No; Add something like 'isResizeAllowed' to create() static method options.
+  Currently: Yes.
+- Is it necessary to use cache in /src/encodings/index.ts?
+  Currently: Not using.

@@ -1,0 +1,128 @@
+@import '../../../../../assets/css/definitions';
+
+.contact-us-inner {
+    display: block;
+    width: 100%;
+
+    &__wrapper {
+        width: 100%;
+        padding: 0 25px;
+    }
+
+    &__form {
+
+    }
+
+    &__label {
+        display: block;
+
+        &-text {
+            display: inline-flex;
+            font-size: 14px;
+            font-weight: $font-weight-semi-bold;
+            line-height: 20px;
+            color: #73777f;
+            cursor: default;
+            user-select: none;
+            margin-bottom: 8px;
+        }
+
+        &_required &-text {
+            position: relative;
+
+            &:after {
+                content: '';
+                display: block;
+                position: absolute;
+                right: -6px;
+                top: 2px;
+                height: 5px;
+                width: 5px;
+                background-color: #f14a4a;
+                border-radius: 50%;
+            }
+        }
+
+        & + & {
+            margin-top: 25px;
+        }
+    }
+
+    &__input,
+    &__textarea {
+        display: block;
+        width: 100%;
+        color: #3f444e;
+        border: 1px solid #ced6de;
+        border-radius: $control-primary-radius;
+        background-color: #fff;
+        box-shadow: 0 1px 1px 0 rgba(14, 14, 14, 0.06);
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: $font-weight-semi-bold;
+        padding: 13px 18px;
+
+        &:focus {
+            border-color: #4875e7;
+            box-shadow: 0 0 0 5px #c0dafa;
+        }
+
+        &,
+        &:focus {
+            transition: border-color 0.15s ease-out, box-shadow 0.15s ease-out;
+        }
+
+        &[disabled],
+        &[disabled]:focus,
+        fieldset[disabled] &,
+        fieldset[disabled] &:focus {
+            opacity: 0.5;
+            cursor: default;
+            transition: none;
+            box-shadow: none;
+            border-color: #ced6de;
+            pointer-events: none;
+        }
+    }
+
+    &__input {
+        height: 46px;
+    }
+
+    &__textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    &__select {
+        height: 46px;
+        display: block;
+        width: 100%;
+        padding-left: 18px;
+    }
+
+    &__controls {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-end;
+        margin-top: 30px;
+
+        .button {
+            width: 100%;
+        }
+    }
+
+    html.viewport_tablet &,
+    html.viewport_desktop & {
+        max-width: 600px;
+
+        &__wrapper {
+        }
+    }
+
+    html.viewport_desktop & {
+        &__form {
+            margin-top: 30px;
+        }
+    }
+}

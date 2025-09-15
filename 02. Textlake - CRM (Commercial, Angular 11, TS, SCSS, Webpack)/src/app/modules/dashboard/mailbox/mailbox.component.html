@@ -1,0 +1,417 @@
+<action-panel>
+    <div class="action-panel__primary">
+        <h1 class="action-panel__header">{{ 'mailbox.mailboxes__header' | translate }}</h1>
+    </div>
+    <div class="action-panel__secondary">
+        <div class="action-panel__item">
+            <button type="submit" class="button button_regular button_white" [isDisabled]="isRefreshButtonDisabled()" (click)="refresh()">
+                <span class="button__caption">{{ 'mailbox.refresh__button' | translate }}</span>
+            </button>
+        </div>
+        <div class="action-panel__item" *ngIf="viewportBreakpoint !== 'desktop'">
+            <button type="submit" class="button button_regular button_white" (click)="sidebar.toggle()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 18 18" class="button__icon">
+                    <path style="fill: currentColor;" d="M0,13 L0,13 L18,13 L18,15 L0,15 ZM0,8 L18,8 L18,10 L0,10 L0,8 ZM0,3 L18,3 L18,5 L0,5 L0,3 Z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="action-panel__item">
+            <div class="mailbox__pagination">
+                <button type="submit" class="button button_regular button_white" [isDisabled]="isNextButtonDisabled()" (click)="nextPage()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="button__icon">
+                        <polygon style="fill: currentColor;" points="0.8 9 7.5 15.71 8.91 14.29 4.62 10 17.2 10 17.2 8 4.62 8 8.91 3.71 7.5 2.29 0.8 9"></polygon>
+                    </svg>
+                </button>
+                <button type="submit" class="button button_regular button_white" [isDisabled]="isPrevButtonDisabled()" (click)="prevPage()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="button__icon">
+                        <polygon style="fill: currentColor;" points="17.7 9 11.01 15.71 9.59 14.29 13.88 10 1.29 10 1.29 8 13.88 8 9.59 3.71 11.01 2.29 17.7 9"></polygon>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</action-panel>
+
+<sidebar #sidebar [isDesktopActive]="false">
+    <div class="sidebar__title">&nbsp;</div>
+    <div class="sidebar__section" *ngIf="viewportBreakpoint !== 'desktop'">
+        <ng-container [ngTemplateOutlet]="menuTpl"></ng-container>
+    </div>
+</sidebar>
+
+<ng-template #menuTpl>
+    <div class="mailbox__menu">
+        <div class="mailbox__menu-header">{{ 'mailbox.mailboxes__header' | translate }}</div>
+        <ul class="mailbox__menu-list">
+            <li class="mailbox__menu-list-item"
+                *ngFor="let mailbox of mailboxes"
+                [title]="mailbox.email"
+                (click)="onChangeMailbox(mailbox)"
+                [class.mailbox__menu-list-item_active]="mailbox === activeMailbox"
+            >{{ mailbox.email }}</li>
+        </ul>
+    </div>
+    <div class="mailbox__menu">
+        <div class="mailbox__menu-header">{{ 'mailbox.folders__header' | translate }}</div>
+        <ng-container [ngSwitch]="foldersState">
+            <div class="mailbox__menu-spinner" *ngSwitchCase="'loading'">
+                <spinner class="spinner spinner_blue spinner_small"></spinner>
+            </div>
+            <div class="mailbox__menu-message" *ngSwitchCase="'empty'">
+                {{ 'mailbox.no_messages__message' | translate }}
+            </div>
+            <div class="mailbox__menu-message mailbox__menu-message_error" *ngSwitchCase="'error'" [innerHTML]="'mailbox.unable_load_folders__message' | translate : { activeMailbox: activeMailbox }"></div>
+            <ul class="mailbox__menu-list" *ngSwitchCase="'ready'">
+                <li class="mailbox__menu-list-item"
+                    *ngFor="let folder of folders"
+                    [title]="folder.fullName"
+                    (click)="onChangeFolder(folder)"
+                    [class.mailbox__menu-list-item_active]="folder === activeFolder"
+                >
+                    <ng-container [ngSwitch]="folder.displayNameKey">
+                        <ng-container *ngSwitchCase="'imap.folder.trash'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" class="mailbox__menu-list-item-icon">
+                                <path style="fill: currentColor;" d="M12.93,2.38a.63.63,0,0,1,.2.46v.33a.33.33,0,0,1-.1.23.29.29,0,0,1-.23.1h-.55v9.19A1.3,1.3,0,0,1,10.94,14H3.06a1.3,1.3,0,0,1-1.31-1.31V3.5H1.2A.29.29,0,0,1,1,3.4a.32.32,0,0,1-.09-.23V2.84a.62.62,0,0,1,.19-.46.6.6,0,0,1,.46-.19h2L4.48.63A1.4,1.4,0,0,1,5,.16,1.33,1.33,0,0,1,5.63,0H8.37A1.33,1.33,0,0,1,9,.16a1.4,1.4,0,0,1,.5.47l.93,1.56h2A.6.6,0,0,1,12.93,2.38ZM3.06,3.5v9a.14.14,0,0,0,.06.11.14.14,0,0,0,.11.06h7.54a.22.22,0,0,0,.17-.17v-9Zm3.07,7.55a.34.34,0,0,1-.33.33H5.14a.33.33,0,0,1-.23-.1.29.29,0,0,1-.1-.23V5.14a.34.34,0,0,1,.33-.33H5.8a.29.29,0,0,1,.23.1.33.33,0,0,1,.1.23ZM8.91,2.19l-.49-.8a.16.16,0,0,0-.13-.08H5.71a.16.16,0,0,0-.13.08l-.49.8ZM8.2,4.81a.29.29,0,0,0-.23.1.32.32,0,0,0-.09.23v5.91a.32.32,0,0,0,.09.23.33.33,0,0,0,.23.1h.66a.33.33,0,0,0,.23-.1.29.29,0,0,0,.1-.23V5.14a.34.34,0,0,0-.33-.33Z"></path>
+                            </svg>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'imap.folder.sent'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" class="mailbox__menu-list-item-icon">
+                                <path style="fill: currentColor;" d="M13.66,5.41a1.08,1.08,0,0,1,.34.82,1.11,1.11,0,0,1-.34.82L9.38,11.29a1.21,1.21,0,0,1-.84.34,1.13,1.13,0,0,1-.81-.33,1.09,1.09,0,0,1-.34-.83V8.59a7.74,7.74,0,0,0-2.55.46,1.5,1.5,0,0,0-.93,1,3.78,3.78,0,0,0,.22,1.59,1.07,1.07,0,0,1-.11.91,1.16,1.16,0,0,1-.73.55A1.07,1.07,0,0,1,2.38,13,5.53,5.53,0,0,1,.63,11.19,4.79,4.79,0,0,1,0,8.78,4.06,4.06,0,0,1,2.43,4.85a12.82,12.82,0,0,1,5-.92V2a1.09,1.09,0,0,1,.34-.83A1.13,1.13,0,0,1,8.54.82a1.21,1.21,0,0,1,.84.34Zm-5.1,5.06,4.27-4.24L8.56,2V5.07a21,21,0,0,0-3.46.22,5.73,5.73,0,0,0-2.79,1A3,3,0,0,0,1.17,8.78a3.49,3.49,0,0,0,.6,2A4.16,4.16,0,0,0,3,12,3.6,3.6,0,0,1,3,9.12a3.14,3.14,0,0,1,2-1.38,15.19,15.19,0,0,1,3.48-.36Z"></path>
+                            </svg>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'imap.folder.archive'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" class="mailbox__menu-list-item-icon">
+                                <path style="fill: currentColor;" d="M12.69.88a1.26,1.26,0,0,1,.93.38,1.27,1.27,0,0,1,.38.93V3.94a1.23,1.23,0,0,1-.25.75,1.27,1.27,0,0,1-.62.48v6.64a1.33,1.33,0,0,1-1.32,1.32H2.19a1.24,1.24,0,0,1-.93-.39,1.24,1.24,0,0,1-.39-.93V5.17a1.27,1.27,0,0,1-.62-.48A1.23,1.23,0,0,1,0,3.94V2.19a1.27,1.27,0,0,1,.38-.93A1.26,1.26,0,0,1,1.31.88ZM1.31,2.35V3.77a.14.14,0,0,0,.06.11.14.14,0,0,0,.11.06h11a.22.22,0,0,0,.17-.17V2.35a.17.17,0,0,0-.06-.11.16.16,0,0,0-.11-.05h-11a.16.16,0,0,0-.11.05A.17.17,0,0,0,1.31,2.35Zm10.5,9.3V5.41a.17.17,0,0,0-.16-.16H2.35a.18.18,0,0,0-.11,0,.21.21,0,0,0-.05.11v6.24a.21.21,0,0,0,.05.11.18.18,0,0,0,.11.05h9.3a.17.17,0,0,0,.16-.16Zm-3.39-4a.33.33,0,0,0,.23-.1.29.29,0,0,0,.1-.23V6.67a.29.29,0,0,0-.1-.23.33.33,0,0,0-.23-.1H5.58a.33.33,0,0,0-.23.1.29.29,0,0,0-.1.23v.66a.29.29,0,0,0,.1.23.33.33,0,0,0,.23.1Z"></path>
+                            </svg>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'imap.folder.spam'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" class="mailbox__menu-list-item-icon">
+                                <path style="fill: currentColor;" d="M13.38,7.21a.6.6,0,0,1,.44.18.58.58,0,0,1,.18.43.61.61,0,0,1-.62.62H11.74v.62a4,4,0,0,1-.57,2.06l1.41,1.41a.63.63,0,0,1,0,.88.58.58,0,0,1-.43.18.6.6,0,0,1-.44-.18L10.4,12.1a4.34,4.34,0,0,1-1.28.79,4,4,0,0,1-1.5.29H6.38a4,4,0,0,1-1.5-.29A4.34,4.34,0,0,1,3.6,12.1L2.29,13.41a.6.6,0,0,1-.44.18.58.58,0,0,1-.43-.18.63.63,0,0,1,0-.88l1.41-1.41a4,4,0,0,1-.57-2.06V8.44H.62a.6.6,0,0,1-.44-.18A.6.6,0,0,1,0,7.82a.58.58,0,0,1,.18-.43.6.6,0,0,1,.44-.18H2.26V4.79l-1-1.06A.59.59,0,0,1,1,3.29a.58.58,0,0,1,.18-.43.6.6,0,0,1,.44-.18.58.58,0,0,1,.43.18L3.14,3.91h.39A3.33,3.33,0,0,1,4,2.16,3.62,3.62,0,0,1,5.28.89,3.31,3.31,0,0,1,7,.41,3.36,3.36,0,0,1,8.78.89a3.68,3.68,0,0,1,1.27,1.27,3.34,3.34,0,0,1,.48,1.75h.33l1.06-1.05a.58.58,0,0,1,.43-.18.6.6,0,0,1,.44.18.58.58,0,0,1,.18.43.59.59,0,0,1-.18.44l-1,1.06V7.21ZM7.62,11.94a2.92,2.92,0,0,0,1.44-.38,2.92,2.92,0,0,0,1.44-2.5V5.15h-7V9.06a2.92,2.92,0,0,0,1.44,2.5,2.92,2.92,0,0,0,1.44.38V7.1a.31.31,0,0,1,.31-.31h.62a.31.31,0,0,1,.31.31ZM7,1.65a2.18,2.18,0,0,0-1.6.67,2.14,2.14,0,0,0-.67,1.59H9.29a2.14,2.14,0,0,0-.67-1.59A2.15,2.15,0,0,0,7,1.65Z"></path>
+                            </svg>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'imap.folder.drafts'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" class="mailbox__menu-list-item-icon">
+                                <path style="fill: currentColor;" d="M12.25,12.69A1.3,1.3,0,0,1,10.94,14H3.06a1.3,1.3,0,0,1-1.31-1.31V1.31A1.3,1.3,0,0,1,3.06,0H8.64a1.28,1.28,0,0,1,.93.38l2.3,2.3a1.28,1.28,0,0,1,.38.93ZM10.94,4.81H8.09a.65.65,0,0,1-.65-.65V1.31H3.06V12.69h7.88ZM9.63,7.55a.34.34,0,0,1-.33.33H4.7a.33.33,0,0,1-.23-.1.32.32,0,0,1-.09-.23V6.78a.32.32,0,0,1,.09-.23.29.29,0,0,1,.23-.1H9.3a.29.29,0,0,1,.23.1.33.33,0,0,1,.1.23ZM4.7,8.75a.29.29,0,0,0-.23.1.32.32,0,0,0-.09.23v.76a.34.34,0,0,0,.09.24.32.32,0,0,0,.23.09H9.3a.32.32,0,0,0,.23-.09.35.35,0,0,0,.1-.24V9.08a.33.33,0,0,0-.1-.23.29.29,0,0,0-.23-.1ZM8.75,3.5h2.08L8.75,1.42Z"></path>
+                            </svg>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'imap.folder.junk'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" class="mailbox__menu-list-item-icon">
+                                <path style="fill: currentColor;" d="M7,0a6.79,6.79,0,0,1,3.5,1A7.08,7.08,0,0,1,13.05,3.5,6.79,6.79,0,0,1,14,7a6.79,6.79,0,0,1-.95,3.5,7.08,7.08,0,0,1-2.55,2.55A6.79,6.79,0,0,1,7,14a6.79,6.79,0,0,1-3.5-.95A7.08,7.08,0,0,1,1,10.5,6.79,6.79,0,0,1,0,7,6.79,6.79,0,0,1,1,3.5,7.08,7.08,0,0,1,3.5,1,6.79,6.79,0,0,1,7,0ZM3,11a5.43,5.43,0,0,0,2.33,1.43A5.58,5.58,0,0,0,8,12.56a5.33,5.33,0,0,0,2.43-1.13l-7.9-7.9A5.23,5.23,0,0,0,1.44,6a5.58,5.58,0,0,0,.15,2.69A5.49,5.49,0,0,0,3,11Zm8-8A5.43,5.43,0,0,0,8.65,1.59,5.58,5.58,0,0,0,6,1.44,5.33,5.33,0,0,0,3.53,2.57l7.9,7.9A5.23,5.23,0,0,0,12.56,8a5.58,5.58,0,0,0-.15-2.69A5.43,5.43,0,0,0,11,3Z"></path>
+                            </svg>
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" class="mailbox__menu-list-item-icon">
+                                <path style="fill: currentColor;" d="M13.78,6.51a1.07,1.07,0,0,1,.22.66V10.5a1.13,1.13,0,0,1-.34.83,1.16,1.16,0,0,1-.83.34H1.17a1.16,1.16,0,0,1-.83-.34A1.13,1.13,0,0,1,0,10.5V7.17a1.07,1.07,0,0,1,.22-.66L2.77,2.84a1,1,0,0,1,.4-.37,1.15,1.15,0,0,1,.55-.14h6.56a1.15,1.15,0,0,1,.55.14,1,1,0,0,1,.4.37Zm-.95,4V7.39H9.92L9.14,8.94H4.86L4.08,7.39H1.17V10.5Zm-9.11-7L1.82,6.22h3l.78,1.56H8.41l.78-1.56h3L10.28,3.5Z"></path>
+                            </svg>
+                        </ng-container>
+                    </ng-container>
+                    {{ folder.fullName }}
+                </li>
+            </ul>
+        </ng-container>
+    </div>
+</ng-template>
+
+<ng-container [ngSwitch]="state">
+    <div class="mailbox__spinner" *ngSwitchCase="'loading'">
+        <spinner class="spinner spinner_blue spinner_small"></spinner>
+    </div>
+    <div class="mailbox__message" *ngSwitchCase="'empty'">
+        {{ 'mailbox.no_mailboxes' | translate }}
+        <ng-container *ngIf="canConfigureMailboxes">
+            <br>{{ 'mailbox.no_mailboxes_2' | translate }}
+            <a routerLink="/dashboard/settings/mailbox" [queryParams]="{ action: 'create' }">{{ 'mailbox.no_mailboxes_3' | translate }}</a>
+        </ng-container>
+    </div>
+    <div class="mailbox__message mailbox__message_error" *ngSwitchCase="'error'">
+        {{ 'mailbox.error_occurred__message' | translate }}
+    </div>
+    <div class="mailbox__sections" *ngSwitchCase="'ready'">
+        <div class="mailbox__left-sidebar" *ngIf="viewportBreakpoint === 'desktop'">
+            <ng-container [ngTemplateOutlet]="menuTpl"></ng-container>
+        </div>
+        <div class="mailbox__content" [ngSwitch]="messagesState">
+            <div class="mailbox__spinner" *ngSwitchCase="'loading'">
+                <spinner class="spinner spinner_blue spinner_small"></spinner>
+            </div>
+            <div class="mailbox__message" *ngSwitchCase="'empty'">
+                {{ 'mailbox.no_messages__message' | translate }}
+            </div>
+            <div class="mailbox__message mailbox__message_error" *ngSwitchCase="'error'">
+                {{ 'mailbox.error_occurred__message' | translate }}
+            </div>
+            <div class="mailbox__inbox" *ngSwitchCase="'ready'">
+                <div class="mailbox__inbox-header">{{ activeFolder.fullName }}</div>
+                <table class="mailbox__inbox-table" *ngIf="viewportBreakpoint === 'desktop'">
+                    <tbody>
+                        <tr *ngFor="let message of messages" (click)="onMessageClick($event, message)" class="mailbox__inbox-table-row" [class.mailbox__inbox-table-row_active]="activeMenuMessage === message">
+                            <td class="mailbox__inbox-table-cell mailbox__inbox-table-cell-color">
+                                <span class="mailbox__inbox-message-color">
+                                    <span class="mailbox__inbox-message-color-trigger"
+                                        [style.backgroundColor]="'#' + (message.color || '000')"
+                                        [title]="'mailbox.colorpicker_click__title' | translate"
+                                        (click)="onColorPickerTriggerClick($event, message.messageId)"
+                                    ></span>
+                                    <span class="mailbox__inbox-message-color-picker" *ngIf="message.messageId === colorPickerMessageId" (click)="onColorPickerClick($event)">
+                                        <span class="mailbox__inbox-message-color-picker-cell"
+                                            *ngFor="let colorCode of colorCodes"
+                                            (click)="onColorCellClick($event, message, colorCode)"
+                                            [style.backgroundColor]="'#' + colorCode"
+                                            [class.mailbox__inbox-message-color-picker-cell_active]="isCurrentColor(message.color, colorCode)"
+                                        ></span>
+                                    </span>
+                                </span>
+                            </td>
+                            <!--<td class="mailbox__inbox-table-cell mailbox__inbox-table-cell-button">
+                                <button type="button" class="mailbox__inbox-message-button mailbox__inbox-message-button_create"
+                                    (click)="onMessageAction($event, message, 'create')"
+                                    [title]="'mailbox.create_offer__title' | translate"
+                                    [disabled]="isCreateOfferButtonDisabled(message)"
+                                ></button>
+                            </td>
+                            <td class="mailbox__inbox-table-cell mailbox__inbox-table-cell-button">
+                                <button type="button" class="mailbox__inbox-message-button mailbox__inbox-message-button_add"
+                                    (click)="onMessageAction($event, message, 'add')"
+                                    [title]="'mailbox.add_to_offer__title' | translate"
+                                    [disabled]="isAddToOfferButtonDisabled(message)"
+                                ></button>
+                            </td>-->
+                            <td class="mailbox__inbox-table-cell mailbox__inbox-table-cell-button">
+                                <span class="mailbox__inbox-message-button-wrap">
+                                    <button type="button" class="mailbox__inbox-message-button mailbox__inbox-message-button_menu" (click)="onMessageMenuToggle($event, message)" [disabled]="isButtonsDisabled"></button>
+                                    <span class="mailbox-menu mailbox-menu_left" *ngIf="activeMenuMessage === message" (click)="onMessageMenuClick($event)">
+                                        <span class="mailbox-menu__content">
+                                            <ul class="mailbox-menu__items">
+                                                <li class="mailbox-menu__item" [class.mailbox-menu__item_disabled]="isCreateOfferButtonDisabled(message)">
+                                                    <button [innerHTML]="'mailbox.create_offer__title' | translate" (click)="onMessageMenuItemClick($event, message, 'create')" [disabled]="isCreateOfferButtonDisabled(message)"></button>
+                                                </li>
+                                                <li class="mailbox-menu__item" [class.mailbox-menu__item_disabled]="isAddToOfferButtonDisabled(message)">
+                                                    <button [innerHTML]="'mailbox.add_to_offer__title' | translate" (click)="onMessageMenuItemClick($event, message, 'add')" [disabled]="isCreateOfferButtonDisabled(message)"></button>
+                                                </li>
+                                            </ul>
+                                        </span>
+                                    </span>
+                                </span>
+                            </td>
+                            <td class="mailbox__inbox-table-cell mailbox__inbox-table-cell-from">{{ message.fromPerson || message.from }}</td>
+                            <td class="mailbox__inbox-table-cell mailbox__inbox-table-cell-subject">{{ message.subject }}</td>
+                            <td class="mailbox__inbox-table-cell mailbox__inbox-table-cell-tag">
+                                <a class="mailbox__inbox-message-tag mailbox__inbox-message-tag_table"
+                                    *ngIf="message.tag !== null"
+                                    [routerLink]="'/dashboard/' + message.tagType.toLowerCase() + '/' + message.tag"
+                                    [title]="(message.tagType === 'PROJECT' ? 'mailbox.project' : 'mailbox.offer') | translate"
+                                    (click)="onTagClick($event)"
+                                >
+                                    <span class="mailbox__inbox-message-tag-content"
+                                        [ngClass]="{
+                                            'mailbox__inbox-message-tag-content_project': message.tagType === 'PROJECT',
+                                            'mailbox__inbox-message-tag-content_offer': message.tagType === 'OFFER'
+                                        }"
+                                    >{{ message.tag }}</span>
+                                </a>
+                            </td>
+                            <td class="mailbox__inbox-table-cell mailbox__inbox-table-cell-attachment" [class.mailbox__inbox-table-cell-attachment_has-attachment]="message.hasAttachment"></td>
+                            <td class="mailbox__inbox-table-cell mailbox__inbox-table-cell-date">
+                                {{ message.receivedDate | datetime : datetimeDisplayFormat }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="mailbox__inbox-list" *ngIf="viewportBreakpoint !== 'desktop'">
+                    <div class="mailbox__inbox-list-item" *ngFor="let message of messages" (click)="onMessageClick($event, message)">
+                        <div class="mailbox__inbox-list-item-primary">
+                            <div class="mailbox__inbox-list-item-from">{{ message.fromPerson || message.from }}</div>
+                            <div class="mailbox__inbox-list-item-subject">{{ message.subject }}</div>
+                            <div class="mailbox__inbox-list-item-info">
+                                <div class="mailbox__inbox-list-item-date">{{ message.receivedDate | datetime : datetimeDisplayFormat }}</div>
+                                <div class="mailbox__inbox-list-item-attachment" *ngIf="message.hasAttachment"></div>
+                                <a class="mailbox__inbox-message-tag mailbox__inbox-message-tag_list"
+                                    *ngIf="message.tag !== null"
+                                    [routerLink]="'/dashboard/' + message.tagType.toLowerCase() + '/' + message.tag"
+                                    [title]="(message.tagType === 'PROJECT' ? 'mailbox.project' : 'mailbox.offer') | translate"
+                                    (click)="onTagClick($event)"
+                                >
+                                    <span class="mailbox__inbox-message-tag-content"
+                                        [ngClass]="{
+                                            'mailbox__inbox-message-tag-content_project': message.tagType === 'PROJECT',
+                                            'mailbox__inbox-message-tag-content_offer': message.tagType === 'OFFER'
+                                        }"
+                                    >{{ message.tag }}</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mailbox__inbox-list-item-controls">
+                            <div class="mailbox__inbox-list-item-control">
+                                <span class="mailbox__inbox-message-color mailbox__inbox-list-item-color">
+                                    <span class="mailbox__inbox-message-color-trigger"
+                                          [style.backgroundColor]="'#' + (message.color || '000')"
+                                          [title]="'mailbox.colorpicker_click__title' | translate"
+                                          (click)="onColorPickerTriggerClick($event, message.messageId)"
+                                    ></span>
+                                    <span class="mailbox__inbox-message-color-picker mailbox__inbox-list-item-color-picker" *ngIf="message.messageId === colorPickerMessageId" (click)="onColorPickerClick($event)">
+                                        <span class="mailbox__inbox-message-color-picker-cell"
+                                              *ngFor="let colorCode of colorCodes"
+                                              (click)="onColorCellClick($event, message, colorCode)"
+                                              [style.backgroundColor]="'#' + colorCode"
+                                              [class.mailbox__inbox-message-color-picker-cell_active]="isCurrentColor(message.color, colorCode)"
+                                        ></span>
+                                    </span>
+                                </span>
+                            </div>
+                            <!--<div class="mailbox__inbox-list-item-control">
+                                <button type="button" class="mailbox__inbox-list-item-button mailbox__inbox-list-item-button_create"
+                                    (click)="onMessageAction($event, message, 'create')"
+                                    [title]="'mailbox.create_offer__title' | translate"
+                                    [disabled]="isCreateOfferButtonDisabled(message)"
+                                ></button>
+                            </div>
+                            <div class="mailbox__inbox-list-item-control">
+                                <button type="button" class="mailbox__inbox-list-item-button mailbox__inbox-list-item-button_add"
+                                    (click)="onMessageAction($event, message, 'add')"
+                                    [title]="'mailbox.add_to_offer__title' | translate"
+                                    [disabled]="isAddToOfferButtonDisabled(message)"
+                                ></button>
+                            </div>-->
+                            <div class="mailbox__inbox-list-item-control">
+                                <span class="mailbox__inbox-list-item-button-wrap">
+                                    <button type="button" class="mailbox__inbox-list-item-button mailbox__inbox-list-item-button_menu" (click)="onMessageMenuToggle($event, message)" [disabled]="isButtonsDisabled"></button>
+                                    <span class="mailbox-menu" *ngIf="activeMenuMessage === message" (click)="onMessageMenuClick($event)">
+                                        <span class="mailbox-menu__content">
+                                            <ul class="mailbox-menu__items">
+                                                <li class="mailbox-menu__item" [class.mailbox-menu__item_disabled]="isCreateOfferButtonDisabled(message)">
+                                                    <button [innerHTML]="'mailbox.create_offer__title' | translate" (click)="onMessageMenuItemClick($event, message, 'create')" [disabled]="isCreateOfferButtonDisabled(message)"></button>
+                                                </li>
+                                                <li class="mailbox-menu__item" [class.mailbox-menu__item_disabled]="isAddToOfferButtonDisabled(message)">
+                                                    <button [innerHTML]="'mailbox.add_to_offer__title' | translate" (click)="onMessageMenuItemClick($event, message, 'add')" [disabled]="isCreateOfferButtonDisabled(message)"></button>
+                                                </li>
+                                            </ul>
+                                        </span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<popup-custom class="popup popup_width_boxed popup_mobile-width_modal popup_tablet-width_modal mailbox__message-popup" #messagePopup [options]="{ stickyHeader : true, stickyControls : true }">
+    <popup-box>
+        <popup-header>
+            <ng-container *ngIf="activeMessage">
+                {{ activeMessage.from }}
+            </ng-container>
+        </popup-header>
+        <popup-content>
+            <div class="mailbox__message-popup-content">
+                <ul class="mailbox__message-popup-details" *ngIf="activeMessage">
+                    <li>
+                        <strong>From:</strong>&nbsp;<ng-container *ngIf="activeMessage.fromPerson">{{ activeMessage.fromPerson }}</ng-container>&nbsp;<ng-container *ngIf="activeMessage.from">&lt;<a [href]="'mailto:' + activeMessage.from">{{ activeMessage.from }}</a>&gt;</ng-container>
+                    </li>
+                    <li><strong>Subject:</strong> {{ activeMessage.subject }}</li>
+                    <li><strong>Date:</strong> {{ activeMessage.receivedDate | datetime : datetimeDisplayFormat }}</li>
+                </ul>
+                <isolated-view [html]="emailHtml" (onResize)="onEmailViewResize($event)"></isolated-view>
+                <div class="mailbox__message-popup-attachments" *ngIf="activeMessage && activeMessage.hasAttachment">
+                    <ng-container *ngFor="let attachmentName of activeMessage.attachmentNames; let i = index">
+                        <a class="mailbox__message-popup-attachment" [href]="getAttachmentDownloadUrl(attachmentName)" [download]="activeMessage.decodedAttachmentNames[i]" target="_blank">
+                            <div class="file-name">{{ activeMessage.decodedAttachmentNames[i] }}</div>
+                        </a>
+                    </ng-container>
+                </div>
+            </div>
+        </popup-content>
+        <popup-controls>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_medium button_blue"
+                    (click)="onMessageAction(activeMessage, 'create')"
+                    [isDisabled]="isCreateOfferButtonDisabled(activeMessage)"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="button__icon">
+                        <path style="fill: currentColor;" d="M15.41,4,12,.59A2,2,0,0,0,10.59,0H4A2,2,0,0,0,2,2V16a2,2,0,0,0,2,2H14a2,2,0,0,0,2-2V5.41A2,2,0,0,0,15.41,4ZM13.59,5H11V2.41ZM14,16H4V2H9V5.5A1.5,1.5,0,0,0,10.5,7H14Z"></path>
+                    </svg>
+                    <span class="button__caption">{{ 'mailbox.create_offer__title' | translate }}</span>
+                </button>
+                <button type="button" class="button button_medium button_blue"
+                    (click)="onMessageAction(activeMessage, 'add')"
+                    [isDisabled]="isAddToOfferButtonDisabled(activeMessage)"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="button__icon">
+                        <path style="fill: currentColor;" d="M15.41,4,12,.59A2,2,0,0,0,10.59,0H4A2,2,0,0,0,2,2V16a2,2,0,0,0,2,2H14a2,2,0,0,0,2-2V5.41A2,2,0,0,0,15.41,4ZM13.59,5H11V2.41ZM14,16H4V2H9V5.5A1.5,1.5,0,0,0,10.5,7H14Z"></path>
+                        <polygon style="fill: currentColor;" points="12 11 12 13 10 13 10 15 8 15 8 13 6 13 6 11 8 11 8 9 10 9 10 11 12 11"></polygon>
+                    </svg>
+                    <span class="button__caption">{{ 'mailbox.add_to_offer__title' | translate }}</span>
+                </button>
+                <button type="button" class="button button_medium button_white" (click)="onMessagePopupClose()">
+                    <span class="button__caption">{{ 'mailbox.close_popup' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup-custom>
+
+<popup-custom class="popup popup_width_boxed popup_mobile-width_modal popup_tablet-width_modal mailbox__offerize-popup" #offerizePopup [options]="{ closeBy: 'manual', stickyHeader : true, stickyControls : true }" (onCloseRequest)="onOfferizePopupCloseRequest($event)">
+    <popup-box>
+        <fieldset [disabled]="isOfferizeSubmitting || isOffersLoading">
+            <popup-header>{{ (offerizeMode === 'create' ? 'mailbox.create_offer__header' : 'mailbox.add_to_offer__header') | translate }}</popup-header>
+            <popup-content>
+                <div class="mailbox__offerize-popup-section" *ngIf="offerizeAttachments && offerizeAttachments.length">
+                    <div class="mailbox__offerize-popup-header">{{ 'mailbox.select_attachments__header' | translate }}</div>
+                    <div class="mailbox__offerize-popup-content">
+                        <ul class="mailbox__offerize-popup-list">
+                            <li class="mailbox__offerize-popup-list-item"
+                                *ngFor="let attachment of offerizeAttachments; let i = index"
+                                (click)="toggleAttachment(attachment)"
+                                [class.mailbox__offerize-popup-list-item_active]="isAttachmentSelected(attachment)"
+                            >{{ activeMessage.decodedAttachmentNames[i] }}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mailbox__offerize-popup-section" *ngIf="offerizeMode === 'add'">
+                    <div class="mailbox__offerize-popup-header">{{ 'mailbox.select_offer__header' | translate }}</div>
+                    <div class="mailbox__offerize-popup-content">
+                        <div class="mailbox__offerize-popup-filter">
+                            <input class="input input_regular mailbox__offerize-popup-filter-input" type="text" [placeholder]="'mailbox.offers_filter__placeholder' | translate" [(ngModel)]="offersFilters.name" *ngIf="offersFilters !== null" (keyup)="onOfferFilterKeyUp($event)">
+                            <button class="button button_regular button button_white mailbox__offerize-popup-filter-reset" type="button" (click)="clearOffersFilter()">
+                                <span class="button__caption">{{ 'mailbox.offers_clear' | translate }}</span>
+                            </button>
+                            <button class="button button_regular button button_blue mailbox__offerize-popup-filter-submit" type="button" (click)="getOffers()" [isProgress]="isOffersLoading">
+                                <span class="button__caption">{{ 'mailbox.offers_find' | translate }}</span>
+                            </button>
+                        </div>
+                        <ul class="mailbox__offerize-popup-list">
+                            <li class="mailbox__offerize-popup-list-item"
+                                 *ngFor="let offer of offerizeOffers"
+                                 (click)="selectOffer(offer)"
+                                 [class.mailbox__offerize-popup-list-item_active]="isOfferSelected(offer)"
+                            >{{ offer.offerKey }}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mailbox__offerize-popup-checkbox">
+                    <checkbox
+                        *ngIf="offerizeMode === 'add'"
+                        [(ngModel)]="uploadMailContent"
+                        [disabled]="isUploadMailContentDisabled()"
+                    >{{ 'mailbox.upload_email_content__checkbox' | translate }}</checkbox>
+                </div>
+            </popup-content>
+            <popup-controls>
+                <div class="popup__controls-buttons">
+                    <button type="button" class="button button_medium button_blue"
+                        [isDisabled]="!checkOfferizeButtonsActivity()"
+                        [isProgress]="isOfferizeSubmitting"
+                        (click)="onOfferize()"
+                    >
+                        <span class="button__caption">{{ (offerizeMode === 'create' ? 'mailbox.create_offer__button' : 'mailbox.add_to_offer__button') | translate }}</span>
+                    </button>
+                    <button type="button" class="button button_medium button_white" (click)="onOfferizePopupCloseRequest()">
+                        <span class="button__caption">{{ 'mailbox.cancel__button' | translate }}</span>
+                    </button>
+                </div>
+            </popup-controls>
+        </fieldset>
+    </popup-box>
+</popup-custom>

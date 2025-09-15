@@ -1,0 +1,43 @@
+<navigation #nav (onMinimizeChange)="onNavMinimizeChange($event)" (onMobileActiveChange)="onNavMobileActiveChange($event)"></navigation>
+<panel (onNavToggle)="nav.toggle()" (onShowEmailVerificationPopup)="showEmailVerificationPopup()"></panel>
+<div class="dashboard__wrap" data-bounding="true">
+    <div class="dashboard__content">
+        <router-outlet></router-outlet>
+    </div>
+    <footer class="footer">
+        <div class="footer__copyright">&copy; {{ year }} OPENLECT LLC</div>
+        <a href="#" class="footer__link" (click)="onShowTerms($event)">{{ 'footer.terms__link' | translate }}</a>
+        <a href="mailto:contact@textlake.com" class="footer__link footer__link_last">{{ 'footer.contact_us__link' | translate }}</a>
+        <div class="footer__version"><strong>v{{ appVersion }}</strong> {{ appReleaseDate }}</div>
+    </footer>
+</div>
+<profile #profile (onShowEmailVerificationPopup)="showEmailVerificationPopup()"></profile>
+
+<popup-custom #emailVerificationPopup [options]="{ closeBy: 'manual' }" class="dashboard__verification-popup" (onCloseRequest)="hideEmailVerificationPopup($event)" *ngIf="isEmailVerificationPopupVisible">
+    <popup-box>
+        <popup-header>{{ 'verification.popup_header' | translate }}</popup-header>
+        <popup-content>
+            <!-- Content -->
+            <div class="dashboard__verification-popup-message" [innerHTML]="'verification.email_is_not_verified2' | translate : { email: userData.profile.user.email }"></div>
+            <div class="dashboard__verification-popup-field">
+                <label class="dashboard__verification-popup-label" for="verification-code-input">{{ 'verification.code_label' | translate }}</label>
+                <input type="text" class="input input_regular dashboard__verification-popup-input" id="verification-code-input" [disabled]="isVerifying" [(ngModel)]="verificationCode" (ngModelChange)="validateVerificationCode()">
+            </div>
+            <div class="dashboard__verification-popup-resend" [ngSwitch]="codeResendTimer === null">
+                <div class="dashboard__verification-popup-resend-message" *ngSwitchCase="false" [innerHTML]="'verification.resend_message' | translate : { timeout: codeResendTimerFormattedValue }"></div>
+                <span class="dashboard__verification-popup-resend-link" role="button" *ngSwitchCase="true">{{ 'verification.resend_link' | translate }}</span>
+            </div>
+            <!-- /Content -->
+        </popup-content>
+        <popup-controls>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_regular button_white" (click)="hideEmailVerificationPopup()" [isDisabled]="isVerifying">
+                    <span class="button__caption">{{ 'verification.cancel' | translate }}</span>
+                </button>
+                <button type="button" class="button button_regular button_blue" (click)="onSubmitVerificationCode()" [isDisabled]="!isVerificationCodeValid || isVerifying" [isProgress]="isVerifying">
+                    <span class="button__caption">{{ 'verification.ok' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup-custom>

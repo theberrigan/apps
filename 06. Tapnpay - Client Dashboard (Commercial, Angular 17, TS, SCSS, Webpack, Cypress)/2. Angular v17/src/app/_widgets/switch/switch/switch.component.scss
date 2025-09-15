@@ -1,0 +1,49 @@
+.switch-container {
+    width: 50px;
+    height: 25px;
+    background-color: #ccc;
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.switch-toggle {
+    width: 23px;
+    height: 23px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    transition: transform 0.3s;
+}
+
+.switch-on {
+    background-color: #4775E7;
+}
+
+.switch-on .switch-toggle {
+    transform: translateX(25px);
+}
+
+.switch-control {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.switch-label {
+
+    &:first-of-type {
+        margin-right: 10px;
+    }
+
+    &:last-of-type {
+        margin-left: 10px;
+    }
+
+    &--active {
+        color: #4775E7;
+    }
+}

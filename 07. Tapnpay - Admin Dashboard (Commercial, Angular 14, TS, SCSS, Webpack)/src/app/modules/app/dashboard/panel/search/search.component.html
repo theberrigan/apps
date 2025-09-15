@@ -1,0 +1,56 @@
+<ng-container [ngSwitch]="isSubmitting">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="search__icon" *ngSwitchCase="false">
+        <path fill="currentColor" d="M15.89,14.48a6,6,0,1,0-1.41,1.41L19,20.36,20.36,19ZM11,15a4,4,0,1,1,4-4,3.92,3.92,0,0,1-.56,2A4,4,0,0,1,13,14.44,3.92,3.92,0,0,1,11,15Z"/>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="search__icon search__icon_spinning" *ngSwitchCase="true">
+        <path style="fill: currentColor; opacity: 0.2;" d="M12,20a8,8,0,1,1,8-8A8,8,0,0,1,12,20ZM12,6a6,6,0,1,0,6,6A6,6,0,0,0,12,6Z"/>
+        <path style="fill: currentColor;" d="M7.43,18.57A8,8,0,0,1,12,4V6A6,6,0,0,0,8.57,16.92Z"/>
+    </svg>
+</ng-container>
+<input type="text" class="search__input"
+    #searchEl
+    [(ngModel)]="term"
+    [maxLength]="maxTermLength"
+    [placeholder]="'search.placeholder' | translate"
+    [class.search__input_has-clear-button]="isClearButtonVisible"
+    (focus)="onInputFocus()"
+    (blur)="onInputBlur()"
+    (keydown)="onInputKeyPress($event)"
+>
+<button type="button" class="search__clear-button" *ngIf="isClearButtonVisible" (click)="onClearClick()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="search__clear-button-icon">
+        <polygon style="fill: currentColor;" points="13.42 12 17.78 16.36 16.36 17.78 12 13.42 7.64 17.78 6.22 16.36 10.58 12 6.22 7.64 7.64 6.22 12 10.58 16.36 6.22 17.78 7.64 13.42 12"/>
+    </svg>
+</button>
+<div class="search__popup" *ngIf="isPopupVisible">
+    <ng-container [ngSwitch]="accounts">
+        <div class="search__popup-empty" *ngSwitchCase="null">
+            {{ 'search.no_accounts' | translate }}
+        </div>
+        <div class="search__popup-items" *ngSwitchDefault>
+            <a class="search__popup-item"
+                *ngFor="let account of accounts; let i = index"
+                [routerLink]="'/dashboard/accounts/' + account.account_id"
+                [class.search__popup-item_hover]="i === hoverAccountIndex"
+                (mouseenter)="onItemMouseEnter(i)"
+                (mouseleave)="onItemMouseLeave()"
+                (click)="onItemClick()"
+            >
+                <span class="search__popup-item-primary">
+                    <span class="search__popup-item-phone" [innerHTML]="account.phone"></span>
+                    <span class="search__popup-item-status" [style.backgroundColor]="getStatusColor(account.account_status)">
+                        {{ account.account_status }}
+                    </span>
+                </span>
+                <span class="search__popup-item-secondary">
+                    <span class="search__popup-item-secondary-item">
+                        <span class="search__popup-item-secondary-item-text" [innerHTML]="account.lp"></span>
+                    </span>
+                    <span class="search__popup-item-secondary-item" *ngIf="account.bpm">
+                        <span class="search__popup-item-secondary-item-text" [innerHTML]="account.bpm"></span>
+                    </span>
+                </span>
+            </a>
+        </div>
+    </ng-container>
+</div>

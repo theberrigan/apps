@@ -1,0 +1,35 @@
+<div class="disputes__heading">
+    <div class="disputes__header">{{ 'disputes.page_header' | translate }}</div>
+    <div class="disputes__controls" *ngIf="false">
+        <a href="https://tapnpay.biz/faq" target="nofollow noopener" class="button button_regular button_light-blue">
+            {{ 'disputes.view_faq' | translate }}
+        </a>
+    </div>
+</div>
+<ng-container [ngSwitch]="isUploading">
+    <div class="disputes__indicator" *ngSwitchCase="true">
+        <loader></loader>
+    </div>
+    <div class="disputes__deco-dropzone"
+        *ngSwitchCase="false"
+        (click)="onDecoDropzoneClick()"
+        [innerHTML]="'disputes.deco_dropzone_text' | translate"
+    ></div>
+</ng-container>
+<form class="disputes__upload-form" #uploadForm>
+    <input type="file" class="disputes__upload-input" [disabled]="isUploading" #uploadInput (change)="onFileChange()">
+</form>
+<div class="disputes__dropzone" *ngIf="isDropzoneVisible">
+    <div class="disputes__dropzone-content" [innerHTML]="'disputes.dropzone_text' | translate"></div>
+    <div class="disputes__dropzone-screen"
+        (dragleave)="onDropzoneDragLeave($event)"
+        (dragenter)="onDropzoneDragEnter($event)"
+        (dragover)="onDropzoneDragOver($event)"
+        (drop)="onFileDrop($event)"
+    ></div>
+</div>
+<div class="disputes__messages" *ngIf="messages">
+    <div class="disputes__message" *ngFor="let message of messages">
+        &gt;&nbsp;{{ message }}
+    </div>
+</div>

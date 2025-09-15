@@ -1,0 +1,199 @@
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-SemiBold.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-SemiBold.woff') format('woff'),
+    url('../fonts/tlg/TLG-SemiBold.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-SemiBold.svg#TLG-SemiBold') format('svg');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-UltraLightItalic.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-UltraLightItalic.woff') format('woff'),
+    url('../fonts/tlg/TLG-UltraLightItalic.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-UltraLightItalic.svg#TLG-UltraLightItalic') format('svg');
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-BoldItalic.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-BoldItalic.woff') format('woff'),
+    url('../fonts/tlg/TLG-BoldItalic.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-BoldItalic.svg#TLG-BoldItalic') format('svg');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-LightItalic.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-LightItalic.woff') format('woff'),
+    url('../fonts/tlg/TLG-LightItalic.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-LightItalic.svg#TLG-LightItalic') format('svg');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-RegularItalic.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-RegularItalic.woff') format('woff'),
+    url('../fonts/tlg/TLG-RegularItalic.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-RegularItalic.svg#TLG-RegularItalic') format('svg');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-Bold.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-Bold.woff') format('woff'),
+    url('../fonts/tlg/TLG-Bold.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-Bold.svg#TLG-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-BlackItalic.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-BlackItalic.woff') format('woff'),
+    url('../fonts/tlg/TLG-BlackItalic.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-BlackItalic.svg#TLG-BlackItalic') format('svg');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-Heavy.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-Heavy.woff') format('woff'),
+    url('../fonts/tlg/TLG-Heavy.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-Heavy.svg#TLG-Heavy') format('svg');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-Regular.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-Regular.woff') format('woff'),
+    url('../fonts/tlg/TLG-Regular.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-Regular.svg#TLG-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-SemiBoldItalic.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-SemiBoldItalic.woff') format('woff'),
+    url('../fonts/tlg/TLG-SemiBoldItalic.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-SemiBoldItalic.svg#TLG-SemiBoldItalic') format('svg');
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-ExtraBoldItalic.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-ExtraBoldItalic.woff') format('woff'),
+    url('../fonts/tlg/TLG-ExtraBoldItalic.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-ExtraBoldItalic.svg#TLG-ExtraBoldItalic') format('svg');
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-Thin.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-Thin.woff') format('woff'),
+    url('../fonts/tlg/TLG-Thin.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-Thin.svg#TLG-Thin') format('svg');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-UltraLight.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-UltraLight.woff') format('woff'),
+    url('../fonts/tlg/TLG-UltraLight.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-UltraLight.svg#TLG-UltraLight') format('svg');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-Black.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-Black.woff') format('woff'),
+    url('../fonts/tlg/TLG-Black.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-Black.svg#TLG-Black') format('svg');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-ThinItalic.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-ThinItalic.woff') format('woff'),
+    url('../fonts/tlg/TLG-ThinItalic.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-ThinItalic.svg#TLG-ThinItalic') format('svg');
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-Light.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-Light.woff') format('woff'),
+    url('../fonts/tlg/TLG-Light.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-Light.svg#TLG-Light') format('svg');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-HeavyItalic.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-HeavyItalic.woff') format('woff'),
+    url('../fonts/tlg/TLG-HeavyItalic.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-HeavyItalic.svg#TLG-HeavyItalic') format('svg');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-ExtraBold.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-ExtraBold.woff') format('woff'),
+    url('../fonts/tlg/TLG-ExtraBold.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-ExtraBold.svg#TLG-ExtraBold') format('svg');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-Medium.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-Medium.woff') format('woff'),
+    url('../fonts/tlg/TLG-Medium.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-Medium.svg#TLG-Medium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'TLG';
+    src: url('../fonts/tlg/TLG-MediumItalic.woff2') format('woff2'),
+    url('../fonts/tlg/TLG-MediumItalic.woff') format('woff'),
+    url('../fonts/tlg/TLG-MediumItalic.ttf') format('truetype'),
+    url('../fonts/tlg/TLG-MediumItalic.svg#TLG-MediumItalic') format('svg');
+    font-weight: 500;
+    font-style: italic;
+}

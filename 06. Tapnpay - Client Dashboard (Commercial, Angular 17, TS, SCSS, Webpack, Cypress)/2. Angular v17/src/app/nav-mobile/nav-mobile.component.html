@@ -1,0 +1,188 @@
+<div class="nav-mobile__overlay" (click)="onOverlayClick()"></div>
+<div class="nav-mobile__drawer" [ngSwitch]="activeLayout">
+    <div class="nav-mobile__layout nav-mobile__layout_nav" *ngSwitchCase="'nav'">
+        <div class="nav-mobile__logo">
+            <img [src]="NEO_RIDE_LOGO_URL" alt="Neoride Logo" class="nav-mobile__logo-img" />
+            <!-- <span class="slogan">{{'logo.slogan' | translate}}</span> -->
+        </div>
+        <nav class="nav-mobile__wrapper">
+            <ul class="nav-mobile__list">
+                <ng-container [ngSwitch]="isLoggedIn">
+                    <ng-container *ngSwitchCase="false">
+                        <li>
+                            <a routerLink="/auth" class="nav-mobile__list-link"
+                               routerLinkActive="nav-mobile__list-link_active" (click)="onClose()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     class="nav-mobile__list-link-icon">
+                                    <path style="fill: currentColor;"
+                                          d="M12,0A12,12,0,0,0,2.33,19.1a10.8,10.8,0,0,0,1.34,1.52,12,12,0,0,0,16.66,0,10.8,10.8,0,0,0,1.34-1.52A12,12,0,0,0,12,0Zm0,22a9.94,9.94,0,0,1-7-2.84,10.49,10.49,0,0,1,14,0A9.94,9.94,0,0,1,12,22Zm8.26-4.37a12.46,12.46,0,0,0-16.52,0A9.9,9.9,0,0,1,2,12a10,10,0,0,1,20,0A9.9,9.9,0,0,1,20.26,17.63ZM12,13a4,4,0,1,1,4-4A4,4,0,0,1,12,13Zm0-6a2,2,0,1,0,2,2A2,2,0,0,0,12,7Z"></path>
+                                </svg>
+                                <span class="nav-mobile__list-link-text">{{ 'nav.items.login' | translate }}</span>
+                            </a>
+                        </li>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="true">
+                        <li>
+                            <a routerLink="/dashboard/profile" class="nav-mobile__list-link"
+                               routerLinkActive="nav-mobile__list-link_active" (click)="onClose()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     class="nav-mobile__list-link-icon">
+                                    <path style="fill: currentColor;"
+                                          d="M12,0A12,12,0,0,0,2.33,19.1a10.8,10.8,0,0,0,1.34,1.52,12,12,0,0,0,16.66,0,10.8,10.8,0,0,0,1.34-1.52A12,12,0,0,0,12,0Zm0,22a9.94,9.94,0,0,1-7-2.84,10.49,10.49,0,0,1,14,0A9.94,9.94,0,0,1,12,22Zm8.26-4.37a12.46,12.46,0,0,0-16.52,0A9.9,9.9,0,0,1,2,12a10,10,0,0,1,20,0A9.9,9.9,0,0,1,20.26,17.63ZM12,13a4,4,0,1,1,4-4A4,4,0,0,1,12,13Zm0-6a2,2,0,1,0,2,2A2,2,0,0,0,12,7Z"></path>
+                                </svg>
+                                <span class="nav-mobile__list-link-text">{{ 'nav.items.profile' | translate }}</span>
+                            </a>
+                        </li>
+                    </ng-container>
+                </ng-container>
+                <li>
+                    <button class="nav-mobile__list-button" (click)="onSwitchLayout('langs')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                             class="nav-mobile__list-link-icon">
+                            <path style="fill: currentColor;"
+                                  d="M13.74.13A5.56,5.56,0,0,0,13,.05a8.94,8.94,0,0,0-1,0,8.94,8.94,0,0,0-1,.05,5.56,5.56,0,0,0-.7.08,12,12,0,0,0,0,23.74A5.56,5.56,0,0,0,11,24,8.94,8.94,0,0,0,12,24,8.94,8.94,0,0,0,13,24a5.56,5.56,0,0,0,.7-.08,12,12,0,0,0,0-23.74ZM21.16,8H16.63a18.16,18.16,0,0,0-2-5.64A10.06,10.06,0,0,1,21.16,8ZM15,12c0,.68,0,1.34-.09,2H9.09C9,13.34,9,12.68,9,12s0-1.34.09-2h5.82C15,10.66,15,11.32,15,12ZM12.1,2a15,15,0,0,1,2.51,6H9.39A15,15,0,0,1,11.9,2a1.13,1.13,0,0,1,.1-.13A1.13,1.13,0,0,1,12.1,2Zm-2.76.36A18.16,18.16,0,0,0,7.37,8H2.84A10.06,10.06,0,0,1,9.34,2.36ZM2.2,10H7.09C7,10.65,7,11.32,7,12s0,1.35.09,2H2.2a10.1,10.1,0,0,1,0-4Zm.64,6H7.37a18.16,18.16,0,0,0,2,5.64A10.06,10.06,0,0,1,2.84,16Zm9.06,6a15,15,0,0,1-2.51-6h5.22a15,15,0,0,1-2.51,6,1.13,1.13,0,0,1-.1.13A1.13,1.13,0,0,1,11.9,22Zm2.76-.36a18.16,18.16,0,0,0,2-5.64h4.53A10.06,10.06,0,0,1,14.66,21.64ZM21.8,14H16.91c.06-.65.09-1.32.09-2s0-1.35-.09-2H21.8a10.1,10.1,0,0,1,0,4Z"></path>
+                        </svg>
+                        <span class="nav-mobile__list-link-text">{{ 'nav.lang.language' | translate }}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10">
+                            <path style="fill: currentColor;"
+                                  d="M1.318,10.008 L-0.007,8.609 L3.372,5.000 L-0.007,1.391 L1.318,-0.008 L6.008,5.000 L1.318,10.008 Z"></path>
+                        </svg>
+                    </button>
+                </li>
+            </ul>
+            <ng-container *ngIf="isLoggedIn">
+                <div class="nav-mobile__sep"></div>
+                <ul class="nav-mobile__list">
+                    <li>
+                        <a routerLink="/dashboard/invoices" class="nav-mobile__list-link"
+                           routerLinkActive="nav-mobile__list-link_active" (click)="onClose()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 class="nav-mobile__list-link-icon">
+                                <path style="fill: currentColor;"
+                                      d="M19,24H5a3,3,0,0,1-3-3V3A3,3,0,0,1,5,0H19a3,3,0,0,1,3,3V21A3,3,0,0,1,19,24ZM5,2A1,1,0,0,0,4,3V21a1,1,0,0,0,1,1H19a1,1,0,0,0,1-1V3a1,1,0,0,0-1-1ZM15.42,12.73a2.46,2.46,0,0,0-1-.94,7.14,7.14,0,0,0-1.54-.5h-.07l-.08,0-.07,0h-.06a11.24,11.24,0,0,1-1.23-.33,1.75,1.75,0,0,1-.75-.49,1.34,1.34,0,0,1-.29-.91h0a1.57,1.57,0,0,1,.51-1.28,2.43,2.43,0,0,1,1.55-.42A3.25,3.25,0,0,1,13.44,8a4.86,4.86,0,0,1,1.13.58l1-1.32a6.69,6.69,0,0,0-1-.57,5.27,5.27,0,0,0-1.06-.35l-.51-.08V4.94H11.33V6.28a3.92,3.92,0,0,0-1.05.31A2.56,2.56,0,0,0,9.05,7.72a3.83,3.83,0,0,0-.42,1.89h0a3.12,3.12,0,0,0,.46,1.81,2.45,2.45,0,0,0,1.11.88,10.65,10.65,0,0,0,1.7.43l.08,0h.17a6,6,0,0,1,1.07.29,1.64,1.64,0,0,1,.69.49,1.37,1.37,0,0,1,.27.89h0a1.57,1.57,0,0,1-.55,1.31,2.63,2.63,0,0,1-1.66.44,3.35,3.35,0,0,1-1.48-.34,4,4,0,0,1-1.25-1l-1.07,1.3a5.6,5.6,0,0,0,1.11.91,4.7,4.7,0,0,0,1.26.54,5,5,0,0,0,.79.15v1.3h1.59V17.73a4.22,4.22,0,0,0,1.2-.3,2.56,2.56,0,0,0,1.28-1.09,3.54,3.54,0,0,0,.43-1.83v0A3.3,3.3,0,0,0,15.42,12.73Z"></path>
+                            </svg>
+                            <span class="nav-mobile__list-link-text">{{ 'nav.items.invoices' | translate }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/dashboard/history" class="nav-mobile__list-link"
+                           routerLinkActive="nav-mobile__list-link_active" (click)="onClose()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 class="nav-mobile__list-link-icon">
+                                <path style="fill: currentColor;"
+                                      d="M21,12A9,9,0,0,1,5.64,18.36L7.05,17A7,7,0,1,0,5,12v.83l1.24-1.24L7.66,13,4,16.66.34,13l1.42-1.41L3,12.83V12a9,9,0,0,1,18,0Zm-8-.14V7H11v6l4.33,2.5,1-1.73Z"></path>
+                            </svg>
+                            <span class="nav-mobile__list-link-text">{{ 'nav.items.history' | translate }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </ng-container>
+            <div class="nav-mobile__sep"></div>
+            <ul class="nav-mobile__list">
+
+                <!-- <li *ngIf="isCoverageVisible()">
+                    <a routerLink="/dashboard/coverage" class="nav-mobile__list-link"
+                       routerLinkActive="nav-mobile__list-link_active" (click)="onClose()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                             class="nav-mobile__list-link-icon">
+                            <path style="fill: currentColor;"
+                                  d="M12,23.52l-.75-.86C11,22.32,4,14.3,4,8A8,8,0,0,1,20,8c0,6.3-6.95,14.32-7.25,14.66ZM12,2A6,6,0,0,0,6,8c0,4.42,4.24,10.21,6,12.43,1.76-2.22,6-8,6-12.43A6,6,0,0,0,12,2Zm0,10a4,4,0,1,1,4-4A4,4,0,0,1,12,12Zm0-6a2,2,0,1,0,2,2A2,2,0,0,0,12,6Z"></path>
+                        </svg>
+                        <span class="nav-mobile__list-link-text">{{ 'nav.items.toll_coverage' | translate }}</span>
+                    </a>
+                </li> -->
+
+                <li *ngIf="isExtendCoverageVisible()">
+                    <a class="nav-mobile__list-link"
+                       routerLink="/dashboard/extend-coverage"
+                       routerLinkActive="" (click)="onClose()">
+                        <svg class="nav-mobile__list-link-icon" height="28" viewBox="0 0 24 28" width="24"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path style="fill: currentColor;"
+                                  d="m12.894531 16.070312c-.121093.089844-.289062.09375-.417969.011719-1.394531-.847656-2.628906-1.917969-3.660156-3.160156-1.257812-1.484375-2.105468-3.257813-2.460937-5.148437-.289063-1.753907-.011719-3.441407.894531-4.816407.367188-.554687.824219-1.050781 1.359375-1.460937 1.167969-.945313 2.636719-1.4726565 4.160156-1.49218775 1.472657.02343755 2.886719.58203175 3.957031 1.56249975.410157.367188.765626.789063 1.054688 1.25.96875 1.535156 1.175781 3.515625.75 5.515625-.722656 3.214844-2.753906 6.003907-5.636719 7.738281zm-4.304687.164063v6.109375l6.832031 2.855469v-7.871094c.515625-.378906 1.003906-.792969 1.460937-1.234375v9.042969l5.664063-2.765625v-12.300782l-2.175781.8125c.21875-.558593.398437-1.132812.539062-1.714843l2.105469-.789063c.375-.132812.789063.050782.933594.410156.03125.082032.046875.167969.046875.257813v13.769531c.003906.289063-.175782.550782-.453125.660156l-7.066407 3.441407c-.207031.101562-.453124.101562-.664062 0l-7.929688-3.332031-6.824218 3.332031c-.171875.085937-.371094.101562-.554688.042969-.183594-.058594-.335937-.1875-.425781-.355469-.0507812-.097657-.078125-.207031-.078125-.316407v-14.589843c0-.316407.214844-.59375.527344-.679688l3.710937-1.390625c.136719.453125.300781.898438.488281 1.335938l-3.261718 1.21875v12.957031l5.664062-2.765625v-7.632812c.453125.523437.945313 1.023437 1.460938 1.492187zm3.90625-13.109375c1.714844 0 3.105468 1.351562 3.105468 3.015625s-1.390624 3.011719-3.105468 3.011719c-1.71875 0-3.109375-1.347656-3.109375-3.011719s1.390625-3.015625 3.109375-3.015625zm0 0"
+                                  fill-rule="evenodd"/>
+                        </svg>
+                        <span class="nav-mobile__list-link-text">{{ 'extend_coverage.navigation_title' | translate }}</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a [routerLink]="isInDashboard ? '/dashboard/faq' : '/faq'" class="nav-mobile__list-link"
+                       routerLinkActive="nav-mobile__list-link_active" (click)="onClose()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                             class="nav-mobile__list-link-icon">
+                            <path style="fill: currentColor;"
+                                  d="M13.05,15.22H10.8v-.59a3.9,3.9,0,0,1,.36-1.79,5.37,5.37,0,0,1,1.44-1.58,10.11,10.11,0,0,0,1.29-1.16,1.49,1.49,0,0,0,.32-.95,1.59,1.59,0,0,0-.57-1.23,2.25,2.25,0,0,0-1.55-.51,2.32,2.32,0,0,0-1.57.53,2.83,2.83,0,0,0-.88,1.64L7.38,9.3A3.77,3.77,0,0,1,8.72,6.62,4.75,4.75,0,0,1,12,5.52a5,5,0,0,1,3.39,1.12,3.38,3.38,0,0,1,1.25,2.59,2.8,2.8,0,0,1-.46,1.54,10,10,0,0,1-2,2,3.69,3.69,0,0,0-1,1A3.52,3.52,0,0,0,13.05,15.22ZM10.8,18.54V16.07h2.48v2.47ZM12,24A12,12,0,1,1,24,12,12,12,0,0,1,12,24ZM12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Z"></path>
+                        </svg>
+                        <span class="nav-mobile__list-link-text">{{ 'nav.items.faq' | translate }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a [routerLink]="isInDashboard ? '/dashboard/contact-us' : '/contact-us'"
+                       class="nav-mobile__list-link" routerLinkActive="nav-mobile__list-link_active"
+                       (click)="onClose()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                             class="nav-mobile__list-link-icon">
+                            <path style="fill: currentColor;"
+                                  d="M2,23A1.19,1.19,0,0,1,1.68,23,1,1,0,0,1,1,22V5A3,3,0,0,1,4,2H20a3,3,0,0,1,3,3V16a3,3,0,0,1-3,3H5.5L2.8,22.6A1,1,0,0,1,2,23ZM4,4A1,1,0,0,0,3,5V19l1.2-1.6A1,1,0,0,1,5,17H20a1,1,0,0,0,1-1V5a1,1,0,0,0-1-1ZM18,7H6V9H18Zm0,4H10v2h8Z"></path>
+                        </svg>
+                        <span class="nav-mobile__list-link-text">{{ 'nav.items.contact_us' | translate }}</span>
+                    </a>
+                </li>
+                <li *ngIf="isLoggedIn">
+                    <a href="https://www.neoride.com/termsandconditions"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="nav-mobile__list-link"
+                       [class.nav-mobile__list-link_has-dot]="termsSession.hasDot"
+                       (click)="onClose()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                             class="nav-mobile__list-link-icon">
+                            <path style="fill: currentColor;"
+                                  d="M19,24H5a3,3,0,0,1-3-3V3A3,3,0,0,1,5,0H19a3,3,0,0,1,3,3V21A3,3,0,0,1,19,24ZM5,2A1,1,0,0,0,4,3V21a1,1,0,0,0,1,1H19a1,1,0,0,0,1-1V3a1,1,0,0,0-1-1ZM18,5H6V7H18Zm0,4H6v2H18Zm0,4H10v2h8Z"></path>
+                        </svg>
+                        <span class="nav-mobile__list-link-text" style="display: flex; align-items: center; gap: 6px;">
+                            <span>{{ 'nav.items.terms' | translate }}</span>
+                            <img src="/assets/images/terms-icon-2.png" alt="Open in new window" class="terms-external-icon" />
+                        </span>
+                    </a>
+                </li>
+                <ng-container [ngSwitch]="isLoggedIn">
+                    <ng-container *ngSwitchCase="true">
+                        <li>
+                            <a routerLink="/dashboard/logout-confirm" class="nav-mobile__list-link" routerLinkActive="nav-mobile__list-link_active" (click)="onClose()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     class="nav-mobile__list-link-icon">
+                                    <path style="fill: currentColor;"
+                                          d="M2,4V20a1,1,0,0,0,1,1h9v2H3a3,3,0,0,1-3-3V4A3,3,0,0,1,3,1h9V3H3A1,1,0,0,0,2,4Zm20,7H11.34l3.07-3.07L13,6.51,7.51,12,13,17.49l1.41-1.42L11.34,13H22Z"></path>
+                                </svg>
+                                <span class="nav-mobile__list-link-text">{{ 'nav.items.logout' | translate }}</span>
+                            </a>
+                        </li>
+                    </ng-container>
+                </ng-container>
+            </ul>
+        </nav>
+    </div>
+    <div class="nav-mobile__layout nav-mobile__layout_langs" *ngSwitchCase="'langs'">
+        <div class="nav-mobile__langs-header" (click)="onSwitchLayout('nav')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16"
+                 class="nav-mobile__langs-header-icon">
+                <path fill="currentColor" d="M20,9H4.1l5.31,5.31L8,15.73.27,8,8,.27,9.41,1.69,4.1,7H20Z"/>
+            </svg>
+            <div class="nav-mobile__langs-header-text">{{ 'nav.lang.change' | translate }}</div>
+        </div>
+        <ul class="nav-mobile__list nav-mobile__list_langs">
+            <li *ngFor="let lang of langs">
+                <button class="nav-mobile__list-button nav-mobile__lang-option"
+                        [class.nav-mobile__lang-option_selected]="currentLang === lang.code"
+                        (click)="onSwitchLang(lang.code)">
+                    <span class="nav-mobile__list-link-text">{{ lang.name }}</span>
+                </button>
+            </li>
+        </ul>
+        <button class="nav-mobile__lang-confirm" (click)="confirmLangChange()">
+            {{ getConfirmText() }}
+        </button>
+    </div>
+</div>

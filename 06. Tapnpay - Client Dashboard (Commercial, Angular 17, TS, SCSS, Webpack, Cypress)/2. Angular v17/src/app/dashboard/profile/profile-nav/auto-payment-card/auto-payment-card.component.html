@@ -1,0 +1,16 @@
+<div class="profile__item" *ngIf="isShowAutoPayments">
+        <span class="profile__item-header">
+            Autopayments settings
+        </span>
+    <span class="profile__item-text">
+            Enable and disable AutoPayments for your invoices.
+            When AutoPayments are enabled, all new invoices will be paid automatically.
+            By default, you need to pay new invoices manually.
+            AutoPayments not available for PayPal.
+        </span>
+    <div class="profile__item-switch mt-16">
+        <form *ngIf="form" [formGroup]="form">
+            <app-switch formControlName="switch"></app-switch>
+        </form>
+    </div>
+</div>

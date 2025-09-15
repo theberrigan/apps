@@ -1,0 +1,29 @@
+- .dff  15356  399.9mb   http://gtamodding.ru/wiki/DFF         3D Models
+- .txd   4046  883.2mb   http://gtamodding.ru/wiki/TXD         Textures
+- .ifp    436  276.1mb   http://gtamodding.ru/wiki/IFP         Animations
+- .rrr    426    2.2mb   http://gtamodding.ru/wiki/RRR         Scripted Races
+- .dat    324   11.5mb   http://gtamodding.ru/wiki/DAT         Arbitrary Configurations
+- .col    254   18.8mb   http://gtamodding.ru/wiki/COL         Collisions
+- .ipl    243   10.6mb   http://gtamodding.ru/wiki/IPL         Item Placement on Map
+- .cut    148  296.0kb   http://gtamodding.ru/wiki/CUT         https://gtamods.com/wiki/Cutscene
+! .scm     80    3.5mb   http://gtamodding.ru/wiki/SCM         Game Script
++ .ide     59  676.3kb   http://gtamodding.ru/wiki/IDE         Item Definitions
+- .ped     38   88.9kb   
++ .img      8    1.4gb   http://gtamodding.ru/wiki/IMG         File Archive
+- .grp      5   14.3kb   
+- .gxt      5    3.7mb   http://gtamodding.ru/wiki/GXT_(SA)    Text Data (Subtitles, UI, ...)
+- .txt      3  274.9kb                                         audio/CONFIG/AudioEventHistory.txt, data/AudioEvents.txt, data/Decision/PedEvent.txt 
+- .icn      3  192.8kb
+- .zon      2   27.9kb
+- .cfg      1   63.0kb   http://gtamodding.ru/wiki/CFG         [handling.cfg] Vehicle Config
+- .sc       1    5.9kb
+- .fxp      1  602.3kb
+------------------------------
+.fxp consists of .fxs
++ audio w/o extensions
+save files
+replay files
+ 
+DFF + TXD: https://gtamods.com/wiki/RenderWare_binary_stream_file
+           http://gtamodding.ru/wiki/RenderWare_binary_stream_file
+           https://gtamods.com/wiki/Texture_Dictionary_(RW_Section)

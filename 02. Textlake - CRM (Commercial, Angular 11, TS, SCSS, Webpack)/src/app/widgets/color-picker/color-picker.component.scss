@@ -1,0 +1,103 @@
+@import '../../../assets/css/definitions.scss';
+
+.color-picker {
+    $palette-size: 200px;
+    $hue-height: $palette-size;
+    $hue-width: 32px;
+
+    display: block;
+    width: 100%;
+    height: 34px;
+    position: relative;
+    user-select: none;
+
+
+    &__display {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: $font-weight-medium;
+        width: 100%;
+        height: 100%;
+        padding: 0 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+
+        &-text {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+    }
+
+    &_disabled &__display {
+        cursor: default;
+    }
+
+    &__popup {
+        display: flex;
+        flex-flow: row nowrap;
+        position: absolute;
+        left: 50%;
+        bottom: 100%;
+        transform: translate(-50%, -15px);
+        background-color: #fff;
+        border: 1px solid #CED6DE;
+        border-radius: 4px;
+        box-shadow: 0 3px 12px rgba(27, 31, 35, 0.15);
+        visibility: hidden;
+
+        &_active {
+            visibility: visible;
+        }
+
+        /*
+        &-palette {
+            position: relative;
+            width: $palette-size + 2px;
+            height: $palette-size + 2px;
+            border: 1px solid $color-text-primary;
+            margin-right: 14px;
+        }
+
+        &-hue {
+            position: relative;
+            width: $hue-width + 2px;
+            height: $hue-height + 2px;
+            border: 1px solid $color-text-primary;
+        }
+        */
+
+        &:before,
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        &:before {
+            width: 20px;
+            height: 20px;
+            border: 10px solid transparent;
+            border-top-color: #CED6DE;
+        }
+
+        &:after {
+            width: 18px;
+            height: 18px;
+            border: 9px solid transparent;
+            border-top-color: #fff;
+        }
+    }
+}
+
+body.body_color-picker-active {
+    user-select: none !important;
+}

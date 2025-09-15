@@ -1,0 +1,164 @@
+html,
+body {
+    background-color: #1b2838;
+}
+
+.table {
+    --bs-table-border-color: #576881;
+    margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: contain;
+}
+
+.page-content {
+    max-width: 1140px;
+    padding: 40px 0 250px;
+}
+
+.achievements {
+    margin-top: 40px;
+}
+
+.achievements__meta {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+}
+
+.achievements__meta-left {
+    flex: 1;
+}
+
+.achievements__meta-right {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+    width: 35%;
+    margin-left: 25px;
+}
+
+.achievements__meta-image {
+    overflow: hidden;
+    border-radius: 6px;
+}
+
+.achievements__meta-image > img {
+    display: block;
+    width: 100%;
+}
+
+.achievements__meta-title {
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.achievements__meta-description {
+    font-size: 16px;
+    line-height: 22px;
+    margin-top: 10px;    
+}
+
+.achievements__info-table {
+
+}
+
+.achievements__info-table tr > th {
+    white-space: nowrap;
+    width: 1px;
+}
+
+.achievements__filters {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 40px;
+}
+
+.achievements__filter-achieve,
+.achievements__filter-sort {
+    width: auto;
+    max-width: 250px;
+}
+
+.achievements__filter-sort,
+.achievements__filters-copy,
+.achievements__filters-download {    
+    margin-left: 10px;
+}
+
+.achievements__stats {
+    margin-top: 25px;
+}
+
+.achievements__table {
+    margin-top: 10px;
+}
+
+.achievement {
+
+}
+
+.achievements__table .achievement .achievement__img-cell {
+    padding: 0;
+    width: 1px;
+}
+
+.achievement__img {
+    display: block;
+    width: 80px;
+    height: 80px;
+}
+
+.achievement__name,
+.achievement__name:link,
+.achievement__name:active,
+.achievement__name:focus,
+.achievement__name:visited {
+    color: var(--bs-body-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.achievement__name_achieved,
+.achievement__name_achieved:link,
+.achievement__name_achieved:active,
+.achievement__name_achieved:focus,
+.achievement__name_achieved:visited {
+    color: rgb(var(--bs-success-rgb));
+}
+
+.achievement__name:hover {
+    text-decoration: underline;
+}
+
+.achievement__badge {
+    margin-left: 5px;
+}
+
+.achievements__info-table,
+.achievements__table,
+.achievements__stats-table {
+    backdrop-filter: blur(10px);
+}
+
+.achievements__table:not([hidden]) + .achievements__stats-table {
+    margin-top: 30px;    
+}
+
+.achievements__stats-table {
+    font-family: Consolas, "Courier New", monospace;    
+}
+
+.achievements__stats-table > tbody > tr > td:first-child {
+    margin-top: 30px;
+    white-space: nowrap;
+    width: 1px;
+}

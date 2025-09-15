@@ -1,0 +1,80 @@
+@import './definitions.scss';
+
+.input {
+    display: inline-flex;
+    color: $color-text-primary;
+    font-weight: $font-weight-medium;
+    text-align: left;
+    border-radius: $control-primary-radius;
+    border: $control-border-size solid $color-input-deco-color;
+    box-shadow: $control-box-shadow;
+    background-color: #fff;
+
+    &:focus,
+    &_focus {
+        border-color: $color-primary-blue;
+    }
+
+    &_has-error.ng-dirty,
+    &_has-error.ng-dirty:focus,
+    &_invalid.ng-dirty,
+    &_invalid.ng-dirty:focus {
+        border-color: $color-input-error-borders;
+    }
+
+    fieldset[disabled] &,
+    &[readonly],
+    &[disabled] {
+        box-shadow: none;
+        transform: none;
+        pointer-events: none;
+        opacity: 0.7;
+        cursor: default;
+    }
+
+    &::placeholder               { color: $color-input-placeholder; }
+    &::-moz-placeholder          { color: $color-input-placeholder; }
+    &::-webkit-input-placeholder { color: $color-input-placeholder; }
+    &::-ms-input-placeholder     { color: $color-input-placeholder; }
+    &:-ms-input-placeholder      { color: $color-input-placeholder; }
+
+    &_regular {
+        $font-size: 14px;
+        $line-height: ($font-size + 4px);
+        $base-y-padding: floor(($control-height-regular - $line-height - ($control-border-size * 2)) / 2);
+
+        font-size: $font-size;
+        line-height: $line-height;
+        height: $control-height-regular;
+        min-width: $control-height-regular * 2;
+        padding: ($base-y-padding - 1px) 12px ($base-y-padding + 1px);
+    }
+
+    &_large {
+        $font-size: 16px;
+        $line-height: ($font-size + 4px);
+        $base-y-padding: floor(($control-height-large - $line-height - ($control-border-size * 2)) / 2);
+
+        font-size: $font-size;
+        line-height: $line-height;
+        height: $control-height-large;
+        min-width: $control-height-large * 2;
+        padding: ($base-y-padding - 1px) 16px ($base-y-padding + 1px);
+    }
+
+    &_no-border_tr {
+        border-top-right-radius: 0;
+    }
+
+    &_no-border_br {
+        border-bottom-right-radius: 0;
+    }
+
+    &_no-border_bl {
+        border-bottom-left-radius: 0;
+    }
+
+    &_no-border_tl {
+        border-top-left-radius: 0;
+    }
+}

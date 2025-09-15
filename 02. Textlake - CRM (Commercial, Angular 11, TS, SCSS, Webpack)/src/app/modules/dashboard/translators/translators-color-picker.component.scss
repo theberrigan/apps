@@ -1,0 +1,53 @@
+@import '../../../../assets/css/definitions';
+@import '../../../../assets/css/mixins';
+
+.translators-color-picker {
+    display: block;
+    position: relative;
+    height: $control-height-regular;
+    user-select: none;
+
+    &__display {
+        height: 100%;
+        width: 100%;
+        border-radius: $control-primary-radius;
+        cursor: pointer;
+        border: $control-border-size solid rgba(27, 77, 128, 0.25);
+        box-shadow: $control-box-shadow;
+    }
+
+    fieldset[disabled] &__display,
+    &_disabled &__display {
+        opacity: 0.5;
+        cursor: default;
+    }
+
+    &__popup {
+        cursor: default;
+        position: absolute;
+        z-index: 1;
+        bottom: 100%;
+        left: 0;
+        transform: translateY(-5px);
+        background-color: #fff;
+        display: flex;
+        flex-flow: row wrap;
+        border-radius: ($control-primary-radius + 1px);
+        padding: 2px;
+        width: 216px;
+        border: 1px solid #CED6DE;
+        box-shadow: 0 3px 12px rgba(27, 31, 35, 0.15);
+
+        &-color {
+            cursor: pointer;
+            width: 34px;
+            height: 34px;
+            border-radius: ($control-primary-radius - 1px);
+            margin: 4px;
+
+            &_active {
+                box-shadow: 0 0 0 1px #fff, 0 0 0 3px $color-primary-blue;
+            }
+        }
+    }
+}

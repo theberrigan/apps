@@ -1,0 +1,171 @@
+<fieldset [disabled]="isSaving || isSubmittingFundingSource || isSubmittingPayment">
+    <ng-container [ngSwitch]="layout">
+        <action-panel *ngSwitchCase="'main'">
+            <div class="action-panel__primary">
+                <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ 'subs.subscription__header' | translate }}</h1>
+            </div>
+            <div class="action-panel__secondary">
+                <div class="action-panel__item">
+                    <button type="button" class="button button_regular button_blue" [isProgress]="isSaving" [isDisabled]="!isChanged" (click)="onSave()">
+                        <span class="button__caption">{{ 'subs.save__button' | translate }}</span>
+                    </button>
+                </div>
+            </div>
+        </action-panel>
+        <action-panel *ngSwitchCase="'plans'">
+            <div class="action-panel__primary">
+                <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ 'subs.choose_plan__header' | translate }}</h1>
+            </div>
+        </action-panel>
+    </ng-container>
+
+    <ng-container [ngSwitch]="state">
+        <div class="subscriptions-editor__spinner" *ngSwitchCase="'loading'">
+            <spinner class="spinner spinner_blue spinner_small"></spinner>
+        </div>
+        <div class="subscriptions-editor__message subscriptions-editor__message_error" *ngSwitchCase="'error'">
+            {{ 'subs.init__error' | translate }}
+        </div>
+        <ng-container *ngSwitchCase="'editor'" [ngSwitch]="layout">
+            <div class="subscriptions-editor__editor" *ngSwitchCase="'main'" [ngSwitch]="viewportBreakpoint">
+                <div class="tabs">
+                    <div class="tabs__tab tabs__tab_no-icon" [class.tabs__tab_active]="activeTab === 'general'" (click)="onSwitchTab('general')">
+                        <span class="tabs__tab-caption">{{ 'subs.general_tab' | translate }}</span>
+                    </div>
+                    <div class="tabs__tab tabs__tab_no-icon" [class.tabs__tab_active]="activeTab === 'invoices'" (click)="onSwitchTab('invoices')" *ngIf="invoices.length > 0">
+                        <span class="tabs__tab-caption">{{ 'subs.invoices_tab' | translate }}</span>
+                    </div>
+                </div>
+
+                <div class="tab-content" [class.tab-content_active]="activeTab === 'general'">
+                    <div class="subscriptions-editor__controls">
+                        <div class="subscriptions-editor__control">
+                            <label class="subscriptions-editor__control-label">
+                                <span class="subscriptions-editor__control-label-text">
+                                    {{ 'subs.current_plan' | translate }}
+                                </span>
+                            </label>
+                            <div class="subscriptions-editor__control-value" [ngSwitch]="canChangePlan">
+                                <ng-container *ngSwitchCase="false">
+                                    {{ subscription ? subscription.plan.name : ('subs.choose_plan' | translate) }}
+                                </ng-container>
+                                <span *ngSwitchCase="true" class="subscriptions-editor__pseudo-link" (click)="onChangePlan()">
+                                    {{ subscription ? subscription.plan.name : ('subs.choose_plan' | translate) }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="subscriptions-editor__control subscriptions-editor__control_has-input" *ngIf="subscription">
+                            <label class="subscriptions-editor__control-label">
+                                <span class="subscriptions-editor__control-label-text">
+                                    {{ 'subs.users_quantity' | translate }}
+                                </span>
+                            </label>
+                            <select class="select select_regular subscriptions-editor__control-input" [(ngModel)]="usersNumber" (ngModelChange)="onChange()">
+                                <option *ngFor="let usersOption of usersOptions" [ngValue]="usersOption" [innerHTML]="usersOption"></option>
+                            </select>
+                        </div>
+                        <div class="subscriptions-editor__control">
+                            <label class="subscriptions-editor__control-label">
+                                <span class="subscriptions-editor__control-label-text">
+                                    {{ 'subs.funding_source' | translate }}
+                                </span>
+                            </label>
+                            <div class="subscriptions-editor__control-value">
+                                <span class="subscriptions-editor__pseudo-link" [ngSwitch]="!!(subscription && subscription.fundingSource)" (click)="onChangeFundingSource()">
+                                    <ng-container *ngSwitchCase="true">{{ subscription.fundingSource.brand }} {{ subscription.fundingSource.expMonth && subscription.fundingSource.expMonth < 10 ? '0' : '' }}{{ subscription.fundingSource.expMonth }}/{{ subscription.fundingSource.extYear }} ***{{ subscription.fundingSource.last4 }}</ng-container>
+                                    <ng-container *ngSwitchCase="false">{{ 'subs.add_new_card__button' | translate }}</ng-container>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="subscriptions-editor__control" *ngIf="nextBill && nextBill.amountDue">
+                            <label class="subscriptions-editor__control-label">
+                                <span class="subscriptions-editor__control-label-text">
+                                    {{ 'subs.next_bill_label' | translate }}
+                                </span>
+                            </label>
+                            <div class="subscriptions-editor__control-value">
+                                {{ nextBill.amountDue / 100 | currency : nextBill.currency.toUpperCase() : 'symbol' : '.2-2' }} ({{ nextBill.periodEnd | datetime : datetimeDisplayFormat }})
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content" [class.tab-content_active]="activeTab === 'invoices'" *ngIf="invoices.length > 0">
+                    <div class="subscriptions-editor__invoices">
+                        <div class="items-table-wrap">
+                            <table class="items-table">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'subs.number__table_header' | translate }}</th>
+                                        <th>{{ 'subs.date__table_header' | translate }}</th>
+                                        <th>{{ 'subs.total__table_header' | translate }}</th>
+                                        <th class="table-cell-tight" *ngIf="hasUnpaidInvoices">&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let invoice of invoices">
+                                        <td>{{ invoice.number }}</td>
+                                        <td>{{ (invoice.date * 1000) | datetime : datetimeDisplayFormat }}</td>
+                                        <td>{{ invoice.total / 100 | currency : invoice.currency.toUpperCase() : 'symbol' : '.2-2' }}</td>
+                                        <td class="table-cell-tight table-cell-no-padding" *ngIf="hasUnpaidInvoices">
+                                            <button type="button" class="subscriptions-editor__pay-button" *ngIf="!invoice.paid" (click)="onPay(invoice)" [title]="'subs.pay__button' | translate"></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <plan *ngSwitchCase="'plans'" [isStandalone]="false" (onSubscribed)="onPlanChanged()"></plan>
+
+            <popup-custom #fundingSourcePopup [options]="{ closeBy: 'manual' }" class="subscriptions-editor__funding-source-popup" (onCloseRequest)="onHideFundingSourcePopup($event)" *ngIf="isFundingSourcePopupVisible">
+                <popup-box>
+                    <popup-header>{{ 'subs.change_funding_source__header' | translate }}</popup-header>
+                    <popup-content>
+                        <!-- Content -->
+                        <funding-source #fundingSource (onResult)="onFundingSourceSubmitted($event)"></funding-source>
+                        <!-- /Content -->
+                    </popup-content>
+                    <popup-controls>
+                        <div class="popup__controls-buttons">
+                            <button type="button" class="button button_regular button_white" (click)="onHideFundingSourcePopup()">
+                                <span class="button__caption">{{ 'subs.cfs_cancel__button' | translate }}</span>
+                            </button>
+                            <button type="button" class="button button_regular button_blue" (click)="onSubmitFundingSource()" [isProgress]="isSubmittingFundingSource" [isDisabled]="!isCardValid()">
+                                <span class="button__caption">{{ 'subs.cfs_ok__button' | translate }}</span>
+                            </button>
+                        </div>
+                    </popup-controls>
+                </popup-box>
+            </popup-custom>
+
+            <popup-custom #paymentPopup [options]="{ closeBy: 'manual' }" class="subscriptions-editor__payment-popup" (onCloseRequest)="onHidePaymentPopup($event)" *ngIf="isPaymentPopupVisible">
+                <popup-box>
+                    <popup-header>{{ 'subs.payment_popup__header' | translate }}</popup-header>
+                    <popup-content>
+                        <!-- Content -->
+                        <div class="subscriptions-editor__payment-popup-existing">
+                            <button type="button" class="button button_regular button_blue" (click)="onSubmitPayment(true)" [isProgress]="isSubmittingPayment && isPaymentWithExistingFundingSource">
+                                <span class="button__caption">{{ 'subs.pay_with__button' | translate }}&nbsp;<strong>{{ subscription.fundingSource.brand }}&nbsp;***{{ subscription.fundingSource.last4 }}</strong></span>
+                            </button>
+                            <div class="subscriptions-editor__payment-popup-or">&mdash;&nbsp;or&nbsp;&mdash;</div>
+                        </div>
+                        <div class="subscriptions-editor__payment-popup-new-funding-source">{{ 'subs.use_new_card__button' | translate }}</div>
+                        <funding-source #paymentFundingSource (onResult)="onPaymentFundingSourceSubmitted($event)"></funding-source>
+                        <!-- /Content -->
+                    </popup-content>
+                    <popup-controls>
+                        <div class="popup__controls-buttons">
+                            <button type="button" class="button button_regular button_white" (click)="onHidePaymentPopup()">
+                                <span class="button__caption">{{ 'subs.payment_cancel__button' | translate }}</span>
+                            </button>
+                            <button type="button" class="button button_regular button_blue" (click)="onSubmitPayment(false)" [isProgress]="isSubmittingPayment && !isPaymentWithExistingFundingSource" [isDisabled]="!isPaymentCardValid()">
+                                <span class="button__caption">{{ 'subs.payment_ok__button' | translate }}</span>
+                            </button>
+                        </div>
+                    </popup-controls>
+                </popup-box>
+            </popup-custom>
+        </ng-container>
+    </ng-container>
+</fieldset>

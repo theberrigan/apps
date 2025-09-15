@@ -1,0 +1,33 @@
+@import '../../../assets/css/definitions';
+@import '../../../assets/css/mixins';
+@import './popup.definitions';
+
+.popup {
+    &__controls {
+        display: block;
+        position: relative;
+        z-index: 2;
+        padding: $primary-padding;
+        border-top: 1px solid transparent;
+        @include clear-fix;
+
+        &-buttons {
+            float: right;
+
+            > .button {
+                float: left;
+            }
+
+            > .button + .button {
+                margin-left: 10px;
+            }
+        }
+    }
+
+    &_fix-controls &__controls {
+        position: fixed;
+        bottom: 0;
+        background-color: #fff;
+        border-top-color: $border-color;
+    }
+}

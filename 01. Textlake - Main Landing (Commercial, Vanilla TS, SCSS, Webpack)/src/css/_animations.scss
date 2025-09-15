@@ -1,0 +1,31 @@
+@keyframes focus-rings {
+    0% {
+        opacity: 0.1;
+        transform: scale(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
+}
+
+@keyframes main-wave {
+    0% {
+        background-position: 0 1px;
+    }
+
+    100% {
+        background-position: 1920px 1px;
+    }
+}
+
+@keyframes dash-flow {
+    0% {
+        stroke-dashoffset: 0;
+    }
+
+    100% {
+        stroke-dashoffset: -1000;
+    }
+}

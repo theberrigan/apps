@@ -1,0 +1,151 @@
+<fieldset [disabled]="isSaving">
+    <action-panel>
+        <div class="action-panel__primary">
+            <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ 'settings.company.company__header' | translate }}</h1>
+        </div>
+        <div class="action-panel__secondary">
+            <div class="action-panel__item">
+                <button type="button" class="button button_regular button_blue" [isProgress]="isSaving" (click)="onSave()">
+                    <span class="button__caption">{{ 'settings.company.save__button' | translate }}</span>
+                </button>
+            </div>
+        </div>
+    </action-panel>
+
+    <ng-container [ngSwitch]="state">
+        <div class="company-editor__spinner" *ngSwitchCase="'loading'">
+            <spinner class="spinner spinner_blue spinner_small"></spinner>
+        </div>
+        <div class="company-editor__message company-editor__message_error" *ngSwitchCase="'error'">
+            {{ 'settings.mailboxes.error' | translate }}
+        </div>
+        <div class="company-editor__editor" *ngSwitchCase="'editor'">
+            <div class="company-editor__controls" [formGroup]="form">
+                <div class="company-editor__control">
+                    <label class="company-editor__control-label">
+                        <span class="company-editor__control-label-text">
+                            {{ 'settings.company.preferred_language__label' | translate }}
+                        </span>
+                    </label>
+                    <select class="select select_regular company-editor__control-input" formControlName="preferredLanguage">
+                        <option *ngFor="let langOption of langOptions" [ngValue]="langOption.value" [innerHTML]="langOption.display | translate"></option>
+                    </select>
+                </div>
+                <div class="company-editor__control">
+                    <label class="company-editor__control-label">
+                        <span class="company-editor__control-label-text">
+                            {{ 'settings.company.name__label' | translate }}
+                        </span>
+                    </label>
+                    <input type="text" class="input input_regular company-editor__control-input" formControlName="name">
+                </div>
+                <div class="company-editor__control">
+                    <label class="company-editor__control-label">
+                        <span class="company-editor__control-label-text">
+                            {{ 'settings.company.email__label' | translate }}
+                        </span>
+                    </label>
+                    <input type="text" class="input input_regular company-editor__control-input" formControlName="email">
+                </div>
+                <div class="company-editor__control">
+                    <label class="company-editor__control-label">
+                        <span class="company-editor__control-label-text">
+                            {{ 'settings.company.phone__label' | translate }}
+                        </span>
+                    </label>
+                    <input type="text" class="input input_regular company-editor__control-input" formControlName="phone">
+                </div>
+                <div class="company-editor__control">
+                    <label class="company-editor__control-label">
+                        <span class="company-editor__control-label-text">
+                            {{ 'settings.company.fax__label' | translate }}
+                        </span>
+                    </label>
+                    <input type="text" class="input input_regular company-editor__control-input" formControlName="fax">
+                </div>
+                <div class="company-editor__control">
+                    <label class="company-editor__control-label">
+                        <span class="company-editor__control-label-text">
+                            {{ 'settings.company.address_line_1__label' | translate }}
+                        </span>
+                    </label>
+                    <input type="text" class="input input_regular company-editor__control-input" formControlName="street">
+                </div>
+                <div class="company-editor__control">
+                    <label class="company-editor__control-label">
+                        <span class="company-editor__control-label-text">
+                            {{ 'settings.company.address_line_2__label' | translate }}
+                        </span>
+                    </label>
+                    <input type="text" class="input input_regular company-editor__control-input" formControlName="street2">
+                </div>
+                <div class="company-editor__control">
+                    <label class="company-editor__control-label">
+                        <span class="company-editor__control-label-text">
+                            {{ 'settings.company.city__label' | translate }}
+                        </span>
+                    </label>
+                    <input type="text" class="input input_regular company-editor__control-input" formControlName="city">
+                </div>
+                <div class="company-editor__control">
+                    <label class="company-editor__control-label">
+                        <span class="company-editor__control-label-text">
+                            {{ 'settings.company.zip_code__label' | translate }}
+                        </span>
+                    </label>
+                    <input type="text" class="input input_regular company-editor__control-input" formControlName="zipCode">
+                </div>
+                <div class="company-editor__control">
+                    <label class="company-editor__control-label">
+                        <span class="company-editor__control-label-text">
+                            {{ 'settings.company.state__label' | translate }}
+                        </span>
+                    </label>
+                    <input type="text" class="input input_regular company-editor__control-input" formControlName="state">
+                </div>
+                <div class="company-editor__control">
+                    <label class="company-editor__control-label">
+                        <span class="company-editor__control-label-text">
+                            {{ 'settings.company.country__label' | translate }}
+                        </span>
+                    </label>
+                    <input type="text" class="input input_regular company-editor__control-input" formControlName="country">
+                </div>
+                <div class="company-editor__control">
+                    <label class="company-editor__control-label">
+                        <span class="company-editor__control-label-text">
+                            {{ 'settings.company.timezone__label' | translate }}
+                        </span>
+                    </label>
+                    <select class="select select_regular company-editor__control-input" formControlName="timeZone">
+                        <option *ngFor="let timezoneOption of timezoneOptions" [ngValue]="timezoneOption.value" [innerHTML]="timezoneOption.display"></option>
+                    </select>
+                </div>
+                <div class="company-editor__control">
+                    <label class="company-editor__control-label">
+                        <span class="company-editor__control-label-text">
+                            {{ 'settings.company.tin__label' | translate }}
+                        </span>
+                    </label>
+                    <input type="text" class="input input_regular company-editor__control-input" formControlName="tin">
+                </div>
+                <div class="company-editor__control">
+                    <label class="company-editor__control-label">
+                        <span class="company-editor__control-label-text">
+                            {{ 'settings.company.bank_name__label' | translate }}
+                        </span>
+                    </label>
+                    <input type="text" class="input input_regular company-editor__control-input" formControlName="bankName">
+                </div>
+                <div class="company-editor__control">
+                    <label class="company-editor__control-label">
+                        <span class="company-editor__control-label-text">
+                            {{ 'settings.company.bank_account__label' | translate }}
+                        </span>
+                    </label>
+                    <input type="text" class="input input_regular company-editor__control-input" formControlName="bankAccount">
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</fieldset>

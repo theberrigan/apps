@@ -1,0 +1,124 @@
+<div class="auth__content">
+
+    <app-auth-logo></app-auth-logo>
+
+    <div class="auth__box" [formGroup]="authForm">
+        <fieldset class="auth__fieldset">
+
+            <label class="auth__label">
+                <span class="auth__label-text">{{ 'auth.phone_label' | translate }}</span>
+                <!--<svg xmlns="http://www.w3.org/2000/svg" width="1235" height="650" preserveAspectRatio="xMidYMid meet">
+                    <use xlink:href="#svg-flag-usa"></use>
+                </svg>-->
+                <span class="auth__phone-wrapper">
+                    <input type="text" class="auth__input auth__input_phone"
+                           #phoneInput
+                           id="main_reg_tel"
+                           autofocus
+                           appPhoneMask
+                           [phoneControl]="authForm.get('phone')"
+                           [startedControlValue]="authForm.get('phone').value"
+                           (keyup)="onInputKeyUp($event)"
+                           formControlName="phone"
+                           data-cy="auth-phone-input">
+                    <span [class.auth__phone-prefix_disabled]="!isActiveControl('phone')"
+                          class="auth__phone-prefix">
+                        <span class="auth__phone-prefix-icon"></span>
+                        <span class="auth__phone-prefix-text">+1</span>
+                    </span>
+                    <button (click)="onClearPhone()"
+                            *ngIf="!isActiveControl('phone')"
+                            [@showHidePhoneClear]
+                            [title]="'auth.clear_phone' | translate"
+                            class="auth__phone-clear"
+                            type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                             class="auth__phone-clear-icon">
+                            <polygon style="fill: currentColor;"
+                                     points="18.48 17.07 17.07 18.48 12 13.41 6.93 18.48 5.51 17.07 10.59 12 5.51 6.93 6.93 5.51 12 10.59 17.07 5.51 18.48 6.93 13.41 12 18.48 17.07"></polygon>
+                        </svg>
+                    </button>
+                </span>
+            </label>
+
+            <div (@showHidePin.done)="onPinShown($event)"
+                 *ngIf="isActiveControl('pin')"
+                 [@showHidePin]
+                 class="auth__code-wrapper">
+                <div class="auth__code-input">
+                    <label class="auth__label">
+                        <span class="auth__label-text">{{ 'auth.pin_label' | translate }}</span>
+                        <input type="text" class="auth__input"
+                               #pinInput
+                               (keyup)="onInputKeyUp($event)"
+                               formControlName="pin"
+                               data-cy="auth-pin-input">
+                    </label>
+                    <div class="auth__resend" [ngSwitch]="!!resendPinTimerTimeout">
+                        <div *ngSwitchCase="true"
+                             [innerHTML]="'auth.resend_message' | translate : { time: resendPinTimerTimeout }"
+                             class="auth__resend-message"></div>
+                        <span (click)="resendNewPin()"
+                              *ngSwitchCase="false"
+                              [innerHTML]="'auth.resend_trigger' | translate"
+                              class="auth__resend-trigger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-error" *ngIf="formError.isShow">
+                <span>{{ formError.messageTranslateKey | translate }}</span>
+            </div>
+            <div class="auth__controls">
+                <button (click)="onSubmit()"
+                        [isDisabled]="isSubmitLoading || !isAllFormValid()"
+                        [isProgress]="isSubmitLoading"
+                        class="button button_size-2 button_blue"
+                        data-cy="auth-submit-button"
+                        type="button">
+                    <span [ngSwitch]="activeField"
+                          class="button__caption">
+                        <span *ngSwitchCase="'phone'">{{ 'auth.send_pin_button' | translate }}</span>
+                        <span *ngSwitchCase="'pin'">{{ 'auth.login_button' | translate }}</span>
+                    </span>
+                </button>
+            </div>
+        </fieldset>
+    </div>
+    <div class="auth__footer">
+        <div class="auth__footer-lang">
+            <lang-switcher></lang-switcher>
+        </div>
+        <a *ngIf="false"
+           [class.auth__footer-link_has-dot]="termsSession.hasDot"
+           [routerLink]="termsSession.link"
+           class="auth__footer-link">{{ 'auth.tnc' | translate }}</a>
+        <div class="auth__footer-etc">
+            <button (click)="onEtcTriggerClick($event)"
+                    class="auth__footer-etc-trigger"
+                    type="button">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     width="24"
+                     height="24"
+                     viewBox="0 0 24 24">
+                    <path style="fill: currentColor;"
+                          d="M7,12a2,2,0,1,1-2-2A2,2,0,0,1,7,12Zm5-2a2,2,0,1,0,2,2A2,2,0,0,0,12,10Zm7,0a2,2,0,1,0,2,2A2,2,0,0,0,19,10Z">
+                    </path>
+                </svg>
+            </button>
+            <div (click)="onEtcMenuClick($event)"
+                 *ngIf="isEtcMenuActive"
+                 class="auth__footer-etc-menu">
+                <a (click)="onEtcItemClick($event)"
+                   class="auth__footer-etc-menu-item"
+                   routerLink="/faq">
+                    <span>{{ 'auth.faq' | translate }}</span>
+                </a>
+                <a (click)="onEtcItemClick($event)"
+                   class="auth__footer-etc-menu-item"
+                   routerLink="/contact-us">
+                    <span>{{ 'auth.contact_us' | translate }}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

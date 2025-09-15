@@ -1,0 +1,47 @@
+@import '../../../assets/css/definitions.scss';
+@import '../../../assets/css/mixins.scss';
+
+.pagination {
+    display: block;
+    position: relative;
+    @include no-select;
+
+    &__load-more {
+        margin-bottom: 20px;
+    }
+
+    &__buttons {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-end;
+
+        .button {
+            $padding: 14px;
+
+            padding-left: $padding;
+            padding-right: $padding;
+        }
+
+        .button:first-child {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .button + .button {
+            margin-left: -1px;
+        }
+
+        .button + .button:not(:last-child) {
+            border-radius: 0;
+        }
+
+        .button + .button:last-child {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .button_blue {
+            z-index: 1;
+        }
+    }
+}

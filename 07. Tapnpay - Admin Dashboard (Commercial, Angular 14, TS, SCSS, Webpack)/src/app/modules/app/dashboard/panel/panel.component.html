@@ -1,0 +1,27 @@
+<div class="panel__content">
+    <div class="panel__logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1442" height="420" class="panel__logo-svg" preserveAspectRatio="xMidYMid meet">
+            <use xlink:href="#svg-logo"></use>
+        </svg>
+    </div>
+    <search *ngIf="isSearchVisible"></search>
+    <nav></nav>
+    <div class="panel__user">
+        <button type="button" class="panel__user-trigger" (click)="onUserMenuTriggerClick($event)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" class="panel__user-icon">
+                <path style="fill: currentColor;" d="M15,.5A14.5,14.5,0,1,0,29.5,15,14.51,14.51,0,0,0,15,.5Zm0,3a11.49,11.49,0,0,1,9.37,18.16,15.47,15.47,0,0,0-18.74,0A11.49,11.49,0,0,1,15,3.5Zm0,23a11.47,11.47,0,0,1-7.31-2.63,12.46,12.46,0,0,1,14.62,0A11.47,11.47,0,0,1,15,26.5Zm0-10A5.5,5.5,0,1,1,20.5,11,5.51,5.51,0,0,1,15,16.5Zm0-8A2.5,2.5,0,1,0,17.5,11,2.5,2.5,0,0,0,15,8.5Z"></path>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="9" viewBox="0 0 14 9" class="panel__user-triangle">
+                <path style="fill: currentColor;" d="M13.14,2.41,8.48,7.07h0L7.07,8.49,1,2.41,2.41,1,7.07,5.66,11.73,1Z"></path>
+            </svg>
+        </button>
+        <div class="panel__user-menu" (click)="onUserMenuClick($event)" *ngIf="isUserMenuActive">
+            <!--<a routerLink="/dashboard/profile" class="panel__user-menu-item" (click)="onUserMenuItemClick($event)">
+                {{ 'dashboard.edit_profile' | translate }}
+            </a>-->
+            <button type="button" class="panel__user-menu-item" (click)="onLogout($event)">
+                {{ 'dashboard.logout' | translate }}
+            </button>
+        </div>
+    </div>
+</div>

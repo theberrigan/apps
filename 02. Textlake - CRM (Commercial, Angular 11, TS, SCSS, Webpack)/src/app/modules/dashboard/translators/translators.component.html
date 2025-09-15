@@ -1,0 +1,166 @@
+<ng-template #listOptionsTpl>
+    <ng-container *ngIf="state">
+        <div class="action-panel__item filters__filter">
+            <label class="filters__filter-label">{{ 'sidebar.order_by' | translate }}</label>
+            <sort-select class="filters__filter-input" [(ngModel)]="state.sort" [options]="sortOptions" (ngModelChange)="onOrderChange()"></sort-select>
+        </div>
+    </ng-container>
+</ng-template>
+
+<action-panel>
+    <div class="action-panel__primary">
+        <h1 class="action-panel__header">{{ 'settings.translators.list.translators__headers' | translate }}</h1>
+        <a class="button button_regular button_green" routerLink="/dashboard/translator/create" *ngIf="canEdit">
+            <span class="button__caption">{{ 'settings.translators.list.add__button' | translate }}</span>
+        </a>
+    </div>
+    <div class="action-panel__secondary">
+        <ng-container *ngIf="viewportBreakpoint === 'desktop'">
+            <ng-container [ngTemplateOutlet]="listOptionsTpl"></ng-container>
+            <div class="action-panel__item">
+                <list-view [(ngModel)]="state.view.desktop" (ngModelChange)="saveState()"></list-view>
+            </div>
+        </ng-container>
+        <div class="action-panel__item">
+            <sidebar-trigger [sidebar]="sidebar" [hasMark]="false" (onClick)="sidebar.toggle()"></sidebar-trigger>
+        </div>
+    </div>
+</action-panel>
+
+<sidebar #sidebar [isDesktopActive]="isDesktopSidebarActive" (isDesktopActiveChange)="onSidebarToggle($event)">
+    <div class="sidebar__title">&nbsp;</div>
+    <div class="sidebar__section" *ngIf="viewportBreakpoint !== 'desktop'">
+        <div class="sidebar__label" [canCollapse]="true" [isCollapsed]="state.sidebar.collapse.options" (isCollapsedChange)="onSidebarSectionCollapse('options', $event)">{{ 'sidebar.list_options' | translate }}</div>
+        <div class="filters">
+            <ng-container [ngTemplateOutlet]="listOptionsTpl"></ng-container>
+        </div>
+    </div>
+    <div class="sidebar__section">
+        <div class="sidebar__label" [canCollapse]="true" [isCollapsed]="state.sidebar.collapse.filters" (isCollapsedChange)="onSidebarSectionCollapse('filters', $event)">{{ 'sidebar.filters' | translate }}</div>
+        <form [formGroup]="filtersForm" (ngSubmit)="onFiltersSubmit()">
+            <div class="filters">
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'settings.translators.list.filters.translator_name' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="name">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'settings.translators.list.filters.city' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="city">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'settings.translators.list.filters.email' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="email">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'settings.translators.list.filters.phone' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="phone">
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'settings.translators.list.filters.from' | translate }}</label>
+                    <select class="select select_regular filters__filter-input" formControlName="languageFrom">
+                        <option *ngFor="let langOption of langOptions" [ngValue]="langOption.value" [innerHTML]="langOption.display | translate"></option>
+                    </select>
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'settings.translators.list.filters.to' | translate }}</label>
+                    <select class="select select_regular filters__filter-input" formControlName="languageTo">
+                        <option *ngFor="let langOption of langOptions" [ngValue]="langOption.value" [innerHTML]="langOption.display | translate"></option>
+                    </select>
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'settings.translators.list.filters.translation_type' | translate }}</label>
+                    <select class="select select_regular filters__filter-input" formControlName="translationTypeId">
+                        <option *ngFor="let translationTypeOption of translationTypeOptions" [ngValue]="translationTypeOption.value" [innerHTML]="translationTypeOption.display | translate"></option>
+                    </select>
+                </div>
+                <div class="filters__filter">
+                    <label class="filters__filter-label">{{ 'settings.translators.list.filters.comment' | translate }}</label>
+                    <input type="text" class="input input_regular filters__filter-input" formControlName="comment">
+                </div>
+                <div class="filters__buttons">
+                    <button type="button" class="button button_regular button_white" (click)="onFiltersSubmit(true)">
+                        <span class="button__caption">{{ 'settings.translators.list.filters.reset__button' | translate }}</span>
+                    </button>
+                    <button type="submit" class="button button_regular button_blue">
+                        <span class="button__caption">{{ 'settings.translators.list.filters.search__button' | translate }}</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</sidebar>
+
+<div class="translators__spinner" *ngIf="listState === 'init' || listState === 'loading'">
+    <spinner class="spinner spinner_blue spinner_small"></spinner>
+</div>
+<div class="translators__message" *ngIf="listState === 'empty'">
+    {{ 'settings.translators.list.no_translators__message' | translate }}
+    <a routerLink="/dashboard/translator/create" *ngIf="canEdit">
+        {{ 'settings.translators.list.no_translators__message_2' | translate }}
+    </a>
+</div>
+<div class="translators__message clients__message_error" *ngIf="listState === 'error'">
+    {{ 'settings.translators.list.unknown_error' | translate }}
+</div>
+<ng-container *ngIf="listState === 'list'">
+    <div class="items-table-wrap" *ngIf="viewType === 'table'">
+        <table class="items-table items-table_clickable translators__table">
+            <thead>
+                <tr>
+                    <th>{{ 'settings.translators.list.last_name__label' | translate }}</th>
+                    <th>{{ 'settings.translators.list.first_name__label' | translate }}</th>
+                    <th>{{ 'settings.translators.list.middle_name__label' | translate }}</th>
+                    <th>{{ 'settings.translators.list.native_language__label' | translate }}</th>
+                    <th>{{ 'settings.translators.list.email__label' | translate }}</th>
+                    <th>{{ 'settings.translators.list.phone__label' | translate }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let translator of translators" (click)="goToTranslator(translator)" class="translators__table-row" [class.translators__table-row_inactive]="!translator.active">
+                    <td [attr.style]="colors[translator.id]">
+                        <span class="translators__color-circle" *ngIf="!translatorsSettings.colorizeEntireRow" [style.backgroundColor]="translator.color ? ('#' + translator.color) : 'transparent'"></span>
+                        {{ translator.lastName }}
+                    </td>
+                    <td [attr.style]="colors[translator.id]">{{ translator.firstName }}</td>
+                    <td [attr.style]="colors[translator.id]">{{ translator.middleName }}</td>
+                    <td [attr.style]="colors[translator.id]">{{ getLanguageName(translator.nativeLanguage) | translate }}</td>
+                    <td [attr.style]="colors[translator.id]">{{ translator.email }}</td>
+                    <td [attr.style]="colors[translator.id]">{{ translator.phone }}&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="translators__grid" *ngIf="viewType !== 'table'" [class.translators__grid_mobile]="viewType === 'grid'">
+        <div class="translators__grid-item" *ngFor="let translator of translators" (click)="goToTranslator(translator)" [class.translators__grid-item_inactive]="!translator.active">
+            <div class="translators__grid-item-color-mark" [style.backgroundColor]="translator.color ? ('#' + translator.color) : 'transparent'"></div>
+            <div class="translators__grid-item-col">
+                <div class="translators__grid-item-col-line">
+                    <div class="translators__grid-item-col-line-name">{{ 'settings.translators.list.last_name__label' | translate }}:</div>
+                    <div class="translators__grid-item-col-line-value">{{ translator.lastName }}</div>
+                </div>
+                <div class="translators__grid-item-col-line">
+                    <div class="translators__grid-item-col-line-name">{{ 'settings.translators.list.first_name__label' | translate }}:</div>
+                    <div class="translators__grid-item-col-line-value">{{ translator.firstName }}</div>
+                </div>
+                <div class="translators__grid-item-col-line">
+                    <div class="translators__grid-item-col-line-name">{{ 'settings.translators.list.middle_name__label' | translate }}:</div>
+                    <div class="translators__grid-item-col-line-value">{{ translator.middleName }}</div>
+                </div>
+            </div>
+            <div class="translators__grid-item-col">
+                <div class="translators__grid-item-col-line">
+                    <div class="translators__grid-item-col-line-name">{{ 'settings.translators.list.native_language__label' | translate }}:</div>
+                    <div class="translators__grid-item-col-line-value">{{ getLanguageName(translator.nativeLanguage) | translate }}</div>
+                </div>
+                <div class="translators__grid-item-col-line">
+                    <div class="translators__grid-item-col-line-name">{{ 'settings.translators.list.email__label' | translate }}:</div>
+                    <div class="translators__grid-item-col-line-value">{{ translator.email }}</div>
+                </div>
+                <div class="translators__grid-item-col-line">
+                    <div class="translators__grid-item-col-line-name">{{ 'settings.translators.list.phone__label' | translate }}:</div>
+                    <div class="translators__grid-item-col-line-value">{{ translator.phone }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>

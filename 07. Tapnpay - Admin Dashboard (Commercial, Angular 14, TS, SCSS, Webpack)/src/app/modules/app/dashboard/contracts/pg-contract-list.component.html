@@ -1,0 +1,217 @@
+<div class="pg-contract-list__content" [ngSwitch]="listState">
+    <div class="pg-contract-list__loading" *ngSwitchCase="'loading'">
+        <loader></loader>
+    </div>
+    <div class="pg-contract-list__message" *ngSwitchCase="'empty'">
+        {{ 'contracts.pg.list.no_contracts' | translate }}<br>
+        <a routerLink="/dashboard/contracts/payment-gateway">
+            {{ 'contracts.pg.list.create_button' | translate }}
+        </a>
+    </div>
+    <div class="pg-contract-list__message pg-contract-list__message_error" *ngSwitchCase="'error'">
+        {{ 'contracts.pg.list.common_error' | translate }}
+    </div>
+    <ng-container *ngSwitchCase="'ready'">
+        <div class="pg-contract-list__heading">
+            <div class="pg-contract-list__header">{{ 'contracts.pg.list.page_header' | translate }}</div>
+            <div class="pg-contract-list__controls">
+                <a routerLink="/dashboard/contracts/payment-gateway" class="button button_regular button_light-blue">
+                    <span class="button__caption">
+                        {{ 'contracts.pg.list.create_button' | translate }}
+                    </span>
+                </a>
+            </div>
+        </div>
+        <div class="table table_middle table_striped table_nowrap pg-contract-list__table"
+             [ngClass]="{
+                'table_clickable': canEdit,
+                'table_white': !canEdit
+            }"
+        >
+            <div class="table__header">
+                <div class="table__row">
+                    <div class="table__cell">
+                        {{ 'Name' | translate }}
+                    </div>
+                    <div class="table__cell">
+                        {{ 'Charge %' | translate }}
+                    </div>
+                    <div class="table__cell">
+                        {{ 'Volume Discount' | translate }}
+                    </div>
+                    <div class="table__cell">
+                        {{ 'Start Date' | translate }}
+                    </div>
+                    <div class="table__cell">
+                        {{ 'End Date' | translate }}
+                    </div>
+                    <div class="table__cell">
+                        {{ 'Status' | translate }}
+                    </div>
+                    <div class="table__cell pg-contract-list__table-cell-actions">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+
+            <div class="table__body">
+                <div class="table__row"
+                    *ngFor="let contract of contracts"
+                    (click)="onContractClick(contract.id, $event)"
+                >
+                    <div class="table__cell" [class.text-blue]="canEdit">
+                        {{ contract.name }}
+                    </div>
+                    <div class="table__cell">
+                        {{ (contract.rate / 1000) | number : '.3-3' }}
+                    </div>
+                    <div class="table__cell">
+                        {{ contract.volume_discount ? 'Yes' : 'No' }}
+                    </div>
+                    <div class="table__cell">
+                        {{ contract.start_date | datetime : 'display.datetime' }}
+                    </div>
+                    <div class="table__cell">
+                        {{ contract.end_date | datetime : 'display.datetime' }}
+                    </div>
+                    <div class="table__cell" [ngSwitch]="contract.enabled">
+                        <span *ngSwitchCase="true" class="pg-contract-list__status pg-contract-list__status_green">
+                            {{ 'contracts.pg.list.status_enabled' | translate }}
+                        </span>
+                        <span *ngSwitchCase="false" class="pg-contract-list__status pg-contract-list__status_red">
+                            {{ 'contracts.pg.list.status_disabled' | translate }}
+                        </span>
+                    </div>
+                    <div class="table__cell pg-contract-list__table-cell-actions" (click)="onActionsClick($event)">
+                        <div class="pg-contract-list__table-actions">
+                            <button type="button" class="pg-contract-list__table-button" (click)="onPreview(contract.id)">
+                                <svg width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M11.62,18.07c-4.53,0-8-4.26-8-6,0-2,3.46-6,8-6,4.38,0,8,4,8,6,0,1.74-3.46,6-8,6m0-14c-5.52,0-10,4.84-10,8s4.58,8,10,8,10-4.91,10-8-4.48-8-10-8m0,10a2,2,0,1,1,2-2,2,2,0,0,1-2,2m0-6a4,4,0,1,0,4,4,4,4,0,0,0-4-4"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+<!-- Popups -->
+
+<popup-custom class="pg-contract-list__popup" *ngIf="isPreviewPopupVisible" (onClose)="onHidePreview()">
+    <ng-container [ngSwitch]="previewPopupState">
+        <div class="pg-contract-list__popup-loader" *ngSwitchCase="'loading'">
+            <loader></loader>
+        </div>
+        <ng-container *ngSwitchDefault>
+            <popup-header>
+                Contract Preview
+            </popup-header>
+            <popup-content [ngSwitch]="previewPopupState">
+                <div class="pg-contract-list__popup-error" *ngSwitchCase="'error'">
+                    Failed to load contract preview
+                </div>
+                <ng-container *ngSwitchCase="'ready'">
+                    <table class="pg-contract-list__popup-table">
+                        <tbody>
+                            <tr>
+                                <td>Name</td>
+                                <td>{{ contractToPreview.name }}</td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td [ngSwitch]="contractToPreview.enabled">
+                                    <span *ngSwitchCase="true" class="pg-contract-list__status pg-contract-list__status_green">
+                                        {{ 'contracts.pg.list.status_enabled' | translate }}
+                                    </span>
+                                    <span *ngSwitchCase="false" class="pg-contract-list__status pg-contract-list__status_red">
+                                        {{ 'contracts.pg.list.status_disabled' | translate }}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Gateway</td>
+                                <td>{{ contractToPreview.gateway }}</td>
+                            </tr>
+                            <tr>
+                                <td>Start Date</td>
+                                <td>{{ contractToPreview.start_date | datetime : 'display.datetime' }}</td>
+                            </tr>
+                            <tr>
+                                <td>End Date</td>
+                                <td>{{ contractToPreview.end_date | datetime : 'display.datetime' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pg-contract-list__popup-sep"></div>
+                    <table class="pg-contract-list__popup-table">
+                        <tbody>
+                            <tr>
+                                <td>Tier 1 Volume</td>
+                                <td>{{ contractToPreview.tier1.volume }}</td>
+                            </tr>
+                            <tr>
+                                <td>Tier 1 Charge Rate %</td>
+                                <td>{{ (contractToPreview.tier1.rate / 1000) | number : '.3-3' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Tier 1 per Transaction Fee</td>
+                                <td>{{ (contractToPreview.tier1.fee / 100) | number : '.2-2' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Tier 1 Minimum $</td>
+                                <td>{{ (contractToPreview.tier1.minimum / 100) | number : '.2-2' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pg-contract-list__popup-sep"></div>
+                    <table class="pg-contract-list__popup-table">
+                        <tbody>
+                            <tr>
+                                <td>Tier 2 Volume</td>
+                                <td>{{ contractToPreview.tier2.volume }}</td>
+                            </tr>
+                            <tr>
+                                <td>Tier 2 Charge Rate %</td>
+                                <td>{{ (contractToPreview.tier2.rate / 1000) | number : '.3-3' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Tier 2 per Transaction Fee</td>
+                                <td>{{ (contractToPreview.tier2.fee / 100) | number : '.2-2' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pg-contract-list__popup-sep"></div>
+                    <table class="pg-contract-list__popup-table">
+                        <tbody>
+                            <tr>
+                                <td>Tier 3 Volume</td>
+                                <td>{{ contractToPreview.tier3.volume }}</td>
+                            </tr>
+                            <tr>
+                                <td>Tier 3 Charge Rate %</td>
+                                <td>{{ (contractToPreview.tier3.rate / 1000) | number : '.3-3' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Tier 3 per Transaction Fee</td>
+                                <td>{{ (contractToPreview.tier3.fee / 100) | number : '.2-2' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+            </popup-content>
+            <popup-controls [isStretched]="true">
+                <button type="button" class="button button_regular button_light-blue"
+                    *ngIf="canEdit && previewPopupState === 'ready'"
+                    (click)="onEdit(contractToPreview.id)"
+                >
+                    <span class="button__caption">{{ 'Edit' | translate }}</span>
+                </button>
+                <button type="button" class="button button_regular button_blue" (click)="onHidePreview()">
+                    <span class="button__caption">{{ 'Close' | translate }}</span>
+                </button>
+            </popup-controls>
+        </ng-container>
+    </ng-container>
+</popup-custom>

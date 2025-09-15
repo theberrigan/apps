@@ -1,0 +1,17 @@
+// Spinning
+// ----------------------
+
+@-webkit-keyframes spinning {
+    from { transform: rotate(0deg);   }
+    to   { transform: rotate(360deg); }
+}
+
+@-moz-keyframes spinning {
+    from { transform: rotate(0deg);   }
+    to   { transform: rotate(360deg); }
+}
+
+@keyframes spinning {
+    from { transform: rotate(0deg);   }
+    to   { transform: rotate(360deg); }
+}

@@ -1,0 +1,22 @@
+{
+    "distPath": "./dist/prod/",
+    "region": "non-existing",
+    "bucket": "non-existing",
+    "gzip": true,
+    "gzipExtensions": null,
+    "cache": null,
+    "preventUpdates": false,
+    "immutable": false,
+    "noCache": false,
+    "cacheControl": null,
+    "etag": null,
+    "signatureVersion": null,
+    "filePrefix": null,
+    "profile": null,
+    "private": false,
+    "ext": null,
+    "deleteRemoved": false,
+    "index": null,
+    "distId": null,
+    "invalidate": []
+}

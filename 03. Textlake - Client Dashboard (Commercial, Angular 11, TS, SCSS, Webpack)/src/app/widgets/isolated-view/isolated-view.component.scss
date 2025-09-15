@@ -1,0 +1,30 @@
+@import '../../../assets/css/definitions.scss';
+
+.isolated-view {
+    display: block;
+
+    &__shadow-dom,
+    &__iframe {
+        margin-top: 20px;
+        display: block;
+        width: 100%;
+    }
+
+    &__shadow-dom {
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    &__iframe {
+
+    }
+
+    &__width-test-container {
+        max-width: 1px;
+        opacity: 0;
+        position: fixed;
+        z-index: -9999;
+        left: 9999px;
+        top: 9999px;
+    }
+}

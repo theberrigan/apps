@@ -1,0 +1,35 @@
+@import '../../../../assets/css/definitions';
+@import '../popup.definitions';
+@import "../../../../assets/css/responsive";
+
+.popup {
+    &__controls {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-end;
+        padding: 0 20px 20px;
+        width: 100%;
+
+        @include desktop {
+            padding: 0 30px 20px;
+        }
+
+        &_stretch {
+            .button {
+                flex: 1;
+            }
+        }
+
+        &_column {
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .button + .button {
+            margin-left: 10px;
+        }
+    }
+}

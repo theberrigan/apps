@@ -1,0 +1,14 @@
+@import '../../../../assets/css/definitions';
+
+.dashboard {
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+    padding-top: $panel-height;
+
+    &__content {
+        display: block;
+        width: 100%;
+        // padding: 20px 0;
+    }
+}

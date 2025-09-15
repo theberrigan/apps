@@ -1,0 +1,12 @@
+<popup-custom class="dashboard__soft-lock-popup">
+    <popup-content>
+        <span [innerHTML]="'account_soft_lock.message' | translate"></span>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button (click)="emmitConfirm()"
+                class="button button_regular button_blue"
+                type="button">
+            <span class="button__caption">{{ 'account_soft_lock.btn' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>

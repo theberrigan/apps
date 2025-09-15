@@ -1,0 +1,54 @@
+$nav-width-default: 260px;
+$nav-width-minimized: 74px;
+$color-nav-default: #d1d9eb;
+$panel-height: 40px;
+$action-panel-height: 54px;
+$sidebar-width: 280px;
+$mobile-tabs-height: 40px;
+
+$color-link-primary: #5388de;
+$color-primary-green: #41a741;
+$color-primary-red: #e64f4f;
+$color-primary-orange: #f7944d;
+$color-primary-blue: #5B7CD2;
+$color-checkbox-label: #8e9194;
+$color-empty-message: #88929c;
+$color-empty-message-error: #ce6666;
+$color-primary-bg: #F5FBFF;
+$color-primary-border: #dde3eb;
+$color-text-primary: #59606b;
+$color-input-placeholder: lighten($color-text-primary, 25%);
+$color-widget-border: #e2e5e8;
+$color-widget-border-darken: darken($color-widget-border, 4%);
+$color-input-deco-color: #ced6de;
+$color-input-deco-color-light: #d7dee4;
+$color-input-error-borders: #e67070;
+$color-input-error-background: #fff4f4;
+
+$control-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.06);
+$control-primary-radius: 3px;
+$control-height-regular: 34px;  // TODO: add medium, large; Add to buttons
+$control-height-large: 40px;
+$control-border-size: 1px;  // TODO: add to buttons
+
+$font-default-family: 'Roboto', 'Open Sans', -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Arial, Tahoma, sans-serif;
+$font-weight-thin: 100;
+$font-weight-light: 300;
+$font-weight-medium: 500;
+$font-weight-black: 900;
+
+$z-index-max:                   2147483647;
+$z-index-toasts:                6000;
+$z-index-popup:                 5000;
+$z-index-tab-hint:              3000;
+$z-index-sidebar-mobile-active: 2400; // -----+
+$z-index-nav-mobile-active:     2400; // --+  |
+$z-index-panel:                 2300; //   |  |
+$z-index-tabs:                  2250; //   |  |
+$z-index-nav:                   2200; // --+  |
+$z-index-action-panel:          2100; //      |
+$z-index-sidebar:               2000; // -----+
+$z-index-dropdown:              1000;
+$z-index-menu:                  100;  // relative?
+
+$z-index-control-active: 7;

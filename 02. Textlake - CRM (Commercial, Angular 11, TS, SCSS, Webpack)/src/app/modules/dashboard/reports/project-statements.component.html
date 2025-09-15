@@ -1,0 +1,169 @@
+<fieldset [disabled]="isSaving">
+    <action-panel>
+        <div class="action-panel__primary">
+            <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ 'billing.project_statements.page_header' | translate }}</h1>
+        </div>
+        <div class="action-panel__secondary" *ngIf="state">
+            <div class="action-panel__item">
+                <button type="button" class="button button_regular button_blue"
+                    [isDisabled]="statementItemsToSave.length === 0"
+                    [isProgress]="isSaving"
+                    (click)="onSave()"
+                >
+                    <span class="button__caption">{{ 'billing.project_statements.save' | translate }}</span>
+                </button>
+            </div>
+            <div class="action-panel__item">
+                <sidebar-trigger [sidebar]="sidebar" [hasMark]="false" (onClick)="sidebar.toggle()"></sidebar-trigger>
+            </div>
+        </div>
+    </action-panel>
+
+    <sidebar #sidebar [isDesktopActive]="isDesktopSidebarActive" (isDesktopActiveChange)="onSidebarToggle($event)">
+        <div class="sidebar__title">&nbsp;</div>
+        <ng-container *ngIf="state">
+            <div class="sidebar__section">
+                <div class="sidebar__label" [canCollapse]="true" [isCollapsed]="state.sidebar.collapse.filters" (isCollapsedChange)="onSidebarSectionCollapse('filters', $event)">{{ 'sidebar.filters' | translate }}</div>
+                <form [formGroup]="filtersForm" (ngSubmit)="onFiltersSubmit()">
+                    <div class="filters">
+                        <div class="filters__filter">
+                            <label class="filters__filter-label">{{ 'billing.translator_statements.filters.translator_name__label' | translate }}</label>
+                            <input type="text" class="input input_regular filters__filter-input" formControlName="name">
+                        </div>
+                        <div class="filters__filter">
+                            <label class="filters__filter-label">{{ 'billing.translator_statements.filters.project__label' | translate }}</label>
+                            <input type="text" class="input input_regular filters__filter-input" formControlName="project">
+                        </div>
+                        <div class="filters__filter">
+                            <label class="filters__filter-label">{{ 'billing.translator_statements.filters.project_status__label' | translate }}</label>
+                            <select class="select select_regular filters__filter-input" formControlName="status">
+                                <option *ngFor="let statusOption of projectStatusOptions" [ngValue]="statusOption.value" [innerHTML]="statusOption.display | translate"></option>
+                            </select>
+                        </div>
+                        <div class="filters__filter">
+                            <label class="filters__filter-label">{{ 'billing.translator_statements.filters.project_created_since__label' | translate }}</label>
+                            <datepicker class="filters__filter-input" [format]="selectDateFormat" formControlName="from"></datepicker>
+                        </div>
+                        <div class="filters__filter">
+                            <label class="filters__filter-label">{{ 'billing.translator_statements.filters.project_completed_before__label' | translate }}</label>
+                            <datepicker class="filters__filter-input" [format]="selectDateFormat" formControlName="to"></datepicker>
+                        </div>
+                        <div class="filters__filter">
+                            <label class="filters__filter-label">{{ 'billing.translator_statements.filters.comment__label' | translate }}</label>
+                            <input type="text" class="input input_regular filters__filter-input" formControlName="comment">
+                        </div>
+                        <div class="filters__buttons">
+                            <button type="button" class="button button_regular button_white" (click)="onFiltersSubmit(true)">
+                                <span class="button__caption">{{ 'billing.translator_statements.filters.reset__button' | translate }}</span>
+                            </button>
+                            <button type="submit" class="button button_regular button_blue">
+                                <span class="button__caption">{{ 'billing.translator_statements.filters.search__button' | translate }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </ng-container>
+    </sidebar>
+
+    <div class="project-statements__spinner" *ngIf="listState === 'init' || listState === 'loading'">
+        <spinner class="spinner spinner_blue spinner_small"></spinner>
+    </div>
+    <div class="project-statements__message" *ngIf="listState === 'empty'">
+        {{ 'billing.translator_statements.no_statements' | translate }}
+    </div>
+    <div class="project-statements__message project-statements__message_error" *ngIf="listState === 'error'">
+        {{ 'billing.translator_statements.error' | translate }}
+    </div>
+    <ng-container *ngIf="listState === 'list'" [ngSwitch]="viewportBreakpoint === 'desktop'">
+        <div class="project-statements__table-wrap" *ngSwitchCase="true">
+            <table class="project-statements__table">
+                <tbody>
+                    <ng-container *ngFor="let statement of statements">
+                        <tr>
+                            <td colspan="6">
+                                <span class="project-statements__table-header">
+                                    <span class="project-statements__table-project-key">{{ statement.projectKey }}</span>
+                                    <span class="project-statements__table-project-status" [style.background-color]="projectsSettings.statusesColors[statement.projectStatusKey].bg" [style.color]="projectsSettings.statusesColors[statement.projectStatusKey].text">{{ ('projects.statuses.' + statement.projectStatusKey) | translate }}</span>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'billing.project_statements.translator' | translate }}</th>
+                            <th>{{ 'billing.project_statements.amount' | translate }}</th>
+                            <th>{{ 'billing.project_statements.payment_id' | translate }}</th>
+                            <th>{{ 'billing.project_statements.paid' | translate }}</th>
+                            <th>{{ 'billing.project_statements.comment' | translate }}</th>
+                        </tr>
+                        <tr *ngFor="let item of statement.items">
+                            <td>{{ item.firstName }} {{ item.lastName }}</td>
+                            <td>{{ item.fee / 100 | number : '.2-2' }}</td>
+                            <td>{{ item.translatorDebitId || ' ' }}</td>
+                            <td>
+                                <checkbox [(ngModel)]="item.debited" (ngModelChange)="onChangeItem(item)"></checkbox>
+                            </td>
+                            <td class="project-statements__table-cell project-statements__table-cell_has-input">
+                                <textarea class="project-statements__table-textarea" #textarea [style.height.px]="textarea.scrollHeight" [(ngModel)]="item.comment" (ngModelChange)="onChangeItem(item)"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="2" class="text-right">{{ 'billing.project_statements.total_amount' | translate }}:</th>
+                            <th>{{ statement.total / 100 | number : '.2-2' }}</th>
+                            <th colspan="3">&nbsp;</th>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+        <div class="project-statements__list" *ngSwitchCase="false">
+            <div class="project-statements__list-statement" *ngFor="let statement of statements">
+                <div class="project-statements__list-statement-header">
+                    <div class="project-statements__list-statement-name">{{ statement.projectKey }}</div>
+                    <div class="project-statements__list-statement-status">{{ ('projects.statuses.' + statement.projectStatusKey) | translate }}</div>
+                </div>
+                <div class="project-statements__list-statement-item" *ngFor="let item of statement.items">
+                    <table class="project-statements__list-statement-table">
+                        <tbody>
+                        <tr>
+                            <th>{{ 'billing.project_statements.translator' | translate }}:</th>
+                            <td>{{ item.firstName }} {{ item.lastName }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'billing.project_statements.amount' | translate }}:</th>
+                            <td>{{ item.fee / 100 | number : '.2-2' }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'billing.project_statements.payment_id' | translate }}:</th>
+                            <td>{{ item.translatorDebitId }}</td>
+                        </tr>
+                        <tr>
+                            <th class="project-statements__list-statement-table-checkbox-label">{{ 'billing.translator_statements.paid' | translate }}:</th>
+                            <td><checkbox [(ngModel)]="item.debited" (ngModelChange)="onChangeItem(item)"></checkbox></td>
+                        </tr>
+                        <tr>
+                            <th class="project-statements__list-statement-table-input-label">{{ 'billing.project_statements.comment' | translate }}:</th>
+                            <td><input type="text" class="input input_regular project-statements__list-statement-table-input" [(ngModel)]="item.comment" (ngModelChange)="onChangeItem(item)"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="project-statements__list-statement-total">
+                    <table class="project-statements__list-statement-total-table">
+                        <tbody>
+                        <tr>
+                            <th>
+                                {{ 'billing.project_statements.total_amount' | translate }}:
+                            </th>
+                            <td>
+                                {{ statement.total / 100 | number : '.2-2' }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</fieldset>
+
+

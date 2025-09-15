@@ -1,0 +1,47 @@
+/* --- Reset CSS --- */
+
+* {
+    padding: 0;
+    margin: 0;
+    outline: none;
+    zoom: 1;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-size: 1em;
+    line-height: 1.5em;
+}
+
+a,
+a:hover,
+a:visited {
+    text-decoration: none;
+}
+
+blockquote, 
+q {
+    quotes: none;
+}
+
+blockquote:before, 
+blockquote:after,
+q:before, 
+q:after {
+    content: '';
+    content: none;
+}
+
+div {
+    display: block;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}

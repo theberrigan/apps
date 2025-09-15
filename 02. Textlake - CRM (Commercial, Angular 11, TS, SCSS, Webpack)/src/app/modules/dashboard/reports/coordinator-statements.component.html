@@ -1,0 +1,269 @@
+<ng-template #listOptionsTpl>
+    <ng-container *ngIf="state">
+        <div class="action-panel__item filters__filter">
+            <label class="filters__filter-label">{{ 'sidebar.limit' | translate }}</label>
+            <select class="select select_regular filters__filter-input" [(ngModel)]="state.pagination.size" (ngModelChange)="onLimitChange()">
+                <option *ngFor="let sizeOption of sizeOptions" [ngValue]="sizeOption">{{ sizeOption }}</option>
+            </select>
+        </div>
+    </ng-container>
+</ng-template>
+
+<action-panel>
+    <div class="action-panel__primary">
+        <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ 'billing.coordinator_statements.page_header' | translate }}</h1>
+    </div>
+    <div class="action-panel__secondary" *ngIf="state">
+        <ng-container *ngIf="viewportBreakpoint === 'desktop'">
+            <ng-container [ngTemplateOutlet]="listOptionsTpl"></ng-container>
+        </ng-container>
+        <div class="action-panel__item">
+            <sidebar-trigger [sidebar]="sidebar" [hasMark]="false" (onClick)="sidebar.toggle()"></sidebar-trigger>
+        </div>
+    </div>
+</action-panel>
+
+<sidebar #sidebar [isDesktopActive]="isDesktopSidebarActive" (isDesktopActiveChange)="onSidebarToggle($event)">
+    <div class="sidebar__title">&nbsp;</div>
+    <ng-container *ngIf="state">
+        <div class="sidebar__section" *ngIf="viewportBreakpoint !== 'desktop'">
+            <div class="sidebar__label" [canCollapse]="true" [isCollapsed]="state.sidebar.collapse.options" (isCollapsedChange)="onSidebarSectionCollapse('options', $event)">{{ 'sidebar.list_options' | translate }}</div>
+            <div class="filters">
+                <ng-container [ngTemplateOutlet]="listOptionsTpl"></ng-container>
+            </div>
+        </div>
+        <div class="sidebar__section">
+            <div class="sidebar__label" [canCollapse]="true" [isCollapsed]="state.sidebar.collapse.filters" (isCollapsedChange)="onSidebarSectionCollapse('filters', $event)">{{ 'sidebar.filters' | translate }}</div>
+            <form [formGroup]="filtersForm" (ngSubmit)="onFiltersSubmit()">
+                <div class="filters">
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.coordinator_statements.filters.coordinator__label' | translate }}</label>
+                        <select class="select select_regular filters__filter-input" formControlName="coordinatorId">
+                            <option *ngFor="let coordinatorOption of coordinatorOptions" [ngValue]="coordinatorOption.value" [innerHTML]="coordinatorOption.display | translate"></option>
+                        </select>
+                    </div>
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.coordinator_statements.filters.project_status__label' | translate }}</label>
+                        <select class="select select_regular filters__filter-input" formControlName="projectStatus">
+                            <option *ngFor="let projectStatusOption of projectStatusOptions" [ngValue]="projectStatusOption.value" [innerHTML]="projectStatusOption.display | translate"></option>
+                        </select>
+                    </div>
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.coordinator_statements.filters.offer_status__label' | translate }}</label>
+                        <select class="select select_regular filters__filter-input" formControlName="offerStatus">
+                            <option *ngFor="let offerStatusOption of offerStatusOptions" [ngValue]="offerStatusOption.value" [innerHTML]="offerStatusOption.display | translate"></option>
+                        </select>
+                    </div>
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.coordinator_statements.filters.offer_from__label' | translate }}</label>
+                        <datepicker class="filters__filter-input" [format]="selectDateFormat" formControlName="offerCreatedFrom"></datepicker>
+                    </div>
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.coordinator_statements.filters.offer_to__label' | translate }}</label>
+                        <datepicker class="filters__filter-input" [format]="selectDateFormat" formControlName="offerCreatedTo"></datepicker>
+                    </div>
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.coordinator_statements.filters.project_from__label' | translate }}</label>
+                        <datepicker class="filters__filter-input" [format]="selectDateFormat" formControlName="projectCreatedFrom"></datepicker>
+                    </div>
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.coordinator_statements.filters.project_to__label' | translate }}</label>
+                        <datepicker class="filters__filter-input" [format]="selectDateFormat" formControlName="projectCreatedTo"></datepicker>
+                    </div>
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.coordinator_statements.filters.project_completed_from__label' | translate }}</label>
+                        <datepicker class="filters__filter-input" [format]="selectDateFormat" formControlName="projectCompletedFrom"></datepicker>
+                    </div>
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'billing.coordinator_statements.filters.project_completed_to__label' | translate }}</label>
+                        <datepicker class="filters__filter-input" [format]="selectDateFormat" formControlName="projectCompletedTo"></datepicker>
+                    </div>
+                    <div class="filters__buttons">
+                        <button type="button" class="button button_regular button_white" (click)="onFiltersSubmit(true)">
+                            <span class="button__caption">{{ 'billing.coordinator_statements.filters.reset__button' | translate }}</span>
+                        </button>
+                        <button type="submit" class="button button_regular button_blue">
+                            <span class="button__caption">{{ 'billing.coordinator_statements.filters.search__button' | translate }}</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </ng-container>
+</sidebar>
+
+<div class="coordinator-statements__spinner" *ngIf="listState === 'init' || listState === 'loading'">
+    <spinner class="spinner spinner_blue spinner_small"></spinner>
+</div>
+<div class="coordinator-statements__message" *ngIf="listState === 'empty'">
+    {{ 'billing.coordinator_statements.no_statements' | translate }}
+</div>
+<div class="coordinator-statements__message coordinator-statements__message_error" *ngIf="listState === 'error'">
+    {{ 'billing.coordinator_statements.error' | translate }}
+</div>
+
+<ng-container *ngIf="listState === 'list' || listState === 'loading-more'" [ngSwitch]="viewportBreakpoint === 'desktop'">
+    <ng-container *ngSwitchCase="true">
+        <ng-container *ngFor="let statementsPage of statementsPages; let isFirst = first">
+            <div class="coordinator-statements__list-page" *ngIf="!isFirst">{{ 'pagination.page' | translate }} {{ statementsPage.page + 1 }}</div>
+            <ng-container *ngFor="let statement of statementsPage.items">
+                <div class="coordinator-statements__table-coordinator">
+                    {{ coordinatorName }}
+                    <ng-container *ngIf="statement !== null && !!statement.email && coordinatorName !== statement.email">
+                        ({{ statement.email }})
+                    </ng-container>
+                </div>
+                <div class="items-table-wrap">
+                    <table class="items-table coordinator-statements__table">
+                        <thead>
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th class="table-cell-tight">{{ 'billing.coordinator_statements.offer_created' | translate }}</th>
+                                <th>{{ 'billing.coordinator_statements.offer' | translate }}</th>
+                                <th>{{ 'billing.coordinator_statements.offer_status' | translate }}</th>
+                                <th>{{ 'billing.coordinator_statements.offer_coordinator' | translate }}</th>
+                                <th>{{ 'billing.coordinator_statements.project_created' | translate }}</th>
+                                <th>{{ 'billing.coordinator_statements.project_completed' | translate }}</th>
+                                <th>{{ 'billing.coordinator_statements.project' | translate }}</th>
+                                <th>{{ 'billing.coordinator_statements.project_status' | translate }}</th>
+                                <th>{{ 'billing.coordinator_statements.project_coordinator' | translate }}</th>
+                                <th class="text-right">{{ 'billing.coordinator_statements.net' | translate }}</th>
+                                <th class="text-right">{{ 'billing.coordinator_statements.gross' | translate }}</th>
+                                <th class="text-right">{{ 'billing.coordinator_statements.expenses' | translate }}</th>
+                                <th class="text-right">{{ 'billing.coordinator_statements.margin' | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of statement.items; let i = index">
+                                <td class="table-cell-tight text-right">{{ (pagination.size * statementsPage.page) + i + 1 }}</td>
+                                <td>{{ item.offerCreated | datetime : displayDatetimeFormat }}</td>
+                                <td>{{ item.offer }}</td>
+                                <td>{{ item.offerStatus ? (('offers.statuses.' + item.offerStatus) | translate) : '' }}</td>
+                                <td>{{ item.offerCoordinator }}</td>
+                                <td>{{ item.projectCreated | datetime : displayDatetimeFormat }}</td>
+                                <td>{{ item.projectCompleted | datetime : displayDatetimeFormat }}</td>
+                                <td>{{ item.project }}</td>
+                                <td>{{ item.projectStatus ? (('projects.statuses.' + item.projectStatus) | translate) : '' }}</td>
+                                <td>{{ item.projectCoordinator }}</td>
+                                <td class="text-right">{{ item.net / 100 | number : '.2-2' }}</td>
+                                <td class="text-right">{{ item.gross / 100 | number : '.2-2' }}</td>
+                                <td class="text-right">{{ item.expenses / 100 | number : '.2-2' }}</td>
+                                <td class="text-right">{{ item.margin / 100 | number : '.2-2' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="coordinator-statements__table-total">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th class="text-right">{{ 'billing.coordinator_statements.total_gross' | translate }}:</th>
+                                <td class="table-cell-tight text-right">{{ statement.totalGross / 100 | number : '.2-2' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">{{ 'billing.coordinator_statements.total_net' | translate }}:</th>
+                                <td class="table-cell-tight text-right">{{ statement.totalNet / 100 | number : '.2-2' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-container>
+        </ng-container>
+        <pagination
+            [data]="pagination"
+            [isLoading]="listState === 'loading-more'"
+            (onLoad)="onSwitchPage($event)"
+        ></pagination>
+    </ng-container>
+    <div class="coordinator-statements__list" *ngSwitchCase="false">
+        <ng-container *ngFor="let statementsPage of statementsPages; let isFirst = first">
+            <div class="coordinator-statements__list-page" *ngIf="!isFirst">{{ 'pagination.page' | translate }} {{ statementsPage.page + 1 }}</div>
+            <div class="coordinator-statements__list-statement" *ngFor="let statement of statementsPage.items">
+                <div class="coordinator-statements__list-statement-header">
+                    <div class="coordinator-statements__list-statement-name1">
+                        {{ coordinatorName }}
+                        <ng-container *ngIf="statement !== null && !!statement.email && coordinatorName !== statement.email">
+                            ({{ statement.email }})
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="coordinator-statements__list-statement-item" *ngFor="let item of statement.items">
+                    <table class="coordinator-statements__list-statement-table">
+                        <tbody>
+                            <tr>
+                                <th>{{ 'billing.coordinator_statements.offer_created' | translate }}</th>
+                                <td>{{ item.offerCreated | datetime : displayDatetimeFormat }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.coordinator_statements.offer' | translate }}</th>
+                                <td>{{ item.offer }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.coordinator_statements.offer_status' | translate }}</th>
+                                <td class="coordinator-statement-status">{{ item.offerStatus ? (('offers.statuses.' + item.offerStatus) | translate) : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.coordinator_statements.offer_coordinator' | translate }}</th>
+                                <td>{{ item.offerCoordinator }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.coordinator_statements.project_created' | translate }}</th>
+                                <td>{{ item.projectCreated | datetime : displayDatetimeFormat }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.coordinator_statements.project_completed' | translate }}</th>
+                                <td>{{ item.projectCompleted | datetime : displayDatetimeFormat }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.coordinator_statements.project' | translate }}</th>
+                                <td>{{ item.project }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.coordinator_statements.project_status' | translate }}</th>
+                                <td class="coordinator-statement-status">{{ item.projectStatus ? (('projects.statuses.' + item.projectStatus) | translate) : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.coordinator_statements.project_coordinator' | translate }}</th>
+                                <td>{{ item.projectCoordinator }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.coordinator_statements.net' | translate }}</th>
+                                <td class="coordinator-statement-currency">{{ item.net / 100 | number : '.2-2' }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.coordinator_statements.gross' | translate }}</th>
+                                <td class="coordinator-statement-currency">{{ item.gross / 100 | number : '.2-2' }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.coordinator_statements.expenses' | translate }}</th>
+                                <td class="coordinator-statement-currency">{{ item.expenses / 100 | number : '.2-2' }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.coordinator_statements.margin' | translate }}</th>
+                        <td class="coordinator-statement-currency">{{ item.margin / 100 | number : '.2-2' }}</td>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="coordinator-statements__list-statement-total">
+                    <table class="coordinator-statements__list-statement-total-table">
+                        <tbody>
+                            <tr>
+                                <th>{{ 'billing.coordinator_statements.total_net' | translate }}:</th>
+                                <td class="text-left">{{ statement.totalNet / 100 | number  : '.2-2' }}</td>
+                            </tr>
+                            <tr>
+                                <th>{{ 'billing.coordinator_statements.total_gross' | translate }}:</th>
+                                <td class="text-left">{{ statement.totalGross / 100 | number  : '.2-2' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </ng-container>
+        <pagination
+            [data]="pagination"
+            [isLoading]="listState === 'loading-more'"
+            (onLoad)="onSwitchPage($event)"
+        ></pagination>
+    </div>
+</ng-container>

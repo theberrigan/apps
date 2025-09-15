@@ -1,0 +1,68 @@
+@import '../../../../../assets/css/definitions.scss';
+
+$track-thickness: 2px;
+$handle-size: 16px;
+$handle-size-half: round($handle-size / 2);
+$content-padding-top: ceil(($handle-size - $track-thickness) / 2);
+$content-padding-bottom: ($handle-size - $content-padding-top - $track-thickness);
+$handle-margin-right: (-1 * $handle-size-half);
+
+.slider {
+    display: block;
+    user-select: none;
+    cursor: default;
+    overflow: visible;
+    padding: 0 $handle-size-half;
+
+    &_disabled,
+    fieldset:disabled & {
+        opacity: 0.6;
+        cursor: default;
+        pointer-events: none;
+    }
+
+    &,
+    &__content,
+    &__track,
+    &__fill {
+        overflow: visible;
+    }
+
+    &__content {
+        padding: $content-padding-top 0 $content-padding-bottom;
+    }
+
+    &__track,
+    &__fill {
+        height: $track-thickness;
+        border-radius: ceil($track-thickness / 2);
+    }
+
+    &__track {
+        width: 100%;
+        background-color: rgba(#000, 0.15);
+    }
+
+    &__fill {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: flex-end;
+        width: 0;
+        background-color: $color-primary-blue;
+    }
+
+    &__handle {
+        flex: 0 0 auto;
+        width: $handle-size;
+        height: $handle-size;
+        background-color: $color-primary-blue;
+        border-radius: 50%;
+        margin-right: $handle-margin-right;
+    }
+}
+
+.slider-dragging {
+    cursor: default !important;
+    user-select: none !important;
+}

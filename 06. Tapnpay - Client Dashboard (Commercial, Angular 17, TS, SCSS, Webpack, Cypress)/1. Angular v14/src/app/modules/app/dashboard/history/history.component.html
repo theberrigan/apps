@@ -1,0 +1,340 @@
+<!-- Page Header -->
+<ng-container [ngSwitch]="viewportBreakpoint">
+    <page-panel *ngSwitchCase="'desktop'">
+        <h1 class="page-panel__header" [innerHTML]="'history.page_header' | translate"></h1>
+    </page-panel>
+    <app-bar [hasBorder]="false" *ngSwitchDefault>
+        <button type="button" class="app-bar__button" (click)="onFiltersTriggerClick($event)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                <path style="fill: currentColor;" d="M7.82,2A3,3,0,0,0,2.18,2H0V4H2.18A3,3,0,0,0,7.82,4H18V2ZM4,3A1,1,0,1,1,5,4,1,1,0,0,1,4,3ZM16.82,8a3,3,0,0,0-5.64,0H0v2H11.18a3,3,0,0,0,5.64,0H18V8ZM13,9a1,1,0,1,1,1,1A1,1,0,0,1,13,9ZM9.82,14a3,3,0,0,0-5.64,0H0v2H4.18a3,3,0,0,0,5.64,0H18V14ZM6,15a1,1,0,1,1,1,1A1,1,0,0,1,6,15Z"/>
+            </svg>
+        </button>
+    </app-bar>
+</ng-container>
+
+<!-- Page Content -->
+<div class="history__content"
+    [ngClass]="{
+        'history__content_invoices': activeTab === 'invoices',
+        'history__content_transactions': activeTab === 'transactions',
+        'history__content_disputes': activeTab === 'disputes'
+    }"
+    [ngSwitch]="listState"
+>
+    <div class="history__controls">
+        <div class="history__tabs">
+            <button type="button" class="history__tab" [class.history__tab_active]="activeTab === 'invoices'" (click)="onSwitchTab('invoices')">{{ 'history.invoices_tab' | translate }}</button>
+            <button type="button" class="history__tab" [class.history__tab_active]="activeTab === 'transactions'" (click)="onSwitchTab('transactions')">{{ 'history.transactions_tab' | translate }}</button>
+            <button type="button" class="history__tab" [class.history__tab_active]="activeTab === 'disputes'" (click)="onSwitchTab('disputes')">{{ 'history.disputes_tab' | translate }}</button>
+        </div>
+        <div class="history__filters" [class.history__filters_open]="isFiltersVisible">
+            <div class="history__filters-popup" (click)="onFiltersPopupClick($event)">
+                <div class="history__filters-content">
+                    <fieldset class="history__filters-content-fieldset">
+                        <div class="history__filters-content-header">{{ 'history.filters_header' | translate }}</div>
+                        <div class="history__filters-content-fields">
+                            <label class="history__filters-content-label">
+                                <span class="history__filters-content-label-text">{{ 'history.filters_from_date' | translate }}</span>
+                                <datepicker #dpFrom [(ngModel)]="filters.from" [format]="'input.date'" [type]="'iso'"></datepicker>
+                            </label>
+                            <label class="history__filters-content-label">
+                                <span class="history__filters-content-label-text">{{ 'history.filters_to_date' | translate }}</span>
+                                <datepicker #dpTo [(ngModel)]="filters.to" [format]="'input.date'" [type]="'iso'"></datepicker>
+                            </label>
+                        </div>
+                        <div class="history__filters-content-controls">
+                            <button type="button" class="button button_regular button_light-blue" (click)="onFiltersSubmit(true)">{{ 'history.filters_reset' | translate }}</button>
+                            <button type="button" class="button button_regular button_blue" (click)="onFiltersSubmit()">{{ 'history.filters_ok' | translate }}</button>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <button type="button" class="button button_regular button_white history__filters-trigger" (click)="onFiltersTriggerClick($event)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="button__icon">
+                    <path style="fill: currentColor;" d="M7.82,2A3,3,0,0,0,2.18,2H0V4H2.18A3,3,0,0,0,7.82,4H18V2ZM4,3A1,1,0,1,1,5,4,1,1,0,0,1,4,3ZM16.82,8a3,3,0,0,0-5.64,0H0v2H11.18a3,3,0,0,0,5.64,0H18V8ZM13,9a1,1,0,1,1,1,1A1,1,0,0,1,13,9ZM9.82,14a3,3,0,0,0-5.64,0H0v2H4.18a3,3,0,0,0,5.64,0H18V14ZM6,15a1,1,0,1,1,1,1A1,1,0,0,1,6,15Z"/>
+                </svg>
+                <span class="button__caption">{{ 'history.filters_button' | translate }}</span>
+            </button>
+        </div>
+    </div>
+    <ng-container [ngSwitch]="activeTab">
+        <ng-container *ngSwitchCase="'invoices'" [ngSwitch]="listState">
+            <div class="history__loading" *ngSwitchCase="'loading'">
+                <loader></loader>
+            </div>
+            <div class="history__message" *ngSwitchCase="'empty'">
+                {{ 'history.no_invoices' | translate }}
+            </div>
+            <div class="history__message history__message_error" *ngSwitchCase="'error'">
+                {{ 'history.invoices_error' | translate }}
+            </div>
+            <div class="history__list-box"
+                *ngSwitchCase="'list'"
+                [class.history__list-box_has-overlay]="isLoadingPage"
+                [ngSwitch]="viewportBreakpoint"
+            >
+                <ng-container *ngSwitchCase="'desktop'">
+                    <div class="table table_middle table_striped table_clickable table_nowrap history__table">
+                        <div class="table__header">
+                            <div class="table__row">
+                                <div class="table__cell">
+                                    {{ 'history.invoice_number' | translate }}
+                                </div>
+                                <div class="table__cell">
+                                    {{ 'history.invoice_amount' | translate }}
+                                </div>
+                                <div class="table__cell">
+                                    {{ 'history.invoice_payment_method' | translate }}
+                                </div>
+                                <div class="table__cell">
+                                    {{ 'history.invoice_date' | translate }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table__body">
+                            <div class="table__row" *ngFor="let item of invoiceItems" (click)="goToInvoice(item.invoice_id)">
+                                <div class="table__cell text-blue">
+                                    {{ item.invoice_name }}
+                                </div>
+                                <div class="table__cell">
+                                    {{ item.payment_amount | currency : item.currency }}
+                                </div>
+                                <div class="table__cell">
+                                    {{ paymentMethodNames[item.payment_method_type] | translate }}
+                                </div>
+                                <div class="table__cell">
+                                    {{ item.payment_date | datetime : 'display.datetime' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                    <h1 class="page-header">{{ 'history.invoices_tab_header' | translate }}</h1>
+                    <div class="history__list">
+                        <div class="history__list-item" *ngFor="let item of invoiceItems" (click)="goToInvoice(item.invoice_id)">
+                            <div class="history__list-item-primary">
+                                <div class="history__list-item-primary-item history__list-item-primary-item_blue">
+                                    {{ item.invoice_name }}
+                                </div>
+                                <div class="history__list-item-primary-item history__list-item-primary-item_light">
+                                    {{ item.payment_date | datetime : 'display.datetime' }}
+                                </div>
+                                <div class="history__list-item-primary-item history__list-item-primary-item_light">
+                                    {{ paymentMethodNames[item.payment_method_type] | translate }}
+                                </div>
+                            </div>
+                            <div class="history__list-item-secondary">
+                                <div class="history__list-item-secondary-item history__list-item-secondary-item_currency">
+                                    {{ item.payment_amount | currency : item.currency }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'transactions'" [ngSwitch]="listState">
+            <div class="history__loading" *ngSwitchCase="'loading'">
+                <loader></loader>
+            </div>
+            <div class="history__message" *ngSwitchCase="'empty'">
+                {{ 'history.no_transactions' | translate }}
+            </div>
+            <div class="history__message history__message_error" *ngSwitchCase="'error'">
+                {{ 'history.transactions_error' | translate }}
+            </div>
+            <div class="history__list-box"
+                *ngSwitchCase="'list'"
+                [class.history__list-box_has-overlay]="isLoadingPage"
+                [ngSwitch]="viewportBreakpoint"
+            >
+                <ng-container *ngSwitchCase="'desktop'">
+                    <div class="table table_middle table_striped table_white table_nowrap history__table">
+                        <div class="table__header">
+                            <div class="table__row">
+                                <div class="table__cell">
+                                    {{ 'history.transaction_lpn' | translate }}
+                                </div>
+                                <div class="table__cell">
+                                    {{ 'history.transaction_location' | translate }}
+                                </div>
+                                <div class="table__cell">
+                                    {{ 'history.transaction_amount' | translate }}
+                                </div>
+                                <div class="table__cell">
+                                    {{ 'history.transaction_date' | translate }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table__body">
+                            <div class="table__row" *ngFor="let item of transactionItems">
+                                <div class="table__cell">
+                                    {{ item.lps }} {{ item.lpn }}
+                                </div>
+                                <div class="table__cell" [ngSwitch]="hasLocationRoute(item.location)">
+                                    <span class="pseudo-link"
+                                        *ngSwitchCase="true"
+                                        (click)="onShowLocationMap(item.location)"
+                                    >
+                                        {{ item.location }}
+                                    </span>
+                                    <ng-container *ngSwitchCase="false">{{ item.location }}</ng-container>
+                                </div>
+                                <div class="table__cell">
+                                    {{ item.payment_amount | currency : item.currency }}
+                                </div>
+                                <div class="table__cell">
+                                    {{ item.transaction_date | datetime : 'display.datetime' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                    <h1 class="page-header">{{ 'history.transactions_tab_header' | translate }}</h1>
+                    <div class="history__list">
+                        <div class="history__list-item" *ngFor="let item of transactionItems">
+                            <div class="history__list-item-primary">
+                                <div class="history__list-item-primary-item">
+                                    {{ item.lps }} {{ item.lpn }}
+                                </div>
+                                <div class="history__list-item-primary-item history__list-item-primary-item_light"
+                                    [ngSwitch]="hasLocationRoute(item.location)"
+                                >
+                                    <span class="pseudo-link"
+                                        *ngSwitchCase="true"
+                                        (click)="onShowLocationMap(item.location)"
+                                    >
+                                        {{ item.location }}
+                                    </span>
+                                    <ng-container *ngSwitchCase="false">{{ item.location }}</ng-container>
+                                </div>
+                                <div class="history__list-item-primary-item history__list-item-primary-item_light">
+                                    {{ item.transaction_date | datetime : 'display.datetime' }}
+                                </div>
+                            </div>
+                            <div class="history__list-item-secondary">
+                                <div class="history__list-item-secondary-item history__list-item-secondary-item_currency">
+                                    {{ item.payment_amount | currency : item.currency }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'disputes'" [ngSwitch]="listState">
+            <div class="history__loading" *ngSwitchCase="'loading'">
+                <loader></loader>
+            </div>
+            <div class="history__message" *ngSwitchCase="'empty'">
+                {{ 'history.no_disputes' | translate }}
+            </div>
+            <div class="history__message history__message_error" *ngSwitchCase="'error'">
+                {{ 'history.disputes_error' | translate }}
+            </div>
+            <div class="history__list-box"
+                *ngSwitchCase="'list'"
+                [class.history__list-box_has-overlay]="isLoadingPage"
+                [ngSwitch]="viewportBreakpoint"
+            >
+                <ng-container *ngSwitchCase="'desktop'">
+                    <div class="table table_middle table_striped table_white table_nowrap history__table">
+                        <div class="table__header">
+                            <div class="table__row">
+                                <div class="table__cell">
+                                    {{ 'history.dispute_lpn' | translate }}
+                                </div>
+                                <div class="table__cell">
+                                    {{ 'history.dispute_location' | translate }}
+                                </div>
+                                <div class="table__cell">
+                                    {{ 'history.dispute_amount' | translate }}
+                                </div>
+                                <div class="table__cell">
+                                    {{ 'history.dispute_reason' | translate }}
+                                </div>
+                                <div class="table__cell">
+                                    {{ 'history.dispute_date' | translate }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table__body">
+                            <div class="table__row" *ngFor="let item of disputeItems">
+                                <div class="table__cell">
+                                    {{ item.lps }} {{ item.lpn }}
+                                </div>
+                                <div class="table__cell" [ngSwitch]="hasLocationRoute(item.location)">
+                                    <span class="pseudo-link"
+                                        *ngSwitchCase="true"
+                                        (click)="onShowLocationMap(item.location)"
+                                    >
+                                        {{ item.location }}
+                                    </span>
+                                    <ng-container *ngSwitchCase="false">{{ item.location }}</ng-container>
+                                </div>
+                                <div class="table__cell">
+                                    {{ item.invoice_amount | currency : item.currency }}
+                                </div>
+                                <div class="table__cell">
+                                    {{ disputeReasonMap[item.status] | translate }}
+                                </div>
+                                <div class="table__cell">
+                                    {{ item.transaction_date | datetime : 'display.datetime' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                    <h1 class="page-header">{{ 'history.disputes_tab_header' | translate }}</h1>
+                    <div class="history__list">
+                        <div class="history__list-item" *ngFor="let item of disputeItems">
+                            <div class="history__list-item-primary">
+                                <div class="history__list-item-primary-item">
+                                    {{ item.lps }} {{ item.lpn }}
+                                </div>
+                                <div class="history__list-item-primary-item history__list-item-primary-item_light"
+                                    [ngSwitch]="hasLocationRoute(item.location)"
+                                >
+                                    <span class="pseudo-link"
+                                        *ngSwitchCase="true"
+                                        (click)="onShowLocationMap(item.location)"
+                                    >
+                                        {{ item.location }}
+                                    </span>
+                                    <ng-container *ngSwitchCase="false">{{ item.location }}</ng-container>
+                                </div>
+                                <div class="history__list-item-primary-item history__list-item-primary-item_light">
+                                    {{ item.transaction_date | datetime : 'display.datetime' }}
+                                </div>
+                                <div class="history__list-item-primary-item history__list-item-primary-item_red">
+                                    {{ disputeReasonMap[item.status] | translate }}
+                                </div>
+                            </div>
+                            <div class="history__list-item-secondary">
+                                <div class="history__list-item-secondary-item history__list-item-secondary-item_currency">
+                                    {{ item.invoice_amount | currency : item.currency }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+    </ng-container>
+    <div class="history__pagination" *ngIf="!!paginationData && (listState === 'list' || listState === 'loading')">
+        <pagination
+            [data]="paginationData"
+            [isLoading]="listState === 'loading'"
+            (onLoad)="onSwitchPage($event)"
+        ></pagination>
+    </div>
+</div>
+
+<google-map
+    *ngIf="activeCoverageLocation"
+    [data]="activeCoverageLocation"
+    (onClose)="onMapClose()"
+></google-map>

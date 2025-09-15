@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>neoRide</title>
+    <meta name="description" content="neoRide Client Dashboard"/>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="facebook-domain-verification" content="xf141qk9sbcm67jxphgau0irsspupp"/>
+    <!--<script src="//code.tidio.co/dfluya5i467z0oym3xi9lcopwjxxsyuq.js" async></script>-->
+    <link rel="icon" type="image/x-icon" href="favicon.ico?3">
+    <script type="text/javascript">
+        // Fix for amazon-cognito-identity-js
+        if (global === undefined) {
+            var global = window;
+        }
+
+        // Fix for amazon-s3, Amazon sucks >:-(
+        function updateLocation() {
+            var queryParams = window.location.search;
+
+            if (queryParams[0] === '?') {
+                queryParams = queryParams.slice(1);
+            }
+
+            queryParams = queryParams.split(/[?&]/g).reduce((acc, pair) => {
+                pair = pair.split('=');
+                acc[pair[0]] = pair[1] ? decodeURIComponent(pair[1]) : '';
+                return acc;
+            }, {});
+
+            var route = queryParams.route;
+            delete queryParams.route;
+
+            if (!route) {
+                return;
+            }
+
+            for (var key in queryParams) {
+                if (queryParams.hasOwnProperty(key)) {
+                    route += (route.indexOf('?') > -1 ? '&' : '?') + key + '=' + encodeURIComponent(queryParams[key]);
+                }
+            }
+
+            route += window.location.hash;
+
+            history.replaceState(null, null, route);
+        }
+
+        updateLocation();
+    </script>
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        });
+        var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-PDLPHW6');</script>
+    <!-- End Google Tag Manager -->
+    <style>
+        @-webkit-keyframes app-screen-loader-pulse {
+            0% {
+                -webkit-transform: scale(0.2);
+                transform: scale(0.2);
+                opacity: 0;
+            }
+            33% {
+                -webkit-transform: scale(0.6);
+                transform: scale(0.6);
+                opacity: 1;
+            }
+            100% {
+                -webkit-transform: scale(1.2);
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @-moz-keyframes app-screen-loader-pulse {
+            0% {
+                -moz-transform: scale(0.2);
+                transform: scale(0.2);
+                opacity: 0;
+            }
+            33% {
+                -moz-transform: scale(0.6);
+                transform: scale(0.6);
+                opacity: 1;
+            }
+            100% {
+                -moz-transform: scale(1.2);
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @-o-keyframes app-screen-loader-pulse {
+            0% {
+                -o-transform: scale(0.2);
+                transform: scale(0.2);
+                opacity: 0;
+            }
+            33% {
+                -o-transform: scale(0.6);
+                transform: scale(0.6);
+                opacity: 1;
+            }
+            100% {
+                -o-transform: scale(1.2);
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes app-screen-loader-pulse {
+            0% {
+                -webkit-transform: scale(0.2);
+                -moz-transform: scale(0.2);
+                -o-transform: scale(0.2);
+                transform: scale(0.2);
+                opacity: 0;
+            }
+            33% {
+                -webkit-transform: scale(0.6);
+                -moz-transform: scale(0.6);
+                -o-transform: scale(0.6);
+                transform: scale(0.6);
+                opacity: 1;
+            }
+            100% {
+                -webkit-transform: scale(1.2);
+                -moz-transform: scale(1.2);
+                -o-transform: scale(1.2);
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .app-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-color: #fff;
+            z-index: 2147483647; /* max z-index */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            opacity: 1;
+        }
+
+        .app-screen__middle {
+            display: block;
+            position: absolute;
+            width: 345px;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .app-screen__logo {
+            display: block;
+            border: none;
+            width: 100%;
+        }
+
+        .app-screen__loader {
+            display: block;
+            position: relative;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            width: 50px;
+            height: 50px;
+            margin: 20px auto 0;
+            left: -6px;
+        }
+
+        .app-screen__loader:before,
+        .app-screen__loader:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            opacity: 0;
+            background-color: rgba(0, 192, 139, 0.8); /* Figma green */
+            -webkit-animation: app-screen-loader-pulse 2s linear infinite;
+            -moz-animation: app-screen-loader-pulse 2s linear infinite;
+            -o-animation: app-screen-loader-pulse 2s linear infinite;
+            animation: app-screen-loader-pulse 2s linear infinite;
+        }
+
+        .app-screen__loader:before {
+            -webkit-animation-delay: -1s;
+            -moz-animation-delay: -1s;
+            -o-animation-delay: -1s;
+            animation-delay: -1s;
+        }
+
+        .app-screen_fade-out {
+            opacity: 0;
+        }
+
+        .app-screen,
+        .app-screen_fade-out {
+            -webkit-transition: opacity 0.2s ease-out;
+            -o-transition: opacity 0.2s ease-out;
+            -moz-transition: opacity 0.2s ease-out;
+            transition: opacity 0.2s ease-out;
+        }
+
+        @media (max-width: 500px) {
+            .app-screen__middle {
+                width: 230px;
+            }
+        }
+    </style>
+</head>
+<body>
+<app-root></app-root>
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="ns"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div class="app-screen">
+    <div class="app-screen__middle">
+        <img class="app-screen__logo"
+             src="https://admin.neoride.com/static/media/logo.672b1a20.png"
+             alt="neoride logo"/>
+        <div class="app-screen__loader"></div>
+    </div>
+</div>
+</body>
+</html>

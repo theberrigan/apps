@@ -1,0 +1,39 @@
+<mat-card appearance="outlined" class="users">
+    @if (isLoading()) {
+        <div class="users__spinner">
+            <mat-spinner [diameter]="50"></mat-spinner>            
+        </div>
+    } @else {  
+        <mat-card-header>
+            <mat-card-title>Пользователи</mat-card-title>
+        </mat-card-header>
+        <div class="users__fields">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="users__field users__field_name">
+                <input matInput placeholder="Поиск по имени" [formControl]="searchControl">
+            </mat-form-field>
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="users__field users__field_status">
+                <mat-label>Статус</mat-label>
+                <mat-select [(ngModel)]="status" (selectionChange)="onStatusChange()">
+                    @for (status of userStatuses; track status.value) {
+                        <mat-option [value]="status.value">{{ status.name }}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>        
+        </div>
+        <div class="users__active">
+            {{ activeUser()?.email }}
+        </div>
+        @if (filteredUsers().length) {        
+            <mat-list role="list" class="users__list">
+                @for (user of filteredUsers(); track user.id) {
+                    <mat-list-item role="listitem" (click)="onUserSelect(user)" class="users__list-item" [class.users__list-item_active]="user.id === activeUser()?.id">
+                        {{ user.name }}
+                    </mat-list-item>
+                }
+            </mat-list>
+        } @else {
+            <div class="users__message">Пользователи не найдены</div>
+        }
+    }
+</mat-card>
+

@@ -1,0 +1,21 @@
+<popup-custom [isSmall]="true">
+    <popup-content *ngIf="acknowledgementType === SubscriptionUpdateTypeEnum.UPGRADE">
+        <div [innerHTML]="'subscription_acknowledgement.upgrade' | translate : {maxLP : maxLP}"></div>
+    </popup-content>
+
+    <popup-content *ngIf="acknowledgementType === SubscriptionUpdateTypeEnum.DOWNGRADE">
+        <div
+            [innerHTML]="'subscription_acknowledgement.downgrade' | translate : {activeUntil : activeUntil | date : 'shortDate'} "></div>
+    </popup-content>
+
+    <popup-controls [isStretched]="true">
+        <button type="button"
+                class="button button_regular button_blue"
+                (click)="onOK()">
+            <span class="button__caption">{{ 'subscription_acknowledgement.ok_button' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+
+

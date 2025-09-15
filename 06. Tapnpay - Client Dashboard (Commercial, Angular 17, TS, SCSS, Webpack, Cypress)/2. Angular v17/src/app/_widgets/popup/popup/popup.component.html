@@ -1,0 +1,7 @@
+<div class="popup__scroll-content">
+    <div class="popup__box" [@modalAnimation]="'visible'">
+        <fieldset class="popup__fieldset" [disabled]="isDisabled">
+            <ng-content></ng-content>
+        </fieldset>
+    </div>
+</div>

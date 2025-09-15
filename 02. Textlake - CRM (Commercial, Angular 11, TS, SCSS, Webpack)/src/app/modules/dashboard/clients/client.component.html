@@ -1,0 +1,613 @@
+<fieldset [disabled]="!!networkProcess">
+    <action-panel>
+        <div class="action-panel__primary">
+            <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ ('clients.editor.page_title_' + editorMode) | translate }}</h1>
+        </div>
+        <div class="action-panel__secondary">
+            <div class="action-panel__item" *ngIf="canEdit && editorState === 'ready' && client && !client.deleted">
+                <button type="button" class="button button_regular button_blue"
+                    [isProgress]="networkProcess === 'saving'"
+                    (click)="onSave()"
+                >
+                    <span class="button__caption">{{ 'clients.editor.save__button' | translate }}</span>
+                </button>
+            </div>
+            <div class="action-panel__item" *ngIf="canEdit && editorState === 'ready' && this.editorMode === 'edit' && client">
+                <button type="button" class="button button_regular"
+                    [isProgress]="networkProcess === 'deleting'"
+                    [ngClass]="{
+                        'button_red': !client.deleted,
+                        'button_blue': client.deleted
+                    }"
+                    (click)="onToggleActivity()"
+                >
+                    <span class="button__caption">{{ (client.deleted ? 'clients.editor.client_restore__button2' : 'clients.editor.client_remove__button') | translate }}</span>
+                </button>
+            </div>
+        </div>
+    </action-panel>
+
+    <ng-container [ngSwitch]="editorState">
+        <div class="client-editor__spinner" *ngSwitchCase="'init'">
+            <spinner class="spinner spinner_blue spinner_small"></spinner>
+        </div>
+        <div class="client-editor__message client-editor__message_error" *ngSwitchCase="'error'">
+            {{ 'clients.list.error' | translate }}
+        </div>
+        <ng-container *ngSwitchCase="'ready'">
+            <div class="tabs">
+                <div class="tabs__tab" [class.tabs__tab_active]="activeTab === 'general'" (click)="switchTab('general')">
+                    <span class="tabs__tab-caption">{{ 'clients.editor.general__tab' | translate }}</span>
+                    <svg class="tabs__tab-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path style="fill: currentColor;" d="M9,0a8.74,8.74,0,0,1,4.5,1.22A9,9,0,0,1,16.78,4.5,8.74,8.74,0,0,1,18,9a8.74,8.74,0,0,1-1.22,4.5,9,9,0,0,1-3.28,3.28A8.74,8.74,0,0,1,9,18a8.74,8.74,0,0,1-4.5-1.22A9,9,0,0,1,1.22,13.5,8.74,8.74,0,0,1,0,9,8.74,8.74,0,0,1,1.22,4.5,9,9,0,0,1,4.5,1.22,8.74,8.74,0,0,1,9,0ZM9,16.26a7.06,7.06,0,0,0,3.63-1,7.32,7.32,0,0,0,2.65-2.65,7.21,7.21,0,0,0,0-7.26,7.4,7.4,0,0,0-2.65-2.65,7.21,7.21,0,0,0-7.26,0A7.48,7.48,0,0,0,2.72,5.37a7.21,7.21,0,0,0,0,7.26,7.4,7.4,0,0,0,2.65,2.65A7.06,7.06,0,0,0,9,16.26Zm2-3.05v-.87a.43.43,0,0,0-.12-.31.46.46,0,0,0-.31-.13h-.44V8.27a.44.44,0,0,0-.43-.43H7.4A.42.42,0,0,0,7.09,8a.41.41,0,0,0-.12.3v.88a.41.41,0,0,0,.12.3.42.42,0,0,0,.31.13h.44V11.9H7.4a.46.46,0,0,0-.31.13.43.43,0,0,0-.12.31v.87a.45.45,0,0,0,.12.31.46.46,0,0,0,.31.13h3.2a.46.46,0,0,0,.31-.13A.45.45,0,0,0,11,13.21ZM9,4a1.44,1.44,0,0,0-1.07.46,1.45,1.45,0,0,0-.45,1.07,1.48,1.48,0,0,0,.45,1.07,1.5,1.5,0,0,0,2.14,0,1.48,1.48,0,0,0,.45-1.07,1.45,1.45,0,0,0-.45-1.07A1.44,1.44,0,0,0,9,4Z"></path>
+                    </svg>
+                </div>
+                <div class="tabs__tab" [class.tabs__tab_active]="activeTab === 'billing'" (click)="switchTab('billing')">
+                    <span class="tabs__tab-caption">{{ 'clients.editor.billing__tab' | translate }}</span>
+                    <svg class="tabs__tab-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path style="fill: currentColor;" d="M17.33,4a.68.68,0,0,1,.67.68V14.1a.69.69,0,0,1-.2.48.64.64,0,0,1-.47.19H.68a.65.65,0,0,1-.48-.19A.69.69,0,0,1,0,14.1V4.68A.66.66,0,0,1,.2,4.2.66.66,0,0,1,.68,4Zm-16,3.6v3.6a2.17,2.17,0,0,1,1.59.66,2.17,2.17,0,0,1,.66,1.59H14.4a2.25,2.25,0,0,1,2.25-2.25V7.6A2.25,2.25,0,0,1,14.4,5.35H3.6a2.17,2.17,0,0,1-.66,1.59A2.17,2.17,0,0,1,1.35,7.6ZM6.3,9.4A3.43,3.43,0,0,0,6.67,11a3,3,0,0,0,1,1.15,2.38,2.38,0,0,0,2.7,0,3,3,0,0,0,1-1.15,3.56,3.56,0,0,0,0-3.16,3,3,0,0,0-1-1.15,2.38,2.38,0,0,0-2.7,0,3,3,0,0,0-1,1.15A3.43,3.43,0,0,0,6.3,9.4Z"></path>
+                    </svg>
+                </div>
+                <div class="tabs__tab" [class.tabs__tab_active]="activeTab === 'contacts'" (click)="switchTab('contacts')" *ngIf="editorMode === 'edit'">
+                    <span class="tabs__tab-caption">{{ 'clients.editor.contacts__tab' | translate }}</span>
+                    <svg class="tabs__tab-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path style="fill: currentColor;" d="M14.87,10.23a4.07,4.07,0,0,1,2.46,1.86A4.19,4.19,0,0,1,18,14.38v.88A2.77,2.77,0,0,1,15.26,18H2.74a2.63,2.63,0,0,1-1.93-.81A2.63,2.63,0,0,1,0,15.26v-.88a4.34,4.34,0,0,1,.67-2.32,4.07,4.07,0,0,1,2.46-1.83L3.87,10a6.12,6.12,0,0,1-1.2-3.69,6.16,6.16,0,0,1,.85-3.18A6.26,6.26,0,0,1,9,0a6.26,6.26,0,0,1,5.48,3.15,6.16,6.16,0,0,1,.85,3.18A6.12,6.12,0,0,1,14.13,10Zm1.44,5v-.88a2.61,2.61,0,0,0-1.9-2.53l-1.61-.46a6.32,6.32,0,0,1-7.6,0l-1.61.46a2.61,2.61,0,0,0-1.9,2.53v.88a1,1,0,0,0,1.05,1H15.26a1,1,0,0,0,1-1ZM9,1.69a4.44,4.44,0,0,0-2.32.63A4.8,4.8,0,0,0,5,4a4.42,4.42,0,0,0-.63,2.32A4.44,4.44,0,0,0,5,8.65a5,5,0,0,0,1.69,1.69,4.59,4.59,0,0,0,4.64,0A5,5,0,0,0,13,8.65a4.44,4.44,0,0,0,.63-2.32A4.42,4.42,0,0,0,13,4a4.8,4.8,0,0,0-1.69-1.69A4.44,4.44,0,0,0,9,1.69Z"></path>
+                    </svg>
+                </div>
+                <div class="tabs__tab" [class.tabs__tab_active]="activeTab === 'rates'" (click)="switchTab('rates')" *ngIf="editorMode === 'edit'">
+                    <span class="tabs__tab-caption">{{ 'clients.editor.rates__tab' | translate }}</span>
+                    <svg class="tabs__tab-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path style="fill: currentColor;" d="M17.88,14.44a.4.4,0,0,1,.12.29v.85a.41.41,0,0,1-.42.42H.42a.42.42,0,0,1-.3-.12.42.42,0,0,1-.12-.3V2.92a.42.42,0,0,1,.12-.3.42.42,0,0,1,.3-.12h.85a.4.4,0,0,1,.29.12.39.39,0,0,1,.13.3V14.31H17.58A.39.39,0,0,1,17.88,14.44ZM11.67,3.63a.37.37,0,0,0-.38.26.36.36,0,0,0,.07.44l1.86,1.83L10.13,9.25,7.88,7l-5.1,5L4,13.19,7.88,9.32l2.25,2.18,4.25-4.15,1.79,1.76a.34.34,0,0,0,.44.1.38.38,0,0,0,.27-.38V4.05a.42.42,0,0,0-.13-.3.41.41,0,0,0-.3-.12Z"></path>
+                    </svg>
+                </div>
+                <div class="tabs__tab" [class.tabs__tab_active]="activeTab === 'balance'" (click)="switchTab('balance')" *ngIf="editorMode === 'edit'">
+                    <span class="tabs__tab-caption">{{ 'clients.editor.balance__tab' | translate }}</span>
+                    <svg class="tabs__tab-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                        <path style="fill: currentColor;" d="M9,0a8.74,8.74,0,0,1,4.5,1.22A9,9,0,0,1,16.78,4.5,8.74,8.74,0,0,1,18,9a8.74,8.74,0,0,1-1.22,4.5,9,9,0,0,1-3.28,3.28A8.74,8.74,0,0,1,9,18a8.74,8.74,0,0,1-4.5-1.22A9,9,0,0,1,1.22,13.5,8.74,8.74,0,0,1,0,9,8.74,8.74,0,0,1,1.22,4.5,9,9,0,0,1,4.5,1.22,8.74,8.74,0,0,1,9,0ZM9,16.26a7.06,7.06,0,0,0,3.63-1,7.32,7.32,0,0,0,2.65-2.65,7.21,7.21,0,0,0,0-7.26,7.32,7.32,0,0,0-2.65-2.65,7.21,7.21,0,0,0-7.26,0A7.32,7.32,0,0,0,2.72,5.37a7.21,7.21,0,0,0,0,7.26,7.32,7.32,0,0,0,2.65,2.65A7.06,7.06,0,0,0,9,16.26Zm-.76-1.74V13.46a4.09,4.09,0,0,1-1.71-.65c-.26-.19-.48-.36-.65-.51a.25.25,0,0,1,0-.36l.83-1.09a.31.31,0,0,1,.19-.13.25.25,0,0,1,.21.09c.2.15.4.3.62.44a2.76,2.76,0,0,0,1.34.4,1.19,1.19,0,0,0,.69-.2.66.66,0,0,0,.29-.6q0-.26-.36-.51a6.32,6.32,0,0,0-1-.47A5.87,5.87,0,0,1,6.9,9,2.25,2.25,0,0,1,6,7.11a2.32,2.32,0,0,1,.62-1.63,3,3,0,0,1,1.63-.91V3.45a.2.2,0,0,1,.09-.18.32.32,0,0,1,.2-.08H9.58a.25.25,0,0,1,.18.08.22.22,0,0,1,.08.18V4.54a4.13,4.13,0,0,1,1.52.5,3.16,3.16,0,0,1,.53.39.26.26,0,0,1,0,.34L11.29,7a.19.19,0,0,1-.17.12.28.28,0,0,1-.23,0c-.17-.12-.37-.24-.58-.36a2,2,0,0,0-1.13-.29,1.67,1.67,0,0,0-.76.16.54.54,0,0,0-.33.51.74.74,0,0,0,.4.6,6.78,6.78,0,0,0,1.09.47v0A6.72,6.72,0,0,1,11.29,9a2.11,2.11,0,0,1,.9,1.74,2.59,2.59,0,0,1-.67,1.8,2.92,2.92,0,0,1-1.68.92v1.06a.27.27,0,0,1-.08.21.25.25,0,0,1-.18.08H8.53a.32.32,0,0,1-.2-.08A.25.25,0,0,1,8.24,14.52Z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="tab-content" [class.tab-content_active]="activeTab === 'general'" [formGroup]="editorForm">
+                <div class="tab-content-header tab-content-header_tablet tab-content-header_mobile">{{ 'clients.editor.general__tab' | translate }}</div>
+                <div class="client-editor__controls">
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.preferred_language__label' | translate }}
+                            </span>
+                        </label>
+                        <select class="select select_regular client-editor__control-input" formControlName="preferredLanguage">
+                            <option *ngFor="let langsOption of langsOptions" [ngValue]="langsOption.value" [innerHTML]="langsOption.display | translate"></option>
+                        </select>
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.name__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="name">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.legal_name__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="legalName">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.primary_email__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="email">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.secondary_email__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="email2">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.primary_phone__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="phone">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.secondary_phone__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="phone2">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.fax__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="fax">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.postal_code__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="zip">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.country__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="country">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.state__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="state">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.city__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="city">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.address_line_1__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="addressLine">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.address_line_2__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="addressLine2">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.note__label' | translate }}
+                            </span>
+                        </label>
+                        <textarea class="textarea client-editor__control-input" formControlName="note"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" [class.tab-content_active]="activeTab === 'billing'" [formGroup]="editorForm">
+                <div class="tab-content-header tab-content-header_tablet tab-content-header_mobile">{{ 'clients.editor.billing__tab' | translate }}</div>
+                <div class="client-editor__controls">
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.tin__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="tin">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.tax__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="tax">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.payment_type__label' | translate }}
+                            </span>
+                        </label>
+                        <select class="select select_regular client-editor__control-input" formControlName="paymentType">
+                            <option *ngFor="let paymentTypeOption of paymentTypeOptions" [ngValue]="paymentTypeOption.value" [innerHTML]="paymentTypeOption.display"></option>
+                        </select>
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.currency__label' | translate }}
+                            </span>
+                        </label>
+                        <select class="select select_regular client-editor__control-input" formControlName="currency">
+                            <option *ngFor="let currencyOption of currencyOptions" [ngValue]="currencyOption.value" [innerHTML]="currencyOption.display"></option>
+                        </select>
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.bank_name__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="bankName">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.account_number__label' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" formControlName="bankAccount">
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" [class.tab-content_active]="activeTab === 'contacts'" *ngIf="editorMode === 'edit'">
+                <div class="tab-content-header tab-content-header_tablet tab-content-header_mobile">{{ 'clients.editor.contacts__tab' | translate }}</div>
+                <div class="client-editor__contacts">
+                    <div class="client-editor__contacts-controls" *ngIf="contactsState === 'empty' || contactsState === 'list'">
+                        <button class="button button_regular button_blue client-editor__contacts-control client-editor__contacts-control_add"
+                            (click)="showContactEditor()"
+                            [isDisabled]="client.deleted"
+                        >
+                            <span class="button__caption">{{ 'clients.editor.contact_add' | translate }}</span>
+                        </button>
+                        <button class="client-editor__contacts-control client-editor__contacts-control_toggle-all"
+                            *ngIf="contactsState === 'list'"
+                            [class.client-editor__contacts-control_has-opened]="hasOpenedContacts"
+                            (click)="toggleAllContactsDetails()"
+                        ></button>
+                    </div>
+                    <ng-container [ngSwitch]="contactsState">
+                        <div class="client-editor__spinner" *ngSwitchCase="'loading'">
+                            <spinner class="spinner spinner_blue spinner_small"></spinner>
+                        </div>
+                        <div class="client-editor__message" *ngSwitchCase="'empty'">
+                            {{ 'clients.editor.no_contacts__message' | translate }}
+                        </div>
+                        <div class="client-editor__message client-editor__message_error" *ngSwitchCase="'error'">
+                            {{ 'clients.editor.contacts_error__message' | translate }}
+                        </div>
+                        <div class="client-editor__contacts-list" *ngSwitchCase="'list'">
+                            <div class="client-editor__contacts-list-item"
+                                *ngFor="let contactWrap of contacts"
+                                [ngClass]="{
+                                    'client-editor__contacts-list-item_primary': contactWrap.contact.primary,
+                                    'client-editor__contacts-list-item_inactive': contactWrap.contact.inactive,
+                                    'client-editor__contacts-list-item_opened': contactWrap.isOpened
+                                }"
+                            >
+                                <div class="client-editor__contacts-list-item-main">
+                                    <div class="client-editor__contacts-list-item-name">
+                                        {{ contactWrap.contact.title }} {{ contactWrap.contact.fullName }}&nbsp;
+                                    </div>
+                                    <button type="button" class="client-editor__contacts-list-item-button client-editor__contacts-list-item-button_edit" (click)="showContactEditor(contactWrap)"></button>
+                                    <button type="button" class="client-editor__contacts-list-item-button client-editor__contacts-list-item-button_toggle" (click)="toggleContactDetails(contactWrap)"></button>
+                                </div>
+                                <table class="client-editor__contacts-list-item-details">
+                                    <tbody>
+                                        <tr>
+                                            <th>{{ 'clients.editor.contact_email' | translate }}</th>
+                                            <td>{{ contactWrap.contact.email }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ 'clients.editor.contact_phone' | translate }}</th>
+                                            <td>{{ contactWrap.contact.phone }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ 'clients.editor.contact_fax' | translate }}</th>
+                                            <td>{{ contactWrap.contact.fax }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ 'clients.editor.contact_position' | translate }}</th>
+                                            <td>{{ contactWrap.contact.position }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ 'clients.editor.contact_notes' | translate }}</th>
+                                            <td>{{ contactWrap.contact.notes }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="tab-content" [class.tab-content_active]="activeTab === 'rates'" *ngIf="editorMode === 'edit'">
+                <div class="tab-content-header tab-content-header_tablet tab-content-header_mobile">{{ 'clients.editor.rates__tab' | translate }}</div>
+                <ng-container [ngSwitch]="ratesState">
+                    <div class="client-editor__spinner" *ngSwitchCase="'loading'">
+                        <spinner class="spinner spinner_blue spinner_small"></spinner>
+                    </div>
+                    <div class="client-editor__message" *ngSwitchCase="'empty'">
+                        {{ 'clients.list.clients.editor.no_rates__message' | translate }}
+                    </div>
+                    <div class="client-editor__message client-editor__message_error" *ngSwitchCase="'error'">
+                        {{ 'clients.editor.rates_error__message' | translate }}
+                    </div>
+                    <div class="client-editor__rates-list" *ngSwitchCase="'list'">
+                        <div class="client-editor__rates-list-item" *ngFor="let rateWrap of rates">
+                            <checkbox class="client-editor__rates-list-item-checkbox" [(ngModel)]="rateWrap.rate.selected" [disabled]="rateWrap.rate.global || client.deleted" (ngModelChange)="rateWrap.isChanged = true">
+                                <div class="client-editor__rates-list-item-name">{{ rateWrap.rate.name }}</div>
+                                <div class="client-editor__rates-list-item-description">{{ rateWrap.rate.description }}</div>
+                            </checkbox>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="tab-content" [class.tab-content_active]="activeTab === 'balance'" *ngIf="editorMode === 'edit'">
+                <div class="tab-content-header tab-content-header_tablet tab-content-header_mobile">{{ 'clients.editor.balance__tab' | translate }}</div>
+                <div class="client-editor__balance">
+                    <div class="client-editor__balance-value" *ngIf="balanceState === 'empty' || balanceState === 'list'">
+                        <span class="client-editor__balance-value-label">{{ 'clients.editor.balance' | translate }}:</span>
+                        {{ balance / 100 | number : '.2-2' }}
+                    </div>
+                    <div class="client-editor__balance-controls" *ngIf="balanceState === 'empty' || balanceState === 'list'">
+                        <ng-container *ngIf="balanceState === 'list'">
+                            <div class="client-editor__balance-control">
+                                <select class="select select_regular" [(ngModel)]="balanceFilter" (ngModelChange)="onBalanceFilter()">
+                                    <option *ngFor="let balanceFilterOption of balanceFilterOptions" [ngValue]="balanceFilterOption.value" [innerHTML]="balanceFilterOption.display | translate"></option>
+                                </select>
+                            </div>
+                            <div class="client-editor__balance-control">
+                                <sort-select class="filters__filter-input" [(ngModel)]="balanceOrder" [options]="balanceSortOptions" (ngModelChange)="onBalanceSort()"></sort-select>
+                            </div>
+                        </ng-container>
+                        <div class="client-editor__balance-control" *ngIf="balanceState === 'empty' || balanceState === 'list'">
+                            <button class="button button_regular button_blue" (click)="showTransactionEditor()" [isDisabled]="client.deleted">
+                                <span class="button__caption">{{ 'clients.editor.create_transaction' | translate }}</span>
+                            </button>
+                        </div>
+                    </div>
+                    <ng-container [ngSwitch]="balanceState">
+                        <div class="client-editor__spinner" *ngSwitchCase="'loading'">
+                            <spinner class="spinner spinner_blue spinner_small"></spinner>
+                        </div>
+                        <div class="client-editor__message" *ngSwitchCase="'empty'">
+                            {{ 'clients.editor.no_balance' | translate }}
+                        </div>
+                        <div class="client-editor__message client-editor__message_error" *ngSwitchCase="'error'">
+                            {{ 'clients.editor.balance_loading_error' | translate }}
+                        </div>
+                        <div class="client-editor__balance-list" *ngSwitchCase="'list'" [ngSwitch]="viewportBreakpoint">
+                            <div class="items-table-wrap" *ngSwitchCase="'desktop'">
+                                <table class="items-table">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ 'clients.editor.balance_date' | translate }}</th>
+                                            <th>{{ 'clients.editor.balance_offer' | translate }}</th>
+                                            <th>{{ 'clients.editor.balance_project' | translate }}</th>
+                                            <th>{{ 'clients.editor.balance_amount' | translate }}</th>
+                                            <th>{{ 'clients.editor.balance_currency' | translate }}</th>
+                                            <th>{{ 'clients.editor.balance_exchange_rate' | translate }}</th>
+                                            <th>{{ 'clients.editor.balance_credited' | translate }}</th>
+                                            <th>{{ 'clients.editor.balance_balance' | translate }}</th>
+                                            <th>{{ 'clients.editor.balance_comment' | translate }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngFor="let balanceWrap of balanceRecords">
+                                            <tr *ngIf="balanceWrap.isVisible">
+                                                <td>{{ balanceWrap.record.created | datetime : this.dateDisplayFormat }}</td>
+                                                <td class="text-nowrap">{{ balanceWrap.record.offerKey }}</td>
+                                                <td class="text-nowrap">{{ balanceWrap.record.projectKey }}</td>
+                                                <td class="text-nowrap text-right">{{ balanceWrap.record.amount / 100 | number : '.2-2' }}</td>
+                                                <td class="text-uppercase">{{ balanceWrap.record.currency }}</td>
+                                                <td class="text-nowrap text-right">{{ balanceWrap.record.exchangeRate / 10000 | number : '.2-2' }}</td>
+                                                <td class="text-nowrap text-right">{{ balanceWrap.record.credited / 100 | number : '.2-2' }}</td>
+                                                <td class="text-nowrap text-right">{{ balanceWrap.record.balance / 100 | number : '.2-2' }}</td>
+                                                <td>{{ balanceWrap.record.comment }}</td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <ng-container *ngSwitchDefault>
+                                <ng-container *ngFor="let balanceWrap of balanceRecords">
+                                    <div class="client-editor__balance-list-item" *ngIf="balanceWrap.isVisible">
+                                        <table class="client-editor__balance-list-item-details">
+                                            <tbody>
+                                                <tr>
+                                                    <th>{{ 'clients.editor.balance_date' | translate }}</th>
+                                                    <td>{{ balanceWrap.record.created | datetime : this.dateDisplayFormat }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>{{ 'clients.editor.balance_offer' | translate }}</th>
+                                                    <td>{{ balanceWrap.record.offerKey }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>{{ 'clients.editor.balance_project' | translate }}</th>
+                                                    <td>{{ balanceWrap.record.projectKey }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>{{ 'clients.editor.balance_amount' | translate }}</th>
+                                                    <td>{{ balanceWrap.record.amount / 100 | number : '.2-2' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>{{ 'clients.editor.balance_currency' | translate }}</th>
+                                                    <td class="text-uppercase">{{ balanceWrap.record.currency }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>{{ 'clients.editor.balance_exchange_rate' | translate }}</th>
+                                                    <td>{{ balanceWrap.record.exchangeRate / 10000 | number : '.2-2' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>{{ 'clients.editor.balance_credited' | translate }}</th>
+                                                    <td>{{ balanceWrap.record.credited / 100 | number : '.2-2' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>{{ 'clients.editor.balance_balance' | translate }}</th>
+                                                    <td>{{ balanceWrap.record.balance / 100 | number : '.2-2' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>{{ 'clients.editor.balance_comment' | translate }}</th>
+                                                    <td>{{ balanceWrap.record.comment }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+</fieldset>
+
+<!-- Client popup -->
+<popup-custom #contactEditor [options]="{ closeBy: 'manual' }" class="client-editor__contacts-editor" (onCloseRequest)="hideContactEditor($event)">
+    <popup-box>
+        <popup-header>{{ (contactEditorMode === 'create' ? 'clients.editor.contact_editor_header_add' : 'clients.editor.contact_editor_header_edit') | translate }}</popup-header>
+        <popup-content>
+            <!-- Content -->
+            <div class="client-editor__contacts-editor-content" *ngIf="contactWrapToEdit">
+                <div class="client-editor__controls">
+                    <div class="client-editor__control">
+                        <div class="client-editor__control-input">
+                            <checkbox [(ngModel)]="contactWrapToEdit.contact.primary">{{ 'clients.editor.contact_editor_make_primary' | translate }}</checkbox>
+                        </div>
+                    </div>
+                    <div class="client-editor__control">
+                        <div class="client-editor__control-input">
+                            <checkbox [(ngModel)]="contactWrapToEdit.contact.inactive">{{ 'clients.editor.contact_editor_inactive' | translate }}</checkbox>
+                        </div>
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.contact_editor_title' | translate }}
+                            </span>
+                        </label>
+                        <select class="select select_regular client-editor__control-input" [(ngModel)]="contactWrapToEdit.contact.title">
+                            <option *ngFor="let titleOption of titleOptions" [ngValue]="titleOption.value" [innerHTML]="titleOption.display"></option>
+                        </select>
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.contact_editor_full_name' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input"  [(ngModel)]="contactWrapToEdit.contact.fullName">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.contact_editor_email' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input"  [(ngModel)]="contactWrapToEdit.contact.email">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.contact_editor_phone' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input"  [(ngModel)]="contactWrapToEdit.contact.phone">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.contact_editor_fax' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input"  [(ngModel)]="contactWrapToEdit.contact.fax">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.contact_editor_position' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input"  [(ngModel)]="contactWrapToEdit.contact.position">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.contact_editor_notes' | translate }}
+                            </span>
+                        </label>
+                        <textarea class="textarea client-editor__control-input"  [(ngModel)]="contactWrapToEdit.contact.notes"></textarea>
+                    </div>
+                </div>
+            </div>
+            <!-- /Content -->
+        </popup-content>
+        <popup-controls>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_regular button_white" (click)="hideContactEditor()">
+                    <span class="button__caption">{{ 'clients.editor.contact_editor_cancel' | translate }}</span>
+                </button>
+                <button type="button" class="button button_regular button_blue" (click)="submitContact()" [isDisabled]="!isContactValid()">
+                    <span class="button__caption">{{ 'clients.editor.contact_editor_ok' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup-custom>
+
+<!-- Transaction popup -->
+<popup-custom #transactionEditor [options]="{ closeBy: 'manual' }" class="client-editor__transaction-editor" (onCloseRequest)="hideTransactionEditor($event)">
+    <popup-box>
+        <popup-header>{{ 'clients.editor.add_cash_payment' | translate }}</popup-header>
+        <popup-content>
+            <!-- Content -->
+            <div class="client-editor__transaction-editor-content" *ngIf="transaction">
+                <div class="client-editor__controls">
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.add_cash_payment_amount' | translate }}
+                            </span>
+                        </label>
+                        <input type="text" class="input input_regular client-editor__control-input" [(ngModel)]="transaction.amount">
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.add_cash_payment_currency' | translate }}
+                            </span>
+                        </label>
+                        <select class="select select_regular client-editor__control-input" [(ngModel)]="transaction.currency">
+                            <option *ngFor="let currencyOption of currencyOptions" [ngValue]="currencyOption.value">
+                                {{ currencyOption.display }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="client-editor__control">
+                        <label class="client-editor__control-label">
+                            <span class="client-editor__control-label-text">
+                                {{ 'clients.editor.add_cash_payment_comment' | translate }}
+                            </span>
+                        </label>
+                        <textarea class="textarea client-editor__control-input"  [(ngModel)]="transaction.comment"></textarea>
+                    </div>
+                </div>
+            </div>
+            <!-- /Content -->
+        </popup-content>
+        <popup-controls>
+            <div class="popup__controls-buttons">
+                <button type="button" class="button button_regular button_white" (click)="hideTransactionEditor()" [isDisabled]="isTransactionSaving">
+                    <span class="button__caption">{{ 'clients.editor.cash_payment_cancel' | translate }}</span>
+                </button>
+                <button type="button" class="button button_regular button_blue" (click)="saveTransaction()" [isDisabled]="!isTransactionValid() || isTransactionSaving" [isProgress]="isTransactionSaving">
+                    <span class="button__caption">{{ 'clients.editor.cash_payment_ok' | translate }}</span>
+                </button>
+            </div>
+        </popup-controls>
+    </popup-box>
+</popup-custom>

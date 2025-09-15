@@ -1,0 +1,408 @@
+<ng-container [ngSwitch]="layout">
+    <ng-container *ngSwitchCase="'main'">
+        <action-panel>
+            <div class="action-panel__primary">
+                <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ 'settings.services.list.page_header' | translate }}</h1>
+                <button class="button button_regular button_green" (click)="onCreate()" [disabled]="listState !== 'empty' && listState !== 'list'">
+                    <span class="button__caption">{{ 'settings.services.list.create' | translate }}</span>
+                </button>
+            </div>
+            <div class="action-panel__secondary">
+                <div class="action-panel__item" *ngIf="viewportBreakpoint === 'desktop'">
+                    <sort-select [(ngModel)]="state.sort" [options]="sortOptions" (ngModelChange)="onReload()" [isDisabled]="listState !== 'list'"></sort-select>
+                </div>
+                <div class="action-panel__item filters__filter">
+                    <select class="select select_regular filters__filter-input" [(ngModel)]="state.pagination.size" (ngModelChange)="onReload()">
+                        <option *ngFor="let sizeOption of sizeOptions" [ngValue]="sizeOption">{{ sizeOption }}</option>
+                    </select>
+                </div>
+                <div class="action-panel__item">
+                    <button type="button" class="button button_regular button_blue" (click)="onSwitchLayout('clone')" [isDisabled]="listState !== 'list' || selectedServicesCount === 0">
+                        <span class="button__caption">{{ 'settings.services.list.clone' | translate }}</span>
+                    </button>
+                </div>
+                <div class="action-panel__item">
+                    <sidebar-trigger [sidebar]="sidebar" [hasMark]="false" (onClick)="sidebar.toggle()" [isDisabled]="listState === 'loading' || listState === 'error'"></sidebar-trigger>
+                </div>
+            </div>
+        </action-panel>
+
+        <sidebar #sidebar [(isDesktopActive)]="state.sidebar.isActive" (isDesktopActiveChange)="saveState()">
+            <div class="sidebar__title">&nbsp;</div>
+            <div class="sidebar__section" *ngIf="viewportBreakpoint !== 'desktop'">
+                <div class="sidebar__label" [canCollapse]="false">{{ 'settings.services.list.list_options_header' | translate }}</div>
+                <div class="filters">
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'settings.services.list.order_by_label' | translate }}</label>
+                        <sort-select class="filters__filter-input" [(ngModel)]="state.sort" [options]="sortOptions" (ngModelChange)="onReload()"></sort-select>
+                    </div>
+                    <div class="filters__filter">
+                        <label class="filters__filter-label">{{ 'settings.services.list.limit' | translate }}</label>
+                        <select class="select select_regular filters__filter-input" [(ngModel)]="state.pagination.size" (ngModelChange)="onReload()">
+                            <option *ngFor="let sizeOption of sizeOptions" [ngValue]="sizeOption">{{ sizeOption }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar__section">
+                <div class="sidebar__label" [canCollapse]="false">{{ 'settings.services.list.filters_header' | translate }}</div>
+                <form [formGroup]="filtersForm" (ngSubmit)="onFiltersSubmit()">
+                    <div class="filters">
+                        <div class="filters__filter">
+                            <label class="filters__filter-label">{{ 'settings.services.list.filters.name' | translate }}</label>
+                            <input type="text" class="input input_regular filters__filter-input" formControlName="name">
+                        </div>
+                        <div class="filters__filter">
+                            <label class="filters__filter-label">{{ 'settings.services.list.filters.short_name' | translate }}</label>
+                            <input type="text" class="input input_regular filters__filter-input" formControlName="shortName">
+                        </div>
+                        <div class="filters__filter">
+                            <label class="filters__filter-label">{{ 'settings.services.list.filters.unit' | translate }}</label>
+                            <input type="text" class="input input_regular filters__filter-input" formControlName="unit">
+                        </div>
+                        <div class="filters__filter">
+                            <label class="filters__filter-label">{{ 'settings.services.list.filters.rate' | translate }}</label>
+                            <select class="select select_regular filters__filter-input" formControlName="rate">
+                                <option *ngFor="let rateOption of rateOptions" [ngValue]="rateOption.value" [innerHTML]="rateOption.display"></option>
+                            </select>
+                        </div>
+                        <div class="filters__filter">
+                            <label class="filters__filter-label">{{ 'settings.services.list.filters.from' | translate }}</label>
+                            <select class="select select_regular filters__filter-input" formControlName="language-from">
+                                <option *ngFor="let langOption of langOptions" [ngValue]="langOption.value" [innerHTML]="langOption.display | translate"></option>
+                            </select>
+                        </div>
+                        <div class="filters__filter">
+                            <label class="filters__filter-label">{{ 'settings.services.list.filters.to' | translate }}</label>
+                            <select class="select select_regular filters__filter-input" formControlName="language-to">
+                                <option *ngFor="let langOption of langOptions" [ngValue]="langOption.value" [innerHTML]="langOption.display | translate"></option>
+                            </select>
+                        </div>
+                        <div class="filters__buttons">
+                            <button type="button" class="button button_regular button_white" (click)="onFiltersSubmit(true)">
+                                <span class="button__caption">{{ 'settings.services.list.filters.reset__button' | translate }}</span>
+                            </button>
+                            <button type="submit" class="button button_regular button_blue">
+                                <span class="button__caption">{{ 'settings.services.list.filters.search__button' | translate }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </sidebar>
+
+        <div class="services-editor__spinner" *ngIf="listState === 'init' || listState === 'loading'">
+            <spinner class="spinner spinner_blue spinner_small"></spinner>
+        </div>
+        <div class="services-editor__message" *ngIf="listState === 'empty'">
+            {{ 'settings.services.list.no_service' | translate }}
+            <span class="pseudo-link" (click)="onCreate()">{{ 'settings.services.list.no_service_2' | translate }}</span>
+        </div>
+        <div class="services-editor__message services-editor__message_error" *ngIf="listState === 'error'">
+            {{ 'settings.services.list.error' | translate }}
+        </div>
+        <ng-container *ngIf="listState === 'list' || listState === 'loading-more'">
+            <ng-container *ngFor="let servicePage of servicesPages; let isFirst = first">
+                <div class="list-page" *ngIf="!isFirst">{{ 'clients.list.page' | translate }} {{ servicePage.page + 1 }}</div>
+                <ng-container [ngSwitch]="viewportBreakpoint">
+                    <div class="items-table-wrap" *ngSwitchCase="'desktop'">
+                        <table class="items-table services-editor__table">
+                            <thead>
+                                <tr>
+                                    <th class="table-cell-tight">&nbsp;</th>
+                                    <th>{{ 'settings.services.list.name' | translate }}</th>
+                                    <th>{{ 'settings.services.list.short_name' | translate }}</th>
+                                    <th>{{ 'settings.services.list.from' | translate }}</th>
+                                    <th>{{ 'settings.services.list.to' | translate }}</th>
+                                    <th>{{ 'settings.services.list.unit' | translate }}</th>
+                                    <th>{{ 'settings.services.list.price' | translate }}</th>
+                                    <th>{{ 'settings.services.list.rate' | translate }}</th>
+                                    <th class="table-cell-tight">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let serviceWrap of servicePage.items">
+                                    <td class="table-cell-tight">
+                                        <checkbox *ngIf="serviceWrap.isBasic" [withoutCaption]="true" [ngModel]="serviceWrap.isSelected" (ngModelChange)="setServiceSelectionState(serviceWrap, $event)"></checkbox>
+                                    </td>
+                                    <td class="text-limit-200">{{ serviceWrap.service.name }}</td>
+                                    <td class="text-limit-200">{{ serviceWrap.service.shortName }}</td>
+                                    <td>{{ getLangName(serviceWrap.service.from) | translate }}</td>
+                                    <td>{{ getLangName(serviceWrap.service.to) | translate }}</td>
+                                    <td>{{ serviceWrap.service.unit }}</td>
+                                    <td>{{ (serviceWrap.service.price / 100) | number : '.2-2' }}</td>
+                                    <td>{{ getRateName(serviceWrap.service.rate) }}</td>
+                                    <td class="table-cell-tight table-cell-no-padding">
+                                        <span class="services-editor__table-buttons">
+                                            <button type="button" class="services-editor__table-button services-editor__table-button_edit" (click)="onEdit(serviceWrap)"></button>
+                                            <button type="button" class="services-editor__table-button services-editor__table-button_delete" (click)="onDelete(servicePage, serviceWrap)" *ngIf="!serviceWrap.isBasic"></button>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="services-editor__list" *ngSwitchDefault>
+                        <div class="services-editor__list-item" *ngFor="let serviceWrap of servicePage.items">
+                            <div class="services-editor__list-item-header">
+                                <div class="services-editor__list-item-checkbox" *ngIf="serviceWrap.isBasic">
+                                    <checkbox [withoutCaption]="true" [ngModel]="serviceWrap.isSelected" (ngModelChange)="setServiceSelectionState(serviceWrap, $event)"></checkbox>
+                                </div>
+                                <div class="services-editor__list-item-title">{{ serviceWrap.service.name }}</div>
+                                <div class="services-editor__list-item-buttons">
+                                    <button type="button" class="services-editor__list-item-button services-editor__list-item-button_edit" (click)="onEdit(serviceWrap)"></button>
+                                    <button type="button" class="services-editor__list-item-button services-editor__list-item-button_delete" *ngIf="!serviceWrap.isBasic" (click)="onDelete(servicePage, serviceWrap)"></button>
+                                </div>
+                            </div>
+                            <div class="services-editor__list-item-info">
+                                <table class="services-editor__list-item-info-table">
+                                    <tbody>
+                                        <tr>
+                                            <th>{{ 'settings.services.list.short_name' | translate }}:</th>
+                                            <td>{{ serviceWrap.service.shortName }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ 'settings.services.list.from' | translate }}:</th>
+                                            <td>{{ getLangName(serviceWrap.service.from) | translate }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ 'settings.services.list.to' | translate }}:</th>
+                                            <td>{{ getLangName(serviceWrap.service.to) | translate }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ 'settings.services.list.unit' | translate }}:</th>
+                                            <td>{{ serviceWrap.service.unit }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ 'settings.services.list.price' | translate }}:</th>
+                                            <td>{{ (serviceWrap.service.price / 100) | number : '.2-2' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>{{ 'settings.services.list.rate' | translate }}:</th>
+                                            <td>{{ getRateName(serviceWrap.service.rate) }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </ng-container>
+        <pagination
+            *ngIf="listState === 'list' || listState === 'loading-more'"
+            [data]="pagination"
+            [isLoading]="listState === 'loading-more'"
+            (onLoad)="onSwitchPage($event)"
+        ></pagination>
+
+        <popup-custom #editor [options]="{ closeBy: 'manual' }" class="services-editor__editor" (onCloseRequest)="onHideEditor($event)" *ngIf="serviceWrapToEdit">
+            <popup-box>
+                <popup-header>{{ (editorMode === 'create' ? 'settings.services.editor.page_header_create' : 'settings.services.editor.page_header_edit') | translate }}</popup-header>
+                <popup-content>
+                    <!-- Content -->
+                    <div class="services-editor__editor-content">
+                        <div class="services-editor__controls">
+                            <div class="services-editor__control">
+                                <label class="services-editor__control-label">
+                                    <span class="services-editor__control-label-text">
+                                        {{ 'settings.services.editor.name' | translate }}
+                                    </span>
+                                </label>
+                                <input type="text" class="input input_regular services-editor__control-input" [(ngModel)]="serviceWrapToEdit.service.name" (ngModelChange)="validate()" [disabled]="isSaving" required>
+                            </div>
+                            <div class="services-editor__control">
+                                <label class="services-editor__control-label">
+                                    <span class="services-editor__control-label-text">
+                                        {{ 'settings.services.editor.short_name' | translate }}
+                                    </span>
+                                </label>
+                                <input type="text" class="input input_regular services-editor__control-input" [(ngModel)]="serviceWrapToEdit.service.shortName" (ngModelChange)="validate()" [disabled]="isSaving">
+                            </div>
+                            <div class="services-editor__control">
+                                <label class="services-editor__control-label">
+                                    <span class="services-editor__control-label-text">
+                                        {{ 'settings.services.editor.direction' | translate }}
+                                    </span>
+                                </label>
+                                <div class="services-editor__control-input services-editor__control-input_double">
+                                    <select class="select select_regular" [(ngModel)]="serviceWrapToEdit.service.from" (ngModelChange)="validate()" [disabled]="isSaving" required>
+                                        <option *ngFor="let langOption of langOptions" [ngValue]="langOption.value" [innerHTML]="langOption.display | translate"></option>
+                                    </select>
+                                    <div class="services-editor__control-input-arrow">&rarr;</div>
+                                    <select class="select select_regular" [(ngModel)]="serviceWrapToEdit.service.to" (ngModelChange)="validate()" [disabled]="isSaving" required>
+                                        <option *ngFor="let langOption of langOptions" [ngValue]="langOption.value" [innerHTML]="langOption.display | translate"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="services-editor__control">
+                                <label class="services-editor__control-label">
+                                    <span class="services-editor__control-label-text">
+                                        {{ 'settings.services.editor.price' | translate }}
+                                    </span>
+                                </label>
+                                <input type="text" class="input input_regular services-editor__control-input"
+                                    number-mask
+                                    [disabled]="isSaving"
+                                    [(numberModel)]="serviceWrapToEdit.service.price"
+                                    [numberModelOptions]="{
+                                         updateOn: 'blur',
+                                         defaultValue: 0,
+                                         type: 'number',
+                                         viewFraction: 100,
+                                         delimiter: ','
+                                    }"
+                                    (numberModelChange)="validate()"
+                                    required
+                                >
+                            </div>
+                            <div class="services-editor__control">
+                                <label class="services-editor__control-label">
+                                    <span class="services-editor__control-label-text">
+                                        {{ 'settings.services.editor.rate' | translate }}
+                                    </span>
+                                </label>
+                                <select class="select select_regular services-editor__control-input" [(ngModel)]="serviceWrapToEdit.service.rate" [disabled]="isSaving || editorMode === 'create' || serviceWrapToEdit.isBasic" (ngModelChange)="validate()" required>
+                                    <option *ngFor="let rateOption of rateOptions" [ngValue]="rateOption.value" [innerHTML]="rateOption.display"></option>
+                                </select>
+                            </div>
+                            <div class="services-editor__control">
+                                <label class="services-editor__control-label">
+                                    <span class="services-editor__control-label-text">
+                                        {{ 'settings.services.editor.unit' | translate }}
+                                    </span>
+                                </label>
+                                <input type="text" class="input input_regular services-editor__control-input" [(ngModel)]="serviceWrapToEdit.service.unit" (ngModelChange)="validate()" [disabled]="isSaving" required>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Content -->
+                </popup-content>
+                <popup-controls>
+                    <div class="popup__controls-buttons">
+                        <button type="button" class="button button_regular button_white" (click)="onHideEditor()" [isDisabled]="isSaving">
+                            <span class="button__caption">{{ 'settings.mailboxes.cancel_button' | translate }}</span>
+                        </button>
+                        <button type="button" class="button button_regular button_blue" (click)="onSave()" [isDisabled]="!isEditorFormValid || isSaving" [isProgress]="isSaving">
+                            <span class="button__caption">{{ 'settings.mailboxes.save__button' | translate }}</span>
+                        </button>
+                    </div>
+                </popup-controls>
+            </popup-box>
+        </popup-custom>
+    </ng-container>
+    <ng-container *ngSwitchCase="'clone'">
+        <action-panel>
+            <div class="action-panel__primary">
+                <h1 class="action-panel__header action-panel__header_has-arrow" (click)="goBack()">{{ 'settings.services.list.page_header_clone' | translate }}</h1>
+            </div>
+            <div class="action-panel__secondary">
+                <div class="action-panel__item">
+                    <button type="button" class="button button_regular button_blue"
+                        (click)="onClone()"
+                        [isDisabled]="!isEveryCloneServiceHasRate || isCloning"
+                        [isProgress]="isCloning"
+                    >
+                        <span class="button__caption">{{ 'settings.services.list.ok' | translate }}</span>
+                    </button>
+                </div>
+            </div>
+        </action-panel>
+
+        <ng-container [ngSwitch]="viewportBreakpoint">
+            <ng-container *ngSwitchCase="'desktop'">
+                <div class="services-editor__clone-controls">
+                    <select class="select select_regular services-editor__clone-rate-select" [(ngModel)]="cloneRate" (ngModelChange)="onCloneRateChange($event)" [disabled]="isCloning">
+                        <option *ngFor="let rateOption of rateOptions" [ngValue]="rateOption.value">
+                            {{ rateOption.value === null ? ('settings.services.list.select_rate' | translate) : rateOption.display }}
+                        </option>
+                    </select>
+                </div>
+                <div class="items-table-wrap">
+                    <table class="items-table services-editor__table">
+                        <thead>
+                            <tr>
+                                <th>{{ 'settings.services.list.name' | translate }}</th>
+                                <th>{{ 'settings.services.list.short_name' | translate }}</th>
+                                <th>{{ 'settings.services.list.from' | translate }}</th>
+                                <th>{{ 'settings.services.list.to' | translate }}</th>
+                                <th>{{ 'settings.services.list.unit' | translate }}</th>
+                                <th>{{ 'settings.services.list.price' | translate }}</th>
+                                <th>{{ 'settings.services.list.rate' | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let serviceWrap of serviceWrapsToClone">
+                                <td class="text-limit-200">{{ serviceWrap.service.name }}</td>
+                                <td class="text-limit-200">{{ serviceWrap.service.shortName }}</td>
+                                <td>{{ getLangName(serviceWrap.service.from) | translate }}</td>
+                                <td>{{ getLangName(serviceWrap.service.to) | translate }}</td>
+                                <td>{{ serviceWrap.service.unit }}</td>
+                                <td>{{ (serviceWrap.service.price / 100) | number : '.2-2' }}</td>
+                                <td class="table-cell-tight">
+                                    <select class="select select_regular services-editor__clone-rate-select" [(ngModel)]="serviceWrap.service.rate" (ngModelChange)="onCloneRateChange($event, serviceWrap)" [disabled]="isCloning">
+                                        <option *ngFor="let rateOption of rateOptions" [ngValue]="rateOption.value">
+                                            {{ rateOption.value === null ? ('settings.services.list.select_rate' | translate) : rateOption.display }}
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+                <div class="services-editor__clone-controls">
+                    <select class="select select_regular services-editor__clone-rate-select" [(ngModel)]="cloneRate" (ngModelChange)="onCloneRateChange($event)" [disabled]="isCloning">
+                        <option *ngFor="let rateOption of rateOptions" [ngValue]="rateOption.value">
+                            {{ rateOption.value === null ? ('settings.services.list.select_rate' | translate) : rateOption.display }}
+                        </option>
+                    </select>
+                </div>
+                <div class="services-editor__list">
+                    <div class="services-editor__list-item" *ngFor="let serviceWrap of serviceWrapsToClone">
+                        <div class="services-editor__list-item-header">
+                            <div class="services-editor__list-item-title">{{ serviceWrap.service.name }}</div>
+                        </div>
+                        <div class="services-editor__list-item-info">
+                            <table class="services-editor__list-item-info-table">
+                                <tbody>
+                                    <tr>
+                                        <th>{{ 'settings.services.list.short_name' | translate }}:</th>
+                                        <td>{{ serviceWrap.service.shortName }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ 'settings.services.list.from' | translate }}:</th>
+                                        <td>{{ getLangName(serviceWrap.service.from) | translate }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ 'settings.services.list.to' | translate }}:</th>
+                                        <td>{{ getLangName(serviceWrap.service.to) | translate }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ 'settings.services.list.unit' | translate }}:</th>
+                                        <td>{{ serviceWrap.service.unit }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ 'settings.services.list.price' | translate }}:</th>
+                                        <td>{{ (serviceWrap.service.price / 100) | number : '.2-2' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>{{ 'settings.services.list.rate' | translate }}:</th>
+                                        <td>
+                                            <select class="select select_regular services-editor__clone-rate-select" [(ngModel)]="serviceWrap.service.rate" (ngModelChange)="onCloneRateChange($event, serviceWrap)" [disabled]="isCloning">
+                                                <option *ngFor="let rateOption of rateOptions" [ngValue]="rateOption.value">
+                                                    {{ rateOption.value === null ? ('settings.services.list.select_rate' | translate) : rateOption.display }}
+                                                </option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</ng-container>

@@ -1,0 +1,93 @@
+@import '../../../../../assets/css/definitions';
+
+.lang-switcher {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    position: relative;
+    height: 100%;
+    user-select: none;
+
+    &__trigger {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        flex-shrink: 0;
+        font-size: 14px;
+        line-height: 22px;
+        font-weight: $font-weight-semi-bold;
+        padding: 5px 10px;
+        color: $color-text-primary;
+        border-radius: 6px;
+        cursor: pointer;
+        background-color: #fff;
+
+        &-text {
+            display: block;
+            margin-right: 5px;
+        }
+
+        &-arrow {
+            opacity: 0.6;
+        }
+    }
+
+    &_active &__trigger,
+    &__trigger:hover {
+        background-color: #ecf2f7;
+    }
+
+    &__trigger,
+    &_active &__trigger,
+    &__trigger:hover {
+        transition: background-color 0.1s ease;
+    }
+
+    &__menu {
+        display: flex;
+        flex-flow: column nowrap;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        border-radius: 6px;
+        border: 1px solid #dde3eb;
+        background-color: #fff;
+        padding: 6px 0;
+        transform: translateY(10px);
+        box-shadow: 0 3px 12px rgba(27, 31, 35, 0.15);
+
+        &-item {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            width: 100%;
+            white-space: nowrap;
+            cursor: default;
+            padding: 8px 16px;
+            color: $color-text-primary;
+            background-color: #fff;
+            text-align: left;
+
+            &:hover {
+                color: #fff;
+                background-color: $color-primary-blue;
+            }
+
+            &-mark {
+                visibility: hidden;
+            }
+
+            &_active &-mark {
+                visibility: visible;
+            }
+
+            &-text {
+                display: block;
+                margin-left: 8px;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: $font-weight-medium;
+            }
+        }
+    }
+}

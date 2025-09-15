@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none ">
+    <defs>
+        <linearGradient id="PSgrad_0" x1="50%" x2="0%" y1="86.603%" y2="0%">
+            <stop offset="0%" stop-color="rgb(151,37,231)" stop-opacity="1" ></stop>
+            <stop offset="100%" stop-color="rgb(50,88,190)" stop-opacity="1" ></stop>
+        </linearGradient>
+    </defs>
+    <circle fill="#000" cx="50" cy="50" r="50"></circle>
+    <!--<path fill="url(#PSgrad_0)" d="M0.000,201.999 C0.000,201.999 630.712,238.369 1157.000,182.999 C1579.134,138.587 1920.000,-0.001 1920.000,-0.001 L1920.000,1307.999 C1920.000,1307.999 1560.000,1237.999 960.000,1237.999 C360.000,1237.999 0.000,1307.999 0.000,1307.999 L0.000,201.999 Z"></path>
+    -->
+</svg>

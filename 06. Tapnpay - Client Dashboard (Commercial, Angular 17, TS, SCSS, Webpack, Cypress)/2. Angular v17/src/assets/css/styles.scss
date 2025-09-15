@@ -1,0 +1,98 @@
+// NOTE: order is important
+@import '../fonts/Montserrat/font.css';
+@import './definitions.scss';
+// variables
+@import './animations.scss';
+@import './mixins.scss';
+@import './reset.scss';
+@import './flatpicker.scss';
+@import './common.scss';
+// common styles & classes
+@import './buttons.scss';
+@import './inputs.scss';
+@import './select.scss';
+@import './table.scss';
+@import './utils.scss';
+@import './responsive.scss';
+
+.grecaptcha-badge {
+    visibility: hidden !important;
+  }
+.page-header {
+    display: block;
+    color: #656e7d;
+    font-size: 24px;
+    line-height: 38px;
+    font-weight: $font-weight-semi-bold;
+    margin-bottom: 20px;
+
+    html.viewport_mobile & {
+        font-size: 16px;
+        line-height: 24px;
+        margin-bottom: 18px;
+    }
+
+    &--mobile {
+        display: none;
+        font-size: 16px;
+        line-height: 24px;
+        margin-bottom: 18px;
+
+        @include mobile {
+            display: block;
+        }
+    }
+}
+
+html.viewport_mobile,
+html.viewport_tablet, {
+    #tidio-chat-iframe {
+        bottom: 70px !important;
+    }
+}
+
+#tidio-chat {
+    position: relative;
+    z-index: $z-index-tidio;
+}
+
+.pseudo-link {
+    color: $color-primary-blue;
+    cursor: pointer;
+
+    &_dotted {
+        border-bottom: 1px dotted $color-primary-blue;
+    }
+}
+
+.text-blue {
+    color: $color-primary-blue;
+}
+
+html.no-scroll {
+    &,
+    & > body {
+        overflow: hidden !important;
+    }
+}
+
+html.no-select {
+    &,
+    & > body {
+        user-select: none !important;
+    }
+}
+
+
+.terms-inner__content ul {
+    padding-left: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+
+    li {
+        padding-bottom: 1rem;
+        list-style: initial;
+    }
+}
+
+

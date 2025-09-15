@@ -1,0 +1,5 @@
+<ng-container [ngSwitch]="viewType">
+    <div class="isolated-view__shadow-dom" #emailNest *ngSwitchCase="ViewTypeEnum.ShadowDom"></div>
+    <iframe class="isolated-view__iframe" #emailNest *ngSwitchCase="ViewTypeEnum.Iframe"></iframe>
+</ng-container>
+<div class="isolated-view__width-test-container" #widthTestContainer></div>

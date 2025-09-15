@@ -1,0 +1,11 @@
+<!-- Page Header -->
+<ng-container [ngSwitch]="viewportBreakpoint">
+    <page-panel *ngSwitchCase="'desktop'">
+        <h1 class="page-panel__header" [innerHTML]="'terms.page_header' | translate"></h1>
+    </page-panel>
+    <app-bar *ngSwitchDefault></app-bar>
+</ng-container>
+
+<div class="terms-dashboard__content">
+    <terms-inner></terms-inner>
+</div>

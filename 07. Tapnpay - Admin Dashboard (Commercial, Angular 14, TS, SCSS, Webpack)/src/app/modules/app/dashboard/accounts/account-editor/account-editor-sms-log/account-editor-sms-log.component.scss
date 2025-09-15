@@ -1,0 +1,154 @@
+@import '../../../../../../../assets/css/definitions';
+
+.account-editor-sms-log {
+    $text-max-width: 350px;
+
+    display: block;
+    width: 100%;
+    max-width: 940px;
+    margin: 0 auto;
+    padding-bottom: 150px;
+
+    &__filters {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+
+        &-item {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            justify-content: flex-start;
+
+            & + & {
+                margin-left: 20px;
+            }
+
+            & + &_dash,
+            &_dash + & {
+                margin-left: 8px;
+            }
+
+            &_buttons {
+                & > .button + .button {
+                    margin-left: 10px;
+                }
+            }
+        }
+    }
+
+    &__loader {
+        margin-top: 15vh;
+    }
+
+    &__message {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 600;
+        color: $color-sys-message-on-blue-bg;
+        text-align: center;
+        margin-top: 15vh;
+
+        &_error {
+            color: $color-sys-message-error-on-blue-bg;
+        }
+    }
+
+    &__content {
+
+    }
+
+    &__table {
+        width: 100%;
+        margin-top: 25px;
+
+        & .table__cell + .table__cell {
+            padding-left: 40px;
+        }
+
+        & > .table__header &-cell {
+            white-space: nowrap;
+        }
+
+        & > .table__body &-cell {
+            &-text {
+                white-space: normal;
+            }
+        }
+
+        & > .table__header &-cell,
+        & > .table__body &-cell {
+            &-sender {
+                width: 1px;
+            }
+
+            &-arrow {
+                width: 1px;
+                padding-left: 20px;
+                color: $color-primary-green;
+                font-size: 18px;
+            }
+
+            &-recipient {
+                width: 1px;
+                padding-left: 20px;
+            }
+
+            &-text {
+
+            }
+
+            &-buttons {
+                width: 1px;
+                padding-left: 20px;
+            }
+        }
+    }
+
+    &__sms-text {
+        display: block;
+        max-width: $text-max-width;
+        word-break: break-word;
+    }
+
+    &__copy-button {
+        display: block;
+        cursor: pointer;
+        padding: 14px 18px 14px 20px;
+        margin: -15px -18px -15px -20px;
+        background-color: transparent;
+        opacity: 0.6;
+        color: $color-text-primary;
+
+        &:hover {
+            opacity: 1;
+        }
+
+        &,
+        &:hover {
+            transition: opacity 0.15s ease;
+        }
+    }
+
+    // ---------------------------
+
+    &__datepicker {
+        display: block;
+        width: 220px;
+    }
+
+    &__pagination {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        margin-top: 20px;
+
+        > .button {
+            width: 100%;
+        }
+    }
+}

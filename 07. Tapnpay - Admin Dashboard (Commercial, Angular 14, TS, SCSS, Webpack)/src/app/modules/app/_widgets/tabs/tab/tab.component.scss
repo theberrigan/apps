@@ -1,0 +1,84 @@
+@import '../../../../../../assets/css/definitions';
+@import '../tabs.definitions';
+
+.tab {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 0 0 auto;
+    height: $tab-height;
+    background-color: #fff;
+    border-color: #e2e5e8;
+    border-style: solid;
+    border-width: 2px 2px 0 2px;
+    border-radius: 8px 8px 0 0;
+    max-width: 200px;
+    opacity: 0.85;
+
+    & + & {
+        margin-left: 5px;
+    }
+
+    &_fixed-width {
+        max-width: none;
+        width: 200px;
+    }
+
+    &_active {
+        position: relative;
+        border-color: $color-primary-blue;
+        background-color: #d7e6ff;
+        box-shadow: inset 0 -2px 0 0 #B0C8F6;
+        opacity: 1;
+        z-index: 2;
+    }
+
+    &__content {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: space-between;
+        flex: 0 0 auto;
+        width: 100%;
+        height: 100%;
+        padding: 0 8px 0 12px;
+    }
+
+    &__title {
+        font-size: 12px;
+        line-height: 20px;
+        font-weight: $font-weight-semi-bold;
+        color: $color-text-primary;
+        padding-right: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &_active &__title {
+        font-weight: bold;
+        color: $color-primary-blue;
+    }
+
+    &__close-button {
+        $bg-color: #dadde3;
+
+        width: 16px;
+        height: 16px;
+        border-radius: 8px;
+        background-color: transparent;
+        color: #7d8186;
+        cursor: default;
+        flex: 0 0 auto;
+
+        &:hover {
+            background-color: rgba(#000, 0.12);
+        }
+
+        > svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}

@@ -1,0 +1,30 @@
+<div class="auth__content" *ngIf="!!mode">
+    <div class="auth__logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1442" height="420" class="auth__logo-svg" preserveAspectRatio="xMidYMid meet">
+            <use xlink:href="#svg-logo"></use>
+        </svg>
+    </div>
+    <div class="auth__box">
+        <fieldset class="auth__fieldset" [disabled]="isSubmitting">
+            <ng-container [ngSwitch]="mode">
+                <div class="auth__message auth__message_center" *ngSwitchCase="'welcome'">
+                    {{ 'auth.welcome' | translate }}
+                </div>
+                <div class="auth__message" *ngSwitchCase="'redirect'">
+                    {{ 'auth.redirecting' | translate }}
+                </div>
+                <div class="auth__message auth__message_error" *ngSwitchCase="'error'">
+                    {{ errorMessage | translate }}
+                </div>
+            </ng-container>
+            <div class="auth__controls" *ngIf="mode === 'welcome'">
+                <button type="button" class="button button_size-2 button_blue"
+                    [isProgress]="isSubmitting"
+                    (click)="onAuthClick()"
+                >
+                    <span class="button__caption">{{ 'auth.auth_button' | translate }}</span>
+                </button>
+            </div>
+        </fieldset>
+    </div>
+</div>

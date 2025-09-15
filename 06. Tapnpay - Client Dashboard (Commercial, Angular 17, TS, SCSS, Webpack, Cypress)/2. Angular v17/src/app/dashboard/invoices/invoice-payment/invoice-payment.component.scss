@@ -1,0 +1,104 @@
+@import '../../../../assets/css/definitions';
+@import '../../../../assets/css/mixins';
+
+.invoice-payment {
+    display: block;
+
+    &__label {
+        display: block;
+
+        &-text {
+            display: inline-flex;
+            font-size: 14px;
+            font-weight: $font-weight-semi-bold;
+            line-height: 20px;
+            color: #73777f;
+            cursor: default;
+            user-select: none;
+            margin-bottom: 8px;
+        }
+    }
+
+    &__input {
+        display: block;
+        height: 46px;
+        border: 1px solid #ced6de;
+        border-radius: $control-primary-radius;
+        background-color: #fff;
+        box-shadow: 0 1px 1px 0 rgba(14, 14, 14, 0.06);
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: $font-weight-semi-bold;
+        padding: 13px 18px;
+
+        &:focus {
+            border-color: #4875e7;
+            box-shadow: 0 0 0 5px #c0dafa;
+        }
+
+        &,
+        &:focus {
+            transition: border-color 0.15s ease-out, box-shadow 0.15s ease-out;
+        }
+
+        &[disabled],
+        &[disabled]:focus,
+        fieldset[disabled] &,
+        fieldset[disabled] &:focus {
+            opacity: 0.5;
+            cursor: default;
+            transition: none;
+            box-shadow: none;
+            border-color: #ced6de;
+            pointer-events: none;
+        }
+
+        &_zip {
+            width: 100%;
+        }
+    }
+
+    &__message {
+        margin-top: 20px;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: $font-weight-medium;
+
+        &_error {
+            background-color: #ffe9e9;
+            color: #ef4848;
+        }
+    }
+
+    &__payment-popup,
+    &__payment-result-popup,
+    &__wallet-payment-confirm-popup {
+        .popup__box {
+            max-width: 400px;
+            background-color: #F7FCFA !important;
+        }
+
+        .popup__content {
+            padding-bottom: 30px;
+        }
+
+        .popup__controls {
+            padding-right: 30px;
+            padding-bottom: 30px;
+            padding-left: 30px;
+        }
+    }
+
+    &__payment-result-popup-buttons {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        width: 100%;
+
+        & > .button:last-child {
+            flex-grow: 2;
+        }
+    }
+}

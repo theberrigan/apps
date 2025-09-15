@@ -1,0 +1,30 @@
+<div class="dropdown__menu" #elDropdown [style.width.px]="dropdownWidth">
+    <div class="dropdown__menu-area" [style.height.px]="dropdownHeight">
+        <div class="dropdown__menu-scroll" #elScroll>
+            <div class="dropdown__menu-list" #elList [class.dropdown__menu-list_full-width]="isListFullWidth">
+                <div class="dropdown__menu-items">
+                    <ng-content></ng-content>
+                </div>
+                <div class="dropdown__menu-empty">
+                    <div class="dropdown__menu-empty-dots"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dropdown__display" #elDisplay (click)="onDisplayClick($event)">
+    <div class="dropdown__arrow"></div>
+    <div class="dropdown__display-layers">
+        <div class="dropdown__display-text" [ngClass]="'dropdown__display-text_' + displayStyle" [ngSwitch]="displayType">
+            <span *ngSwitchCase="'html'" [innerHTML]="displayText"></span>
+            <ng-container [ngTemplateOutlet]="displayTemplate"></ng-container>
+        </div>
+        <input class="dropdown__search" type="text"
+               *ngIf="isActive && _search"
+               #elSearchInput
+               [(ngModel)]="searchString"
+               (input)="onSearchInput()"
+               (click)="onSearchClick($event)"
+        >
+    </div>
+</div>

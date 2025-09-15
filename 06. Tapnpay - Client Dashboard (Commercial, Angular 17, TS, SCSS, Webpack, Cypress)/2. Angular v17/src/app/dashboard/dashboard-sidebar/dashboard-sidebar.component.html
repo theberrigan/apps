@@ -1,0 +1,122 @@
+<div class="dashboard-sidebar">
+    <div class="dashboard-sidebar-scroll-area" [style.marginRight.px]="sidebarScrollAreaMarginRight">
+        <div class="dashboard-sidebar-content">
+            <div class="dashboard-sidebar-logo">
+                <img [src]="NEO_RIDE_LOGO_URL" alt="Neoride Logo" class="dashboard-sidebar-logo-svg" />
+                <!-- <span class="slogan desktop-only">{{'logo.slogan' | translate}}</span>
+                <span class="slogan mobile-only"> - </span> -->
+            </div>
+            <nav class="dashboard-sidebar-nav">
+                <ul class="dashboard-sidebar-nav-list">
+                    <li>
+                        <a routerLink="/dashboard/invoices"
+                           routerLinkActive="dashboard-sidebar-nav-link_active"
+                           class="dashboard-sidebar-nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"
+                                 class="dashboard-sidebar-nav-link-icon">
+                                <path style="fill: currentColor;"
+                                      d="M20,28H8a5,5,0,0,1-5-5V5A5,5,0,0,1,8,0H20a5,5,0,0,1,5,5V23A5,5,0,0,1,20,28ZM8,2A3,3,0,0,0,5,5V23a3,3,0,0,0,3,3H20a3,3,0,0,0,3-3V5a3,3,0,0,0-3-3Zm7,7H13a1,1,0,0,1,0-2h2a1,1,0,0,1,1,1h2a3,3,0,0,0-3-3V4H13V5a3,3,0,0,0,0,6h2a1,1,0,0,1,0,2H13a1,1,0,0,1-1-1H10a3,3,0,0,0,3,3v1h2V15a3,3,0,0,0,0-6Zm4,9H9v2H19Zm-3,4H9v2h7Z"></path>
+                            </svg>
+                            <span
+                                class="dashboard-sidebar-nav-link-text">{{ 'nav.items.invoices' | translate }}</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a routerLink="/dashboard/history"
+                           routerLinkActive="dashboard-sidebar-nav-link_active"
+                           class="dashboard-sidebar-nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"
+                                 class="dashboard-sidebar-nav-link-icon">
+                                <path style="fill: currentColor;"
+                                      d="M28,14A12,12,0,0,1,7.51,22.49l1.42-1.42A10,10,0,1,0,6,14v1.59l2.29-2.3,1.42,1.42L5,19.41.29,14.71l1.42-1.42L4,15.59V14a12,12,0,1,1,24,0Zm-11-.4V7.74H15v7l6.06,3.5,1-1.74Z"></path>
+                            </svg>
+                            <span
+                                class="dashboard-sidebar-nav-link-text">{{ 'nav.items.history' | translate }}</span>
+                        </a>
+                    </li>
+
+                </ul>
+                <div class="dashboard-sidebar-nav-sep"></div>
+                 <ul class="dashboard-sidebar-nav-list">
+                <!--<li *ngIf="isCoverageVisible()">
+                        <a routerLink="/dashboard/coverage"
+                           routerLinkActive="dashboard-sidebar-nav-link_active"
+                           class="dashboard-sidebar-nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"
+                                 class="dashboard-sidebar-nav-link-icon">
+                                <path style="fill: currentColor;"
+                                      d="M14,27.5l-.75-.84C12.92,26.29,5,17.3,5,10a9,9,0,0,1,18,0c0,7.3-7.92,16.29-8.25,16.66ZM14,3a7,7,0,0,0-7,7c0,5.31,5.06,12.05,7,14.44,1.94-2.39,7-9.13,7-14.44A7,7,0,0,0,14,3Zm0,11a4,4,0,1,1,4-4A4,4,0,0,1,14,14Zm0-6a2,2,0,1,0,2,2A2,2,0,0,0,14,8Z"></path>
+                            </svg>
+                            <span
+                                class="dashboard-sidebar-nav-link-text">{{ 'nav.items.toll_coverage' | translate }}</span>
+                        </a>
+                    </li> -->
+
+                    <li *ngIf="isExtendCoverageVisible()">
+                        <a class="dashboard-sidebar-nav-link"
+                           routerLink="/dashboard/extend-coverage"
+                           routerLinkActive="dashboard-sidebar-nav-link_active">
+                            <svg class="dashboard-sidebar-nav-link-icon" height="28" viewBox="0 0 28 28" width="28"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path style="fill: currentColor;"
+                                      d="m12.894531 16.070312c-.121093.089844-.289062.09375-.417969.011719-1.394531-.847656-2.628906-1.917969-3.660156-3.160156-1.257812-1.484375-2.105468-3.257813-2.460937-5.148437-.289063-1.753907-.011719-3.441407.894531-4.816407.367188-.554687.824219-1.050781 1.359375-1.460937 1.167969-.945313 2.636719-1.4726565 4.160156-1.49218775 1.472657.02343755 2.886719.58203175 3.957031 1.56249975.410157.367188.765626.789063 1.054688 1.25.96875 1.535156 1.175781 3.515625.75 5.515625-.722656 3.214844-2.753906 6.003907-5.636719 7.738281zm-4.304687.164063v6.109375l6.832031 2.855469v-7.871094c.515625-.378906 1.003906-.792969 1.460937-1.234375v9.042969l5.664063-2.765625v-12.300782l-2.175781.8125c.21875-.558593.398437-1.132812.539062-1.714843l2.105469-.789063c.375-.132812.789063.050782.933594.410156.03125.082032.046875.167969.046875.257813v13.769531c.003906.289063-.175782.550782-.453125.660156l-7.066407 3.441407c-.207031.101562-.453124.101562-.664062 0l-7.929688-3.332031-6.824218 3.332031c-.171875.085937-.371094.101562-.554688.042969-.183594-.058594-.335937-.1875-.425781-.355469-.0507812-.097657-.078125-.207031-.078125-.316407v-14.589843c0-.316407.214844-.59375.527344-.679688l3.710937-1.390625c.136719.453125.300781.898438.488281 1.335938l-3.261718 1.21875v12.957031l5.664062-2.765625v-7.632812c.453125.523437.945313 1.023437 1.460938 1.492187zm3.90625-13.109375c1.714844 0 3.105468 1.351562 3.105468 3.015625s-1.390624 3.011719-3.105468 3.011719c-1.71875 0-3.109375-1.347656-3.109375-3.011719s1.390625-3.015625 3.109375-3.015625zm0 0"
+                                      fill-rule="evenodd"/>
+                            </svg>
+                            <span
+                                class="dashboard-sidebar-nav-link-text">{{ 'extend_coverage.navigation_title' | translate }}</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a routerLink="/dashboard/faq"
+                           routerLinkActive="dashboard-sidebar-nav-link_active"
+                           class="dashboard-sidebar-nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"
+                                 class="dashboard-sidebar-nav-link-icon">
+                                <path style="fill: currentColor;"
+                                      d="M14,26A12,12,0,1,1,26,14,12,12,0,0,1,14,26ZM14,4A10,10,0,1,0,24,14,10,10,0,0,0,14,4Zm-1.64,7.36h-2a3.23,3.23,0,0,1,1-2.49,3.88,3.88,0,0,1,2.76-1A4,4,0,0,1,16,8.3a3.1,3.1,0,0,1,1.24,1.17,3.05,3.05,0,0,1,.46,1.61,3,3,0,0,1-.14.9,3.82,3.82,0,0,1-.47.92,7.63,7.63,0,0,1-.9.92,5.59,5.59,0,0,0-.85.87,2.28,2.28,0,0,0-.29.68,5.22,5.22,0,0,0-.15,1.17H12.76v-.35a4.51,4.51,0,0,1,.39-1.9,4.6,4.6,0,0,1,1.24-1.61,6.73,6.73,0,0,0,1-1,1.22,1.22,0,0,0,.17-.64,1.07,1.07,0,0,0-.42-.85A1.71,1.71,0,0,0,14,9.84a1.65,1.65,0,0,0-1.18.43A1.43,1.43,0,0,0,12.36,11.36Zm1.5,6.07a1.34,1.34,0,0,1,1,.39,1.27,1.27,0,0,1,.4.95,1.25,1.25,0,0,1-.4.94,1.28,1.28,0,0,1-1,.4,1.31,1.31,0,0,1-1-.4,1.28,1.28,0,0,1-.39-.94,1.33,1.33,0,0,1,1.34-1.34Z"></path>
+                            </svg>
+                            <span class="dashboard-sidebar-nav-link-text">{{ 'nav.items.faq' | translate }}</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a routerLink="/dashboard/contact-us"
+                           routerLinkActive="dashboard-sidebar-nav-link_active"
+                           class="dashboard-sidebar-nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"
+                                 class="dashboard-sidebar-nav-link-icon">
+                                <path style="fill: currentColor;"
+                                      d="M21,26a1,1,0,0,1-.65-.24L13.63,20H7a5,5,0,0,1-5-5V7A5,5,0,0,1,7,2H21a5,5,0,0,1,5,5v8a5,5,0,0,1-4,4.9V25a1,1,0,0,1-.58.91A1.06,1.06,0,0,1,21,26ZM7,4A3,3,0,0,0,4,7v8a3,3,0,0,0,3,3h7a1,1,0,0,1,.65.24L20,22.83V19a1,1,0,0,1,1-1,3,3,0,0,0,3-3V7a3,3,0,0,0-3-3ZM20,8H8v2H20Zm-4,4H8v2h8Z"></path>
+                            </svg>
+                            <span
+                                class="dashboard-sidebar-nav-link-text">{{ 'nav.items.contact_us' | translate }}</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="https://www.neoride.com/termsandconditions"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="dashboard-sidebar-nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"
+                                 class="dashboard-sidebar-nav-link-icon">
+                                <path style="fill: currentColor;"
+                                      d="M20,28H8a5,5,0,0,1-5-5V5A5,5,0,0,1,8,0H20a5,5,0,0,1,5,5V23A5,5,0,0,1,20,28ZM8,2A3,3,0,0,0,5,5V23a3,3,0,0,0,3,3H20a3,3,0,0,0,3-3V5a3,3,0,0,0-3-3ZM19,7H9V9H19Zm0,4H9v2H19Zm0,4H9v2H19Zm0,5H14v2h5Z"></path>
+                            </svg>
+                            <span class="dashboard-sidebar-nav-link-text" style="display: flex; align-items: center; gap: 6px;">
+                              <span>{{ 'nav.items.terms' | translate }}</span>
+                              <img src="/assets/images/terms-icon-2.png" alt="Open in new window" class="terms-external-icon" />
+                            </span>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+            <div class="dashboard-sidebar-footer">
+                &copy; {{currentYear}} tapNpay, Inc.
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<page-panel *ngIf="isViewPortDesktop()">
+    <h1 class="page-panel__header">{{ 'extend_coverage.page_title' | translate }}</h1>
+</page-panel>
+
+<ng-container *ngIf="isViewPortMobile() || isViewPortTablet()">
+    <app-bar></app-bar>
+</ng-container>
+
+
+<ng-container *ngIf="isPageLoad">
+    <loader></loader>
+</ng-container>
+
+
+<main class="page-content" *ngIf="!isPageLoad">
+
+    <ng-container *ngIf="coverageMatrixData">
+        <app-coverage-matrix [data]="coverageMatrixData"></app-coverage-matrix>
+    </ng-container>
+
+    <div class="ui-card" *ngIf="!isPageLoad && extendList && extendList.length > 0 && isShowExtendCoverageOption">
+        <div class="extended-toll-authorities mb-24" [formGroup]="controlsMapForm">
+            <h2 class="list-title">{{ 'extend_coverage.extend_list_block_title' | translate }}</h2>
+            <ul class="toll-authorities-list">
+                <li class="toll-authorities-list-item" *ngFor="let item of extendList">
+                    <div class="title-row">
+                        <checkbox [formControlName]="item.toll_authority_name"></checkbox>
+                        {{ item.toll_authority_name | mapToolAuthorityNameStates }}
+                    </div>
+                    <span class="d-block ml-32 terms-link"
+                          (click)="openTermsModal(item.terms_name)">
+                        {{ 'extend_coverage.terms_and_conditions_link' | translate }}
+                    </span>
+                </li>
+            </ul>
+        </div>
+
+        <app-extend-coverage-notification-message>
+            {{ 'extend_coverage.terms_attention_message' | translate }}
+        </app-extend-coverage-notification-message>
+
+        <div class="d-flex justify-end mt-16">
+            <button class="button button_regular button_light-blue mr-16"
+                    (click)="cancel()">{{ 'extend_coverage.cancel_button' | translate }}
+            </button>
+            <button class="button button_regular button_blue"
+                    [isDisabled]="selectedNamesForExtend && selectedNamesForExtend.length < 1"
+                    (click)="extendCoverage()">{{ 'extend_coverage.extend_button' | translate }}
+            </button>
+        </div>
+    </div>
+
+    <app-extend-coverage-notification-message *ngIf="!isPageLoad &&extendList && extendList.length < 1">
+        {{ 'extend_coverage.message_no_toll_authorities' | translate }}
+    </app-extend-coverage-notification-message>
+</main>
+
+<popup-custom (onClose)="openTermsModal()" class="extend-coverage-terms-popup"
+              *ngIf="activeModal">
+    <popup-header>
+        {{ 'extend_coverage.terms_popup_title' | translate }}
+    </popup-header>
+    <popup-content>
+        <terms-inner [termsNameToShow]="activeTermsName" [isLoadTerms]="false"></terms-inner>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button_regular button_blue"
+                [isProgress]="false" (click)="closeTermsModal()">
+            <span class="button__caption">
+                {{ 'extend_coverage.terms_popup_close_button' | translate }}
+            </span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+
+
+
+
+

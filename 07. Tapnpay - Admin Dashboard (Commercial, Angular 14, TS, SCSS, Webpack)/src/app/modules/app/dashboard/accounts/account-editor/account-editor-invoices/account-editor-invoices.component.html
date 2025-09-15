@@ -1,0 +1,74 @@
+<ng-container [ngSwitch]="!!(invoices && invoices.length)">
+    <div class="account-editor-invoices__message" *ngSwitchCase="false">{{ 'accounts.invoices.no_invoices' | translate }}</div>
+    <ng-container *ngSwitchCase="true">
+        <div class="table table_middle table_striped table_nowrap account-editor-invoices__table" [class.table_clickable]="!isSaving">
+            <div class="table__header">
+                <div class="table__row">
+                    <div class="table__cell account-editor-invoices__table-cell-invoice">
+                        {{ 'accounts.invoices.invoice_number' | translate }}
+                    </div>
+                    <div class="table__cell account-editor-invoices__table-cell-amount">
+                        {{ 'accounts.invoices.invoice_amount' | translate }}
+                    </div>
+                    <div class="table__cell account-editor-invoices__table-cell-date">
+                        {{ 'accounts.invoices.final_due_date' | translate }}
+                    </div>
+                    <div class="table__cell account-editor-invoices__table-cell-date">
+                        {{ 'accounts.invoices.original_due_date' | translate }}
+                    </div>
+                    <div class="table__cell">
+                        {{ 'accounts.invoices.prev_extensions' | translate }}
+                    </div>
+                    <div class="table__cell">
+                        {{ 'accounts.invoices.extend_due_date' | translate }}
+                    </div>
+                </div>
+            </div>
+            <div class="table__body">
+                <div class="table__row" *ngFor="let invoice of invoices" (click)="onInvoiceClick(invoice, $event)">
+                    <div class="table__cell account-editor-invoices__table-cell-invoice">
+                        {{ invoice.invoice_name }}
+                    </div>
+                    <div class="table__cell account-editor-invoices__table-cell-amount">
+                        {{ invoice.invoice_amount | currency : 'USD' }}
+                    </div>
+                    <div class="table__cell account-editor-invoices__table-cell-date">
+                        {{ invoice.final_due_date | datetime : 'display.datetime' }}
+                    </div>
+                    <div class="table__cell account-editor-invoices__table-cell-date">
+                        {{ invoice.original_due_date | datetime : 'display.datetime' }}
+                    </div>
+                    <div class="table__cell" [ngSwitch]="!!invoice.extended_hours">
+                        <ng-container *ngSwitchCase="true">{{ invoice.extended_hours }} {{ 'accounts.invoices.extend_hours' | translate }}</ng-container>
+                        <ng-container *ngSwitchCase="false">—</ng-container>
+                    </div>
+                    <div class="table__cell" (click)="onExtendCellClick($event)">
+                        <select class="select select_regular account-editor-invoices__extend-select" [disabled]="isSaving" [(ngModel)]="invoice.hours" (ngModelChange)="onCheckExtensionHours()">
+                            <option *ngFor="let hours of extendHoursOptions" [ngValue]="hours" [ngSwitch]="hours">
+                                <ng-container *ngSwitchCase="null">&nbsp;</ng-container>
+                                <ng-container *ngSwitchDefault>{{ hours }}</ng-container>
+                            </option>
+                        </select>{{ 'accounts.invoices.extend_hours' | translate }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="account-editor-invoices__controls">
+            <button type="button" class="button button_regular button_blue"
+                [isDisabled]="!shouldBeSaved || isSaving"
+                [isProgress]="isSaving"
+                (click)="onSave()"
+            >
+                <span class="button__caption">Save Changes</span>
+            </button>
+        </div>
+    </ng-container>
+</ng-container>
+
+<account-editor-invoice-details
+    *ngIf="invoicesToInspect"
+    [popupTitle]="'accounts.invoices.details_popup_title'"
+    [accountId]="accountId"
+    [invoices]="invoicesToInspect"
+    (onClose)="onCloseInvoicePopup()"
+></account-editor-invoice-details>

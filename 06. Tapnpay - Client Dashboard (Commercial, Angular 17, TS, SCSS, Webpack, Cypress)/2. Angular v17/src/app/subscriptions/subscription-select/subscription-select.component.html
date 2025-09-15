@@ -1,0 +1,35 @@
+<popup-custom class="subscription-select" *ngIf="isLoaded">
+    <popup-content>
+        <div>
+            <h2>{{ 'subscription_select.page_header' | translate }}</h2>
+            <div class="intro" [innerHTML]="'subscription_select.intro' | translate"></div>
+        </div>
+        <ng-container *ngIf="dialogData && dialogData"></ng-container>
+        <ng-container *ngFor="let plan of plans">
+
+            <app-subscription-item
+                [plan]="plan"
+                [isDisabled]="isDisabledSubscription(plan)"
+                [isSelected]="isSelectedSubscription(plan)"
+                (selectedNewPlan)="setSelectedSubscription($event)"></app-subscription-item>
+
+            <ng-container *ngIf="plan.max_license_plates === activeLicensePlatesCount - 1">
+                <p class="info-message">
+                    {{ 'subscription_select.available_plans_limit_message' | translate : {activeLicensePlatesCount} }}
+                </p>
+            </ng-container>
+
+        </ng-container>
+    </popup-content>
+    <popup-controls>
+        <div class="buttons-panel">
+            <button *ngIf="isShowCancel" class="button button_regular button_light-blue"
+                    (click)="onCancel()">{{ 'subscription_select.cancel' | translate }}
+            </button>
+
+            <button class="button button_regular button_blue"
+                    (click)="onSubmit()">{{ 'subscription_select.continue' | translate }}
+            </button>
+        </div>
+    </popup-controls>
+</popup-custom>

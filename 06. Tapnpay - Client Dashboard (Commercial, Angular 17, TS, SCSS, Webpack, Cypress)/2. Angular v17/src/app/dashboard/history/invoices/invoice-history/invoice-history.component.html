@@ -1,0 +1,392 @@
+<!-- Page Header -->
+<ng-container [ngSwitch]="viewportBreakpoint">
+    <page-panel *ngSwitchCase="'desktop'">
+        <h1 class="page-panel__header page-panel__header_has-arrow" (click)="onGoBack()">
+            <span
+                *ngIf="listState === 'loading' || listState === 'error'"
+                [innerHTML]="'history.invoice.page_header' | translate"></span>
+            <span
+                *ngIf="listState === 'list' || listState === 'empty'"
+                [innerHTML]="'history.invoice.page_header_specific' | translate : { invoice : history.invoice.invoice_name }"
+            ></span>
+        </h1>
+        <div class="page-panel__controls">
+            <button (click)="onPrint()"
+                    *ngIf="listState === 'list'"
+                    class="page-panel__button"
+                    type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="currentColor"
+                          d="M21.69,7H19V2.34A1.34,1.34,0,0,0,17.66,1H6.34A1.34,1.34,0,0,0,5,2.34V7H2.31A2.32,2.32,0,0,0,0,9.31v8.38A2.32,2.32,0,0,0,2.31,20H5v2.66A1.34,1.34,0,0,0,6.34,24H17.66A1.34,1.34,0,0,0,19,22.66V20h2.69A2.32,2.32,0,0,0,24,17.69V9.31A2.32,2.32,0,0,0,21.69,7ZM7,3H17V7H7ZM17,22H7V15H17Zm5-4.31a.31.31,0,0,1-.31.31H19V13H5v5H2.31A.31.31,0,0,1,2,17.69V9.31A.31.31,0,0,1,2.31,9H21.69a.31.31,0,0,1,.31.31Z"/>
+                </svg>
+            </button>
+        </div>
+    </page-panel>
+
+    <app-bar *ngSwitchDefault
+             [showBackButton]="true"
+             (onBack)="onGoBack()">
+        <button (click)="onPrint()"
+                *ngIf="listState === 'list'"
+                class="app-bar__button"
+                type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path fill="currentColor"
+                      d="M19.69,7H18V3.34A1.34,1.34,0,0,0,16.66,2H7.34A1.34,1.34,0,0,0,6,3.34V7H4.31A2.32,2.32,0,0,0,2,9.31v6.38A2.32,2.32,0,0,0,4.31,18H6v2.66A1.34,1.34,0,0,0,7.34,22h9.32A1.34,1.34,0,0,0,18,20.66V18h1.69A2.32,2.32,0,0,0,22,15.69V9.31A2.32,2.32,0,0,0,19.69,7ZM8,4h8V7H8Zm8,16H8V14h8Zm4-4.31a.31.31,0,0,1-.31.31H18V12H6v4H4.31A.31.31,0,0,1,4,15.69V9.31A.31.31,0,0,1,4.31,9H19.69a.31.31,0,0,1,.31.31Z"/>
+            </svg>
+        </button>
+    </app-bar>
+
+</ng-container>
+
+<div class="invoice-history__content" *ngIf="!!listState">
+    <ng-container [ngSwitch]="listState">
+        <div *ngSwitchCase="'loading'" class="invoice-history__loading">
+            <loader></loader>
+        </div>
+
+        <div *ngSwitchCase="'empty'" class="invoice-history__message">
+            {{ 'history.invoice.no_entries' | translate }}
+        </div>
+
+        <div *ngSwitchCase="'error'" class="invoice-history__message invoice-history__message_error">
+            {{ 'history.invoice.loading_error' | translate }}
+        </div>
+        <div class="invoice-history__list-box"
+             *ngSwitchCase="'list'"
+             [ngSwitch]="viewportBreakpoint">
+
+            <!-- DESKTOP -->
+            <ng-container *ngSwitchCase="'desktop'">
+
+                <div class="table table_middle table_striped table_white table_nowrap invoice-history__table"
+                     *ngIf="hasTolls">
+                    <div class="table__header">
+                        <div class="table__row">
+                            <div class="table__cell">
+                                {{ 'history.invoice.transaction_lpn' | translate }}
+                            </div>
+                            <div class="table__cell">
+                                {{ 'history.invoice.transaction_location' | translate }}
+                            </div>
+                            <div class="table__cell">
+                                {{ 'history.invoice.transaction_amount' | translate }}
+                            </div>
+                            <div class="table__cell">
+                                {{ 'history.invoice.transaction_status' | translate }}
+                            </div>
+                            <div class="table__cell">
+                                {{ 'history.invoice.transaction_date' | translate }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table__body">
+                        <div class="table__row" *ngFor="let item of history.tolls">
+                            <div class="table__cell">
+                                {{ item.lps }} {{ item.lpn }}
+                            </div>
+                            <div class="table__cell">
+                            {{ item.location ? item.location : '—' }}
+                            </div>
+                            <div class="table__cell">
+                                {{ item.payment_amount | currencyFormat : item.currency }}
+                            </div>
+                            <div class="table__cell" [ngSwitch]="item.status">
+                                <span class="invoice-history__status"
+                                      *ngSwitchCase="'APPROVED_BY_USER'">
+                                    {{ 'history.invoice.approved_by_user' | translate }}
+                                </span>
+                                <span class="invoice-history__status invoice-history__status_red"
+                                      *ngSwitchDefault>{{ disputeReasonMap[item.status] | translate }}
+                                </span>
+                            </div>
+                            <div class="table__cell">
+                                {{ item.transaction_date | datetime : 'display.datetime' }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- HAS PBM -->
+                <div class="table table_middle table_striped table_white table_nowrap invoice-history__table"
+                     *ngIf="hasPBM">
+                    <div class="table__header">
+                        <div class="table__row">
+                            <div class="table__cell">
+                                {{ 'history.invoice.transaction_pbm' | translate }}
+                            </div>
+                            <div class="table__cell">
+                                {{ 'history.invoice.transaction_lpn' | translate }}
+                            </div>
+                            <div class="table__cell">
+                                {{ 'history.invoice.transaction_amount' | translate }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table__body">
+                        <div class="table__row">
+                            <div class="table__cell">
+                                {{ history.pbm.pay_by_name }}
+                            </div>
+                            <div class="table__cell">
+                                {{ history.pbm.lps }} {{ history.pbm.lpn }}
+                            </div>
+                            <div class="table__cell">
+                                {{ history.pbm.payment_amount | currencyFormat : history.pbm.currency }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- HAS PBM END -->
+
+                <!-- HAS FEE -->
+                <div class="table table_middle table_striped table_white table_nowrap invoice-history__table"
+                     *ngIf="hasFee">
+                    <div class="table__header">
+                        <div class="table__row">
+                            <div class="table__cell">
+                                {{ 'history.invoice.transaction_otf_th' | translate }}
+                            </div>
+                            <div class="table__cell">
+                                {{ 'history.invoice.transaction_lpn' | translate }}
+                            </div>
+                            <div class="table__cell">
+                                {{ 'history.invoice.transaction_amount' | translate }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table__body">
+                        <div class="table__row">
+                            <div class="table__cell">
+                                {{ 'history.invoice.transaction_otf' | translate }}
+                            </div>
+                            <div class="table__cell">
+                                {{ history.fee.lps }} {{ history.fee.lpn }}
+                            </div>
+                            <div class="table__cell">
+                                {{ history.fee.payment_amount | currencyFormat : history.fee.currency }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- HAS FEE END -->
+
+                <!-- HAS SUBSCRIPTION -->
+                <div class="table table_middle table_striped table_white table_nowrap invoice-history__table"
+                     *ngIf="hasSubscription">
+                    <div class="table__header">
+                        <div class="table__row">
+                            <div class="table__cell">
+                                {{ 'history.invoice.transaction_subscription_th' | translate }}
+                            </div>
+                            <div class="table__cell">
+                                {{ 'history.invoice.transaction_amount' | translate }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table__body">
+                        <div class="table__row">
+                            <div class="table__cell">
+                                {{ 'history.invoice.transaction_subscription' | translate : {maxLp: history.subscription.max_lp} }}
+                            </div>
+                            <div class="table__cell">
+                                {{ history.subscription.payment_amount | currencyFormat : history.subscription.currency }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- HAS SUBSCRIPTION END -->
+
+
+            </ng-container>
+            <!-- DESKTOP END -->
+
+            <!-- MOBILE -->
+            <ng-container *ngSwitchDefault>
+                <h1 class="page-header"
+                    *ngIf="listState === 'loading' || listState === 'error'"
+                    [innerHTML]="'history.invoice.page_header' | translate"
+                ></h1>
+                <h1 class="page-header"
+                    *ngIf="listState === 'list' || listState === 'empty'"
+                    [innerHTML]="'history.invoice.page_header_specific' | translate : { invoice : history.invoice.invoice_name }"
+                ></h1>
+                <div class="invoice-history__list">
+
+                    <ng-container *ngIf="hasTolls">
+                        <div class="invoice-history__list-item hasTolls" *ngFor="let item of history.tolls">
+                            <div class="invoice-history__list-item-primary">
+                                <div class="invoice-history__list-item-primary-item">
+                                    {{ item.lps }} {{ item.lpn }}
+                                </div>
+                                <div
+                                    class="invoice-history__list-item-primary-item invoice-history__list-item-primary-item_light">
+                                    {{ item.location ? item.location : '—' }}
+                                </div>
+                                <div
+                                    class="invoice-history__list-item-primary-item invoice-history__list-item-primary-item_light">
+                                    {{ item.transaction_date | datetime : 'display.datetime' }}
+                                </div>
+                                <div
+                                    class="invoice-history__list-item-primary-item invoice-history__list-item-primary-item_red"
+                                    *ngIf="item.status !== 'APPROVED_BY_USER'">
+                                    {{ disputeReasonMap[item.status] | translate }}
+                                </div>
+                            </div>
+                            <div class="invoice-history__list-item-secondary">
+                                <div
+                                    class="invoice-history__list-item-secondary-item invoice-history__list-item-secondary-item_currency">
+                                    {{ item.payment_amount | currencyFormat : item.currency }}
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="hasPBM">
+                        <div class="invoice-history__list-item hasPBM">
+                            <div class="invoice-history__list-item-primary">
+                                <div class="invoice-history__list-item-primary-item">
+                                    {{ history.pbm.lps }} {{ history.pbm.lpn }}
+                                </div>
+                            </div>
+                            <div class="invoice-history__list-item-secondary">
+                                <div
+                                    class="invoice-history__list-item-secondary-item invoice-history__list-item-secondary-item_currency">
+                                    {{ history.pbm.payment_amount | currencyFormat : history.pbm.currency }}
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="hasFee">
+                        <div class="invoice-history__list-item hasFee">
+                            <div class="invoice-history__list-item-primary">
+                                <div class="invoice-history__list-item-primary-item">
+                                    {{ history.fee.lps }} {{ history.fee.lpn }}
+                                </div>
+                                <div>
+                                    <div
+                                        class="invoice-history__list-item-primary invoice-history__list-item-primary-item_light">
+                                        {{ 'history.invoice.transaction_otf' | translate }}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div
+                                        class="invoice-history__list-item-primary-item invoice-history__list-item-primary-item_light">
+                                        {{ history.invoice.payment_date | datetime : 'display.datetime' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="invoice-history__list-item-secondary">
+                                <div
+                                    class="invoice-history__list-item-secondary-item invoice-history__list-item-secondary-item_currency">
+                                    {{ history.fee.payment_amount | currencyFormat : history.fee.currency }}
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="hasSubscription">
+                        <div class="invoice-history__list-item hasFee">
+                            <div class="invoice-history__list-item-primary">
+                                <div>
+                                    <div
+                                        class="invoice-history__list-item-primary invoice-history__list-item-primary-item_light">
+                                        {{ 'history.invoice.transaction_subscription' | translate : {maxLp: history.subscription.max_lp} }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="invoice-history__list-item-secondary">
+                                <div
+                                    class="invoice-history__list-item-secondary-item invoice-history__list-item-secondary-item_currency">
+                                    {{ history.subscription.payment_amount | currencyFormat : history.subscription.currency }}
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+            <!-- MOBILE END -->
+
+        </div>
+    </ng-container>
+</div>
+
+<div class="invoice-history__print-content" *ngIf="listState === 'list'">
+    <div class="invoice-history__print-content-header"
+         [innerHTML]="'history.invoice.page_header_specific' | translate : { invoice : history.invoice.invoice_name }"
+    ></div>
+    <div class="invoice-history__print-content-subheader">
+        {{ printDate | datetime : 'display.datetime' }}
+    </div>
+
+    <table class="invoice-history__print-content-table" *ngIf="hasTolls">
+        <thead>
+        <tr>
+            <th>{{ 'history.invoice.transaction_lpn' | translate }}</th>
+            <th>{{ 'history.invoice.transaction_location' | translate }}</th>
+            <th class="text-right">
+                {{ 'history.invoice.transaction_amount' | translate }}
+            </th>
+            <th>{{ 'history.invoice.transaction_status' | translate }}</th>
+            <th>{{ 'history.invoice.transaction_date' | translate }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of history.tolls">
+            <td>{{ item.lps }} {{ item.lpn }}</td>
+            <td>{{ item.location }}</td>
+            <td class="text-right">{{ item.payment_amount | currencyFormat : item.currency }}</td>
+            <td [ngSwitch]="item.status">
+                <ng-container
+                    *ngSwitchCase="'APPROVED_BY_USER'">{{ 'history.invoice.approved_by_user' | translate }}
+                </ng-container>
+                <ng-container *ngSwitchDefault>{{ disputeReasonMap[item.status] | translate }}</ng-container>
+            </td>
+            <td>{{ item.transaction_date | datetime : 'display.datetime' }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="invoice-history__print-content-table" *ngIf="hasPBM">
+        <thead>
+        <tr>
+            <th>{{ 'history.invoice.transaction_pbm' | translate }}</th>
+            <th>{{ 'history.invoice.transaction_lpn' | translate }}</th>
+            <th>{{ 'history.invoice.transaction_amount' | translate }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ history.pbm.pay_by_name }}</td>
+            <td>{{ history.pbm.lps }} {{ history.pbm.lpn }}</td>
+            <td>{{ history.pbm.payment_amount | currencyFormat : history.pbm.currency }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="invoice-history__print-content-table" *ngIf="hasFee">
+        <thead>
+        <tr>
+            <th>{{ 'history.invoice.transaction_otf_th' | translate }}</th>
+            <th>{{ 'history.invoice.transaction_lpn' | translate }}</th>
+            <th>{{ 'history.invoice.transaction_amount' | translate }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ 'history.invoice.transaction_otf' | translate }}</td>
+            <td>{{ history.fee.lps }} {{ history.fee.lpn }}</td>
+            <td>{{ history.fee.payment_amount | currencyFormat : history.fee.currency }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<google-map
+    *ngIf="activeCoverageLocation"
+    [data]="activeCoverageLocation"
+    (onClose)="onMapClose()"
+></google-map>

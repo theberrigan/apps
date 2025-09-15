@@ -1,0 +1,242 @@
+<fieldset [disabled]="isSubmitting" class="carrier-contract__content" [ngSwitch]="state">
+    <div class="carrier-contract__loading" *ngSwitchCase="'loading'">
+        <loader></loader>
+    </div>
+    <div class="carrier-contract__message carrier-contract__message_error" *ngSwitchCase="'error'">
+        {{ 'contracts.carrier.editor.common_error' | translate }}
+    </div>
+    <ng-container *ngSwitchCase="'ready'">
+        <form class="form"
+            [class.form_show-errors]="showFormErrors"
+            (submit)="onSubmit()"
+            [formGroup]="form"
+        >
+            <div class="carrier-contract__heading">
+                <div class="carrier-contract__header" (click)="onBack()">
+                    <div class="carrier-contract__header-text">
+                        {{ 'contracts.carrier.editor.page_header' | translate }}
+                    </div>
+                </div>
+                <div class="carrier-contract__controls">
+                    <button type="submit" class="button button_regular button_light-blue"
+                        [isProgress]="isSubmitting"
+                    >
+                        <span class="button__caption">
+                            {{ 'contracts.carrier.editor.save_button' | translate }}
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="carrier-contract__sections">
+                <div class="carrier-contract__section">
+                    <div class="carrier-contract__section-header">
+                        {{ 'General' | translate }}
+                    </div>
+                    <div class="carrier-contract__section-controls">
+                        <div class="carrier-contract__section-control">
+                            <div class="carrier-contract__section-control-label">
+                                <label class="carrier-contract__section-control-label-text">
+                                    Contract Name
+                                </label>
+                            </div>
+                            <div class="carrier-contract__section-control-input">
+                                <input type="text" class="input input_regular" formControlName="name">
+                                <div class="carrier-contract__section-control-error">
+                                    Contract name should contain at least 2 characters
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carrier-contract__section-control">
+                            <div class="carrier-contract__section-control-input">
+                                <checkbox formControlName="enabled">Enabled</checkbox>
+                            </div>
+                        </div>
+                        <div class="carrier-contract__section-control">
+                            <div class="carrier-contract__section-control-label">
+                                <label class="carrier-contract__section-control-label-text">
+                                    Integrator
+                                </label>
+                            </div>
+                            <div class="carrier-contract__section-control-input">
+                                <select class="select select_regular" formControlName="integrator">
+                                    <option *ngFor="let option of integratorOptions" [ngValue]="option.value">
+                                        {{ option.display }}
+                                    </option>
+                                </select>
+                                <div class="carrier-contract__section-control-error">
+                                    Please select an integrator from the list
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carrier-contract__section-control">
+                            <div class="carrier-contract__section-control-label">
+                                <label class="carrier-contract__section-control-label-text">
+                                    Carrier
+                                </label>
+                            </div>
+                            <div class="carrier-contract__section-control-input">
+                                <select class="select select_regular" formControlName="carrierGroup">
+                                    <option *ngFor="let option of carrierGroupOptions" [ngValue]="option.value">
+                                        {{ option.display }}
+                                    </option>
+                                </select>
+                                <div class="carrier-contract__section-control-error">
+                                    Please select a carrier from the list
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carrier-contract__section-control">
+                            <div class="carrier-contract__section-control-label">
+                                <label class="carrier-contract__section-control-label-text">
+                                    Contract Start Date
+                                </label>
+                            </div>
+                            <div class="carrier-contract__section-control-input">
+                                <datepicker
+                                    formControlName="startDate"
+                                    [type]="'iso'"
+                                    [format]="'input.datetime'"
+                                ></datepicker>
+                                <div class="carrier-contract__section-control-error">
+                                    Please select a contract start date
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carrier-contract__section-control">
+                            <div class="carrier-contract__section-control-label">
+                                <label class="carrier-contract__section-control-label-text">
+                                    Contract End Date
+                                </label>
+                            </div>
+                            <div class="carrier-contract__section-control-input">
+                                <datepicker
+                                    formControlName="endDate"
+                                    [type]="'iso'"
+                                    [format]="'input.datetime'"
+                                ></datepicker>
+                                <div class="carrier-contract__section-control-error">
+                                    Please select a contract end date
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carrier-contract__section-control">
+                            <div class="carrier-contract__section-control-label">
+                                <label class="carrier-contract__section-control-label-text">
+                                    Signed Contract File
+                                </label>
+                            </div>
+                            <div class="carrier-contract__section-control-input">
+                                <a class="carrier-contract__download"
+                                    *ngIf="currentDoc && currentDoc.downloadUrl"
+                                    [href]="currentDoc.downloadUrl"
+                                    [download]="currentDoc.name"
+                                    [title]="currentDoc.name || ''"
+                                >
+                                    <span class="carrier-contract__download-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20">
+                                            <path fill="currentColor" d="M14.71,12.71,8,19.41l-6.71-6.7,1.42-1.42L7,15.59V1H9V15.59l4.29-4.3Z"/>
+                                        </svg>
+                                    </span>
+                                    <span class="carrier-contract__download-name">
+                                        {{ currentDoc.name }}
+                                    </span>
+                                </a>
+                                <div class="carrier-contract__uploader" [class.carrier-contract__uploader_selected]="uploadDoc">
+                                    <input type="file" class="carrier-contract__uploader-input" #fileInputEl (change)="onFileSelected()">
+                                    <div class="carrier-contract__uploader-text"
+                                        [title]="uploadDoc ? uploadDoc.file.name : ''"
+                                        [ngSwitch]="!!uploadDoc"
+                                    >
+                                        <ng-container *ngSwitchCase="true">{{ uploadDoc.file.name }}</ng-container>
+                                        <ng-container *ngSwitchCase="false">No file selected for upload</ng-container>
+                                    </div>
+                                    <button type="button" class="button button_regular button_white carrier-contract__uploader-button" (click)="onSelectFile()">
+                                        <span class="button__caption">Select File</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carrier-contract__section">
+                    <div class="carrier-contract__section-header">
+                        {{ 'Volume Discount' | translate }}
+                    </div>
+                    <div class="carrier-contract__section-controls">
+                        <div class="carrier-contract__section-control">
+                            <div class="carrier-contract__section-control-label">
+                                <label class="carrier-contract__section-control-label-text">
+                                    Tier 1 Volume
+                                </label>
+                            </div>
+                            <div class="carrier-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="tier1Volume">
+                                <div class="carrier-contract__section-control-error">
+                                    Volume must be a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carrier-contract__section-control">
+                            <div class="carrier-contract__section-control-label">
+                                <label class="carrier-contract__section-control-label-text">
+                                    Tier 1 Charge Rate %
+                                </label>
+                            </div>
+                            <div class="carrier-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="tier1Rate">
+                                <div class="carrier-contract__section-control-error">
+                                    Charge rate must be a number 0-100
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carrier-contract__section-sep"></div>
+                    <div class="carrier-contract__section-controls">
+                        <div class="carrier-contract__section-control">
+                            <div class="carrier-contract__section-control-label">
+                                <label class="carrier-contract__section-control-label-text">
+                                    Tier 2 Volume
+                                </label>
+                            </div>
+                            <div class="carrier-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="tier2Volume">
+                                <div class="carrier-contract__section-control-error">
+                                    Volume must be a number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carrier-contract__section-control">
+                            <div class="carrier-contract__section-control-label">
+                                <label class="carrier-contract__section-control-label-text">
+                                    Tier 2 Charge Rate %
+                                </label>
+                            </div>
+                            <div class="carrier-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="tier2Rate">
+                                <div class="carrier-contract__section-control-error">
+                                    Charge rate must be a number 0-100
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carrier-contract__section-sep"></div>
+                    <div class="carrier-contract__section-controls">
+                        <div class="carrier-contract__section-control">
+                            <div class="carrier-contract__section-control-label">
+                                <label class="carrier-contract__section-control-label-text">
+                                    Tier 3 Charge Rate %
+                                </label>
+                            </div>
+                            <div class="carrier-contract__section-control-input">
+                                <input type="number" class="input input_regular" formControlName="tier3Rate">
+                                <div class="carrier-contract__section-control-error">
+                                    Charge rate must be a number 0-100
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+</fieldset>

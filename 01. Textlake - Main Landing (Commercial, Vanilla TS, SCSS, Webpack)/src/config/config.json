@@ -1,0 +1,192 @@
+{
+    "languages": [
+        {
+            "code": "en",
+            "name": "English",
+            "isDefault": true
+        },
+        {
+            "code": "ru",
+            "name": "Russian"
+        },
+        {
+            "code": "pl",
+            "name": "Polish"
+        },
+        {
+            "code": "es",
+            "name": "Spanish"
+        }
+    ],
+    "video": [
+        {
+            "image": "video1.png",
+            "youtubeId": "bcfb7fqZ-lA"
+        },
+        {
+            "image": "video2.png",
+            "youtubeId": "772IOQsjZwg",
+            "isDemo": true
+        }
+    ],
+    "images": {
+        "standalone": [],
+        "gallery": [
+            {
+                "id": "offers",
+                "url": "screenshots/offers.png",
+                "caption": "Offers"
+            },
+            {
+                "id": "mailboxes",
+                "url": "screenshots/mailboxes.png",
+                "caption": "Mailboxes"
+            },
+            {
+                "id": "offer_editor",
+                "url": "screenshots/offer_editor.png",
+                "caption": "Offer editor"
+            },
+            {
+                "id": "offer_editor_services_selector",
+                "url": "screenshots/offer_editor_services_selector.png",
+                "caption": "Selection of services"
+            },
+            {
+                "id": "offer_editor_quote",
+                "url": "screenshots/offer_editor_quote.png",
+                "caption": "Quote preview"
+            },
+            {
+                "id": "offer_editor_documents",
+                "url": "screenshots/offer_editor_documents.png",
+                "caption": "Offer: Documents tab"
+            },
+            {
+                "id": "offer_editor_shipping",
+                "url": "screenshots/offer_editor_shipping.png",
+                "caption": "Offer: Shipping tab"
+            },
+            {
+                "id": "projects",
+                "url": "screenshots/projects.png",
+                "caption": "Projects"
+            },
+            {
+                "id": "project_editor",
+                "url": "screenshots/project_editor.png",
+                "caption": "Project editor"
+            },
+            {
+                "id": "project_editor_create_assignment",
+                "url": "screenshots/project_editor_create_assignment.png",
+                "caption": "Translator assignment"
+            },
+            {
+                "id": "clients",
+                "url": "screenshots/clients.png",
+                "caption": "Clients"
+            },
+            {
+                "id": "client_editor",
+                "url": "screenshots/client_editor.png",
+                "caption": "Client editor"
+            },
+            {
+                "id": "client_editor_balance",
+                "url": "screenshots/client_editor_balance.png",
+                "caption": "Client's Balance tab"
+            },
+            {
+                "id": "translators",
+                "url": "screenshots/translators.png",
+                "caption": "Translators"
+            },
+            {
+                "id": "translator_editor",
+                "url": "screenshots/translator_editor.png",
+                "caption": "Translator editor"
+            },
+            {
+                "id": "translator_editor_services",
+                "url": "screenshots/translator_editor_services.png",
+                "caption": "Services tab"
+            },
+            {
+                "id": "translator_editor_service_popup",
+                "url": "screenshots/translator_editor_service_popup.png",
+                "caption": "Service editor for tranlator"
+            },
+            {
+                "id": "translator_editor_financial",
+                "url": "screenshots/translator_editor_financial.png",
+                "caption": "Financial tab"
+            },
+            {
+                "id": "client_statements",
+                "url": "screenshots/client_statements.png",
+                "caption": "Report by clients"
+            },
+            {
+                "id": "translator_statements",
+                "url": "screenshots/translator_statements.png",
+                "caption": "Report by translators"
+            },
+            {
+                "id": "coordinator_statements",
+                "url": "screenshots/coordinator_statements.png",
+                "caption": "Report by coordinators"
+            },
+            {
+                "id": "settings",
+                "url": "screenshots/settings.png",
+                "caption": "Settings"
+            },
+            {
+                "id": "roles_editor",
+                "url": "screenshots/roles_editor.png",
+                "caption": "Roles"
+            },
+            {
+                "id": "currency_editor",
+                "url": "screenshots/currency_editor.png",
+                "caption": "Currencies"
+            },
+            {
+                "id": "company_profile",
+                "url": "screenshots/company_profile.png",
+                "caption": "Company profile"
+            },
+            {
+                "id": "company_services",
+                "url": "screenshots/company_services.png",
+                "caption": "Company services"
+            },
+            {
+                "id": "taxes",
+                "url": "screenshots/taxes.png",
+                "caption": "Taxes"
+            },
+            {
+                "id": "profile",
+                "url": "screenshots/profile.png",
+                "caption": "Personal profile page"
+            },
+            {
+                "id": "task_manager",
+                "url": "screenshots/task_manager.png",
+                "caption": "Task manager"
+            },
+            {
+                "id": "payments",
+                "url": "screenshots/payments.jpg",
+                "caption": "Online payments"
+            },
+            {
+                "id": "sign_in",
+                "url": "screenshots/sign_in.png",
+                "caption": "Sign in"
+            }
+        ]
+    }
+}

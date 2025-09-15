@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "removeComments": false,
+        "noImplicitAny": false,
+        "noImplicitReturns": false,
+        "noImplicitUseStrict": false,
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": true,
+        "suppressExcessPropertyErrors": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "allowJs": true,
+        "lib": [
+            "DOM", 
+            "ES6", 
+            "es2017", 
+            "DOM.Iterable", 
+            "ScriptHost"
+        ]
+    }
+}

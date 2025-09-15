@@ -1,0 +1,41 @@
+@import '../../../../../assets/css/definitions.scss';
+
+.context-menu {
+    display: flex;
+    flex-flow: column nowrap;
+    position: absolute;
+    border-radius: 6px;
+    border: 1px solid #dde3eb;
+    background-color: #fff;
+    padding: 6px 0;
+    box-shadow: 0 3px 12px rgba(27, 31, 35, 0.15);
+    z-index: $z-index-context-menu;
+
+    &__item {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: $font-weight-medium;
+        width: 100%;
+        white-space: nowrap;
+        cursor: pointer;
+        padding: 8px 16px;
+        color: $color-text-primary;
+        background-color: #fff;
+        text-align: left;
+
+        &:hover {
+            color: #fff;
+            background-color: $color-primary-blue;
+        }
+
+        &,
+        &:hover,
+        &:focus,
+        &:active {
+            text-decoration: none;
+        }
+    }
+}

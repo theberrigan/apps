@@ -1,0 +1,26 @@
+:host {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.matrix-status-icon {
+    width: 24px;
+    height: 24px;
+}
+
+$color-primary-green: #41a741;
+$color-primary-red: #e64f4f;
+$color-primary-orange: #f7944d;
+
+.icon-added {
+    fill: $color-primary-green;
+}
+
+.icon-not-added {
+    fill: $color-primary-red;
+}
+
+.icon-pending {
+    fill: $color-primary-orange;
+}

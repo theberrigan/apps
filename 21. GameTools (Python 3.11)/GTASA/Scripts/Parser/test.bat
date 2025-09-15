@@ -1,0 +1,1 @@
+python -m pytest --import-mode=importlib --color=yes --strict-config -c "./pytest.ini"

@@ -1,0 +1,132 @@
+image: node:22.11.0
+options:
+    max-time: 30
+
+definitions:
+    caches:
+        node: ~/.npm
+
+pipelines:
+    default:
+        - step:
+              name: Install dependencies
+              caches:
+                  - node
+              script:
+                  - npm ci
+              artifacts:
+                  - node_modules/**
+        - step:
+              name: Build for dev
+              trigger: automatic
+              caches:
+                  - node
+              script:
+                  - npm run build:dev
+              artifacts:
+                  - dist/dev/**
+        - step:
+              name: Deploy to (dev)
+              deployment: dev
+              trigger: manual
+              script:
+                  - pipe: atlassian/aws-s3-deploy:1.1.0
+                    variables:
+                        AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                        AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                        S3_BUCKET: $S3_BUCKET
+                        REGION: $AWS_DEFAULT_REGION
+                        LOCAL_PATH: dist/dev
+                        STRIP_PREFIX: dist/dev
+                  - pipe: atlassian/aws-cloudfront-invalidate:0.7.0
+                    variables:
+                        AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                        AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                        AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                        DISTRIBUTION_ID: $CLOUDFRONT_DISTRIBUTION_ID
+        - step:
+              name: Build for mock
+              trigger: manual
+              caches:
+                  - node
+              script:
+                  - npm run build:mock
+              artifacts:
+                  - dist/mock/**
+        - step:
+              name: Deploy to (mock)
+              deployment: mock
+              trigger: manual
+              script:
+                  - pipe: atlassian/aws-s3-deploy:1.1.0
+                    variables:
+                        AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                        AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                        S3_BUCKET: $S3_BUCKET
+                        REGION: $AWS_DEFAULT_REGION
+                        LOCAL_PATH: dist/mock
+                        STRIP_PREFIX: dist/mock
+                  - pipe: atlassian/aws-cloudfront-invalidate:0.7.0
+                    variables:
+                        AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                        AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                        AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                        DISTRIBUTION_ID: $CLOUDFRONT_DISTRIBUTION_ID
+        - step:
+            name: Build (stage)
+            caches:
+                - node
+            trigger: manual
+            script:
+                - npm install
+                - npm run build:stage
+            artifacts:
+                - dist/stage/**
+        - step:
+              name: Deploy to (stage)
+              deployment: staging
+              trigger: manual
+              script:
+                  - pipe: atlassian/aws-s3-deploy:1.1.0
+                    variables:
+                        AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                        AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                        S3_BUCKET: $S3_BUCKET
+                        REGION: $AWS_DEFAULT_REGION
+                        LOCAL_PATH: dist/stage
+                        STRIP_PREFIX: dist/stage
+                  - pipe: atlassian/aws-cloudfront-invalidate:0.7.0
+                    variables:
+                        AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                        AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                        AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                        DISTRIBUTION_ID: $CLOUDFRONT_DISTRIBUTION_ID
+        - step:
+              name: Build (prod)
+              caches:
+                  - node
+              trigger: manual
+              script:
+                  - npm install
+                  - npm run build:prod
+              artifacts:
+                  - dist/prod/**
+        - step:
+              name: Deploy to (prod)
+              deployment: production
+              trigger: manual
+              script:
+                  - pipe: atlassian/aws-s3-deploy:1.1.0
+                    variables:
+                        AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                        AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                        S3_BUCKET: $S3_BUCKET
+                        REGION: $AWS_DEFAULT_REGION
+                        LOCAL_PATH: dist/prod
+                        STRIP_PREFIX: dist/prod
+                  -   pipe: atlassian/aws-cloudfront-invalidate:0.7.0
+                      variables:
+                          AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+                          AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+                          AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+                          DISTRIBUTION_ID: $CLOUDFRONT_DISTRIBUTION_ID

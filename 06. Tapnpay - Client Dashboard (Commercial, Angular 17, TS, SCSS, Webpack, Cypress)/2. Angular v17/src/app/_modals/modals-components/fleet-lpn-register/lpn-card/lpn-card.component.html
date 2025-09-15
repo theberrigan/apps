@@ -1,0 +1,87 @@
+<div class="lpn-card" [formGroup]="mainFromGroup">
+    <div class="lpn-card__row">
+        <div class="lpn-card__check">
+            <checkbox formControlName="is_selected_to_pay"></checkbox>
+        </div>
+        <div class="lpn-card__title">
+            {{ plate.lps }} {{ plate.lpn }}
+        </div>
+        <div class="lpn-card__fee">
+            <ng-container *ngIf="isShowFee">{{ pendingLPNsFee | currencyFormat : 'USD' }}</ng-container>
+        </div>
+    </div>
+    <div [@inOutAnimation] *ngIf="mainFromGroup.controls['is_selected_to_pay'].value">
+        <div class="d-flex justify-end align-center mt-16"
+             *ngIf="isLpnSupportRentalType(plate)">
+            <label class="period-select" for="isRental">
+            <span class="period-select__label">
+                {{'dashboard.fleet.vehicle_type_select_label' | translate}}
+            </span>
+                <select class="select select_regular lpn-card__select"
+                        name="vehicle_type"
+                        id="isRental"
+                        formControlName="lpn_type">
+                    <ng-container *ngFor="let item of listOfLPNTypes | keyvalue">
+                        <option [value]="item.key">
+                            {{getLPNTypeTranslateKey(item.value) | translate}}
+                        </option>
+                    </ng-container>
+                </select>
+            </label>
+        </div>
+        <div class="rental-car-period-select"
+             [@inOutAnimation]
+             *ngIf="mainFromGroup.value['is_selected_to_pay'] && mainFromGroup.value['lpn_type'] === _rentalTypeName">
+            <div formGroupName="rental_period">
+                <label class="period-select">
+                <span class="period-select__label">
+                    {{ 'dashboard.period_select_date' | translate }}
+                </span>
+                    <datepicker class="period-select__picker"
+                                [isBlockToSelectDayBeforeToday]="true"
+                                [maxDate]="maxDateForRentalCarPeriod"
+                                formControlName="endDate"
+                                [format]="'input.date'"
+                                [type]="'iso'"></datepicker>
+                </label>
+                <app-validation-errors
+                    [requiredErrorMessage]="'dashboard.period_select.validation_errors.create_date_required'"
+                    [validatedFormControl]="getField('endDate', 'rental_period')"></app-validation-errors>
+
+                <label class="period-select">
+                <span class="period-select__label">
+                    {{ 'dashboard.period_select_time' | translate }}
+                </span>
+                    <app-timepicker formControlName="endTime"></app-timepicker>
+                </label>
+                <app-validation-errors
+                    [requiredErrorMessage]="'dashboard.period_select.validation_errors.create_time_required'"
+                    [validatedFormControl]="getField('endTime', 'rental_period')">
+                </app-validation-errors>
+            </div>
+            <app-validation-errors
+                [maxRentalPeriodDate]="maxDateForRentalCarPeriod"
+                [validatedFormControl]="mainFromGroup.controls['rental_period']">
+            </app-validation-errors>
+        </div>
+        <div class="d-flex justify-end align-center mt-16">
+            <label class="period-select" for="license_type">
+            <span class="period-select__label">
+                {{'lpn_categories.select_label' | translate}}
+            </span>
+                <select class="select select_regular lpn-card__select"
+                        name="license_type"
+                        id="license_type"
+                        formControlName="lpn_category">
+                    <ng-container *ngFor="let item of listOfLPNTypesIPASS">
+                        <option [value]="item.name">
+                            {{getCategoryTranslateKey(item.name) | translate}}
+                        </option>
+                    </ng-container>
+                </select>
+            </label>
+        </div>
+    </div>
+</div>
+
+

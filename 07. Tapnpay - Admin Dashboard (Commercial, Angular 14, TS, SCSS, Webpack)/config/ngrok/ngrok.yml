@@ -1,0 +1,11 @@
+authtoken: non-existing
+region: eu
+tunnels:
+  non-existing:
+    addr: 16099
+    proto: http
+    hostname: non-existing.ngrok.io
+  non-existing:
+    addr: 16050
+    proto: http
+    hostname: non-existing.ngrok.io

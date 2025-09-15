@@ -1,0 +1,118 @@
+.toll-auth-card {
+    display: flex;
+    padding: 16px;
+    flex-flow: column;
+    align-items: center;
+    margin-right: 16px;
+    width: 160px;
+    height: auto;
+    border: 1px solid lightgray;
+    justify-content: center;
+    background-color: lightgoldenrodyellow;
+}
+
+.authority-logo {
+    height: 72px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.block-title {
+    display: block;
+    margin: 16px auto;
+}
+
+
+.toll-authorities-list-item {
+    display: flex;
+    flex-flow: column;
+    margin-bottom: 21px;
+    align-items: flex-start;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 1;
+    font-weight: 500;
+}
+
+.terms-link {
+    color: #4875e7;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.page-content {
+    padding: 0 60px;
+    max-width: 800px;
+    width: 100%;
+
+    @media screen and (max-width: 720px) {
+        padding: 0 20px;
+    }
+
+}
+
+.ui-card {
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .05);
+    transition: .3s transform cubic-bezier(.155, 1.105, .295, 1.12), .3s box-shadow, .3s -webkit-transform cubic-bezier(.155, 1.105, .295, 1.12);
+    padding: 48px;
+    width: 100%;
+    margin-bottom: 48px;
+    @media screen and (max-width: 576px) {
+        padding: 16px 24px;
+    }
+}
+
+.list-title {
+    display: block;
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 21px;
+}
+
+.title-row {
+    display: flex;
+    align-items: flex-start;
+}
+
+.message {
+    display: block;
+    padding: 16px;
+    border-radius: 6px;
+    background-color: rgba(lightpink, 0.3);
+    font-size: 14px;
+}
+
+.extend-coverage-terms-popup {
+    .popup__content {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .popup__controls {
+        padding-top: 20px;
+    }
+
+    .terms-inner__content {
+        padding-top: 0 !important;
+    }
+}
+
+checkbox.checkbox {
+    &:before, &:after {
+        width: 20px;
+        height: 20px;
+    }
+
+    &_active {
+        &:after {
+            background-position: 3px 5px !important;
+        }
+    }
+}

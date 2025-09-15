@@ -1,0 +1,37 @@
+<select class="select select_regular" [disabled]="isDisabled" [ngModel]="by" (ngModelChange)="onByChange($event)">
+    <option *ngFor="let option of options" [ngValue]="option.value" [innerHTML]="option.display | translate"></option>
+</select>
+<button type="button" class="button button_regular button_white"
+     [isDisabled]="isDisabled"
+     [ngClass]="{
+         'button_white': direction !== 1,
+         'button_blue': direction === 1
+     }"
+     (click)="onDirectionClick(1)"
+>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" class="button__icon">
+        <g style="fill: currentColor;">
+            <rect y="13" width="16" height="2"></rect>
+            <rect y="9" width="12" height="2"></rect>
+            <rect y="5" width="8" height="2"></rect>
+            <rect y="1" width="4" height="2"></rect>
+        </g>
+    </svg>
+</button>
+<button type="button" class="button button_regular"
+    [isDisabled]="isDisabled"
+    [ngClass]="{
+        'button_white': direction !== -1,
+        'button_blue': direction === -1
+    }"
+    (click)="onDirectionClick(-1)"
+>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" class="button__icon">
+        <g style="fill: currentColor;">
+            <rect y="13" width="4" height="2"></rect>
+            <rect y="9" width="8" height="2"></rect>
+            <rect y="5" width="12" height="2"></rect>
+            <rect y="1" width="16" height="2"></rect>
+        </g>
+    </svg>
+</button>

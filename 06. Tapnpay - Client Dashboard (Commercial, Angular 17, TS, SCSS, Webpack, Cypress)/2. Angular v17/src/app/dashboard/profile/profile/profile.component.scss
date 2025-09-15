@@ -1,0 +1,78 @@
+@import '../../../../assets/css/definitions';
+
+.profile {
+    display: block;
+
+    &__content {
+        padding: 0 60px;
+    }
+
+    &__items {
+        width: 100%;
+        max-width: 530px;
+    }
+
+    &__item {
+        display: block;
+        color: $color-text-primary;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 1px 3px 0 rgba(#0e0e0e, 0.1);
+        user-select: none;
+        cursor: pointer;
+        padding: 16px 24px;
+
+        &,
+        &:link,
+        &:active,
+        &:visited,
+        &:focus {
+            text-decoration: none;
+        }
+
+        & + & {
+            margin-top: 8px;
+        }
+
+        &-header {
+            display: block;
+            width: 100%;
+            font-size: 16px;
+            line-height: 22px;
+            font-weight: $font-weight-semi-bold;
+            color: #656e7d;
+
+            &_red {
+                color: #ec4545;
+            }
+        }
+
+        &-text {
+            display: block;
+            width: 100%;
+            font-size: 14px;
+            line-height: 21px;
+            font-weight: $font-weight-medium;
+            color: #7c828d;
+            margin-top: 4px;
+        }
+    }
+
+    &__deactivate-account-popup,
+    &__deactivate-account-result-popup {
+        .popup__box {
+            max-width: 400px;
+        }
+    }
+
+    html.viewport_mobile &,
+    html.viewport_tablet & {
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: $font-weight-medium;
+
+        &__content {
+            padding: 20px;
+        }
+    }
+}

@@ -1,0 +1,81 @@
+<action-panel>
+    <div class="action-panel__primary">
+        <h1 class="action-panel__header">{{ 'billing.page_header' | translate }}</h1>
+        <button type="button" class="button button_regular button_green" (click)="onMakeDeposit()">
+            <span class="button__caption">{{ 'billing.make_deposit' | translate }}</span>
+        </button>
+    </div>
+</action-panel>
+
+<div class="tabs">
+    <div class="tabs__tab" [class.tabs__tab_active]="tab === 'balance'" (click)="switchTab('balance')">
+        {{ 'billing.balance_tab' | translate }}
+    </div>
+    <!--<div class="tabs__tab" [class.tabs__tab_active]="tab === 'invoices'" (click)="switchTab('invoices')">
+        {{ 'billing.invoices_tab' | translate }}
+    </div>-->
+    <div class="tabs__tab" [class.tabs__tab_active]="tab === 'transactions'" (click)="switchTab('transactions')">
+        {{ 'billing.transactions_tab' | translate }}
+    </div>
+</div>
+
+<div class="mobile-tabs-padding" [ngSwitch]="tab">
+    <div class="tab-content" *ngSwitchCase="'balance'">
+        <div class="billing__balance">
+            <div class="billing__balance-title">{{ 'billing.current_balance' | translate }}</div>
+            <div class="billing__balance-value">{{ 133700 / 100 | number : '.2-2' | cy : 'USD' }}</div>
+        </div>
+    </div>
+    <div class="tab-content" *ngSwitchCase="'invoices'">
+        <div class="billing__invoices">
+            <div class="items-table-wrap">
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th>{{ 'billing.invoices.number__table_header' | translate }}</th>
+                            <th>{{ 'billing.invoices.date__table_header' | translate }}</th>
+                            <th>{{ 'billing.invoices.total__table_header' | translate }}</th>
+                            <th class="table-cell-tight">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let invoice of invoices">
+                            <td>{{ invoice.number }}</td>
+                            <td>{{ (invoice.date * 1000) | datetime : 'D MMM YY HH:mm' }}</td>
+                            <td class="text-right">{{ invoice.total / 100 | currency : invoice.currency.toUpperCase() : 'symbol' : '.2-2' }}</td>
+                            <td class="table-cell-tight table-cell-no-padding">
+                                <button type="button" class="billing__invoice-button" *ngIf="!invoice.paid" (click)="onPay(invoice)" [title]="'billing.invoices.pay__button' | translate"></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="tab-content" *ngSwitchCase="'transactions'">
+        <div class="items-table-wrap">
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>{{ 'billing.transactions.id__table_th' | translate }}</th>
+                        <th>{{ 'billing.transactions.updated__table_th' | translate }}</th>
+                        <th class="text-right">{{ 'billing.transactions.amount__table_th' | translate }}</th>
+                        <th>{{ 'billing.transactions.status__table_th' | translate }}</th>
+                        <th>{{ 'billing.transactions.payment__table_th' | translate }}</th>
+                        <th>{{ 'billing.transactions.comment__table_th' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let transaction of transactions">
+                        <td>{{ transaction.transactionId }}</td>
+                        <td>{{ transaction.updated | datetime : 'D MMM YY HH:mm' }}</td>
+                        <td class="text-right">{{ transaction.amount / 100 | currency : transaction.currency : 'symbol' : '.2-2' }}</td>
+                        <td>{{ transaction.status }}</td>
+                        <td>{{ transaction.paymentProvider }}</td>
+                        <td>{{ transaction.comment }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

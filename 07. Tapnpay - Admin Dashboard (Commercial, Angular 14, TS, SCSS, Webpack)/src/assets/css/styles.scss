@@ -1,0 +1,85 @@
+// NOTE: order is important
+@import '../fonts/Montserrat/font.css';
+@import './definitions.scss';  // variables
+@import './animations.scss';
+@import './mixins.scss';
+@import './reset.scss';
+@import './common.scss';  // common styles & classes
+@import './buttons.scss';
+@import './inputs.scss';
+@import './select.scss';
+@import './table.scss';
+
+
+.vertical-table {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 25px 22px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px 0 rgba(#0e0e0e, 0.1);
+
+    &__header {
+        font-size: 20px;
+        font-weight: normal;
+        line-height: 28px;
+        padding-left: 8px;
+    }
+
+    &__items {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: flex-start;
+        justify-content: flex-start;
+        width: 100%;
+        margin-top: 12px;
+    }
+
+    &__item {
+        $font-size: 14px;
+        $line-height: $font-size + 8px;
+
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: flex-start;
+        justify-content: flex-start;
+        width: 100%;
+        font-size: $font-size;
+        line-height: $line-height;
+        background-color: #fff;
+        border-radius: 3px;
+        padding: 3px 8px;
+
+        &:hover {
+            background-color: #f0f5f9;
+        }
+
+        & + & {
+            margin-top: 8px;
+        }
+
+        &-name {
+            font-weight: $font-weight-semi-bold;
+            flex: 0 1 auto;  // grow, shrink, basis
+
+            &_red {
+                color: $color-primary-red; // #ff6363;
+            }
+        }
+
+        &-dots {
+            height: $font-size;
+            min-width: 20px;
+            border-bottom: 1px dotted lighten($color-text-primary, 25%);
+            margin: (floor(($line-height - $font-size) / 2) - 2px) 8px 0;
+            flex: 1 0 auto;
+        }
+
+        &-value {
+            font-weight: $font-weight-medium;
+            flex: 0 1 auto;
+        }
+    }
+}

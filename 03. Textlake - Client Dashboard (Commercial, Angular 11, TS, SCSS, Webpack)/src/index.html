@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loading...</title>
+    <base href="/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="/favicon.ico?3">
+    <script type="text/javascript">
+        window.initialQueryParams = window.location.search;
+
+        // Fix for amazon-cognito-identity-js
+        if (global === undefined) {
+            var global = window;
+        }
+    </script>
+    <style>
+        @-webkit-keyframes app-spinner {
+            from {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            to {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-moz-keyframes app-spinner {
+            from {
+                -moz-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            to {
+                -moz-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-ms-keyframes app-spinner {
+            from {
+                -ms-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            to {
+                -ms-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes app-spinner {
+            from {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            to {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        .app-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-color: #fff;
+            z-index: 2147483647;  /* max z-index */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            opacity: 1;
+        }
+
+        .app-screen_fade-out {
+            opacity: 0;
+        }
+
+        .app-screen,
+        .app-screen_fade-out {
+            -webkit-transition: opacity 0.15s ease-out;
+            -o-transition: opacity 0.15s ease-out;
+            transition: opacity 0.15s ease-out;
+        }
+
+
+        .app-screen__spinner {
+            display: block;
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            top: 50%;
+            left: 50%;
+            margin: -50px 0 0 -50px;
+        }
+
+        .app-screen__spinner > svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+            -webkit-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+            -webkit-animation: app-spinner 0.6s linear infinite;
+            animation: app-spinner 0.6s linear infinite;
+        }
+
+        @media (max-width: 500px) {
+            .app-screen__spinner {
+                width: 70px;
+                height: 70px;
+                margin: -35px 0 0 -35px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <app-root></app-root>
+    <div class="app-screen">
+        <div class="app-screen__spinner">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <path style="fill: #7e66d6; stroke: none;" d="M52.46,14.59A2.4864,2.4864,0,0,0,50,12.5,37.4976,37.4976,0,0,0,19.67,72.05a2.5019,2.5019,0,0,0,2.02,1.03,2.3931,2.3931,0,0,0,1.13-.28A35.4889,35.4889,0,1,0,52.46,14.59ZM50,84.5A34.3889,34.3889,0,0,1,23.61,72.18a2.5061,2.5061,0,0,0,.1-3.07A32.5021,32.5021,0,0,1,50,17.5a2.4989,2.4989,0,0,0,2.43-1.92A34.5029,34.5029,0,0,1,50,84.5Z"></path>
+            </svg>
+        </div>
+    </div>
+</body>
+</html>

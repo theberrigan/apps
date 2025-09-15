@@ -1,0 +1,17 @@
+<button type="button" class="button button_regular sidebar-trigger__button"
+    (click)="onClick.emit($event)"
+    [isDisabled]="isDisabled"
+    [ngClass]="{
+        'button_white': !isSidebarActive,
+        'button_blue': isSidebarActive,
+        'sidebar-trigger__button_has-mark': hasMark && !isSidebarActive
+    }"
+>
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" class="button__icon">
+        <g style="fill: currentColor;">
+            <path d="M7.82,2A2.9881,2.9881,0,0,0,2.18,2H0V4H2.18A2.9881,2.9881,0,0,0,7.82,4H18V2ZM4,3A1,1,0,1,1,5,4,1.0029,1.0029,0,0,1,4,3Z"></path>
+            <path d="M16.82,8a2.9881,2.9881,0,0,0-5.64,0H0v2H11.18a2.9881,2.9881,0,0,0,5.64,0H18V8ZM13,9a1,1,0,1,1,1,1A1.0029,1.0029,0,0,1,13,9Z"></path>
+            <path d="M9.82,14a2.9881,2.9881,0,0,0-5.64,0H0v2H4.18a2.9881,2.9881,0,0,0,5.64,0H18V14ZM6,15a1,1,0,1,1,1,1A1.0029,1.0029,0,0,1,6,15Z"></path>
+        </g>
+    </svg>
+</button>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>VK Flex Menu</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="/assets/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/menu.css">
+    <script type="text/javascript" src="/assets/js/plugins/jquery.js"></script>
+    <script type="text/javascript" src="/assets/js/common.js"></script>
+    <script type="text/javascript" src="/assets/js/menu.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="layout" data-status="loading">
+            <div class="spinner"></div>
+            <div class="message mini" data-i18n="loading"></div>
+            <div class="hsep"></div>
+        </div>
+        <div class="layout" data-status="need_auth">
+            <div class="message" data-i18n="please_auth"></div>
+            <div class="hsep"></div>
+            <a target="_blank" href="#" class="button" id="auth">
+                <div class="button-icon bi-auth"></div>
+                <div class="button-label" data-i18n="btn_auth"></div>
+            </a>
+        </div>
+        <div class="layout" data-status="ready">
+            <ul class="menu-items"></ul>
+            <div class="hsep"></div>
+        </div>
+        <a target="_blank" href="/assets/html/settings.html" class="button">
+            <div class="button-icon bi-settings"></div>
+            <div class="button-label" data-i18n="btn_settings"></div>
+        </a>
+    </div>
+</body>
+</html>

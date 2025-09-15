@@ -1,0 +1,56 @@
+<app-bar *ngIf="viewportBreakpoint !== 'desktop'"></app-bar>
+<page-panel *ngIf="viewportBreakpoint === 'desktop'">
+    <h1 class="page-panel__header">{{ 'profile.page_header' | translate }}</h1>
+</page-panel>
+<div class="profile__content">
+    <h1 class="page-header" *ngIf="viewportBreakpoint !== 'desktop'" [innerHTML]="'profile.page_header' | translate"></h1>
+    <div class="profile__items">
+        <a class="profile__item" routerLink="/dashboard/profile/vehicles">
+            <span class="profile__item-header" [innerHTML]="'profile.unregister_vehicles_header' | translate"></span>
+            <span class="profile__item-text" [innerHTML]="'profile.unregister_vehicles_text' | translate"></span>
+        </a>
+        <div class="profile__item" (click)="onShowPaymentMethodPopup()">
+            <span class="profile__item-header" [innerHTML]="'profile.payment_method_header' | translate"></span>
+            <span class="profile__item-text" [innerHTML]="'profile.payment_method_text' | translate"></span>
+        </div>
+        <div class="profile__item" *ngIf="!isDebtLock" (click)="onDeactivateAccount()">
+            <span class="profile__item-header profile__item-header_red" [innerHTML]="'profile.deactivate_account_header' | translate"></span>
+            <span class="profile__item-text" [innerHTML]="'profile.deactivate_account_text' | translate"></span>
+        </div>
+    </div>
+</div>
+
+<!-- Popups -->
+<ng-container [ngSwitch]="activePopup">
+    <popup-custom class="profile__deactivate-account-popup" *ngSwitchCase="'deactivate-account'" [isDisabled]="isDeactivateAccountSubmitting">
+        <popup-content>
+            <span [innerHTML]="'profile.confirm_deactivate_account' | translate"></span>
+        </popup-content>
+        <popup-controls [isStretched]="true">
+            <button type="button" class="button button_regular button_light-blue" (click)="onCloseDeactivatePopup()">
+                <span class="button__caption">{{ 'profile.confirm_deactivate_account_cancel' | translate }}</span>
+            </button>
+            <button type="button" class="button button_regular button_blue" (click)="onConfirmDeactivateAccount()" [isProgress]="isDeactivateAccountSubmitting">
+                <span class="button__caption">{{ 'profile.confirm_deactivate_account_ok' | translate }}</span>
+            </button>
+        </popup-controls>
+    </popup-custom>
+
+    <popup-custom class="profile__deactivate-account-result-popup" *ngSwitchCase="'deactivate-account-result'">
+        <popup-content>
+            <span [innerHTML]="deactivateAccountResultMsgKey | translate : deactivateAccountResultMsgData"></span>
+        </popup-content>
+        <popup-controls [isStretched]="true">
+            <button type="button" class="button button_regular button_blue" (click)="onCloseDeactivateResultPopup()">
+                <span class="button__caption">{{ 'profile.deactivate_account_result_ok' | translate }}</span>
+            </button>
+        </popup-controls>
+    </popup-custom>
+
+    <payment-method
+        *ngSwitchCase="'payment-method'"
+        [mode]="'edit'"
+        [isSilentInit]="false"
+        (onDone)="onClosePaymentMethodPopup()"
+    ></payment-method>
+</ng-container>

@@ -1,0 +1,834 @@
+{
+    "faq": {
+        "page_title": "FAQ",
+        "page_header": "FAQ",
+        "no_questions": "No se encontraron preguntas",
+        "loading_error": "Se produjo un error al cargar las preguntas frecuentes",
+        "empty_search": "No se encontraron preguntas",
+        "search_placeholder": "Preguntas de búsqueda"
+    },
+    "terms": {
+        "page_title": "Términos y Condiciones",
+        "page_header": "Términos y Condiciones",
+        "form": {
+            "i_accept": "Acepto Términos y condiciones y Política de privacidad",
+            "send": "Ok"
+        },
+        "submit": {
+            "ok": "¡Felicidades! Usted se ha inscrito correctamente { licensePlates } en neoRide.  Dentro de 24 horas, todos los peajes futuros se le enviarán a través de un mensaje de texto diario para su revisión y aprobación.  Recibirá 1 o más mensajes de texto cada día que use la carretera de peajes y tendrá <strong>{ hoursToPay }&nbsp;hours</strong> horas para aprobar sus peajes.  Para obtener más información, visite https://neoride.com/postpaid.  ¡Gracias por usar neoRide!",
+            "error": "¡Uy! Estamos teniendo algunas dificultades técnicas y estamos trabajando rápidamente para solucionarlas. Si continúa experimentando este problema, por favor, contáctenos a través de https://postpaid.neoride.com/contact-us, para que podamos ayudarle. ¡Gracias!"
+        }
+    },
+    "contact_us": {
+        "page_title": "Contáctenos",
+        "page_header": "Contáctenos",
+        "form": {
+            "first_name": "Nombre",
+            "last_name": "Apellido",
+            "email": "Dirección de Correo Electrónico",
+            "phone": "Número de Teléfono",
+            "brand": "Estoy conduciendo",
+            "comment": "Comentario",
+            "send": "Enviar"
+        },
+        "submit": {
+            "ok": "¡Gracias! Revisaremos su solicitud y responderemos dentro de 1 día hábil. Consulte nuestras Preguntas Frecuentes para ver información útil.",
+            "error": "¡Uy! Estamos teniendo algunas dificultades técnicas y estamos trabajando rápidamente para solucionarlas. Si continúa experimentando este problema, por favor, contáctenos a través de https://postpaid.neoride.com/contact-us, para que podamos ayudarlo. ¡Gracias!"
+        }
+    },
+    "nav": {
+        "items": {
+            "faq": "FAQ",
+            "contact_us": "Contáctenos",
+            "terms": "Términos y Condiciones",
+            "login": "Acceso",
+            "profile": "Perfil",
+            "logout": "Logout",
+            "invoices": "Factura",
+            "history": "Historia",
+            "toll_coverage": "Cobertura de peaje"
+        },
+        "lang": {
+            "language": "Idioma",
+            "change": "Cambiar Idioma",
+            "confirm": "Confirmar"
+        }
+    },
+    "page_panel": {
+        "edit_profile": "Editar perfil",
+        "change_lang": "Cambiar Idioma",
+        "logout": "Logout",
+        "choose_lang": "Eliga Lengua"
+    },
+    "not_found": {
+        "page_title": "Página no encontrada",
+        "page_header": "Página no encontrada",
+        "message": "No se puede encontrar la página"
+    },
+    "auth": {
+        "page_title": "Acceso",
+        "page_header": "Acceso",
+        "phone_label": "Tu telefono movil",
+        "pin_label": "Pin de SMS",
+        "send_pin_button": "Envía SMS con un pin",
+        "login_button": "Acceso",
+        "resend_message": "Vuelva a enviar el PIN en <strong>{ time }</strong> segundos",
+        "resend_trigger": "Enviar PIN de nuevo",
+        "phone_error": "¡Uy! Estamos experimentando un problema técnico temporal. Inténtelo de nuevo.",
+        "pin_error": "¡Uy! Estamos experimentando un problema técnico temporal. Inténtelo de nuevo.",
+        "pin_resend_ok": "¡Éxito! Se ha enviado un nuevo PIN a su teléfono móvil.",
+        "pin_error_100": "El PIN que proporcionaste es incorrecto, inténtalo de nuevo.",
+        "pin_error_102": "Su PIN ha sido desactivado debido a demasiados intentos. Vuelva a iniciar el proceso de inicio de sesión.",
+        "pin_error_104": "Has solicitado el PIN en el último minuto. Para solicitar el PIN nuevamente, por favor espera un minuto.",
+        "error_105": "Lo sentimos, su cuenta está inactiva actualmente.",
+        "error_107": "Vemos que usted es un usuario de la aplicación móvil neoRide. Utilice la aplicación descargada en su dispositivo para acceder a los detalles de su cuenta.",
+        "error_108": "Este número de teléfono no está asociado a ninguna cuenta. Por favor, verifica el número o crea una cuenta nueva para comenzar.",
+        "clear_phone": "Usa un número de teléfono diferente",
+        "tnc": "Términos y Condiciones",
+        "faq": "FAQ",
+        "contact_us": "Contáctenos",
+        "invalid_auth_token": "Su sesión de autenticación no es válida o ha caducado"
+    },
+    "dashboard": {
+        "page_title": "Tablero",
+        "page_header": "Tablero",
+        "welcome": {
+            "message_default": "¡Felicidades! Usted se ha inscrito correctamente { licensePlates } en neoRide.  Todos los peajes futuros se le enviarán a través de un mensaje de texto diario para su revisión y aprobación.  Recibirá 1 o más mensajes de texto cada día que use la carretera de peajes y tendrá <strong>{ hoursToPay } hours</strong> horas para aprobar sus peajes.  Para obtener más información, visite <a target=\"_blank\" href=\"https://neoride.com/postpaid\">https://neoride.com/postpaid</a> ¡Gracias por usar neoRide!",
+            "message_203": "Lo sentimos, pero no podemos registrarlo en neoRide en este momento. Comuníquese con nosotros en <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a> para que podamos ayudarlo. ¡Gracias!",
+            "message_205": "Ha registrado <strong>{ licensePlates }</strong> con neoRide, sin embargo, el pago falló. Para consultar sobre la falla de pago, contáctenos en <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>. Dentro de las 24 horas, todos los peajes futuros se le enviarán a través de un mensaje de texto diario para su revisión y aprobación. Recibirá 1 o más mensajes de texto cada día que use la autopista de peaje y tiene { hoursToPay } horas para aprobar sus peajes. ¡Gracias por usar neoRide!",
+            "message_307": "Lo sentimos pero no pudimos registrar su vehículo para neoRide y su pago será completamente reembolsado. Revise su factura de pago para obtener las opciones de pago disponibles. Contactenos a través de <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a> para resolver sus dudas. ¡Muchas gracias de parte del equipo de neoRide!",
+            "message_approved": "¡Felicidades! Pagó correctamente la factura <strong>{ invoice }</strong>  por <strong>{ amount }</strong> y registró su vehículo { licensePlates } para pagar peajes futuros con neoRide. Todos los cargos de peaje futuros se le enviarán por mensaje de texto para su revisión y aprobación. Recibirá uno o más mensajes de texto cada día que utilice la carretera de peaje y podrá aprobar los cargos antes de la fecha de vencimiento para evitar multas o cargos por pagos atrasados. Si está inscrito en el pago automático, la aprobación y el pago serán automáticos y le notificaremos solo si se requiere alguna acción. Para obtener más información, visite <a target=\"_blank\" href=\"https://neoride.com/postpaid\">https://neoride.com/postpaid ¡Gracias por usar neoRide!",
+            "message_declined": "¡Éxito! Según su solicitud, no pagaremos su factura de peaje existente; sin embargo, se ha inscrito correctamente { licensePlates } con neoRide. Todos los cargos de peaje futuros se le enviarán por mensaje de texto para su revisión y aprobación. Recibirá uno o más mensajes de texto cada día que use la carretera de peajes y tiene <strong>{ hoursToPay } horas</strong> para aprobar sus peajes. Para obtener más información, visite <a target=\"_blank\" href=\"https://neoride.com/postpaid\">https://neoride.com/postpaid ¡Gracias por usar neoRide!"
+        },
+        "payment": {
+            "reg_n_pay_message_has_zip": "Actualmente tiene una factura <strong>{ invoice }</strong> por <strong>{ amount }</strong> que puede pagar con neoRide. Para pagar esta factura, ingrese su Código Postal que se encuentra en su factura telefónica y luego toque SI. Para inscribirse sin pagar esta factura pendiente, toque <strong>No</strong>.",
+            "reg_n_pay_message_no_zip": "Actualmente tiene una factura <strong>{ invoice }</strong> por <strong>{ amount }</strong> que puede pagar con neoRide. Para pagar esta factura, toque <strong>SI</strong>. Para inscribirse sin pagar esta factura pendiente, toque <strong>No</strong>.",
+            "zip_code": "Por favor ingrese su código postal",
+            "yes": "Sí",
+            "no": "No",
+            "cancel": "Cancelar",
+            "ok": "Ok",
+            "payment_error": "¡Uy! Estamos teniendo algunas dificultades técnicas y estamos trabajando rápidamente para solucionarlas. Si continúa experimentando este problema, por favor, contáctenos a través de https://postpaid.neoride.com/contact-us, para que podamos ayudarlo. ¡Gracias!"
+        },
+        "fleet": {
+            "header_message": "Confirme los LPN(s) a continuación y luego toque PAGAR para aprobar <span class=\"important-text\">la tarifa única de inscripción</span> y completar su registro.",
+            "header_message_ppb": "Por favor proporcione informacion sobre el vehiculo(s)",
+            "submit_button": "Entregar",
+            "pay_button": "Pagar { amount }",
+            "zip_code": "Por favor ingrese su código postal",
+            "zip_pay": "Pagar",
+            "wallet_confirm_message": "<strong>{ amount }</strong> será pagado con <strong>{ wallet }</strong>.",
+            "wallet_ok": "Ok",
+            "message_declined": "¡Ya casi has llegado!<br/>Su cuenta neoRide se ha creado correctamente. Para finalizar su registro y comenzar la cobertura de peaje, agregue un vehículo a su cuenta o comuníquese con nuestro equipo de soporte para obtener ayuda. Para obtener más detalles, visite <a target=\"_blank\" href=\"https://neoRide.com\">https://neoRide.com</a>. ¡Gracias por elegir neoRide!",
+            "message_issues": "Lo sentimos, pero hay un problema técnico con la autorización de su factura. Por favor, inténtelo de nuevo más tarde. Si aún no puede autorizar su factura, comuníquese con nosotros en https://postpaid.neoride.com/contact-us. ¡Gracias!",
+            "message_ok": "Se ha inscrito correctamente en neoRide. Todos los futuros cargos de peaje se le enviarán por mensaje de texto para su revisión y aprobación. Recibirá uno o más mensajes de texto cada día que use la carretera de peaje y podrá aprobar los cargos dentro de la fecha límite para evitar multas o recargos por pago tardío. Para más información, visite <a target=\"_blank\" href=\"https://neoride.com/postpaid\">https://https://neoride.com/postpaid</a><br>¡Gracias por usar neoRide!",
+            "vehicle_type_select_label": "Seleccione el tipo de vehículo",
+            "vehicle_types": {
+                "rental": "Alquiler",
+                "personal": "Personal"
+            }
+        },
+        "period_select_date": "Finalización del coche de alquiler",
+        "period_select_time": "Tiempo estimado de regreso",
+        "period_select": {
+            "validation_errors": {
+                "create_date_required": "Introduce una fecha en la que finalizará el alquiler de tu coche.",
+                "create_time_required": "Elija un tiempo estimado de devolución para su coche de alquiler",
+                "create_date_min": " La fecha no puede ser anterior a hoy.",
+                "create_time_min": "El período mínimo de alquiler es de una hora.",
+                "create_date_max": "El período de alquiler del auto no puede exceder {maxDate}. Seleccione una fecha de devolución del vehículo dentro de ese plazo.",
+                "invalid_time_format": "El tiempo debe estar en formato de 12 horas. Por ejemplo, 1:00 PM."
+            }
+        },
+        "account_soft_lock": {
+            "message": "¡Bienvenido de nuevo! Parece que tienen un saldo impagado con neoRide. Para reactivar su cuenta, toque el enlace de abajo para pagar su saldo pendiente.",
+            "btn": "Pagar ahora"
+        },
+        "user_subscription_invoice_expired": {
+            "message": "¡Bienvenido de nuevo! La renovación de tu membresía está <span class=\"important-text important-text--warning\">VENCIDA!</span> Para reanudar la cobertura de peajes, renueva tu membresía hoy.",
+            "btn": "Ir a facturas"
+        },
+        "global_notification": {
+            "message": "DCB se retirará el 21/03/2024, por favor planifique elegir un plan de pago diferente a partir del 21. ¡Disculpe las molestias!"
+        }
+    },
+    "neoride_banner": {
+        "download_app": "Descargar app",
+        "description": "¡TapNpay ahora es neoRide! Disfruta de peaje automatizado, estacionamiento y descuentos exclusivos.",
+        "title_1": "¡Descarga la app y ",
+        "title_2": "paga peajes y estacionamientos fácilmente!",
+        "description_desktop": "tapNpay es ahora parte de neoRide (¡Disfruta de más beneficios!)",
+        "description_mobile": "tapNpay se ha unido a neoRide",
+        "banner_desktop_url": "neoride_phone_desktop_es.png",
+        "banner_mobile_url": "neoride_phone_es.png"
+    },
+    "timepicker": {
+        "set_time": "Configurar hora"
+    },
+    "lpn_categories": {
+        "select_label": "Seleccionar tipo de placa",
+        "APPORTIONED-TRAILER": "Repartido – Tráiler",
+        "APPORTIONED-TRUCK": "Repartido – Camión",
+        "DEALER/MANUFACTURER": "Distribuidor / Fabricante",
+        "IL-APPORTIONED-TRAILER": "Repartido – Tráiler",
+        "IL-APPORTIONED-TRUCK": "Repartido – Camión",
+        "IL-DEALER/MANUFACTURER-MOTORCYCLE": "Distribuidor / Fabricante – Motocicleta",
+        "IL-DEALER/MANUFACTURER-NONE": "Distribuidor / Fabricante – Ninguna de los anteriores",
+        "IL-DEALER/MANUFACTURER-PASSENGER": "Distribuidor / Fabricante – Pasajeros",
+        "IL-DEALER/MANUFACTURER-TRAILER": "Distribuidor / Fabricante – Tráiler",
+        "IL-OTHER-B-TRUCK": "Otro – B Camión",
+        "IL-OTHER-GOVERNMENT-OFFICIAL": "Otro – Funcionario del gobierno",
+        "IL-OTHER-MILITARY": "Otro – Militar",
+        "IL-OTHER-MOTORCYCLE": "Otro – Motocicleta",
+        "IL-OTHER-NONE": "Otro – Ninguna de las anteriores",
+        "IL-OTHER-PERSON-WITH-DISABILITIES": "Otro – Persona con discapacidad",
+        "IL-OTHER-PUBLIC-TRANSPORTATION": "Otro – Transporte público",
+        "IL-OTHER-SPECIALITY": "Otro – Especial",
+        "IL-OTHER-TRUCK/TRAILER COMMERCIAL": "Otro – Camión/ Tráiler comercial",
+        "IL-PASSENGER": "Pasajero",
+        "IL-TEMPORARY": "Temporal",
+        "OTHER": "Otro – (incluido Especial)",
+        "PASSENGER": "Pasajero",
+        "TEMPORARY": "Temporal",
+        "TRAILER": "Distribuidor / Fabricante – Tráiler"
+    },
+    "profile": {
+        "page_title": "Perfil",
+        "page_header": "Perfil",
+        "unregister_vehicles_header": "Dar de baja vehículos",
+        "unregister_vehicles_text": "Dar de baja uno o más vehículos de los servicios neoRide. Todas las facturas y los cargos deben aprobarse antes de cancelar el registro de un vehículo..",
+        "deactivate_account_header": "Desactivar cuenta",
+        "deactivate_account_text": "Desactive su cuenta con neoRide. Todas las facturas y los cargos deben aprobarse antes de desactivar su cuenta.",
+        "confirm_deactivate_account": "¿Quieres desactivar la cuenta?",
+        "confirm_deactivate_account_ok": "Ok",
+        "confirm_deactivate_account_cancel": "Cancelar",
+        "deactivate_account_ok": "Tu cuenta ha sido desactivada.",
+        "deactivate_account_error": "¡Uy! Estamos teniendo algunas dificultades técnicas y estamos trabajando rápidamente para solucionarlas. Si continúa experimentando este problema, por favor, contáctenos a través de https://postpaid.neoride.com/contact-us, para que podamos ayudarle. ¡Gracias!",
+        "deactivate_account_error_204": "Esta cuenta actualmente tiene facturas pendientes. Para desactivar su cuenta, por favor diríjase a sus facturas para autorizar cualquier la(s) factura(s) actual(es) y luego vuelva a desactivar su cuenta. Para preguntas, por favor diríjase a https://postpaid.neoride.com/contact-us.",
+        "payment_method_header": "Cambiar Método de Pago",
+        "payment_method_text": "Cambiar método de pago para futuros pagos.",
+        "subscription_header": "Administrar Afiliación",
+        "subscription_text": "Realice actualizaciones a su plan de afiliación de vehículos existente. Los cargos por uso de peaje se le enviarán según la fecha/hora en que se registraron los vehículos en su cuenta.",
+        "deactivate_account_error_217": "Su cuenta no puede ser desactivada debido a las disputas pendientes que se encuentran en revisión.",
+        "deactivate_account_result_ok": "Ok",
+        "pbm": {
+            "confirm_with_zip": "Tiene una factura pendiente <strong>{ invoice }</strong> por <strong>{ amount }</strong> que puede pagar con neoRide. Para pagar esta factura, ingrese su Código Postal; lo podrá encontrar en su recibo de teléfono luego toque <strong>Sí</strong>. Para inscribirse sin pagar esta factura pendiente, toque <strong>No</strong>.",
+            "confirm_without_zip": "Actualmente tiene una factura <strong>{ invoice }</strong> por <strong>{ amount }</strong> que puede pagar con neoRide. Para pagar esta factura, toque <strong>SI</strong>. Para inscribirse sin pagar esta factura pendiente, toque <strong>No</strong>.",
+            "zip_code": "Por favor ingrese su código postal",
+            "button_yes": "Sí",
+            "button_no": "No",
+            "button_ok": "Ok",
+            "common_error": "¡Uy! Estamos teniendo algunas dificultades técnicas y estamos trabajando rápidamente para solucionarlas.",
+            "message_approved": "¡Felicidades! Pagó correctamente la factura <strong>{ invoice }</strong>  por <strong>{ amount }</strong> y registró su vehículo { licensePlates } para pagar peajes futuros con neoRide. Dentro de las próximas <strong>24 horas</strong>, todos los peajes futuros se le enviarán a través de un mensaje de texto diario para su revisión y aprobación. Recibirá 1 o más mensajes de texto cada día que use la carretera de peajes y tiene <strong>{ hoursToPay } horas</strong> para aprobar sus peajes. Para obtener más información, visite <a target=\"_blank\" href=\"https://neoride.com/postpaid\">https://neoride.com/postpaid ¡Gracias por usar neoRide!",
+            "message_declined": "¡Éxito! Según su solicitud, no pagaremos su factura de peaje existente; sin embargo, se ha inscrito correctamente { licensePlates } con neoRide. Todos los peajes futuros se le enviarán a través de un mensaje de texto diario para su revisión y aprobación. Recibirá 1 o más mensajes de texto cada día que use la carretera de peajes y tiene <strong>{ hoursToPay } horas</strong> para aprobar sus peajes. Para obtener más información, visite <a target=\"_blank\" href=\"https://neoride.com/postpaid\">https://neoride.com/postpaid ¡Gracias por usar neoRide!"
+        },
+        "fleet": {
+            "header_message": "Confirme los LPN(s) a continuación y luego toque PAGAR para aprobar la tarifa única de inscripción y completar su registro.",
+            "submit_button": "Entregar",
+            "pay_button": "Pagar { amount }",
+            "zip_code": "Por favor ingrese su código postal",
+            "zip_pay": "Pagar",
+            "wallet_confirm_message": "<strong>{ amount }</strong> será pagado con <strong>{ wallet }</strong>.",
+            "wallet_ok": "Ok",
+            "message_declined": "No se pudo agregar un vehículo nuevo.",
+            "message_issues": "No se pudo agregar un vehículo nuevo.",
+            "message_ok": "Placa de matrícula agregada correctamente."
+        }
+    },
+    "invoices": {
+        "page_title": "Factura",
+        "page_header": "Factura",
+        "invoices_list": {
+            "page_title": "Factura",
+            "page_header": "Factura",
+            "no_invoices": "Sin facturas pendientes",
+            "loading_error": "¡Uy! Estamos teniendo algunas dificultades técnicas y estamos trabajando rápidamente para solucionarlas. Si continúa experimentando este problema, por favor, contáctenos a través de https://postpaid.neoride.com/contact-us, para que podamos ayudarlo. ¡Gracias!",
+            "invoice_no_th": "Factura #",
+            "total_amount_th": "Cantidad Total",
+            "transactions_th": "Transacciónes",
+            "date_th": "Fecha",
+            "due_in": "Debido en { time } { time, plural, =0{hours} one{hour} other{hours} }",
+            "past_due": "Vencido",
+            "total_amount": "Total: <strong class=\"context-panel__amount\">{ amount }</strong>",
+            "tap_to_pay": "Toque para Pagar",
+            "tap_to_pay_with_amount": "Toque para pagar<strong>{ amount }</strong>",
+            "show_details": "Mostrar Detalles",
+            "subscription_list_title": "Facturas de renovación de la afiliación"
+        },
+        "invoice_detail": {
+            "page_title": "Detalles del pago",
+            "page_header": "Detalles del pago",
+            "invoice_header": "Factura<strong>{ name }</strong>",
+            "location_th": "Localidad",
+            "amount_th": "Cantidad",
+            "date_th": "Fecha",
+            "status_th": "Estado",
+            "awaiting_payment": "En espera de pago",
+            "dispute_button": "Disputa",
+            "restore_button": "Devolver",
+            "dispute_ok_button": "Ok",
+            "dispute_cancel_button": "Cancelar",
+            "total_amount": "Total: <strong class=\"context-panel__amount\">{ amount }</strong>",
+            "tap_to_pay": "Toque para Pagar",
+            "tap_to_pay_with_amount": "Toque para Pagar <strong>{ amount }</strong>",
+            "save_changes": "Guardar Cambios",
+            "confirm_reason_change": "Todas las transacciones en disputa para esta factura cambiarán a <strong>{ reason }</strong>.",
+            "dispute_rejected": "La autoridad de peaje ha rechazado la disputa sobre esta transacción. La transacción se cargará en su factura de teléfono celular cuando se acepte la factura. Si tiene preguntas, vaya a <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>.",
+            "dispute_rejected_ok": "Ok",
+            "lpn_th": "Número de placa"
+        },
+        "invoice_payment": {
+            "zip_code": "Por favor ingrese su código postal",
+            "cancel": "Cancelar",
+            "ok": "Ok",
+            "payment_success": "¡Éxito! Ha aprobado los cargos para la factura # { invoices } de <strong>{ date }</strong> por la cantidad de <strong>{ amount }</strong>. Para revisar sus pagos autorizados, por favor diríjase a la seccion de Historial en <a target=\"_blank\" href=\"https://postpaid.neoride.com\">https://postpaid.neoride.com</a>. ¡Gracias por usar neoRide!",
+            "payment_success_fleet_has_disputed": "Las transacciones en la factura neoRide { disputedInvoices } por un total de <strong>{ disputedAmount }</strong> han sido disputadas y serán revisadas por la autoridad de peaje. Si se aceptan las disputas, usted no será responsable del pago. Si se rechaza, se creará una factura y se le enviará para la autorización del pago. ¿Preguntas? <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>",
+            "payment_error": "¡Uy! Estamos teniendo algunas dificultades técnicas y estamos trabajando rápidamente para solucionarlas. Si continúa experimentando este problema, por favor, contáctenos a través de https://postpaid.neoride.com/contact-us, para que podamos ayudarlo. ¡Gracias!",
+            "payment_error_300": "Su operador de telefonía rechazó su aprobación de pago para esta factura. Contacte a su operador para resolver posibles problemas con su cuenta. Otras opciones de pago disponibles arriba. ¿Preguntas? <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>",
+            "payment_error_301": "¡Uy! Estamos teniendo algunas dificultades técnicas y estamos trabajando rápidamente para solucionarlas. Si continúa experimentando este problema, por favor, contáctenos a través de <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>, para que podamos ayudarlo. ¡Gracias!",
+            "payment_error_302": "Su operador de telefonía rechazó su aprobación de pago a su factura ({0}) por un total de ${1}. Comuníquese con su operador de servicios para resolver un posible problema. Otras opciones de pago disponibles arriba. ¿Preguntas? <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>.",
+            "payment_error_303": "Lo sentimos, pero ha alcanzado la cantidad de intentos permitidos para ingresar un código postal válido para su cuenta de teléfono celular. Su neoRide se ha desactivado temporalmente. Póngase en contacto con nosotros en <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a> si desea restablecer su cuenta. ¡Gracias!",
+            "payment_error_304": "Lo sentimos, pero el código postal que envió no coincide con el código postal de su cuenta de teléfono celular. Después de varios intentos fallidos, su cuenta neoRide se desactivará temporalmente. Comuníquese con su proveedor de servicios para determinar el código postal correcto en su cuenta de teléfono celular. ¡Gracias!",
+            "method_cancel": "Cancelar",
+            "payment_error_min_limit": "Su factura no alcanza monto mínimo requerido. Los peajes adicionales incurridos dentro de la ventana de pago de 47 horas se agregarán a esta factura para su revisión y aprobación. Después de 47 horas, su factura se enviará de vuelta a la autoridad de peaje para que la facture por correo. ¿Preguntas? Contáctenos en <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>.",
+            "payment_error_max_limit": "Su proveedor de pagos ha rechazado su aprobación para esta factura debido a que puede haber superado el limite diario o mensual de su cuenta. Otras opciones de pago disponibles arriba. ¿Preguntas? <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>",
+            "payment_error_no_avail_method": "No se ha configurado el método de pago.",
+            "confirm_message": "¿Pagar <strong>{ amount }</strong> con <strong>{ wallet }</strong>? Toque SÍ debajo.",
+            "confirm_ok": "Sí",
+            "confirm_cancel": "No",
+            "result_ok": "Ok",
+            "result_cancel": "Cancelar",
+            "result_change_payment_method": "Cambiar Método de Pago",
+            "payment_error_308": "Lo sentimos, pero se rechazó su método de pago. Por favor seleccione otro método de pago.",
+            "payment_error_309": "Lo sentimos, pero tu tarjeta fue rechazada debido a la insuficiencia de crédito. Por favor seleccione otro método de pago.",
+            "payment_error_402": "La cantidad de vehículos activos en su cuenta excede la cantidad permitida para su factura de renovación de Afiliación Anual. Elimine {licensePlatesOverLimit} vehículos para continuar con su solicitud de renovación de Afiliación o seleccione un paquete mejorado para acomodar todos sus vehículos actuales.",
+            "payment_success_debt_unlock": "¡Bienvenido de nuevo! Su cuenta se ha restablecido y, dentro de 24 horas, todos sus peajes futuros se le enviarán en un mensaje de texto diario para su revisión y aprobación. Recibirá 1 o más mensajes cada día que use una carretera con peajes y tiene 47 horas para aprobarlos. Para más información, visite https://neoride.com/postpaid."
+        },
+        "dispute_reasons": {
+            "none": "Seleccione la razón de su disputa",
+            "not_my_vehicle": "No es mi vehiculo",
+            "vehicle_stolen": "Vehículo robado",
+            "vehicle_sold": "Vehículo vendido",
+            "owner_deceased": "Fallecimiento del dueño",
+            "owner_bankruptcy": "Bancarrota/Quiebra"
+        },
+        "alerts": {
+            "surcharge": "En el pago se incluirán unos gastos de tramitación de { surcharge }."
+        }
+    },
+    "history": {
+        "page_title": "Historia",
+        "page_header": "Historia",
+        "no_invoices": "No hay historial de facturas disponible",
+        "invoices_error": "Se produjo un error al cargar el historial de facturas",
+        "no_transactions": "No hay historial de transacciones disponible",
+        "transactions_error": "Se produjo un error al cargar el Historial de transacciones",
+        "no_disputes": "No hay historial de disputas disponible",
+        "disputes_error": "Se produjo un error al cargar el historial de disputas",
+        "invoices_tab": "Facturas",
+        "transactions_tab": "Transacciones",
+        "disputes_tab": "Disputas",
+        "invoices_tab_header": "Historial de facturas",
+        "transactions_tab_header": "Historial de transacciones",
+        "disputes_tab_header": "Historial de disputas",
+        "filters": {
+            "header": "Filtros",
+            "from_date": "Partir de la fecha",
+            "to_date": "Hasta la fecha",
+            "reset": "Reiniciar",
+            "ok": "Ok",
+            "button": "Fitros"
+        },
+        "invoice_number": "Factura #",
+        "invoice_amount": "Cantidad",
+        "invoice_date": "Fetcha",
+        "invoice_amount_processing_fee": "Tasa de tramitación",
+        "invoice_total_amount": "Total",
+        "invoices_multiple": "Facturas",
+        "transaction_lpn": "LPN",
+        "transaction_location": "Localidad",
+        "transaction_amount": "Cantidad",
+        "transaction_date": "Fecha",
+        "dispute_lpn": "LPN",
+        "dispute_location": "Localidad",
+        "dispute_amount": "Disputado",
+        "dispute_reason": "Razón",
+        "dispute_date": "Fetcha",
+        "invoice": {
+            "page_title": "Historial de facturas",
+            "page_header": "Historial de facturas",
+            "page_title_specific": "Historial de facturas { invoice }",
+            "page_header_specific": "Historial de facturas { invoice }",
+            "no_entries": "Sin historial de facturas.",
+            "loading_error": "Se produjo un error al cargar las facturas",
+            "approved_by_user": "Aprobado",
+            "transaction_lpn": "LPN",
+            "transaction_location": "Localidad",
+            "transaction_amount": "Cantidad",
+            "transaction_status": "Estado",
+            "transaction_date": "Fecha",
+            "transaction_pbm": "Factura #",
+            "transaction_subscription_th": "Transaccion",
+            "transaction_subscription": "{maxLp} vehículo(s) Afiliación Anual"
+        },
+        "invoice_payment_method": "Método de pago"
+    },
+    "payment_minmax": {
+        "min_message": "Su factura no alcanza monto mínimo requerido. Los peajes adicionales incurridos dentro de la ventana de pago de 47 horas se agregarán a esta factura para su revisión y aprobación. Después de 47 horas, su factura se enviará de vuelta a la autoridad de peaje para que la facture por correo. ¿Preguntas? Contáctenos en <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>.",
+        "max_message": "Su proveedor de pagos ha rechazado su aprobación para esta factura debido a que puede haber superado el limite diario o mensual de su cuenta. Otras opciones de pago disponibles arriba. ¿Preguntas? <a target=\"_blank\" href=\"https://postpaid.neoride.com/contact-us\">https://postpaid.neoride.com/contact-us</a>",
+        "ok": "Ok"
+    },
+    "confirm_box": {
+        "ok": "Ok",
+        "cancel": "Cancelar"
+    },
+    "vehicles": {
+        "page_title": "Vehiculos",
+        "page_header": "Vehiculos ({active}/{max})",
+        "add_vehicle_popup_title": "Agregar vehículo",
+        "add_error_203": "El LPN ingresado no se puede asignar a su cuenta neoRide",
+        "add_error_211": "Este LPN ya está asociado a su cuenta neoRide",
+        "add_error_212": "El LPN ingresado no es elegible para el servicio neoRide",
+        "add_error_213": "El LPN ingresado no se puede asignar a su cuenta neoRide",
+        "no_vehicles": "No hay vehículos activos en esta cuenta.",
+        "vehicles_error": "Ocurrió un error al cargar vehículos.",
+        "lpn_th": "LPN",
+        "date_th": "Fecha activada",
+        "date_unreg_th": "Fecha de desactivación",
+        "unreg_button": "Dar de baja",
+        "confirm_unreg": "¿Quieres darte de baja <strong>{ lps } { lpn }</strong>?",
+        "unreg_ok": "Vehículo dado de baja",
+        "unreg_error": "Se produjo un error al cancelar el registro de su vehículo. Por favor, inténtelo de nuevo más tarde.",
+        "unreg_error_204": "Esta placa tiene actualmente una factura (s) pendiente (s). Para quitar su matrícula, vaya a sus Facturas para autorizar o disputar la factura actual. Una vez completada, su matrícula se puede eliminar de su cuenta. Si tiene preguntas, visite https://postpaid.neoride.com/contact-us.",
+        "confirm_unreg_cancel": "Cancelar",
+        "confirm_unreg_ok": "Ok",
+        "add_vehicle": "Agregar vehículo",
+        "add_popup_label": "Placa",
+        "add_vehicle_cancel": "Cancelar",
+        "add_vehicle_ok": "Ok",
+        "add_success": "Placa de matrícula agregada correctamente",
+        "add_error_common": "No se pudo agregar un vehículo nuevo",
+        "add_error_208": "Formato de matrícula no válido",
+        "add_error_209": "El registro de la matrícula se rechazó debido al bloqueo de la cuenta",
+        "add_error_210": "El registro de la matrícula se rechazó debido al bloqueo de pago",
+        "error_popup_ok": "Ok",
+        "is_rental_license_plate": "Esta es una matrícula de coche de alquiler.",
+        "plates_list_personal_title": "Placas Personales",
+        "plates_list_rental_title": "Placas de Coches de Alquiler",
+        "plates_list_personal_title_inactive": "Placas personales inactivas",
+        "plates_list_rental_title_inactive": "Placas de coches de alquiler inactivas",
+        "rental_period_extend_modal_title": "Seleccione nueva fecha y hora de regreso para",
+        "membership_limit_message": "Su abono cubre {max} vehículos",
+        "extend_period_btn_text": "Ampliar alquiler",
+        "rental_period_return_date_label": "Fecha de regreso",
+        "rental_period_extend_susses": "Período de alquiler de matrícula extendido con éxito",
+        "rental_period_extend_error": "Período de alquiler de placas no extendido",
+        "rental_period_extend": {
+            "validation_error": {
+                "min_date_from_period_extend": "La fecha de extensión del alquiler debe ser posterior a la fecha de finalización del período de alquiler original.",
+                "max_period_extend": "La extensión máxima para el período de alquiler es de 2 semanas.",
+                "min_period_extend": "La extensión mínima del período de alquiler es de 1 hora.",
+                "date_required": "Se requiere fecha de extensión de alquiler.",
+                "time_required": "Se requiere un tiempo estimado de devolución del alquiler."
+            }
+        },
+        "status_history_modal_title": "Historial del estado de la matrícula",
+        "tabs_titles": {
+            "active": "Activos",
+            "inactive": "Inactivos"
+        }
+    },
+    "payment_method": {
+        "method_header": {
+            "setup": "Ahora configuremos su método de pago. Elija su método de pago entre las siguientes opciones",
+            "change": "Desafortunadamente, su método de pago preferido no está disponible en este momento. Por favor, seleccione otro.",
+            "first_change": "Cambie el método de pago para pagos futuros.",
+            "edit": "Editar método de pago"
+        },
+        "options": {
+            "dcb": "Cobro Directo a Operador",
+            "wallet": "Billetera Digital",
+            "card": "Tarjeta de Débito/Crédito",
+            "card_debit": "Tarjeta de débito",
+            "card_credit": "Tarjeta de crédito"
+        },
+        "eligibility_check": {
+            "needs_check": "Verificación de elegibilidad",
+            "ineligible": "No elegible en este momento",
+            "check_success": "Verificación de elegibilidad completa",
+            "check_error": "No se pudo determinar la elegibilidad",
+            "check_tooltip": "Verificar elegibilidad"
+        },
+        "card_type": {
+            "credit": "Tarjeta de Crédito",
+            "debit": "Tarjeta de Débito",
+            "prepaid": "Tarjeta Prepagada",
+            "unknown": "Tarjeta"
+        },
+        "error": {
+            "method_submit_failed": "Error al guardar el método de pago.",
+            "card_delete_failed": "Error al eliminar la tarjeta.",
+            "credit_only": "No se aceptan pagos con tarjeta de débito en este momento. Por favor, ingrese una número de tarjeta de crédito válido.",
+            "debit_only": "No se aceptan pagos con tarjeta de crédito en este momento. Por favor, ingrese una número de tarjeta de débito válido.",
+            "credit_and_debit_only": "Solo se permiten tarjetas de crédito o débito.",
+            "venmo_delete_failed": "Falló en dar de baja la cuenta Venmo.",
+            "venmo_attach_failed": "Falló en registrar la cuenta Venmo."
+        },
+        "card": {
+            "header": "Por favor ingrese los detalles de su tarjeta",
+            "secured": "Datos de la tarjeta asegurados por",
+            "agreement_checkbox": "Autorizo a neoRide a enviar instrucciones a la institución financiera emisora de mi tarjeta a realizar pagos desde la cuenta de mi tarjeta acorde a los términos en mi acuerdo con ustedes.",
+            "error_cancel": "Cancelar",
+            "submit_ok": "Ok",
+            "submit_cancel": "Cancelar",
+            "card_header": "Por favor, ingrese los detalles de su Tarjeta de Crédito/Débito.",
+            "card_debit_header": "Por favor, ingrese los detalles de su Tarjeta de Débito.",
+            "card_credit_header": "Por favor, ingrese los detalles de su Tarjeta de Crédito."
+        },
+        "card_delete": {
+            "message": "¿Seguro que quiere eliminar la tarjeta <strong>{ card }</strong>?",
+            "ok": "Ok",
+            "cancel": "Cancelar"
+        },
+        "add_new_card": "Agregar una tarjeta",
+        "error_cancel": "Cancelar",
+        "setup_close": "Cerrar",
+        "setup_cancel": "Cancelar",
+        "setup_use_as_method": "Usar como Método de Pago",
+        "setup_ok": "Ok",
+        "add_card": "Agregar Tarjeta de Crédito/Débito",
+        "add_card_debit": "Agregar Tarjeta de Débito",
+        "add_card_credit": "Agregar Tarjeta de Crédito",
+        "method_unavailable": "No disponible en el escritorio",
+        "method_unacceptable": "Moneda no permitida",
+        "venmo_delete": {
+            "message": "¿Seguro que desea dar de baja su cuenta Venmo <strong>{ venmoAccount }</strong>?",
+            "ok": "Ok",
+            "cancel": "Cancelar"
+        }
+    },
+    "stripe": {
+        "error": {
+            "specific": {
+                "amount_too_large": "La cantidad es mayor al máximo permitido.",
+                "amount_too_small": "La cantidad es menor al mínimo permitido.",
+                "authentication_required": "El pago requiere de autenticación para procesarse.",
+                "balance_insufficient": "La transferencia o pago no se pude completar porque la cuenta asociada no tiene suficientes fondos disponibles.",
+                "card_decline_rate_limit_exceeded": "Esta tarjeta ha sido rechazada muchas veces. Puede intentar pagar con esta tarjeta después de 24 horas.",
+                "customer_max_payment_methods": "Ha agregado el número máximo de métodos de pago. Por favor, elimine algún método de pago existente para agregar uno nuevo.",
+                "email_invalid": "La dirección de correo electrónico es inválida.",
+                "expired_card": "La tarjeta ha expirado. Verifique la fecha de vencimiento o utilice una tarjeta diferente.",
+                "incorrect_address": "La dirección de la tarjeta es incorrecta. Verifique la dirección de la tarjeta o utilice una tarjeta diferente.",
+                "incorrect_cvc": "El código de seguridad es incorrecto. Verifique el código de seguridad o utilice una tarjeta diferente.",
+                "incorrect_number": "El número de la tarjeta es incorrecto. Verifique el número o utilice una tarjeta diferente.",
+                "incorrect_zip": "El código postal de la tarjeta es incorrecto. Verifique el código postal de la tarjeta o utilice una tarjeta diferente.",
+                "invalid_card_type": "No se permite este tipo de tarjeta para los pagos. Ingrese una tarjeta de débito no prepagada en su lugar.",
+                "invalid_characters": "Por favor, verifique que el formulario está correctamente completado",
+                "invalid_cvc": "El código de seguridad es invalido. Verifique el código de seguridad o utilice una tarjeta diferente.",
+                "invalid_expiry_month": "El mes de vencimiento de la tarjeta es incorrecto. Verifique la fecha de vencimiento o utilice una tarjeta diferente.",
+                "invalid_expiry_year": "El año de vencimiento de la tarjeta es incorrecto. Verifique la fecha de vencimiento o utilice una tarjeta diferente.",
+                "invalid_number": "El número de la tarjeta es invalido. Verifique el número o utilice una tarjeta diferente.",
+                "payment_intent_authentication_failure": "El método de pago ingresado no se ha podido autenticar.",
+                "payment_method_provider_decline": "Se ha rechazado el pago.",
+                "payment_method_provider_timeout": "El método de pago ha fallado debido a que ha pasado mucho tiempo.",
+                "setup_attempt_failed": "Ha ocurrido un error al ingresar el nuevo método de pago.",
+                "setup_intent_authentication_failure": "El método de pago ingresado no se ha podido autenticar.",
+                "postal_code_invalid": "El código postal ingresado es invalido",
+                "processing_error": "Ha ocurrido un error al procesar la tarjeta. Inténtelo de nuevo más tarde o utilice otro método de pago."
+            },
+            "common": {
+                "generic": "Estamos teniendo dificultades técnicas y estamos trabajando rápido para arreglarlas. Por favor, intente de nuevo más tarde",
+                "card_failure": "Ha ocurrido un error con su tarjeta. Por favor, intente de nuevo más tarde.",
+                "payment_failure": "Ha ocurrido un error durante el pago. Por favor, intente de nuevo más tarde."
+            },
+            "decline": {
+                "call_issuer": "Se ha rechazado su tarjeta. Contacte con su banco para más detalles.",
+                "card_not_supported": "Su tarjeta no está permitida.",
+                "card_velocity_exceeded": "Su tarjeta se ha rechazado por realizar muchos intentos con mucha frecuencia.",
+                "currency_not_supported": "Su tarjeta no está permitida para esta moneda.",
+                "fake_merchant_test_card": "Esta verificación se ha rechazado. Esta tarjeta debe usarse en una cuenta Personalizada en el modo de prueba.",
+                "generic_decline": "Su tarjeta ha sido rechazada.",
+                "incorrect_pin": "PIN incorrecto.",
+                "insufficient_funds": "Su tarjeta tiene fondos insuficientes.",
+                "invalid_account": "Cuenta invalida.",
+                "invalid_amount": "Importe invalido.",
+                "live_mode_test_card": "Su tarjeta ha sido rechazada. Su petición estaba en vivo, pero usó una tarjeta de prueba.",
+                "not_permitted": "Tarjeta no registrada / permitida.",
+                "pin_try_exceeded": "Se ha excedido los intentos permitidos.",
+                "test_mode_live_card": "Su tarjeta ha sido rechazada. Su petición ha sido en modo de prueba, pero usó una tarjeta que no era de prueba. Para revisar la lista de tarjetas válidas, visite: https://stripe.com/docs/testing.",
+                "transaction_not_allowed": "Su tarjeta no permite este tipo de compras.",
+                "authentication_required": "La tarjeta ha sido rechazada ya que la transacción requiere de autenticación.",
+                "approve_with_id": "No se puede autorizar el pago.",
+                "do_not_honor": "La tarjeta ha sido rechazada por una razón desconocida.",
+                "do_not_try_again": "La tarjeta ha sido rechazada por una razón desconocida.",
+                "duplicate_transaction": "Una transacción con importe e información de tarjeta de crédito identicas ha sido solicitada recientemente.",
+                "expired_card": "La tarjeta ha expirado",
+                "fraudulent": "El pago ha sido rechazado ya que Stripe sospecha que es fraudulento.",
+                "incorrect_number": "El número de tarjeta es incorrecto.",
+                "incorrect_cvc": "El número CVC es incorrecto.",
+                "incorrect_zip": "El código postal es incorrecto.",
+                "invalid_cvc": "El número CVC es incorrecto.",
+                "invalid_expiry_month": "El mes de vencimiento es inválido.",
+                "invalid_expiry_year": "El año de vencimiento es inválido.",
+                "invalid_number": "El número de tarjeta es incorrecto.",
+                "invalid_pin": "El PIN ingresado es incorrecto. Este código de rechazo solo aplica para pagos hechos con lector de tarjetas.",
+                "issuer_not_available": "No se pudo contactar al emisor de la tarjeta, y el pago no se ha podido autorizar",
+                "lost_card": "La tarjeta ha sido rechazada porque está reportada como perdida.",
+                "merchant_blacklist": "Se ha rechazado el pago porque concuerda con un valor de la lista negra de Stripe del usuario.",
+                "new_account_information_available": "La tarjeta, o la cuenta de a la que está conectada, es invalida",
+                "no_action_taken": "La tarjeta ha sido rechazada por una razón desconocida",
+                "offline_pin_required": "La tarjeta ha sido rechazada porque requiere de PIN.",
+                "online_or_offline_pin_required": "La tarjeta ha sido rechazada porque requiere de PIN.",
+                "pickup_card": "No se puede usar esta tarjeta para realizar este pago (es posible que haya sido reportada como robada o perdida).",
+                "processing_error": "Ha ocurrido un error al procesar la tarjeta.",
+                "reenter_transaction": "El pago no pudo ser procesado por el emisor por una razón desconocida.",
+                "restricted_card": "No se puede usar esta tarjeta para realizar este pago (es posible que haya sido reportada como robada o perdida).",
+                "revocation_of_all_authorizations": "La tarjeta ha sido rechazada por una razón desconocida.",
+                "revocation_of_authorization": "La tarjeta ha sido rechazada por una razón desconocida.",
+                "security_violation": "La tarjeta ha sido rechazada por una razón desconocida.",
+                "service_not_allowed": "La tarjeta ha sido rechazada por una razón desconocida.",
+                "stolen_card": "Se ha reachazado el pago porque la tarjeta está reportada como robada",
+                "stop_payment_order": "La tarjeta ha sido rechazada por una razón desconocida.",
+                "testmode_decline": "El número de tarjeta de prueba de Stripe ha sido usado.",
+                "try_again_later": "La tarjeta ha sido rechazada por una razón desconocida.",
+                "withdrawal_count_limit_exceeded": "El cliente ha excedido el balance o límite de crédito disponible en su tarjeta."
+            }
+        }
+    },
+    "payment_methods": {
+        "dcb": "Proveedor de telefonía",
+        "paypal": "PayPal",
+        "debit_card": "Tarjeta de débito",
+        "credit_card": "Tarjeta de crédito",
+        "wallet": "Billetera",
+        "apple_pay": "Apple Pay",
+        "google_pay": "Google Pay",
+        "venmo": "Venmo"
+    },
+    "coverage": {
+        "page_title": "Cobertura de peaje",
+        "page_header": "Cobertura de peaje",
+        "common_error": "Se produjo un error al cargar el mapa",
+        "search_placeholder": "Buscar ruta o pórtico",
+        "no_routes": "Sin rutas",
+        "show_on_map_tt": "Mostrar en el mapa",
+        "sidebar_header": "Rutas y pórticos"
+    },
+    "extend_coverage": {
+        "page_title": "Ampliar la cobertura de neoRide",
+        "activated_toll_authorities_block_title": "Los detalles de su cobertura se muestran a continuación.",
+        "extend_list_block_title": "Seleccione nuevas autoridades de peaje para ampliar su cobertura",
+        "terms_attention_message": "ATENCIÓN: Al hacer clic en \"Extend\", reconoce que ha leído y aceptado los Términos y condiciones correspondientes.",
+        "extend_button": "Extender",
+        "cancel_button": "Cancelar",
+        "error_message": "Error. Su cobertura no ha sido extendida. Por favor, inténtelo de nuevo más tarde.",
+        "success_message": "Su cobertura de neoRide se ha extendido con éxito.",
+        "message_no_toll_authorities": "Gracias por registrarse para todas las autoridades de peaje actuales con las que trabaja neoRide. Vuelva a consultar con frecuencia a medida que continuamos agregando nuevos estados y carreteras.",
+        "terms_and_conditions_link": "Términos y Condiciones",
+        "terms_popup_title": "TÉRMINOS Y CONDICIONES DE NEORIDE",
+        "terms_popup_close_button": "Cerrar",
+        "navigation_title": "Ampliar Cobertura",
+        "lpn_select_title": "Seleccionar matrícula",
+        "coverage_status": {
+            "active": "Placa esta cubierto",
+            "inactive": "Placa no esta cubierto",
+            "pending": "Registro en la Autoridad de Peaje en curso, el estado se actualizará en 24 horas"
+        }
+    },
+    "datetime": {
+        "today__text": "Hoy",
+        "back__button": "Atrás",
+        "hours__text": "Horas",
+        "minutes__text": "Minutos",
+        "cancel__button": "Cancelar",
+        "ok__button": "Ok"
+    },
+    "debt_lock": {
+        "welcome_message": "¡Bienvenido de nuevo! Parece que tienen un saldo impagado con neoRide. Para reactivar su cuenta, toque el enlace de abajo para pagar su saldo pendiente.",
+        "pay_debt_button": "Ir a facturas"
+    },
+    "subscription_summary": {
+        "page_header": "Resumen de afiliación",
+        "current_subs_title": "Afiliación actual",
+        "next_subs_title": "Próxima afiliación",
+        "load_error": "Se ha producido un error al cargar el resumen de afiliación",
+        "cancel": "Cancelar afiliación",
+        "update": "Cambiar afiliación",
+        "restore": "Restaurar afiliación",
+        "status": "Estado:",
+        "renewal": "Fecha de renovación:",
+        "renewal_value": "{date}",
+        "fee": "Tarifa Anual:",
+        "fee_value": "{amount}",
+        "vehicle_limit": "Límite de vehículos:",
+        "active_until": "Activo hasta:",
+        "active_until_value": "{date}",
+        "expired_on": "Expirado el:",
+        "expired_on_value": "{date}",
+        "status_enum": {
+            "active": "Activo",
+            "expired": "Expirado",
+            "active_until_expiration": "Activo hasta su Expiración",
+            "no_subscription": "Sin afiliación"
+        },
+        "cancel_popup": {
+            "text": "¿Está seguro de que desea cancelar su afiliación a neoRide?",
+            "cancel": "Volver",
+            "confirm": "Confirmar"
+        },
+        "cancel_confirm_popup": {
+            "text": "Ha cancelado con éxito su afiliación anual de neoRide. Su(s) vehículo(s) permanecerá(n) cubierto(s) hasta el <strong>{date}</strong>. <br/><br/> Si desea finalizar su cobertura de inmediato, visite su perfil y desactive su cuenta de neoRide.",
+            "confirm": "Confirmar"
+        },
+        "cancellation_flow": {
+            "step1": {
+                "header": "¿Todavía deseas cancelar tu membresía?",
+                "benefits_title": "Con la membresía neoRide, tienes los siguientes beneficios:",
+                "benefits": {
+                    "benefit1": "Pagos de peaje desde tu teléfono.",
+                    "benefit2": "Pago de peaje por placa de licencia.",
+                    "benefit3": "Cobertura de servicio en varios estados."
+                },
+                "cancel": "Mantener beneficios",
+                "confirm": "Sí, cancelar mi membresía"
+            },
+            "step2": {
+                "header": "Nos gustaría conocer su opinión",
+                "reasons": {
+                    "reason1": "No encuentro el servicio valioso",
+                    "reason2": "Uso único",
+                    "reason3": "Encontré un servicio alternativo mejor",
+                    "reason4": "Problemas de cobertura",
+                    "reason5": "No entiendo cómo funciona",
+                    "reason6": "Otro (por favor especificar)"
+                },
+                "text": "Si cancelas ahora, aún puedes seguir usando nuestro servicio hasta {date}.",
+                "cancel": "Mantener beneficios",
+                "confirm": "Confirmar cancelación"
+            },
+            "step3": {
+                "header": "Tu membresía ha sido cancelada",
+                "text": "Lamentamos verte ir. Tu(s) vehículo(s) seguirá(n) <strong> cubierto(s) hasta {date} </strong>.",
+                "confirm": "Entendido"
+            },
+            "step4": {
+                "header": "¡Tu membresía ha sido restaurada!",
+                "text": {
+                    "text1": "Tu(s) vehículo(s) seguirá(n) <strong> cubierto(s) hasta {date} </strong>",
+                    "text2": "Gracias por usar neoRide!"
+                },
+                "confirm": "Ok"
+            },
+            "validation_required_message": "Por favor, seleccione una razón para cancelar su suscripción."
+        }
+    },
+    "subscription_select": {
+        "page_header": "Escoger su afiliación",
+        "intro": "<strong>Coches arriendos</strong> están incluidos en su afiliación, Siéntase libre de agregarlos o eliminarlos como prefiera.",
+        "continue": "Continuar",
+        "cancel": "Cancelar",
+        "vehicles": "Coche(s)",
+        "per_year": "por año",
+        "discount": "Salvar {value}",
+        "available_plans_limit_message": "CLa cantidad actual de vehículos en su cuenta excede este paquete de afiliación."
+    },
+    "subscription_payment_preview": {
+        "intro_new_header": "Confirmar afiliación",
+        "intro_new": "Los vehículos se pueden agregar y quitar en cualquier momento.",
+        "intro_upgrade": "Actualice mi paquete de afiliación anual para incluir {additionalLP} vehículos adicionales. <strong>Nota: el precio indicado es prorrateado.</strong><br/><br/>La nueva factura de Afiliación Anual será de <strong>{futureInvoiceAmount}</strong> a ser facturada el n <strong>{futureInvoiceDate}</strong>.",
+        "intro_downgrade": "Reducir mi paquete de afiliación anual a {futureMaxLp} vehículos.<br/><br/>El monto de su Afiliación futura será de <strong>{futureInvoiceAmount} y se facturará el  {futureInvoiceDate}</strong>.",
+        "downgrade_with_renewal_invoice": "Reducir el nivel de mi paquete de Membresía Anual para cubrir <strong>{reducedLP}</strong> vehículo(s) menos. <br/> <strong>Nota: El nuevo precio reflejará el cambio en la cobertura.</strong><br/><br/>Su factura actualizada de la Membresía Anual será de <strong>{futureInvoiceAmount}</strong>, programada para ser facturada el <strong>{futureInvoiceDate}.</strong>",
+        "no_changes_with_renewal_invoice": "Tu Membresía actual está por vencer. Quedan menos de 10 días antes de que finalice el <strong>{currentActiveUntil}</strong>. <br/> Renueva hoy para mantener tu cobertura para <strong>{currentMaxLp}</strong> placas sin interrupciones. <br/><br/> Ten en cuenta que tu próximo pago de renovación, por un monto de <strong>{futureInvoiceAmount}</strong>, deberá realizarse el <strong>{futureInvoiceDate}</strong>.",
+        "intro_same": "Ha seleccionado conservar su paquete de Afiliación anual actual para  <strong>{maxLP} vehículos</strong><br/></br>No se han realizado cambios en su cuenta.",
+        "package_key": "Paquete:",
+        "package_value": "Annual",
+        "coverage_key": "Cobertura:",
+        "coverage_value": "{maxLP} vehicle(s)",
+        "payment_key": "El pago:",
+        "price_key": "Price:",
+        "price_value": "{amount}",
+        "back": "Modificar Afiliación",
+        "pay_button": "Pagar {amount}",
+        "downgrade_button": "Confirmar",
+        "ok_button": "Confirmar",
+        "payment_update": "Modificar el pago"
+    },
+    "subscription_acknowledgement": {
+        "upgrade": "Ha actualizado con éxito a un paquete de afiliación anual de <strong>{maxLP} vehículos(s)</strong>.",
+        "downgrade": "Ha reducido con éxito su afiliación anual de neoRide. Su(s) vehículo(s) permanecerá(n) cubierto(s) hasta el <strong>{activeUntil}</strong>. <br/><br/>Si desea cancelar la cobertura de una placa específica de inmediato, visite su perfil y elimine el registro de esa placa de su cuenta.",
+        "ok_button": "Confirmar"
+    },
+    "subscription_limit": {
+        "text": "Su cobertura de afiliación actual solo permite <strong>{maxLP} vehículos</strong> en su cuenta a la vez. <br/><br/>Puede eliminar un vehículo activo y agregar otro o simplemente actualizar su paquete de afiliación anual.",
+        "cancel": "Atrás",
+        "update": "Actualizar"
+    },
+    "subscription_payments": {
+        "declined_error": "Su método de pago fue rechazado. Por favor, intente de nuevo o use un método de pago diferente."
+    },
+    "logo": {
+        "slogan": "un servicio de pago de peaje de"
+    },
+    "invoices_auto_payment": {
+        "auto_payment_enabled": "Los pagos automáticos están habilitados",
+        "auto_payment_enable_error": "Ocurrió un error al habilitar los pagos automáticos",
+        "auto_payment_disabled": "Los pagos automáticos están deshabilitados",
+        "auto_payment_disable_error": "Ocurrió un error al deshabilitar los pagos automáticos",
+        "checkbox_label": "Habilitar pagos automáticos",
+        "paypal_warning_message": "El pago automático no está disponible para este método de pago. El pago automático se desactivará."
+    },
+    "header_main_info": {
+        "membership": {
+            "expires": "Su membresía vence el { expirationDate }",
+            "link_text": "Renovar ahora"
+        },
+        "invoices": {
+            "title": "Facturas"
+        },
+        "vehicles": {
+            "title": "Vehículos"
+        }
+    },
+    "registration": {
+        "page_header": "Registro",
+        "intro": "Bienvenido al registro de su cuenta. Por favor complete sus datos a continuación.",
+        "first_name": "Nombre",
+        "first_name_placeholder": "Ingrese su nombre",
+        "first_name_required": "El nombre es requerido",
+        "first_name_min_length": "El nombre debe tener al menos 2 caracteres",
+        "first_name_max_length": "El nombre no puede exceder los 50 caracteres",
+        "first_name_invalid_chars": "El nombre solo puede contener letras, espacios, guiones y apóstrofes",
+        "last_name": "Apellido",
+        "last_name_placeholder": "Ingrese su apellido",
+        "last_name_required": "El apellido es requerido",
+        "last_name_min_length": "El apellido debe tener al menos 2 caracteres",
+        "last_name_max_length": "El apellido no puede exceder los 50 caracteres",
+        "last_name_invalid_chars": "El apellido solo puede contener letras, espacios, guiones y apóstrofes",
+        "email": "Correo electrónico",
+        "email_placeholder": "Ingrese su correo electrónico",
+        "email_required": "El correo electrónico es requerido",
+        "email_invalid": "Por favor ingrese un correo electrónico válido",
+        "email_max_length": "El correo electrónico no puede exceder los 100 caracteres",
+        "email_exists": "Este correo electrónico ya está asociado con un usuario activo. Por favor utilice otro correo electrónico.",
+        "preferred_language": "Idioma preferido para la comunicación de texto",
+        "language_english": "Inglés",
+        "language_spanish": "Español",
+        "terms_prefix": "Acepto los",
+        "terms_link": "Términos y Condiciones",
+        "terms_required": "Debe aceptar los términos para continuar",
+        "continue": "Continuar",
+        "select_language": "Idioma preferido para la comunicación de texto",
+        "english": "Inglés",
+        "spanish": "Español",
+        "agree": "Estoy de acuerdo con",
+        "terms_and_conditions": "Términos y condiciones",
+        "cancel": "Cancelar",
+        "ok": "Vale"
+    },
+    "logout": {
+        "title": "Cerrar sesión",
+        "confirm_message": "¿Está seguro de que desea cerrar sesión?",
+        "no": "No",
+        "yes": "Sí"
+    }
+}

@@ -1,0 +1,270 @@
+<!-- Page Header -->
+<ng-container [ngSwitch]="viewportBreakpoint">
+    <page-panel *ngSwitchCase="'desktop'">
+        <h1 class="page-panel__header page-panel__header_has-arrow"
+            (click)="onGoBack()"
+            [innerHTML]="'vehicles.page_header' | translate"
+        ></h1>
+        <div class="page-panel__controls">
+            <button type="button" class="button button_regular button_light-blue" (click)="onAddVehicle()">
+                <span class="button__caption">{{ 'vehicles.add_vehicle' | translate }}</span>
+            </button>
+        </div>
+    </page-panel>
+    <app-bar [showBackButton]="true" (onBack)="onGoBack()" *ngSwitchDefault>
+        <button type="button" class="app-bar__button" (click)="onAddVehicle()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="button_icon">
+                <path fill="currentColor" d="M12,6v6h0V6m1-1H11v6H5v2h6v6h2V13h6V11H13V5Z"/>
+            </svg>
+        </button>
+    </app-bar>
+</ng-container>
+
+<!-- Page Content -->
+<div class="vehicles__content" [ngSwitch]="listState">
+    <div class="vehicles__loading" *ngSwitchCase="'loading'">
+        <loader></loader>
+    </div>
+    <div class="vehicles__message" *ngSwitchCase="'empty'">
+        {{ 'vehicles.no_vehicles' | translate }}
+    </div>
+    <div class="vehicles__message vehicles__message_error" *ngSwitchCase="'error'">
+        {{ 'vehicles.vehicles_error' | translate }}
+    </div>
+    <ng-container *ngSwitchCase="'list'" [ngSwitch]="viewportBreakpoint">
+        <div class="vehicles__table-wrap" *ngSwitchCase="'desktop'">
+            <div class="table table_middle table_striped table_white table_nowrap vehicles__table">
+                <div class="table__header">
+                    <div class="table__row">
+                        <div class="table__cell">
+                            {{ 'vehicles.lpn_th' | translate }}
+                        </div>
+                        <div class="table__cell">
+                            {{ 'vehicles.date_th' | translate }}
+                        </div>
+                        <div class="table__cell">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="table__body">
+                    <div class="table__row" *ngFor="let licensePlate of licensePlates">
+                        <div class="table__cell">
+                            {{ licensePlate.lps }} {{ licensePlate.lpn }}
+                        </div>
+                        <div class="table__cell">
+                            {{ licensePlate.registered | datetime : 'display.datetime' }}
+                        </div>
+                        <div class="table__cell">
+                            <button type="button" class="button button_regular button_light-red"
+                                (click)="onUnregisterClick(licensePlate)"
+                            >
+                                <span class="button__caption">{{ 'vehicles.unreg_button' | translate }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-container *ngSwitchDefault>
+            <h1 class="page-header" [innerHTML]="'vehicles.page_header' | translate"></h1>
+            <div class="vehicles__list">
+                <div class="vehicles__list-item" *ngFor="let licensePlate of licensePlates">
+                    <div class="vehicles__list-item-primary">
+                        <div class="vehicles__list-item-primary-item">
+                            {{ licensePlate.lps }} {{ licensePlate.lpn }}
+                        </div>
+                        <div class="vehicles__list-item-primary-item vehicles__list-item-primary-item_light">
+                            {{ licensePlate.registered | datetime : 'display.datetime' }}
+                        </div>
+                    </div>
+                    <div class="vehicles__list-item-secondary">
+                        <button type="button" class="button button_regular button_light-red"
+                            (click)="onUnregisterClick(licensePlate)"
+                        >
+                            <span class="button__caption">{{ 'vehicles.unreg_button' | translate }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+</div>
+
+<!-- Popups -->
+<popup-custom class="vehicles__unreg-popup" *ngIf="activePopup === 'unregister-confirm'" [isDisabled]="isSubmitting">
+    <popup-content>
+        <span [innerHTML]="'vehicles.confirm_unreg' | translate : { lps: lpToUnregister.lps, lpn: lpToUnregister.lpn }"></span>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button_regular button_light-blue" (click)="onUnregisterCancel()">
+            <span class="button__caption">{{ 'vehicles.confirm_unreg_cancel' | translate }}</span>
+        </button>
+        <button type="button" class="button button_regular button_blue" (click)="onUnregisterConfirm()" [isProgress]="isSubmitting">
+            <span class="button__caption">{{ 'vehicles.confirm_unreg_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<popup-custom class="vehicles__add-popup"
+    *ngIf="activePopup === 'add'"
+    [isDisabled]="isSubmitting"
+    (onClose)="onCloseAddPopup()"
+>
+    <popup-content>
+        <div class="vehicles__add-popup-error"
+            *ngIf="addPopupError"
+            [innerHTML]="addPopupError.key | translate : addPopupError.data"
+        ></div>
+        <label class="vehicles__add-popup-label">
+            <span class="vehicles__add-popup-label-text">{{ 'vehicles.add_popup_label' | translate }}</span>
+            <input type="text" class="input input_regular vehicles__add-popup-input"
+                placeholder="TX 123456"
+                [(ngModel)]="lpn"
+                (ngModelChange)="validateLpn()"
+            >
+        </label>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button_regular button_light-blue" (click)="onCloseAddPopup()">
+            <span class="button__caption">{{ 'vehicles.add_vehicle_cancel' | translate }}</span>
+        </button>
+        <button type="button" class="button button_regular button_blue"
+            [isProgress]="isSubmitting"
+            [isDisabled]="!isLpnValid"
+            (click)="onCommitVehicle()"
+        >
+            <span class="button__caption">{{ 'vehicles.add_vehicle_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<popup-custom class="vehicles__error-popup" *ngIf="activePopup === 'error'">
+    <popup-content>
+        <span [innerHTML]="errorPopupMessage.key | translate : errorPopupMessage.data"></span>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button_regular button_blue" (click)="hideErrorPopup()">
+            <span class="button__caption">{{ 'vehicles.error_popup_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<popup-custom class="vehicles__payment-popup" *ngIf="activePopup === 'payment'" [isDisabled]="paymentSubmittingBy !== null">
+    <popup-content>
+        <div [innerHTML]="payByMailConfirmMessageKey | translate : paymentResultMessageData"></div>
+        <input type="text" class="input input_large vehicles__payment-popup-zip"
+            *ngIf="paymentConfig.payment_method_type === 'DCB' && isPaymentZipRequired"
+            [(ngModel)]="zipCode"
+            [placeholder]="'profile.pbm.zip_code' | translate"
+            (ngModelChange)="validatePaymentPopup()"
+        >
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button_regular button_light-blue"
+            (click)="onSubmitPayment(false)"
+            [isDisabled]="paymentSubmittingBy !== null"
+            [isProgress]="paymentSubmittingBy === 'no'"
+        >
+            <span class="button__caption">{{ 'profile.pbm.button_no' | translate }}</span>
+        </button>
+        <button type="button" class="button button_regular button_blue"
+            (click)="onSubmitPayment(true)"
+            [isDisabled]="!isPaymentPopupValid || paymentSubmittingBy !== null"
+            [isProgress]="paymentSubmittingBy === 'yes'"
+        >
+            <span class="button__caption">{{ 'profile.pbm.button_yes' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<popup-custom class="vehicles__payment-result-popup" *ngIf="activePopup === 'payment-result'">
+    <popup-content>
+        <span [innerHTML]="paymentResultMessageKey | translate : paymentResultMessageData"></span>
+    </popup-content>
+    <popup-controls>
+        <button type="button" class="button button_regular button_blue" (click)="hidePaymentResultMessage()">
+            <span class="button__caption">{{ 'profile.pbm.button_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<!-- /// -->
+
+<popup-custom class="vehicles__fleet-lpn-popup" *ngIf="activePopup === 'fleet-lpn'" [isDisabled]="isConfirmingFleet">
+    <popup-content>
+        <div class="vehicles__fleet-lpn-popup-header">
+            {{ 'profile.fleet.header_message' | translate }}
+        </div>
+        <div class="table table_middle table_striped table_reversed table_nowrap vehicles__fleet-lpn-popup-table">
+            <div class="table__body">
+                <div class="table__row" *ngFor="let plate of pendingLPNs.plates">
+                    <div class="table__cell">
+                        <checkbox [(ngModel)]="pendingLPNsActivity[plate.id]" (ngModelChange)="recountActivePendingLPNs()"></checkbox>
+                    </div>
+                    <div class="table__cell">
+                        {{ plate.lps }} {{ plate.lpn }}
+                    </div>
+                    <div class="table__cell">
+                        {{ pendingLPNs.fee | currency : 'USD' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </popup-content>
+    <popup-controls>
+        <button type="button" class="button button_regular button_blue"
+            [isProgress]="isConfirmingFleet"
+            [isDisabled]="isConfirmingFleet"
+            (click)="onConfirmFleetPayment()"
+            [ngSwitch]="activePendingLPNsCount"
+        >
+            <span *ngSwitchCase="0" class="button__caption">
+                {{ 'profile.fleet.submit_button' | translate }}
+            </span>
+            <span *ngSwitchDefault class="button__caption">
+                {{ 'profile.fleet.pay_button' | translate : { amount: (activePendingLPNsTotal | currency : 'USD') } }}
+            </span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<popup-custom class="vehicles__fleet-lpn-zip-popup" *ngIf="activePopup === 'fleet-lpn-zip'" [isDisabled]="isFleetZipSubmitting">
+    <popup-content>
+        <input type="text" class="input input_large vehicles__fleet-lpn-zip-popup-zip"
+            [(ngModel)]="zipCode"
+            [placeholder]="'profile.fleet.zip_code' | translate"
+            (ngModelChange)="validateFleetZipPopup()"
+        >
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button_regular button_blue"
+            (click)="submitFleetZipPayment()"
+            [isDisabled]="!isFleetZipValid"
+            [isProgress]="isFleetZipSubmitting"
+        >
+            <span class="button__caption">{{ 'profile.fleet.zip_pay' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<popup-custom class="vehicles__fleet-lpn-wallet-popup"
+    *ngIf="activePopup === 'fleet-wallet-payment-confirm'"
+    [isDisabled]="isFleetWalletSubmitting"
+>
+    <popup-content>
+        <span [innerHTML]="'profile.fleet.wallet_confirm_message' | translate : { amount: walletFleetPaymentAttrs.amountFormatted, wallet: walletFleetPaymentAttrs.wallet }"></span>
+    </popup-content>
+    <popup-controls [isStretched]="true">
+        <button type="button" class="button button_regular button_blue" [isProgress]="isFleetWalletSubmitting" (click)="onConfirmFleetWalletPayment()">
+            <span class="button__caption">{{ 'profile.fleet.wallet_ok' | translate }}</span>
+        </button>
+    </popup-controls>
+</popup-custom>
+
+<!-- /// -->
+
+<payment-method
+    *ngIf="activePopup === 'payment-method'"
+    [mode]="'change'"
+    [isSilentInit]="true"
+    (onDone)="onPaymentMethodSelected($event)"
+></payment-method>

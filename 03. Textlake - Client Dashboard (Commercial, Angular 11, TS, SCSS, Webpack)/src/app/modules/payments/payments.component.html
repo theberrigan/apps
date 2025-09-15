@@ -1,0 +1,121 @@
+<div class="middle-block" maximize>
+    <div class="middle-block__content middle-block__content--has-panel">
+        <div class="payments-error" [@showWindow]="isReady && quote == null" *ngIf="quote == null">
+            <div>{{ 'payments.invalid_quote' | translate }}</div>
+        </div>
+        <div class="payments-window" [@showWindow]="isReady && quote != null" *ngIf="quote != null" #paymentWindow>
+            <div class="payments-window__section-header">
+                <div class="payments-window__header-acknowledgement">{{ 'payments.acknowledgement' | translate }}</div>
+                <h1>{{ 'payments.header' | translate }}</h1>
+                <ul class="payments-window__header-info">
+                    <li><strong>{{ 'payments.offer' | translate }}:</strong> {{ quote.quote.name }}</li>
+                    <li><strong>{{ 'payments.quote_id' | translate }}:</strong> {{ quote.quote.code }}</li>
+                    <li><strong>{{ 'payments.issue_date' | translate }}:</strong> {{ quote.quote.created | fdate: 'MMM dd, yy' }}</li>
+                </ul>
+            </div>
+            <div class="payments-window__section-services">
+                <div class="payments-window__services">
+                    <h3>{{ 'payments.services_ordered' | translate }}</h3>
+                    <div class="payments-window__service" *ngFor="let service of quote.quote.items" (click)="expandService(service)">
+                        <div class="payments-window__service-name">{{ service.name }}</div>
+                        <div class="payments-window__service-secondary-info" [@expandService]="serviceExpanded == service">
+                            <div class="payments-window__service-description">
+                                {{ service.description }}
+                            </div>
+                        </div>
+                        <div *ngIf="!!service.fromLanguage && !!service.toLanguage">
+                            <strong [innerHTML]="getLanguage(service.fromLanguage)"></strong> →
+                            <strong [innerHTML]="getLanguage(service.toLanguage)"></strong>
+                        </div>
+                        <div class="payments-window__service-taxes">
+                            <span>
+                                <strong>{{ 'payments.net' | translate }}</strong>
+                                {{ service.net / 100 | number : '.2-2' | cy : quote.quote.currency }}
+                            </span>
+                            <span>
+                                <strong>{{ 'payments.tax' | translate }}</strong>
+                                {{ service.taxAmount / 100 | number : '.2-2' | cy : quote.quote.currency }}
+                            </span>
+                            <span>
+                                <strong>{{ 'payments.gross' | translate }}</strong>
+                                {{ service.gross / 100 | number : '.2-2' | cy : quote.quote.currency }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="payments-window__contacts">
+                    <span [innerHTML]="'payments.help_message' | translate : { company: quote.companyName }"></span>
+                    <ul>
+                        <li *ngIf="!!quote.email">
+                            <strong>{{ 'payments.email' | translate }}</strong>: <a [href]="'mailto:' + quote.email" target="_blank">{{ quote.email }}</a>
+                        </li>
+                        <li *ngIf="!!quote.phone">
+                            <strong>{{ 'payments.phone' | translate }}</strong>: {{ quote.phone }}
+                        </li>
+                        <li *ngIf="!!quote.fax">
+                            <strong>{{ 'payments.fax' | translate }}</strong>: {{ quote.fax }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="payments-window__section-pay" #sectionPay [style.width.px]="sectionPayWidth">
+                <div class="payments-window__section-pay-content" #sectionPayContent [style.top.px]="sectionPayContentTop">
+                    <div class="payments-window__total-label">{{ 'payments.total_due' | translate }}</div>
+                    <div class="payments-window__total-amount">
+                        <span>{{ totalDueCurrency }}</span>{{ totalDue }}
+                    </div>
+                    <ng-container *ngIf="!quote.quote.fullPaymentRequired && paymentState != 'paid'">
+                        <div class="payments-window__partial-label">{{ 'payments.partial_amount' | translate }}</div>
+                        <div class="payments-window__partial-amount">
+                            <div>
+                                <span>{{ totalDueCurrency }}</span>
+                                <span><input type="text" [ngModel]="totalDuePartial.toFixed(2)" (blur)="onPartialAmountChanged($event)"></span>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container [ngSwitch]="paymentState">
+                        <ng-container *ngSwitchCase="'ready'">
+                            <div class="payments-window__type-label">{{ 'payments.pay_with' | translate }}</div>
+                            <div class="payments-window__payment-providers">
+                                <button type="button" class="payments-window__payment-provider payments-window__payment-provider--stripe" *ngIf="paymentMethods.stripe" (click)="pay('stripe')">
+                                    <span>{{ 'payments.provider_stripe' | translate }}</span>
+                                </button><!--
+                             --><button type="button" class="payments-window__payment-provider payments-window__payment-provider--sofort" *ngIf="paymentMethods.sofort" (click)="pay('sofort')">
+                                    <span>{{ 'payments.provider_sofort' | translate }}</span>
+                                </button><!--
+                             --><button type="button" class="payments-window__payment-provider payments-window__payment-provider--paypal" *ngIf="paymentMethods.paypal" (click)="pay('paypal')">
+                                    <span>{{ 'payments.provider_paypal' | translate }}</span>
+                                </button>
+                            </div>
+                        </ng-container>
+                        <div *ngSwitchCase="'paid'" class="payments-window__paid-label">
+                            {{ 'payments.paid' | translate }}
+                        </div>
+                        <div *ngSwitchCase="'processing'" class="tripe-dot tripe-dot--payments"><i></i><i></i><i></i></div>
+                        <ng-container *ngSwitchCase="'popup'"></ng-container>
+                        <div *ngSwitchCase="'unavailable'" class="payments-window__unavailable-label">
+                            {{ 'payments.unavailable' | translate }}
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="payments-panel" [@showPanel]="isReady">
+    <a routerLink="/auth/sign-in" class="payments-panel__sign-in" style="display: none;">{{ 'payments_panel.sign_in' | translate }}</a>
+    <div class="lang-switcher" [class.lang-switcher--active]="isLangSwitcherActive" (click)="markLangSwitcherEvent($event)">
+        <button type="button" class="lang-switcher__button" (click)="toggleLangSwitcher()">
+            <span>{{ currentLang }}</span>
+        </button>
+        <div class="lang-switcher__dropdown">
+            <ul>
+                <li class="lang-switcher__lang" *ngFor="let lang of langs" (click)="onLangSwitch(lang)" [class.lang-switcher__lang--active]="lang.locale == currentLang">
+                    <span class="lang-switcher__lang-mark"></span><!--
+                 --><span class="lang-switcher__lang-icon lang-switcher__lang-icon--{{ lang.locale }}"></span><!--
+                 --><span class="lang-switcher__lang-name" [innerHTML]="lang.name"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
