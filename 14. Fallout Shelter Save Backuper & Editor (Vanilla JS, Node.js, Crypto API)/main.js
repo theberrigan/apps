@@ -355,16 +355,19 @@ class SaveBackuper {
 }
 
 const main = async () => {
+    // Run save file watcher and backuper
     SaveBackuper.watch();
 
-    /*const savePath = path.join(SAVE_DIR, 'Vault2.sav');
+    // -- OR --
 
-    SaveEditor.edit(savePath, async (editor) => {
-        // editor.setNuka(0);
-        // editor.setQuantumNuka(0);
-        // editor.setLunchbox(600);
-        console.log(JSON.stringify(editor._data, null, 4));
-    });*/
+    // Edit save file data
+    // const savePath = path.join(SAVE_DIR, 'Vault2.sav');
+
+    // SaveEditor.edit(savePath, async (editor) => {
+    //     editor.setNuka(0);
+    //     editor.setQuantumNuka(0);
+    //     editor.setLunchbox(600);
+    // });
 };
 
 main();
