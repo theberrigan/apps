@@ -31,7 +31,7 @@
 
 ## Опыт в технологиях
 
-* **Хороший:** JS (ES5-ES2024), TS, Angular 2-17 (Ivy, Standalone Components, Signals), ngx-translate, Jest, Bootstrap, GSAP, Lottie, Webpack, Vite, Python, PHP, MySQL, Chrome Extensions, разные Web APIs, REST API, Git, Bitbucket, Jira, Trello, Мегаплан.
+* **Хороший:** JS (ES5-ES2024), TS, Angular 2-17 (Ivy, Standalone Components, Signals), ngx-translate, Jest, Bootstrap, GSAP, Lottie, jQuery, Webpack, Vite, Gulp, Python, PHP, MySQL, Chrome Extensions, разные Web APIs, REST API, Git, Bitbucket, Jira, Trello, Мегаплан.
 * **Базовый:** NgRx, RxJs, Angular Material, React, Redux, Redux Toolkit, Zustand, Cypress, Node.js, D3, Three.js, WebGL2, компьютерная графика и математика, Rust, C/C++, C#.
 * **Нет:** GraphQL, Vue, NgXs, Tailwind, Storybook, Playwright, CI/CD.
 
