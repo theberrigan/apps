@@ -1,6 +1,6 @@
 # ![GTA San Andreas](./static/images/game_icon.png) Карта коллекционных предметов в GTA San Andreas
 
-![](<../.images/gtasa_map.webp>)
+![](../../.images/gtasa_map.webp)
 
 ## Установка
 1. Установить Python 3.
