@@ -15,9 +15,3 @@
 3. Зайти в ```/packages/server```, выполнить команду ```npm i```, затем ```npm start```.
 4. Зайти в ```/packages/client```, выполнить команду ```npm i```, затем ```npm start```.
 5. Открыть в браузере ```http://127.0.0.1:40452```.
-
-## Ссылки
-
-- Ответы на вопросы находятся в **[```/misc/docs/Ответы.md```](misc/docs/Ответы.md)**
-- [Краткое резюме и портфолио на GitHub](https://github.com/theberrigan/apps)
-- [Hезюме на hh.ru](https://hh.ru/resume/f081e219ff0f569e260039ed1f626b686c784b)
