@@ -1,0 +1,7 @@
+{
+    "host": "0.0.0.0",
+    "port": 40451,
+    "staticPath": "./static/",
+    "moviesDBPath": "./data/movies.db",
+    "moviesJsonPath": "./data/movies.json"
+}

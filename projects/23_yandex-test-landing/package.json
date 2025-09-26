@@ -1,0 +1,15 @@
+{
+    "name": "yandex-test-landing",
+    "version": "1.0.0",
+    "description": "",
+    "license": "GNU",
+    "author": "Stanislav Kuznetsov",
+    "type": "commonjs",
+    "main": "index.js",
+    "scripts": {
+        "start": "serve -l tcp://0.0.0.0:30451 -c ../serve.json src/"
+    },
+    "devDependencies": {
+        "serve": "^14.2.5"
+    }
+}

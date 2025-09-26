@@ -1,0 +1,18 @@
+@use './assets/css/reset.scss';
+@use './assets/fonts/gilroy/font.scss';
+@use './assets/fonts/gilroy/definitions.scss' as *;
+@use './assets/css/animations.scss';
+
+html,
+body {
+    font-family: $font-family, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, Tahoma, sans-serif;
+    color: #FFF;
+    background-color: #0F0F10;
+    min-height: 100vh;
+}
+
+.skeleton {
+    animation: scroll-skeleton 2s linear infinite;
+    background: linear-gradient(90deg, transparent, rgba(#FFF, 0.15), transparent);
+    background-size: 200% 200%;
+}

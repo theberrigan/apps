@@ -1,0 +1,74 @@
+<header class="movie-list__panel">
+    <h1 class="movie-list__header">Каталог фильмов</h1>
+    <div class="movie-list__search">
+        <movie-list-search (stateChange)="onStateChange($event)"></movie-list-search>
+    </div>
+</header>
+<main class="movie-list__content">
+    @switch (state().state) {
+        @case (LoadingState.Loading) {
+            <div class="movie-list__items">
+                @for (i of skeletonItems; track i) {
+                    <div class="movie-list__item">
+                        <div class="movie-card movie-card_skeleton">
+                            <div class="movie-card__display skeleton"></div>
+                            <div class="movie-card__title skeleton">&nbsp;</div>
+                            <div class="movie-card__info skeleton">&nbsp;</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        @case (LoadingState.Ready) {
+            @if (state().movies.length === 0) {
+                <div class="movie-list__message">
+                    <div class="movie-list__message-header">Финита ля комедия!</div>
+                    <div class="movie-list__message-description">По вашему запросу фильмы не найдены</div>
+                </div>
+            } @else {
+                <div class="movie-list__items">
+                    @for (movie of state().movies; track movie.id) {
+                        <div class="movie-list__item">
+                            <div class="movie-card" role="button" animate.enter="movie-card_animate" (click)="handleMovieCardClick(movie.id)">
+                                <div class="movie-card__display">
+                                    <img class="movie-card__poster" [src]="movie.posterUrl" [alt]="movie.title">
+                                    <div class="movie-card__display-content">
+                                        @if (movie.age !== null) {
+                                            <div class="movie-card__age">
+                                                {{ movie.age }}+
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="movie-card__title">
+                                    {{ movie.title }}
+                                </div>
+                                <div class="movie-card__info">
+                                    @if (movie.year !== null) {
+                                        <span>{{ movie.year }}</span>
+                                    }
+                                    @if (movie.genre !== null) {
+                                        <span>{{ movie.genre }}</span>
+                                    }
+                                    @if (movie.country !== null) {
+                                        <span>{{ movie.country }}</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        }
+        @case (LoadingState.Error) {
+            <div class="movie-list__message">
+                <div class="movie-list__message-header">Упс!</div>
+                <div class="movie-list__message-description">Произошла техническая ошибка, уже чиним!</div>
+            </div>
+        }
+    }
+</main>
+
+@if (activeMovieId !== null) {
+    <movie-popup [movieId]="activeMovieId" (onClosePopup)="handleClosePopup($event)"></movie-popup>
+}

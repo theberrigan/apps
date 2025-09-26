@@ -1,0 +1,378 @@
+<div class="movie-popup__content">
+@switch (loadingState()) {
+    @case (LoadingState.Loading) {
+        <div class="movie-popup__movie">
+            <div class="movie-popup__movie-heading">
+                <div class="movie-popup__movie-heading-left">
+                    <h2 class="movie-popup__movie-header skeleton">
+                        &nbsp;
+                    </h2>
+                    <div class="movie-popup__movie-sub-header skeleton">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+            <div class="movie-popup__movie-info">
+                <table class="movie-popup__movie-info-table">
+                    <tbody>
+                        <tr>
+                            <th class="skeleton"></th>
+                            <td class="skeleton">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th class="skeleton"></th>
+                            <td class="skeleton">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th class="skeleton"></th>
+                            <td class="skeleton">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th class="skeleton"></th>
+                            <td class="skeleton">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th class="skeleton"></th>
+                            <td class="skeleton">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th class="skeleton"></th>
+                            <td class="skeleton">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th class="skeleton"></th>
+                            <td class="skeleton">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th class="skeleton"></th>
+                            <td class="skeleton">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th class="skeleton"></th>
+                            <td class="skeleton">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th class="skeleton"></th>
+                            <td class="skeleton">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th class="skeleton"></th>
+                            <td class="skeleton">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th class="skeleton"></th>
+                            <td class="skeleton">&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="movie-popup__movie-poster">
+                <figure class="movie-popup__movie-poster-image skeleton"></figure>
+            </div>
+            <div class="movie-popup__movie-description skeleton">&nbsp;</div>
+        </div>
+    }
+    @case (LoadingState.Ready) {
+        @let m = movie();
+        @let title = m!.title.russian || m!.title.foreign;
+
+        <div class="movie-popup__movie">
+            <div class="movie-popup__movie-heading">
+                <div class="movie-popup__movie-heading-left">
+                    <h2 class="movie-popup__movie-header">
+                        <a [href]="m!.kpUrl" target="_blank" rel="nofollow noopener">
+                            {{ m!.title.russian || m!.title.foreign }}
+                        </a>
+                    </h2>
+
+                    @if (m!.title.russian && m!.title.foreign) {
+                        <div class="movie-popup__movie-sub-header">
+                            {{ m!.title.foreign }}
+                        </div>
+                    }
+                </div>
+                <div class="movie-popup__movie-heading-right">
+                    <button type="button" class="movie-popup__movie-close" (click)="onClosePopup.emit(false)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px">
+                            <path fill="#FFF" d="M14.364,0.222 L15.778,1.636 L9.414,8.000 L15.778,14.364 L14.364,15.778 L8.000,9.414 L1.636,15.778 L0.222,14.364 L6.586,8.000 L0.222,1.636 L1.636,0.222 L8.000,6.586 L14.364,0.222 Z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="movie-popup__movie-poster">
+                <figure class="movie-popup__movie-poster-image">
+                    <img [src]="m!.posterUrl" [alt]="title">
+                </figure>
+            </div>
+            <div class="movie-popup__movie-info">
+                <table class="movie-popup__movie-info-table">
+                    <tbody>
+                        @if (m!.productionYear !== null) {
+                            <tr>
+                                <th>Год производства</th>
+                                <td>{{ m!.productionYear }}</td>
+                            </tr>
+                        }
+
+                        @if (m!.countries.length) {
+                            <tr>
+                                <th>Страна</th>
+                                <td>
+                                    @for (country of m!.countries; track country.id) {
+                                        {{ country.title }}@if (!$last) {,}
+                                    }
+                                </td>
+                            </tr>
+                        }
+
+                        @if (m!.genres.length) {
+                            <tr>
+                                <th>Жанр</th>
+                                <td>
+                                    @for (genre of m!.genres; track genre.id) {
+                                        {{ genre.title }}@if (!$last) {,}
+                                    }
+                                </td>
+                            </tr>
+                        }
+
+                        @if (m!.slogan) {
+                            <tr>
+                                <th>Слоган</th>
+                                <td>{{ m!.slogan }}</td>
+                            </tr>
+                        }
+
+                        @if (m!.duration !== null) {
+                            <tr>
+                                <th>Длительность</th>
+                                <td>{{ m!.duration }} минут</td>
+                            </tr>
+                        }
+
+                        @if (m!.budget.amount !== null && m!.budget.currency !== null) {
+                            <tr>
+                                <th>Бюджет</th>
+                                <td>{{ m!.budget.amount! | currency : m!.budget.currency! : 'symbol' : '.0-0' }}</td>
+                            </tr>
+                        }
+
+                        @if (m!.boxOffice.amount !== null && m!.boxOffice.currency !== null) {
+                            <tr>
+                                <th>Сборы в мире</th>
+                                <td>{{ m!.boxOffice.amount! | currency : m!.boxOffice.currency! : 'symbol' : '.0-0' }}</td>
+                            </tr>
+                        }
+
+                        @if (m!.premiereDate !== null) {
+                            <tr>
+                                <th>Дата премьеры</th>
+                                <td>{{ m!.premiereDate | date : 'd MMMM yyyy' }}</td>
+                            </tr>
+                        }
+
+                        @if (m!.age !== null) {
+                            <tr>
+                                <th>Возраст</th>
+                                <td>{{ m!.age }}+</td>
+                            </tr>
+                        }
+
+                        @if (m!.rating.value !== null) {
+                            <tr>
+                                <th>Рейтинг Кинопоиска</th>
+                                <td>
+                                    {{ m!.rating.value! | number : '.1-1' }}
+
+                                    @if (m!.rating.voteCount !== null) {
+                                        ({{ m!.rating.voteCount! | number }} голосов)
+                                    }
+                                </td>
+                            </tr>
+                        }
+
+                        @if (m!.rating.top250Position !== null) {
+                            <tr>
+                                <th>Место в ТОП-250</th>
+                                <td>{{ m!.rating.top250Position }}</td>
+                            </tr>
+                        }
+
+                        @for (release of m!.releases; track release.id) {
+                            <tr>
+                                <th>
+                                    @switch (release.type) {
+                                        @case ('DVD') {
+                                            Релиз на DVD
+                                        }
+                                        @case ('BLURAY') {
+                                            Релиз на Blu-ray
+                                        }
+                                        @case ('DIGITAL') {
+                                            Цифровой релиз
+                                        }
+                                        @default {
+                                            Релиз {{ release.type }}
+                                        }
+                                    }
+                                </th>
+                                <td>
+                                    {{ release.date | date : 'd MMMM yyyy' }} ({{ release.releaserTitle }})
+                                </td>
+                            </tr>
+                        }
+
+                        @if (m!.audience.length) {
+                            <tr>
+                                <th>Зрители</th>
+                                <td>
+                                    <ul class="movie-popup__movie-info-list">
+                                        @for (audience of m!.audience; track audience.id) {
+                                            <li>{{ audience.countryTitle }} — {{ audience.count | number }}</li>
+                                        }
+                                    </ul>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (m!.description.full || m!.description.short) {
+                <div class="movie-popup__movie-description">
+                    {{ m!.description.full || m!.description.short }}
+                </div>
+            }
+
+            <div class="movie-popup__movie-people">
+                @if (m!.directors.length) {
+                    <div class="movie-popup__movie-people-group">
+                        <div class="movie-popup__movie-people-group-title">Режиссёры</div>
+                        <ul class="movie-popup__movie-people-group-list">
+                            @for (person of m!.directors; track person.id) {
+                                <li>{{ person.name.russian || person.name.foreign }}</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                @if (m!.producers.length) {
+                    <div class="movie-popup__movie-people-group">
+                        <div class="movie-popup__movie-people-group-title">Продюсеры</div>
+                        <ul class="movie-popup__movie-people-group-list">
+                            @for (person of m!.producers; track person.id) {
+                                <li>{{ person.name.russian || person.name.foreign }}</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                @if (m!.writers.length) {
+                    <div class="movie-popup__movie-people-group">
+                        <div class="movie-popup__movie-people-group-title">Сценаристы</div>
+                        <ul class="movie-popup__movie-people-group-list">
+                            @for (person of m!.writers; track person.id) {
+                                <li>{{ person.name.russian || person.name.foreign }}</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                @if (m!.composers.length) {
+                    <div class="movie-popup__movie-people-group">
+                        <div class="movie-popup__movie-people-group-title">Композиторы</div>
+                        <ul class="movie-popup__movie-people-group-list">
+                            @for (person of m!.composers; track person.id) {
+                                <li>{{ person.name.russian || person.name.foreign }}</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                @if (m!.editors.length) {
+                    <div class="movie-popup__movie-people-group">
+                        <div class="movie-popup__movie-people-group-title">Монтажёры</div>
+                        <ul class="movie-popup__movie-people-group-list">
+                            @for (person of m!.editors; track person.id) {
+                                <li>{{ person.name.russian || person.name.foreign }}</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                @if (m!.designers.length) {
+                    <div class="movie-popup__movie-people-group">
+                        <div class="movie-popup__movie-people-group-title">Художники</div>
+                        <ul class="movie-popup__movie-people-group-list">
+                            @for (person of m!.designers; track person.id) {
+                                <li>{{ person.name.russian || person.name.foreign }}</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                @if (m!.actors.length) {
+                    <div class="movie-popup__movie-people-group">
+                        <div class="movie-popup__movie-people-group-title">В главных ролях</div>
+                        <ul class="movie-popup__movie-people-group-list">
+                            @for (person of m!.actors; track person.id) {
+                                <li>{{ person.name.russian || person.name.foreign }}</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                @if (m!.voiceActors.length) {
+                    <div class="movie-popup__movie-people-group">
+                        <div class="movie-popup__movie-people-group-title">Роли дублировали</div>
+                        <ul class="movie-popup__movie-people-group-list">
+                            @for (person of m!.voiceActors; track person.id) {
+                                <li>{{ person.name.russian || person.name.foreign }}</li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+
+            @if (m!.awards.length) {
+                <div class="movie-popup__movie-awards">
+                    <div class="movie-popup__movie-awards-header">
+                        Награды
+                    </div>
+                    <ul class="movie-popup__movie-awards-list">
+                        @for (award of m!.awards; track award.id) {
+                            <li class="movie-popup__movie-awards-list-item">
+                                <span class="movie-popup__movie-award" [class.movie-popup__movie-award_win]="award.win">
+                                    <span class="movie-popup__movie-award-heading">
+                                        <span class="movie-popup__movie-award-title">{{ award.awardTitle }}</span>
+                                        <span class="movie-popup__movie-award-year">{{ award.year }}</span>
+                                    </span>
+                                    <span class="movie-popup__movie-award-nomination">{{ award.nominationTitle }}</span>
+                                </span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            @if (m!.platforms.length) {
+                <div class="movie-popup__movie-platforms">
+                    <div class="movie-popup__movie-platforms-header">
+                        Где посмотреть
+                    </div>
+                    <ul class="movie-popup__movie-platforms-list">
+                        @for (platform of m!.platforms; track platform.id) {
+                            <li class="movie-popup__movie-platforms-list-item">
+                                <a [href]="platform.watchUrl" target="_blank" rel="nofollow noopener" class="movie-popup__movie-platform">
+                                    <span class="movie-popup__movie-platform-logo" [style.background-image]="'url(' + platform.logoUrl + ')'"></span>
+                                    <span class="movie-popup__movie-platform-title">{{ platform.platformTitle }}</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+    }
+}
+</div>

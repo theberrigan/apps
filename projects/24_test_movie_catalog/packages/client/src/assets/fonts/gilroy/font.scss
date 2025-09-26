@@ -1,0 +1,147 @@
+@use './definitions.scss' as *;
+
+
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-ThinItalic.woff2') format('woff2');
+    font-weight: $font-weight-thin;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-Thin.woff2') format('woff2');
+    font-weight: $font-weight-thin;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-UltraLight.woff2') format('woff2');
+    font-weight: $font-weight-ultra-light;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-UltraLightItalic.woff2') format('woff2');
+    font-weight: $font-weight-ultra-light;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-Light.woff2') format('woff2');
+    font-weight: $font-weight-light;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-LightItalic.woff2') format('woff2');
+    font-weight: $font-weight-light;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-Regular.woff2') format('woff2');
+    font-weight: $font-weight-regular;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-RegularItalic.woff2') format('woff2');
+    font-weight: $font-weight-regular;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-Medium.woff2') format('woff2');
+    font-weight: $font-weight-medium;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-MediumItalic.woff2') format('woff2');
+    font-weight: $font-weight-medium;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-SemiBold.woff2') format('woff2');
+    font-weight: $font-weight-semi-bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-SemiBoldItalic.woff2') format('woff2');
+    font-weight: $font-weight-semi-bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-Bold.woff2') format('woff2');
+    font-weight: $font-weight-bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-BoldItalic.woff2') format('woff2');
+    font-weight: $font-weight-bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-Black.woff2') format('woff2');
+    font-weight: $font-weight-black;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-BlackItalic.woff2') format('woff2');
+    font-weight: $font-weight-black;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-Heavy.woff2') format('woff2');
+    font-weight: $font-weight-heavy;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: $font-family;
+    src: url('Gilroy-HeavyItalic.woff2') format('woff2');
+    font-weight: $font-weight-heavy;
+    font-style: italic;
+    font-display: swap;
+}
