@@ -102,7 +102,7 @@ buffer.close();
 
 ## ![](.images/icon_textlake_crm.png) [Лендинг Textlake](projects/01_textlake-main-landing) <sup><sub>коммерческий</sub></sup>
 📝 С 2016 по 2021 год я работал в компании Openlect LLC. Мы разрабатывали с нуля основной продукт компании – [CRM Textlake](http://textlake.com). Пользователи продукта – бюро переводов. Я занимался дизайном и разработкой всего фронтенда: лендинга и двух дашбордов. Конкретно этот проект — лендинг.  
-⚙️ Чистый **Typescript**, **SCSS**, **GSAP**, **Webpack**. Код разбит на модули и компоненты с Dependency Injection.  
+⚙️ Чистый **Typescript**, **SCSS**, **GSAP**, **Webpack**. Код разбит на компоненты с Dependency Injection.  
 👀 Посмотреть можно **[здесь](https://theberrigan.github.io/demos/textlake-landing/)**.
 
 ![](.images/textlake_landing.webp)
@@ -172,7 +172,7 @@ buffer.close();
 ## ![](.images/icon_tnp_client.png) [Tapnpay Client Dashboard](projects/06_tapnpay-client-dashboard) <sup><sub>коммерческий</sub></sup>
 
 📝 Дашборд, в котором пользователи оплачивают проезд.  
-⚙️ **Angular 11-17**, **ngx-translate**, **SCSS**, **Typescript**, **Webpack**, **Cypress**, **Jest**, **Stripe**, **Vimeo**, **PayPal**, **Braintree**.  
+⚙️ **Angular 11-17**, **ngx-translate**, **SCSS**, **Typescript**, **Webpack**, **Cypress**, **Stripe**, **Vimeo**, **PayPal**, **Braintree**.  
 👀 **[Демо](https://tapnpaydemo.com/auth)**, если удастся зарегистрироваться. **[Здесь](https://disk.yandex.ru/i/OX2HIeMzx6xYoA)** можно посмотреть, как сервис работает на смартфоне. 
 
 ![](.images/tapnpay_dashboard.png)
